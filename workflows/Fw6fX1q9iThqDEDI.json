@@ -1,0 +1,176 @@
+{
+  "active": true,
+  "connections": {
+    "Postgres": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-07T12:36:41.849Z",
+  "id": "Fw6fX1q9iThqDEDI",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "VisitasNoRealizadas",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH visitas_limpias AS (\n  SELECT\n    REGEXP_REPLACE(\n      CASE\n        WHEN celular SIMILAR TO '9%' THEN '+51' || celular\n        WHEN celular SIMILAR TO '51%' THEN '+' || celular\n        ELSE celular\n      END,\n      '[^0-9+]',\n      '',\n      'g'\n    ) AS telefono_normalizado\n  FROM rentas_crm.visitas\n  WHERE estado = 'No realizado'\n    AND formulario = 'Inquilino interesado'\n    AND DATE(fecha_programada) = CURRENT_DATE - INTERVAL '1 day'\n),\nleads_match AS (\n  SELECT l.id, l.telefono_pre_inquilino\n  FROM crm.leads_pre_inquilinos l\n  INNER JOIN visitas_limpias v\n    ON REGEXP_REPLACE(l.telefono_pre_inquilino, '[^0-9+]', '', 'g') = v.telefono_normalizado\n)\nSELECT * FROM leads_match;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -120,
+        -60
+      ],
+      "id": "30826364-a277-4d13-9943-c553a0c7877c",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        100,
+        -60
+      ],
+      "id": "bcb66921-cbb7-402a-ba79-25dc8b78b4fc",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://propertamibotcom.kommo.com/api/v4/leads/{{ $json.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n\"status_id\":86445664\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        580,
+        -60
+      ],
+      "id": "07309a2e-aadb-45ad-a086-b057b0c29d70",
+      "name": "HTTP Request",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "CUkAxEZkWpxNLUY2",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        340,
+        -20
+      ],
+      "id": "4474411b-fc4e-4cdf-9b0d-19515da4a606",
+      "name": "Wait",
+      "webhookId": "92c965a2-dcf4-404a-bcf7-27d7f125aac5"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -300,
+        -60
+      ],
+      "id": "a57d7146-f547-4ab3-b972-673856656e3b",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-07-07T13:09:55.136Z",
+  "versionId": "c0c2b31e-4e99-492b-91ff-90cf7e538ba7"
+}
