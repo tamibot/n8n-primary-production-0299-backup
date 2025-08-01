@@ -1,0 +1,459 @@
+{
+  "active": true,
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Correo": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-23T19:40:06.275Z",
+  "id": "ECmFkMX904F4cDML",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "CodigoUrbania",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d2cfc52b-1e7b-4dde-9954-dae6cfff0ede",
+              "name": "text",
+              "value": "={{ $json.query?.mensaje || $json.body?.text || $json.text || JSON.stringify($json) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        780,
+        200
+      ],
+      "id": "ceb2938a-3742-4aeb-b5cf-8a362f1d6d85",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "06bba813-25c8-4406-bbbd-c7debfbcf268",
+              "leftValue": "={{$json.body.sender}}",
+              "rightValue": "=usuarios.adondevivir.com",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "251b8991-39f0-412a-9241-22c50f0b9038",
+              "leftValue": "={{ $json.body.sender }}",
+              "rightValue": "usuarios.urbania.pe",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        200
+      ],
+      "id": "9c0271cc-6c85-427d-bf64-af828c546f8b",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "html",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "descripcion",
+              "cssSelector": "meta[name=\"description\"]",
+              "returnValue": "attribute",
+              "attribute": "content"
+            },
+            {
+              "key": "precio",
+              "cssSelector": "meta[name='precioAlquiler']",
+              "returnValue": "attribute",
+              "attribute": "content"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        1660,
+        200
+      ],
+      "id": "71dcef57-2d1b-461b-aace-254ed3464a7f",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "jsCode": "const descripcion = $json[\"descripcion\"] || '';\nconst match = descripcion.match(/\\{\\[(.*?)\\]\\}/);\nconst codigo = match ? match[1] : null;\n\nreturn [{\n  codigo,\n  ...$json\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1880,
+        200
+      ],
+      "id": "8ca30014-7767-470c-aa79-9d5df12eacbc",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "correo-proper",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        340,
+        200
+      ],
+      "id": "48803a8d-8e93-4724-a09d-e38b58146ffa",
+      "name": "Correo",
+      "webhookId": "fc3d0ae9-0adb-4923-84f7-9fac900512da"
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $json[\"text\"];\n\n// 📞 Teléfono\nconst phoneMatch = text.match(/Tel[eé]fono:\\s*(\\d{6,})/);\nconst phone = phoneMatch ? phoneMatch[1] : null;\nconst nameMatch = text.match(/Nombre y apellido:\\s*(.+?)\\s*(?:DNI|Tel[eé]fono|Email|E-mail|Correo|$)/i);\nconst name = nameMatch ? nameMatch[1].trim() : null;\n\n// 📧 Email\nconst emailMatch = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}/);\nconst email = emailMatch ? emailMatch[0] : null;\nconst fechaUTC = new Date($('Correo').first().json.body.date);\n\n// Convertir a Lima (GMT-5)\nconst fechaLima = fechaUTC.toLocaleDateString('es-PE', {\n  timeZone: 'America/Lima'\n});\n\n// 🔗 URL del aviso justo después de \"Ver aviso\"\nconst urlMatch = text.match(/Ver aviso[\\s\\S]*?\\[(https?:\\/\\/[^\\]\\s]+)/);\nconst url = urlMatch ? urlMatch[1] : null;\n\n// 🔥 Output\nreturn [\n  {\n    json: {\n      name:name,\n      phone: phone.startsWith('+51') ? phone : `+51${phone}`,\n      email: email,\n      date:fechaLima,\n      url_aviso: url\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        200
+      ],
+      "id": "6fb55fe5-7bb8-444b-abb2-e486f6d812ff",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url_aviso }}",
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1220,
+        200
+      ],
+      "id": "4d156c6a-74dc-497b-8273-f34551da701e",
+      "name": "HTTP Request2",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "crm",
+          "mode": "list",
+          "cachedResultName": "crm"
+        },
+        "table": {
+          "__rl": true,
+          "value": "datos_urbania",
+          "mode": "list",
+          "cachedResultName": "datos_urbania"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "codigo": "={{ $json.codigo }}",
+            "telefono": "={{ $('Code1').item.json.phone }}",
+            "correo": "={{ $('Code1').item.json.email }}",
+            "fecha": "={{ $('Correo').item.json.body.date }}",
+            "link_urbania": "={{ $('HTTP Request2').item.json.headers.location }}",
+            "nombre_pre_inquilino": "={{ $('Code1').item.json.name }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "codigo",
+              "displayName": "codigo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "correo",
+              "displayName": "correo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fecha",
+              "displayName": "fecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "precio",
+              "displayName": "precio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "link_urbania",
+              "displayName": "link_urbania",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nombre_pre_inquilino",
+              "displayName": "nombre_pre_inquilino",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2100,
+        200
+      ],
+      "id": "49354b46-865a-4698-99e8-a86e8d10d521",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://18.222.192.40:3000/scrape",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\"url\":\"{{ $json.headers.location }}\"\n}",
+        "options": {
+          "timeout": 360000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        200
+      ],
+      "id": "a92a6847-a35d-4bba-a366-fadb0c1dc167",
+      "name": "HTTP Request",
+      "retryOnFail": true
+    }
+  ],
+  "pinData": {
+    "Correo": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n-pupeeter-deploy-production.up.railway.app",
+            "user-agent": "Make/production",
+            "content-length": "19619",
+            "accept-encoding": "gzip, br, deflate",
+            "content-type": "multipart/form-data; boundary=--------------------------969058000179624861558236",
+            "traceparent": "00-686e7a32000000000a9c26125ed597c5-0a9c26125ed597c5-00",
+            "tracestate": "dd=t.tid:686e7a3200000000;t.dm:-1;s:0;p:0a9c26125ed597c5",
+            "x-datadog-parent-id": "764527897088464837",
+            "x-datadog-sampling-priority": "0",
+            "x-datadog-tags": "_dd.p.tid=686e7a3200000000",
+            "x-datadog-trace-id": "764527897088464837",
+            "x-forwarded-for": "54.80.47.193",
+            "x-forwarded-host": "n8n-pupeeter-deploy-production.up.railway.app",
+            "x-forwarded-proto": "https",
+            "x-railway-edge": "railway/us-east4-eqdc4a",
+            "x-railway-request-id": "v5utsEOKRTqRsoUzCx5-qw",
+            "x-real-ip": "54.80.47.193",
+            "x-request-start": "1752070706357"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "sender": "tffy231@usuarios.adondevivir.com",
+            "text": "urbania.com\n[https://storage.googleapis.com/leads_statics_resources/mails/logosv4/logo-urbania.png?t=1752070699777]\nhttp://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc825mi1kCl1XzlhwQulgB1dA0RQOffJ0tQwYtATW33cnObOxm-2BkOhyE3Q233SjajKIS-2FKH2Nsd237PoDBn20kq9QdhxFOL-2BI-2Fyv18x05bsVAxUU09tAgFMlmQPATVKzwdjXACdDHYnG7uODJ0DkmTZiL-2BtVKsktTvlNw9fjBWFLN8Itbw_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDZ4d2aWSWtUhkxdXySKVlAg3-2BIr8-2Fu9dJNI281f7GZ1zrJgzB8tLIi1X4omU53Zt4zbbxArsVdcKQGpXQdooER3Ed3KXpbCSf1jIJZXzL5AHjEYmiJSRsXu9cyoTlkPwVRjuS4aNWymlc4W6A2-2BozAZfd5I-2BUgPgEEtv5t2-2BVL1mazGI8yL6hl7B1nPc-2BxxAGWfyV3YsiuEcl-2FxkHPV5PfCTTZGEnncHPIO7SNlsKcBLKitkTVVMC-2BJjqG0sxM9U4QZxoJJXBG8MAhq67Kn16MbXrgGCMbEE4K0npUO-2BbbYkYy0uJszvRm7FJRRmKgwdWw-3D\n\n¡Hola, PROPER RENTAS! Hay interesados que consultaron tu número de WhatsApp por\nel siguiente aviso: ¡Hola, PROPER RENTAS! Hay interesados que consultaron tu\nnúmero de WhatsApp por el siguiente aviso:\n\n[https://img10.naventcdn.com/avisos/11/01/46/25/31/10/200x149/1527382255.jpg]\n[https://img10.naventcdn.com/avisos/11/01/46/25/31/10/290x180/1527382255.jpg]\nhttp://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc8-2F0Asy8P-2FvlHh2tlMpTYci9wmsrgzdNfiMukbdD3XHGSABd8S2kCwRsFdZgfhYTFEiEY-2BPcdk3FJC9LpUV9e4WmsCNOkerBqQDTOdfOesAPou04ApLfIeF5-2B1kJOTidecaaIiyQ3xysZaZXABJ6aJv-2FCn-2FX7JhDzmMhrac1FG8ij52y9CnJM4Gc-2Fhu-2FCGQK57SkDc3NjvaY3TbiphWCQPtSrLBmzf2OQrTPSrMQxG5u6NCHc_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDaHgw4hn1X6BdMPlFiH24PQ2Pdwg3qTcseoy1EoN-2BchN0f0QnEKCjPcPRcsW01mS-2FRD8BDcH4E5ES3BaU7jhcFN88B8yq-2FwyodHRqsDWWfTQDqJzL3-2BGJVrCelePKr91Wi8c4JCN3qeIgSXTb7qyRUpDyPUXyCKYdllFVJTVL-2BsGXtQTTG15kSPF7bnHxtdsMXjovP5kLfbDqV9pXxb3j2UEP70anLKi-2F6ULt82SFo-2BOsGlEm1l1BIWpKqEhWz0GkpJopmeTFv69Q4BIWurygEzgyq455LBYM-2BdltPaockCVBheTUTHhLs1qQPw7MAqX0I-3D\n\nAlquiler  |  Departamento\n[http://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc8-2F0Asy8P-2FvlHh2tlMpTYci9wmsrgzdNfiMukbdD3XHGSABd8S2kCwRsFdZgfhYTFEiEY-2BPcdk3FJC9LpUV9e4WmsCNOkerBqQDTOdfOesAPou04ApLfIeF5-2B1kJOTidecaaIiyQ3xysZaZXABJ6aJv-2FCn-2FX7JhDzmMhrac1FG8ij4hkkxWNKsScXwkZ3wgk-2BcLAdaeO984iewdlREbo3MMBLAx-2FWZf80oN5hT3GHr4ixiN2m_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDbF-2F-2BBV5QMczyMrgx-2B5-2FE-2FuhL7mFXXSRL1Quikz8Z7EHfDucKHrkqQEE6jCq0D7F0-2FnqJWBHWhaqfDRMf-2FGxEjZdWTLOkGHDiViFpZHAbDhbN7oEDprUw4Gev6xnVLJpiczy-2F6IojE9-2BR3QLQ4GmLcpXewrwJesHPwl26Htu3355ZH6Xn2v0ZM8Q11XI8VZWHupnE-2B7ntR-2FtiANb6ZaLhIiUO8yrRmxpqOzupBKFcEEM5ddfLtfzHM3nSj7LobTt065gz3gRvnxLz40Gb-2BbJ-2B71i6ExgHZRijzm5L9uv7GN7U9fKRZWsCl-2Boo5UgNqWF1g-3D]\nS/ 1,550\n[http://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc8-2F0Asy8P-2FvlHh2tlMpTYci9wmsrgzdNfiMukbdD3XHGSABd8S2kCwRsFdZgfhYTFEiEY-2BPcdk3FJC9LpUV9e4WmsCNOkerBqQDTOdfOesAPou04ApLfIeF5-2B1kJOTidecaaIiyQ3xysZaZXABJ6aJv-2FCn-2FX7JhDzmMhrac1FG8ij4hkkxWNKsScXwkZ3wgk-2BcLAdaeO984iewdlREbo3MMBLAx-2FWZf80oN5hT3GHr4ixToNb_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDYWWZXaRdYiap0pczZn1x0Yg9TFcta7lXS0nD8oP9QG2C30BABys-2BVFxpLvMtQgFdGmX0oupuy3SAAqOSj9J5oU0ReVaAIkl2ft8Qvjn1GPlV9vc3zQrHUmywqionjbNZ1eV6VrZFU-2B5J085Ifgxiky5Clq3UQ-2FWzVNTRkgrxKGxUhAez5dHduHwaA3hyl0T5n96tDcL7mWS3srHtj217MSQecw3BgJQt4FUy60Xri0YFR0OKiGVG5e2l4MTRM4GoVXL3PxSB0-2FB42EryIvCUk8ubjML5Qkz1ZRoQh6uYZ9lsYCvQcVW66sELem9FwZd6M-3D]\n\nAv. Petit Thouars, 1598, 15046, Lince, Lima, Perú Lince, Lima\n[http://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc8-2F0Asy8P-2FvlHh2tlMpTYci9wmsrgzdNfiMukbdD3XHGSABd8S2kCwRsFdZgfhYTFEiEY-2BPcdk3FJC9LpUV9e4WmsCNOkerBqQDTOdfOesAPou04ApLfIeF5-2B1kJOTidecaaIiyQ3xysZaZXABJ6aJv-2FCn-2FX7JhDzmMhrac1FG8ij4hkkxWNKsScXwkZ3wgk-2BcLAdaeO984iewdlREbo3MMBLAx-2FWZf80oN5hT3GHr4ix4PA5_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDamv8X0pyiIhw77-2B2ZQkH6X9YMR62KMqx4-2BO-2FDROxFNa8dVSsVD64T9r6Ikd5OgiU4UkUvJM-2F4r-2BLk8dOTXTK7hXduo-2F4Dt8K3Pk9a18kRPC577XNVjplavBMCuGGMA8IP8-2BQxVq-2BdXGjo-2BvawueZEzvNBtlBxbwnV38YtZ7XcLrEDcvTe0CCfh7n-2FgQj9JqktwFHPP9RapnAVZai2kKKoJoZDPMnKikW-2FYA-2Bu8xhy7O-2FvUKJZYHyGZtDKwqs2MH9n87gZxzYemJgF3JazFQb40gr5FSDzGEtWNeXgyhm22oDY6ATsnajwNPnwUJosApTA-3D]\n[https://storage.googleapis.com/leads_statics_resources/mails/templates/cards/caracteristicas/metros.png]\n40 m2\n[https://storage.googleapis.com/leads_statics_resources/mails/templates/cards/caracteristicas/ambientes.png]\n1 dormitorio\n[https://storage.googleapis.com/leads_statics_resources/mails/templates/cards/caracteristicas/banio.png]\n1 baño\n[http://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc8-2F0Asy8P-2FvlHh2tlMpTYci9wmsrgzdNfiMukbdD3XHGSABd8S2kCwRsFdZgfhYTFEiEY-2BPcdk3FJC9LpUV9e4WmsCNOkerBqQDTOdfOesAPou04ApLfIeF5-2B1kJOTidecaaIiyQ3xysZaZXABJ6aJv-2FCn-2FX7JhDzmMhrac1FG8ij4hkkxWNKsScXwkZ3wgk-2BcLAdaeO984iewdlREbo3MMBLAx-2FWZf80oN5hT3GHr4ix8cRG_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDaASRL9XF-2BY8JTx5vpLF-2BWZMQLkDdFoXuHESqYtLbJyqQxYKJ1nArTRg-2BHtkYYGnRuhTu27hTQJnqQmobaElm7duNB-2BzfmWXQ7huIBD2YOKNuUOI1dolVf6LW7HHR1NpO3J6BKct0rWWn5fzV4XlDWcVVJq-2BsK-2F2lK6N3mx2siwF58TJxQsXMWlLbAu5rNndaU7m6OdQOTtG5RycFV4dbUsyV-2BvuOsFFf-2FmYhP9nKflFYPN8IV7uUNqb39Qp8U4UMcEZnt6aGCif1YPIgTmiHeceVy1ko3bQQ1fp1B1AvhcmlNU8pSa696iaGOIE6YkjZo-3D]\n[https://storage.googleapis.com/leads_statics_resources/mails/templates/cards/caracteristicas/metros.png]\n40 m2\n[https://storage.googleapis.com/leads_statics_resources/mails/templates/cards/caracteristicas/ambientes.png]\n1 dorm.\n[https://storage.googleapis.com/leads_statics_resources/mails/templates/cards/caracteristicas/banio.png]\n1 baño\n[http://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc8-2F0Asy8P-2FvlHh2tlMpTYci9wmsrgzdNfiMukbdD3XHGSABd8S2kCwRsFdZgfhYTFEiEY-2BPcdk3FJC9LpUV9e4WmsCNOkerBqQDTOdfOesAPou04ApLfIeF5-2B1kJOTidecaaIiyQ3xysZaZXABJ6aJv-2FCn-2FX7JhDzmMhrac1FG8ij4hkkxWNKsScXwkZ3wgk-2BcLAdaeO984iewdlREbo3MMBLAx-2FWZf80oN5hT3GHr4ixYpFs_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDbIBqZEEn8YC4ZBpnkQei1LVDCXwAlFPy7i7-2FX36FxfshPpMnywPQyruDr4u7XxUk4-2Bu7PbHRg1nDVTXfzZqDaHCsm7BiErHl-2BeENuN4Hi3FHgoTHm9jgED5HhyqVd-2FAex4ZpuN-2FwQW9RYz5jDGEhvDbpEtLXcU6F4X0by5b-2FwW6rhwgzXisPmzrwsVXS54GCG-2BbZnt4MLqwmg2-2FvRsjRDBkXinrYnb7-2BPGLxaLtRMpSpcCv27eFI3GmMAT07AuFlmScXHgbsSq8lNyAmc6TJgX4RSc-2BF0U-2F2GCYTnRnDAX8iSTFP8hDJbAy6bwKhpR1Og-3D]\nAlquiler  |  Departamento\n[http://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc8-2F0Asy8P-2FvlHh2tlMpTYci9wmsrgzdNfiMukbdD3XHGSABd8S2kCwRsFdZgfhYTFEiEY-2BPcdk3FJC9LpUV9e4WmsCNOkerBqQDTOdfOesAPou04ApLfIeF5-2B1kJOTidecaaIiyQ3xysZaZXABJ6aJv-2FCn-2FX7JhDzmMhrac1FG8ij4hkkxWNKsScXwkZ3wgk-2BcLAdaeO984iewdlREbo3MMBLAx-2FWZf80oN5hT3GHr4ixKV9d_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDYcaWogtLiypcGYJUUQhb5p-2B07qMKqzpN1uR8NHau558Z46-2FFJAVc-2FSSuZ3CYpm-2BsXacCMkltNtS7ZiaMUrSg5zfZy4zkA9aI5ln8hVvCbwlJdbypw9CjNsoLQrXBfspZ0jXEoylI4WjLAgiKSBeefoUV63GcuSa7CsRyyb9naO7zB51CnlTxngP069JgXwYPMutDjVie1T1pb763nka1HmyPKpotbLygjMdEVQjFWF0Ed-2BzUjSSqgggOQW3MLCtBZ5YRBssPT96tZ776AfKPelcIwD3Ni45P60KbEF9V8PT4NpByrRpgy1F8ReIp0f3lo-3D]\nVer aviso\n[http://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc8-2F0Asy8P-2FvlHh2tlMpTYci9wmsrgzdNfiMukbdD3XHGSABd8S2kCwRsFdZgfhYTFEiEY-2BPcdk3FJC9LpUV9e4WmsCNOkerBqQDTOdfOesAPou04ApLfIeF5-2B1kJOTidecez4BWRsUeSK-2F0SjBetEJr77q7H9q3PsDxMtS-2BrVO-2BmMkHk74Z2Fa1RvnPJjf92Gvxh-2FMtcdcZHzE5g7W-2BLnI5ZlJL6jneelmWKxUraMHR5x91Y8_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDZrSDTqr0FfnOrbKOxpbc9k1m48Ir0s8tC-2FN4cCkvdJd1IrE1gbqwZrrqc9k-2FL-2FcSr8UZBgaMPfnKaRb2o-2B5gmOsWIwkb1Xhd-2FDzKkAhdqZlvmxUCbQaJ3WYg4jblZ8kM3xATT0fu0TsnFcdraaq53SZ7U0TE5H-2Fhev-2BIALV9dqnkB4oDV9u71Sjs89ZDUKr-2FNSqw8y3LmChFRBxpwgrzXeKSWFAvO2yy05GgbPa1wofOl7gR7l1Mw35DHl7uiRC6QVP6ZJiduDinb2SI-2FLQCM48meRTzS8r1oy15vKE9l54hzVhRIErTpLVxSqmQBJ0xs-3D]\n\nCódigo de aviso: 146253110 Código del anunciante: 60GNDK\nDatos del interesado\nNombre y apellido: Marina Cedano\nDNI: 77387042\nTeléfono: 950888024\n[https://storage.googleapis.com/leads_statics_resources/mails/templates/general/misc/destacado.png]\nE-mail: tffy23@gmail.com [tffy23@gmail.com]\n[https://storage.googleapis.com/leads_statics_resources/mails/templates/general/misc/destacado.png]\n\nConoce lo que busca Marina Cedano en un inmueble Tu contacto busca:\n[https://storage.googleapis.com/leads_statics_resources/mails/templates/general/misc/lupa.png]\nDepartamento en Renta\n[https://storage.googleapis.com/leads_statics_resources/mails/templates/general/misc/dinero.png]\nPEN 1.200 - PEN 1.600\nLe interesa encontrar un inmueble en: Miraflores Lince San Borja La Castellana\nSurquillo\nVer perfil\n[http://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc8zsMllz9Wxe-2BjVhXRWULZDX4v95Uz10OkUPQ-2BP-2Fqd5R5qRZu8fvFn9KuxQsiPW3BZSvF0xnsSZq0nAEWDyknaoF87mmzlw94mZ1KilRpWaaFweOxkmI-2BGOZzXS0g8Im6tW1b6OOE2bLAHO-2FJkuHZmXkZsII2eqX08oUWvmafLehU-2Fk38yHm-2Fb10uwTMqqcnVWw-3D-3DWijX_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDa5RoFAYqNk3BbfiyWezX359WCctCC5wayYP9Ak-2F6g01qQQD8q-2FiEX5UTMgP-2BI5GUj5-2ByMi24K85jhflIafp-2Bvq6AxsHh8YY22qWRRP2ueGlEB7uAwmM6GLBYA-2F9gTBJk5ZqQdLSQTeZVEdxO2PTHoTUIqsw-2FNJKU669iviRIwvPgGn89DtDk8XVY7N3BbjwA73zwBBj4MeVGKFgsEGeF32mlfmWjRPt19w6adBOR7-2F55UdDklAuBcOcHOHhAw6sevxQdiDFlRDXYcYA07VP8-2BSttimVA-2BRiTHTUtp19EDwQb4EoH4HM3hfAP3MSLlucKQ-3D]\n\nLa respuesta de este email será enviada a tffy23@gmail.com [tffy23@gmail.com]\n\n\n\nurbania.com\n[https://storage.googleapis.com/leads_statics_resources/mails/logosv4/logo-urbania.png?t=1752070699777]\nhttp://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc825mi1kCl1XzlhwQulgB1dA0RQOffJ0tQwYtATW33cnObOxm-2BkOhyE3Q233SjajKIS-2FKH2Nsd237PoDBn20kq9QdhxFOL-2BI-2Fyv18x05bsVAxUU09tAgFMlmQPATVKzwdjWYbi9E-2FOuCJOcZlb3Iar-2Fk-3DnUlA_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDaHgw4hn1X6BdMPlFiH24PQWXQ8qBVQzW5lieg2Nh4LcEFQfr-2FTzkZUGFe-2Fkc-2F5x-2FriOPhfWSsJwTqqyaK97AzaiuQY-2FPDLle3u0xVfKbR6WVWXW2bIIgYrKkoWokP5Df9l-2BwhyLBqRZHImet3aKv5UB2b3mZC2trMQCIy-2FTaEX8lmgQNtK9PWaX2MRe-2Fc5JASIe4nEf-2F4XmShDb5zLSlSMuL8b3Ki6XXV5O21iKanmV9RTGHQONBJMwe-2FnykasE1ifJKjwFjqf657iwy8aCGlD2ZR0dUE-2Fn1g3G-2BNEBbsvieMlAzLNHDkYJR7g4lbTFjM-3D\n\n\n[https://storage.googleapis.com/leads_statics_resources/mails/logosv4/logo-quintoandar.png]\nhttp://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc8xuDqgOWQe3C6UIDsSqkPqy67niCqeLgRayWWKVjp4MWAPdZ_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDaHgw4hn1X6BdMPlFiH24PQGmkEuh9miq63EbqStnfTBdRqY1DmdZtHqgeGt-2B2TMI834nChVawMOjvn6kW65mT266iDz1qIM5PUUP55ysggWK7SztZmb3Y760LQlCHix1a4cDrIfxTzejMeVp1ndwqV1gDmC-2FlQXI-2FezqaMVwNpHkSgcvPTfo73BWdWs3NRojaKhBHtHRDRuDv9LEKupiZuZfPnraTRfXgaVlVxL4j4-2FxcQVchQet-2Bcv1gqg5pJH4K9Hh9Lna4HtX4NHsxZPaR2qbxd3aM2-2FAT3acKYGocDe-2BX1VvcWolVpaTuAE1Bk4BQ-3D\nPolíticas de Privacidad\n[http://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc89mG-2BdKtzXWfzm8e3488-2BT2T53pW-2FsMXP9-2BUW-2BaNIKd1rJcFYWI4qvZbYq6kdo-2B5-2FLmHACQ7XviYrf0oAIHKFN4-3DXhXn_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDaHgw4hn1X6BdMPlFiH24PQZmOtFb0wMXSVewA71cKJj8ugfQ-2BdxUFmMxSHl7GhNgexXz1K2KF93DqHqb-2BfqHoJJc-2BdFUFKftQiUe9D6K-2FLmERtYk4C1gachpXBDb-2BNJVSz3ur7AXhj4wPUbWkS0MWbJ2-2FmmlsxTGyZUrL0wdXN-2BehDmLhGoqTT9i87wwlPUPTWhPoYJrTBAuJodH9A-2BUFAo1Ib58Rnof2J4kVHvFju1zH-2BAoh7MMCzGAbXisYzWc2FPdLmsEVNfD69nXKJbcZnaC8mUdvg5ZtNugbiWPnyYZNj2uPGh73o4doKJKrZIMs-3D]\n| Términos y Condiciones de uso\n[http://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc89mG-2BdKtzXWfzm8e3488-2BT2T53pW-2FsMXP9-2BUW-2BaNIKd1sZU699h7EikxVcjdhWtbwOvU9hLKiWq9-2FvkNX60SXYbcl2t4l5IUhjbAeOyELAW7Q1I-_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDaHgw4hn1X6BdMPlFiH24PQLtakDThcfdEoZRHyXSzgWv-2F4tQjbpw8ltHA-2BlialoQLM4QeHxm4IwxC2U0ZEnC-2BfKESyWc-2B2jQTvoBpnmSnwjMCFHSW-2BUH1v4zeWWGH9ZCs-2BQm3YqTUTTl5zomX0mPQdux3aMCFsTpZFL2ApeHSREzXN62VvK532N1qdWSyz9bCfQ-2FRb2HvqzXvHPAmK96bBrdmOeDRn0Nkyh3aGaxhkrAw3s2aKZ594LTdNIdOckEXze7yCOdIZt5ged-2Fw-2Fo8wc-2BnD4LsiBcAb4nJ7zQtO9v2kkWwME0LvxNssLmPRq91M-3D]\n\n[https://storage.googleapis.com/leads_statics_resources/mails/logosv4/logo-quintoandar.png]\nhttp://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc8xuDqgOWQe3C6UIDsSqkPqy67niCqeLgRayWWKVjp4MWrcpd_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDaHgw4hn1X6BdMPlFiH24PQH2cjzplOXj2HpXvfAgeIOaC83Ql7KXSYeBumOyKQLWj6IxCrUZR2vlv8NtRtr0gdG-2Batk8tqh4P-2FNbvrzDixNmXze0KBWfmscGy6i00iSrLtxiB-2F1h6K0soHes-2FE0bR4jb7lDuSdou9ujo0-2Fk1hU0QZHz3uBJtDKgqkkk0aJ7-2FNxNZz-2FcgjnzpmeWxxsLRrQt0uwWvc5JuoUBs1-2BQlwotZcLdAGxmVX7dh0qP9N-2F84iKTlob-2F8cPgR17cDnHwZ7mURT5rzBexsRSzDWGMwMPEomRr6wh1maX70TghqJUbIs-3D\nPolíticas de Privacidad\n[http://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc89mG-2BdKtzXWfzm8e3488-2BT2T53pW-2FsMXP9-2BUW-2BaNIKd1rJcFYWI4qvZbYq6kdo-2B5-2FLmHACQ7XviYrf0oAIHKFN4-3D0uKf_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDaHgw4hn1X6BdMPlFiH24PQLmCRjFMM3T6AUUvXwp6F6LAn3Tkl-2FlcLcTIwzLi8ViwCLOvszagr-2FW6t0TYkaHnaQ-2B45eUS7nc2fzc-2F9lIx7wW6CRDl8dTMEu-2FSokT2392Cr0g2f9x-2Bhif6754yvLAIbcjP3r1trscTZyCx0l02uq3gV83hdtdY-2BxX2aufG0NvrcGGL5SQe10Ek1s1uU-2BYFgb8o2LSPX-2FgmNAO7r4Y1pyqNPr3JfjFo1eKUJLdL6RBHo-2BbXQe1eddQDtyuHK4-2BJFf5Rl8St5Yz00L4TxiofL0AXNG3DZpICvAqp25mCHkbw-3D]\nTérminos y Condiciones de uso\n[http://url5581.usuarios.inmuebles24.com/ls/click?upn=u001.RRZssfXDl0XhfXB0owvc89mG-2BdKtzXWfzm8e3488-2BT2T53pW-2FsMXP9-2BUW-2BaNIKd1sZU699h7EikxVcjdhWtbwOvU9hLKiWq9-2FvkNX60SXYbcl2t4l5IUhjbAeOyELAW7XbAu_-2FUUYQ43rod4IJTLf4mV8KtPe5M8Nbq-2FhvT7LMEPCM1dV3-2FFUNHB4Z3vE6sCQBfGPkQMKNIhHX2RNmrYJEH7yDyuATQVs2civpJcSmVsv9s4cv2ByFWT7blKnkELSuM8cDakfdjM5gWtBtO2RiklDiAqOZ-2BD8bw64fg-2B-2F3KZld7tKbBzzSkh8Sv-2BldEA7oExu4mT2Gc3iuUjSxg0bgFeub0CitA-2BBieWXSx92wGWy9oANx6vZQGrYcO5-2FTtacluvmDPaKHGeo3-2FGfelFE0QWSxVaJJomMB-2F2ooPGBAiDPjDaHgw4hn1X6BdMPlFiH24PQDGVYq5vQ85rmiQgJbAZidlaymOgST8j-2FXMrkko2rRmje-2FKBBqBgqprQxiXmhHQTi6g6I-2BdyUBdOgJd6kgvo2Fpnd4QTKjIqzUdALT9OUkyP4mrWQGxxlj1KjDDv-2FIPtbsihusGBPLFyqcyUCT9yZ3fgbup-2B7vIoECyLKxpTOarDkKqaiGDQzcFdL5n-2BKXVaZxq2S2UOvZOZ-2FihklNvOpVNFDgQu5v0T9frievUC1P1rrAs3E0pcQnL90wWAiN4l8eOLub3CjBVgmop2EphNPXkooLHY2RN9n9q93VQoWDDE-3D]\n\nE-HOLDING S.A.C. (RUC: 20522947891)\n\n[http://url5581.usuarios.inmuebles24.com/wf/open?upn=u001.6I-2BtciyMg0aQf109tvp4W7EH5uzZueIKuQVLrRk0XzXiWDrwR-2BSGzAj8Scn-2FBTWX49BxkjUdacX-2F7oh-2BJliP2WZFRoZGv1oGL6NS4LzcNOSZq4SBpuVSbqtXcnLaO2nnJRRcdXpRKQzpwf5g-2Fh-2Fl3S2fI2IbXhZP1166gNTj6tjYvpUgUfrYm68YzQKgFNLFt9m3Y16amr6IUe4-2Fng4lyvtIiiFgN4R4ZDB2dLvH-2FXcP2EhJwW1C6jNv-2FmA2JmQWenoqjSKEJj3Ew2YC6cMw4mKVSfL48-2B6-2FFYB-2BwNktrR9294f5fwmeW9LDOqR4-2BRt84j9vfIE4CbkruM2nmL7c75fSjMwzA3-2Bgco9z6h3NAF6PAF3EDxWAI2KGaprBtC5XKFuK-2F5i9SACr6Ktl6MRXKPH7aGBuWgNpbheAS8WMHBHWJ6x3zZG1SybvlTomaXrxHtyJPAyDJ4wOlJMZMSUoJA7Cc4GbXDaRt06rYehdjLGNy7x9fFrCrS9UJ4FLHHuaFanhepz-2B1SL10M0rdBouy9iU2Az4j3DS-2FRvY83SMburVOJxWAqjwefEFDrHVZFJX8XMmJa4199b85TItALEllOP-2FXXrvz-2BApBEIRoREL-2BEE-3D]",
+            "date": "2025-07-09T14:18:26.238Z"
+          },
+          "webhookUrl": "https://n8n-pupeeter-deploy-production.up.railway.app/webhook/correo-proper",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-07-31T17:34:13.027Z",
+  "versionId": "f0520724-3e9b-486f-b3e3-af4cb7d4cfc6"
+}
