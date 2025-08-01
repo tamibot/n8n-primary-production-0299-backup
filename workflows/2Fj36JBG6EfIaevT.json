@@ -1,0 +1,523 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres1": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Postgres1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Postgres3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-18T12:07:49.327Z",
+  "id": "2Fj36JBG6EfIaevT",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "ContratosPreInquilinosKommo",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "f225eb5d-a4a1-401f-bed0-e6cd88153600",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d9593583-1f72-4704-921b-20261a420fdd",
+      "name": "Webhook",
+      "webhookId": "f225eb5d-a4a1-401f-bed0-e6cd88153600"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://propertamibotcom.kommo.com/api/v4/leads/{{ $json.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"status_id\": 86479424,\n  \"contacts_id\": [{{ $json.id_pre_inquilino_kommo }}]\n}\n",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        0
+      ],
+      "id": "e5ca3b5c-4b6f-442c-92aa-966e4c32df14",
+      "name": "HTTP Request",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "CUkAxEZkWpxNLUY2",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "crm",
+          "mode": "list",
+          "cachedResultName": "crm"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads_pre_inquilinos",
+          "mode": "list",
+          "cachedResultName": "leads_pre_inquilinos"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "telefono_pre_inquilino",
+              "value": "={{ $json.celular }}"
+            }
+          ]
+        },
+        "combineConditions": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        440,
+        0
+      ],
+      "id": "fd4c6087-0d7c-4cdb-a252-4e82c2cf44f4",
+      "name": "Postgres1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "be09f8a9-af20-486c-8b56-c014c490e45c",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        660,
+        0
+      ],
+      "id": "045046fb-01b6-4889-94ec-38b904044e1a",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const celularRaw = $input.item.json.body.telefono || $input.item.json.body[0].body.telefono || '';\n\n// Eliminar todo lo que no sea dígito\nlet digits = celularRaw.replace(/\\D/g, '');\n\n// Si ya empieza con 51, se queda\nif (digits.startsWith('51')) {\n  digits = digits;\n} else if (digits.startsWith('0')) {\n  digits = '51' + digits.slice(1);\n} else {\n  digits = '51' + digits;\n}\n\n// Añadir el + adelante\n$input.item.json.celular = '+' + digits;\n\nreturn $input.item;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "ce6ab425-6717-4c67-9d0f-09017fa484d9",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "value": "crm",
+          "mode": "list",
+          "cachedResultName": "crm"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads_pre_inquilinos",
+          "mode": "list",
+          "cachedResultName": "leads_pre_inquilinos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Filter').item.json.id }}",
+            "depa_entregado": true,
+            "estado": "departamento entregado"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "id_pre_inquilino_kommo",
+              "displayName": "id_pre_inquilino_kommo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "codigo_inmueble",
+              "displayName": "codigo_inmueble",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "stage",
+              "displayName": "stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_creacion",
+              "displayName": "fecha_creacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultima_modificacion",
+              "displayName": "fecha_ultima_modificacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_solicita_visita",
+              "displayName": "fecha_solicita_visita",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_seguimient_inicial",
+              "displayName": "fecha_seguimient_inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_visita_agendada",
+              "displayName": "fecha_visita_agendada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_visita_realizada",
+              "displayName": "fecha_visita_realizada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_caliente",
+              "displayName": "fecha_caliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_separacion_departamento",
+              "displayName": "fecha_separacion_departamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_inicio_contrato",
+              "displayName": "fecha_inicio_contrato",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_en_atencion",
+              "displayName": "fecha_en_atencion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "solicito_visita",
+              "displayName": "solicito_visita",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "en_atencion",
+              "displayName": "en_atencion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "visita_agendada",
+              "displayName": "visita_agendada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "visita_realizada",
+              "displayName": "visita_realizada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "caliente",
+              "displayName": "caliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "depa_separado",
+              "displayName": "depa_separado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "contrato_creado",
+              "displayName": "contrato_creado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "contrato_firmado",
+              "displayName": "contrato_firmado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "depa_entregado",
+              "displayName": "depa_entregado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "telefono_pre_inquilino",
+              "displayName": "telefono_pre_inquilino",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1100,
+        0
+      ],
+      "id": "a1929dbc-5b55-420b-a8b7-815cd8726f12",
+      "name": "Postgres3",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-06-26T13:02:59.822Z",
+  "versionId": "c3de716e-8007-41d6-bb97-0fe7104ea3ec"
+}
