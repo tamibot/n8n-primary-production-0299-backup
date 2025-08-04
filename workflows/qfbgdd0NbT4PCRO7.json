@@ -81,9 +81,9 @@
         },
         "table": {
           "__rl": true,
-          "value": "leads_pre_propietarios",
+          "value": "leads",
           "mode": "list",
-          "cachedResultName": "leads_pre_propietarios"
+          "cachedResultName": "leads"
         },
         "where": {
           "values": [
@@ -196,18 +196,15 @@
         },
         "table": {
           "__rl": true,
-          "value": "leads_pre_propietarios",
+          "value": "leads",
           "mode": "list",
-          "cachedResultName": "leads_pre_propietarios"
+          "cachedResultName": "leads"
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "etapa_id": "={{ $json.id }}",
             "id": "={{ $('Select rows from a table').item.json.id }}",
-            "contacto_id": 0,
-            "responsable_id": 0,
-            "kommo_id": 0
+            "etapa_inmueble": "={{ $json.id }}"
           },
           "matchingColumns": [
             "id"
@@ -224,40 +221,44 @@
               "removed": false
             },
             {
-              "id": "canal",
-              "displayName": "canal",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
               "id": "fecha_creacion",
               "displayName": "fecha_creacion",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "dateTime",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
-              "id": "nro_inmuebles",
-              "displayName": "nro_inmuebles",
+              "id": "etapa_inmueble",
+              "displayName": "etapa_inmueble",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
-              "id": "distrito",
-              "displayName": "distrito",
+              "id": "customFields",
+              "displayName": "customFields",
               "required": false,
               "defaultMatch": false,
               "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "asesor_id",
+              "displayName": "asesor_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "contacto_id",
@@ -266,52 +267,48 @@
               "defaultMatch": false,
               "display": true,
               "type": "number",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
-              "id": "provincia",
-              "displayName": "provincia",
+              "id": "funnel_id",
+              "displayName": "funnel_id",
               "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "etapa_id",
-              "displayName": "etapa_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "etapa_entrega_inmueble",
-              "displayName": "etapa_entrega_inmueble",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "responsable_id",
-              "displayName": "responsable_id",
-              "required": true,
               "defaultMatch": false,
               "display": true,
               "type": "number",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
-              "id": "fecha_entrega",
-              "displayName": "fecha_entrega",
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
               "required": false,
               "defaultMatch": false,
               "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "kommo_id",
@@ -320,7 +317,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "number",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -351,6 +349,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-07-21T16:47:29.685Z",
-  "versionId": "93942edb-6122-4ecf-b317-32b077933164"
+  "updatedAt": "2025-08-03T09:19:13.896Z",
+  "versionId": "fe9d82b8-2b39-4534-81ca-7c79e215a380"
 }
