@@ -95,9 +95,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-4.1-2025-04-14",
+          "value": "gpt-5-2025-08-07",
           "mode": "list",
-          "cachedResultName": "gpt-4.1-2025-04-14"
+          "cachedResultName": "gpt-5-2025-08-07"
         },
         "options": {}
       },
@@ -236,7 +236,9 @@
       "parameters": {
         "public": true,
         "initialMessages": "DAVID - PROPER RENTAS 02.08 - V.0.2",
-        "options": {}
+        "options": {
+          "allowFileUploads": true
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
@@ -263,6 +265,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-02T14:40:14.301Z",
-  "versionId": "06c92e68-83a0-437c-8b7c-4bdb747ab3bb"
+  "updatedAt": "2025-08-08T17:25:20.328Z",
+  "versionId": "6db0d24f-7dac-4319-b8b7-3e89a7d555d7"
 }
