@@ -95,9 +95,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-5-2025-08-07",
+          "value": "gpt-4.1",
           "mode": "list",
-          "cachedResultName": "gpt-5-2025-08-07"
+          "cachedResultName": "gpt-4.1"
         },
         "options": {}
       },
@@ -265,6 +265,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-08T17:25:20.328Z",
-  "versionId": "6db0d24f-7dac-4319-b8b7-3e89a7d555d7"
+  "updatedAt": "2025-08-09T14:21:25.603Z",
+  "versionId": "ce15febc-4992-4c40-91e4-fa64ef8762bc"
 }
