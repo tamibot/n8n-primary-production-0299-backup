@@ -2148,8 +2148,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1216,
-        545
+        1220,
+        660
       ],
       "id": "933c94c0-f172-475b-9475-da92a0f234c6",
       "name": "BUSQUEDA LINK URBANIA"
@@ -2196,8 +2196,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1336,
-        545
+        1340,
+        620
       ],
       "id": "200bf275-c257-410d-b125-0c305b2487e1",
       "name": "PROPERTIES - SQL"
@@ -2346,6 +2346,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-11T15:06:49.713Z",
-  "versionId": "d6d53f33-fef7-4d61-bb87-fd4b3ff7479f"
+  "updatedAt": "2025-08-14T15:44:22.261Z",
+  "versionId": "b4b4b09d-063f-483f-b1d1-b10220d2ba45"
 }
