@@ -1,0 +1,179 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-18T16:02:46.199Z",
+  "id": "7yJq3Cmwq8aoawVP",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Crm-Kommo",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "etapa",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -420,
+        -20
+      ],
+      "id": "5430cf7d-fdde-47c8-b3a3-cd32123103bb",
+      "name": "Webhook",
+      "webhookId": "d6b0d5ff-15ce-48f8-ae6f-31acff6b6f0b"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://propertamibotcom.kommo.com/api/v4/leads/{{ $('Webhook').item.json.body.kommo_id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"status_id\": {{ $json.kommo }}\n\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        100,
+        -20
+      ],
+      "id": "0af3c5e5-7d91-420a-94d8-383f7530970b",
+      "name": "HTTP Request",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "CUkAxEZkWpxNLUY2",
+          "name": "Proper"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "crm",
+          "mode": "list",
+          "cachedResultName": "crm"
+        },
+        "table": {
+          "__rl": true,
+          "value": "etapas_leads",
+          "mode": "list",
+          "cachedResultName": "etapas_leads"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "codigo",
+              "value": "={{ $json.body.etapa_inmueble }}"
+            },
+            {
+              "column": "funnel_id",
+              "value": "={{ $json.body.funnel_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -200,
+        -20
+      ],
+      "id": "14bf77ac-c17c-479e-930e-e0ee561b3e93",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "primary-production-0299.up.railway.app",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            "content-length": "67",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "es-419,es;q=0.9",
+            "content-type": "application/json",
+            "origin": "https://crm.proper.com.pe",
+            "priority": "u=1, i",
+            "referer": "https://crm.proper.com.pe/",
+            "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "38.253.151.72",
+            "x-forwarded-host": "primary-production-0299.up.railway.app",
+            "x-forwarded-proto": "https",
+            "x-railway-edge": "railway/us-east4-eqdc4a",
+            "x-railway-request-id": "jAbdMuW-TwO7ylSnwoOzXw",
+            "x-real-ip": "38.253.151.72",
+            "x-request-start": "1755551197964"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "kommo_id": 21595881,
+            "etapa_inmueble": "C7:UC_TSAJPD",
+            "funnel_id": 7
+          },
+          "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/etapa",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-08-18T21:09:24.454Z",
+  "versionId": "ca028b71-f3ff-4afc-bf83-36d4b7f83d28"
+}
