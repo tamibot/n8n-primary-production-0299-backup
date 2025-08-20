@@ -1,0 +1,2386 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Insert or update rows in a table2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter1": {
+      "main": [
+        [
+          {
+            "node": "Postgres1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Insert or update rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter2": {
+      "main": [
+        [
+          {
+            "node": "Insert or update rows in a table1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert or update rows in a table": {
+      "main": [
+        [
+          {
+            "node": "Filter2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert or update rows in a table2": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert or update rows in a table3": {
+      "main": [
+        [
+          {
+            "node": "Select rows from a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select rows from a table": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres2": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Insert or update rows in a table4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Insert or update rows in a table3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Postgres2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-19T14:37:25.124Z",
+  "id": "79aTVFaqBItyZmqP",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Bitrix-Postgresql",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "90355a30-9b40-46aa-893d-12bd6d5e4d02",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1820,
+        220
+      ],
+      "id": "3b38ae00-9d82-4a9b-aa41-e8e53b9987cf",
+      "name": "Webhook",
+      "webhookId": "90355a30-9b40-46aa-893d-12bd6d5e4d02"
+    },
+    {
+      "parameters": {
+        "url": "=https://proper.bitrix24.com/rest/8233/6oexxrfrydt4p9xu/crm.deal.get.json?id={{ $json.body['data[FIELDS][ID]'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1380,
+        220
+      ],
+      "id": "fd2607b0-b368-4ccc-84f8-d0772117d1be",
+      "name": "HTTP Request",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "=https://proper.bitrix24.com/rest/8233/6oexxrfrydt4p9xu/crm.contact.get.json?id={{ $json.result.CONTACT_ID }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -940,
+        120
+      ],
+      "id": "d081fd34-5dda-480c-8604-809e8fb3a3dd",
+      "name": "HTTP Request1",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "value": "bitrix",
+          "mode": "list",
+          "cachedResultName": "bitrix"
+        },
+        "table": {
+          "__rl": true,
+          "value": "neg_inversion",
+          "mode": "list",
+          "cachedResultName": "neg_inversion"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "asistio_reu_sem": "={{ $if($('HTTP Request').item.json.result.UF_CRM_1711046916===\"3641\",1,0) }}",
+            "id": "={{ $('HTTP Request').item.json.result.ID }}",
+            "idasesor": "={{ $('HTTP Request').item.json.result.ASSIGNED_BY_ID }}",
+            "idcliente": "={{ $('HTTP Request').item.json.result.CONTACT_ID }}",
+            "stage": "={{ $('HTTP Request').item.json.result.STAGE_ID }}",
+            "pipeline": "={{ $('HTTP Request').item.json.result.CATEGORY_ID }}",
+            "fechacreacion": "={{ $('HTTP Request').item.json.result.BEGINDATE || null}}",
+            "fechamodif": "={{ $('HTTP Request').item.json.result.DATE_MODIFY || null}}",
+            "fechacierre": "={{ $('HTTP Request').item.json.result.CLOSEDATE || null}}",
+            "ingmensual": "={{ $if($('HTTP Request').item.json.result.UF_CRM_1690486180,$('HTTP Request').item.json.result.UF_CRM_1690486180,$('HTTP Request').item.json.result.UF_CRM_1697645065) }}",
+            "inicial": "={{ $if($('HTTP Request').item.json.result.UF_CRM_1690486307,$('HTTP Request').item.json.result.UF_CRM_1690486307,$('HTTP Request').item.json.result.UF_CRM_1697644441) }}",
+            "referencia": "={{ $('HTTP Request').item.json.result.UF_CRM_1614197295057 }}",
+            "distritopreferencia": "={{ $('HTTP Request').item.json.result.UF_CRM_1614197634379 }}",
+            "motivobaja": "={{ $if($('HTTP Request').item.json.result.UF_CRM_1653086803,$('HTTP Request').item.json.result.UF_CRM_1653086803,$('HTTP Request').item.json.result.UF_CRM_1743517815888) }}",
+            "motivointeres": "={{ $('HTTP Request').item.json.result.UF_CRM_61562AA7731A1 }}",
+            "desafioinversion": "={{ $('HTTP Request').item.json.result.UF_CRM_1692741960 }}",
+            "depindep": "={{ $('HTTP Request').item.json.result.UF_CRM_1710528065 }}",
+            "etapaproy": "={{ $('HTTP Request').item.json.result.UF_CRM_1710528144 }}",
+            "categoriacliente": "={{ $('HTTP Request').item.json.result.UF_CRM_1711043847 }}",
+            "residencia": "={{ \n  $ifEmpty(\n    $ifEmpty(\n      $('HTTP Request').item.json.result.UF_CRM_1690850651, \n      $('HTTP Request').item.json.result.UF_CRM_1692744104\n    ), \n    $('HTTP Request').item.json.result.UF_CRM_DEAL_1693353210455\n  )\n}}\n",
+            "fechaainvertir": "={{ $('HTTP Request').item.json.result.UF_CRM_1692742074 || null }}",
+            "comentario": "={{ $('HTTP Request').item.json.result.COMMENTS }}",
+            "contado_credhipoteca": "={{ $('HTTP Request').item.json.result.UF_CRM_DEAL_1690851167791 }}",
+            "lugar_ingresos": "={{ $('HTTP Request').item.json.result.UF_CRM_DEAL_1690851227528 }}",
+            "ingresosformales": "={{ $('HTTP Request').item.json.result.UF_CRM_DEAL_1690999746372 }}",
+            "boletininformativo": "={{ $('HTTP Request').item.json.result.UF_CRM_1696617815 }}",
+            "modified_by": "={{ $('HTTP Request').item.json.result.MODIFY_BY_ID }}",
+            "utm_source": "={{ $ifEmpty($('HTTP Request').item.json.result.UF_CRM_1720631700,$('HTTP Request').item.json.result.UTM_SOURCE) }}",
+            "utm_medium": "={{ $ifEmpty($('HTTP Request').item.json.result.UF_CRM_1720631715,$('HTTP Request').item.json.result.UTM_MEDIUM) }}",
+            "utm_campaign": "={{ $ifEmpty($('HTTP Request').item.json.result.UF_CRM_1720630113,$('HTTP Request').item.json.result.UTM_CAMPAIGN) }}",
+            "fec_sol_docs": "={{$ifEmpty($('HTTP Request').item.json.result.UF_CRM_977A84FA,null) }}",
+            "fec_minuta_enviada_cli": "={{ $ifEmpty($('HTTP Request').item.json.result.UF_CRM_C7BC209D,null) }}",
+            "fec_eval_banco": "={{ $('HTTP Request').item.json.result.UF_CRM_A32BB3B5 || null }}",
+            "fec_deal_lost": "={{ $('HTTP Request').item.json.result.UF_CRM_9E426CF6 || null}}",
+            "fec_sol_preca": "={{ $('HTTP Request').item.json.result.UF_CRM_74C04F2A || null}}",
+            "motivo_descarte": "={{ $('HTTP Request').item.json.result.UF_CRM_290085A6 }}",
+            "fec_separacion": "={{ $('HTTP Request').item.json.result.UF_CRM_1713214244 || null}}",
+            "proy_nrodep": "={{ $('HTTP Request').item.json.result.UF_CRM_1719602820 }}",
+            "canal_adquisicion": "={{ $('HTTP Request').item.json.result.UF_CRM_1720548061 }}",
+            "fec_inic_calientes": "={{ $('HTTP Request').item.json.result.UF_CRM_1720561651 || null}}",
+            "fec_cotiz_env": "={{ $('HTTP Request').item.json.result.UF_CRM_1720704487 || null }}",
+            "fec_sol_carta": "={{ $('HTTP Request').item.json.result.UF_CRM_1721074405 || null}}",
+            "fec_pausa_inv": "={{ $('HTTP Request').item.json.result.UF_CRM_1721681951 || null}}",
+            "motivo_pausa_inv": "={{ $('HTTP Request').item.json.result.UF_CRM_1721681923 }}",
+            "nombre_referente": "={{ $('HTTP Request').item.json.result.UF_CRM_1729286524 }}",
+            "apellido_referente": "={{ $('HTTP Request').item.json.result.UF_CRM_1729286571 }}",
+            "motivo_devolucion": "={{ $('HTTP Request').item.json.result.UF_CRM_1728662722640 }}",
+            "web_ingresos": "={{ $('HTTP Request').item.json.result.UF_CRM_1737457789602 }}",
+            "web_residencia": "={{ $('HTTP Request').item.json.result.UF_CRM_1737457727540 }}",
+            "web_monto_inicial": "={{ $('HTTP Request').item.json.result.UF_CRM_1738617596 }}",
+            "web_continuidad_laboral": "={{ $('HTTP Request').item.json.result.UF_CRM_1737457830888 }}",
+            "web_cuota_hipotecaria": "={{ $('HTTP Request').item.json.result.UF_CRM_1737458026250 }}",
+            "web_modalidad_trabajo": "={{ $('HTTP Request').item.json.result.UF_CRM_1738612134 }}",
+            "web_credito_hipotecario": "={{ $('HTTP Request').item.json.result.UF_CRM_1738612157 }}",
+            "idformulario": 0,
+            "repeat_deal": "={{ $if($('HTTP Request').item.json.result.IS_RECURRING===\"N\",0,1) }}",
+            "primera_vivienda": "={{ $if($('HTTP Request').item.json.result.UF_CRM_1710527980==3595,1,0) }}",
+            "riesgo_crediticio": "={{$if($('HTTP Request').item.json.result.UF_CRM_61563B9B9FF82==1053,0,1)}}",
+            "closed_deal": "={{$if($('HTTP Request').item.json.result.CLOSED === \"N\",0,1)}}",
+            "estado": "={{ $('HTTP Request').item.json.result.UF_CRM_1718836105 }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "idasesor",
+              "displayName": "idasesor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "idcliente",
+              "displayName": "idcliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "pipeline",
+              "displayName": "pipeline",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "repeatdeal",
+              "displayName": "repeatdeal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "stage",
+              "displayName": "stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "ingmensual",
+              "displayName": "ingmensual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "inicial",
+              "displayName": "inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "closed",
+              "displayName": "closed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "fechacreacion",
+              "displayName": "fechacreacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fechamodif",
+              "displayName": "fechamodif",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fechacierre",
+              "displayName": "fechacierre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "idformulario",
+              "displayName": "idformulario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "referencia",
+              "displayName": "referencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "distritopreferencia",
+              "displayName": "distritopreferencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "motivobaja",
+              "displayName": "motivobaja",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "motivointeres",
+              "displayName": "motivointeres",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "desafioinversion",
+              "displayName": "desafioinversion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "primeravivienda",
+              "displayName": "primeravivienda",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "depindep",
+              "displayName": "depindep",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "etapaproy",
+              "displayName": "etapaproy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "categoriacliente",
+              "displayName": "categoriacliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "riesgocrediticio",
+              "displayName": "riesgocrediticio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            },
+            {
+              "id": "residencia",
+              "displayName": "residencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fechaainvertir",
+              "displayName": "fechaainvertir",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "nombre_asesor",
+              "displayName": "nombre_asesor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "comentario",
+              "displayName": "comentario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "contado_credhipoteca",
+              "displayName": "contado_credhipoteca",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "lugar_ingresos",
+              "displayName": "lugar_ingresos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "ingresosformales",
+              "displayName": "ingresosformales",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "boletininformativo",
+              "displayName": "boletininformativo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "modified_by",
+              "displayName": "modified_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fec_sol_docs",
+              "displayName": "fec_sol_docs",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fec_minuta_enviada_cli",
+              "displayName": "fec_minuta_enviada_cli",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fec_eval_banco",
+              "displayName": "fec_eval_banco",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fec_cierre_venta",
+              "displayName": "fec_cierre_venta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fec_deal_lost",
+              "displayName": "fec_deal_lost",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fec_sol_preca",
+              "displayName": "fec_sol_preca",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "motivo_descarte",
+              "displayName": "motivo_descarte",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "asistio_reu_sem",
+              "displayName": "asistio_reu_sem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fec_separacion",
+              "displayName": "fec_separacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "proy_nrodep",
+              "displayName": "proy_nrodep",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "canal_adquisicion",
+              "displayName": "canal_adquisicion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fec_inic_calientes",
+              "displayName": "fec_inic_calientes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fec_cotiz_env",
+              "displayName": "fec_cotiz_env",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fec_sol_carta",
+              "displayName": "fec_sol_carta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fec_pausa_inv",
+              "displayName": "fec_pausa_inv",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "motivo_pausa_inv",
+              "displayName": "motivo_pausa_inv",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "nombre_referente",
+              "displayName": "nombre_referente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "apellido_referente",
+              "displayName": "apellido_referente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "motivo_devolucion",
+              "displayName": "motivo_devolucion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "web_residencia",
+              "displayName": "web_residencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "web_ingresos",
+              "displayName": "web_ingresos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "web_monto_inicial",
+              "displayName": "web_monto_inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "web_continuidad_laboral",
+              "displayName": "web_continuidad_laboral",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "web_cuota_hipotecaria",
+              "displayName": "web_cuota_hipotecaria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "web_modalidad_trabajo",
+              "displayName": "web_modalidad_trabajo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "web_credito_hipotecario",
+              "displayName": "web_credito_hipotecario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "repeat_deal",
+              "displayName": "repeat_deal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "closed_deal",
+              "displayName": "closed_deal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "primera_vivienda",
+              "displayName": "primera_vivienda",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "riesgo_crediticio",
+              "displayName": "riesgo_crediticio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -720,
+        220
+      ],
+      "id": "7b3493a7-bdc8-425b-a95b-2b47a78f4273",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "value": "bitrix",
+          "mode": "list",
+          "cachedResultName": "bitrix"
+        },
+        "table": {
+          "__rl": true,
+          "value": "cliente",
+          "mode": "list",
+          "cachedResultName": "cliente"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('HTTP Request1').item.json.result.ID }}",
+            "nombre": "={{ $('HTTP Request1').item.json.result.NAME }}",
+            "apellido": "={{ $('HTTP Request1').item.json.result.LAST_NAME }}",
+            "email": "={{ $('HTTP Request1').item.json.result.EMAIL[0].VALUE }}",
+            "nrocelular": "={{ $('HTTP Request1').item.json.result.PHONE[0].VALUE || $('HTTP Request1').item.json.result.PHONE[1].VALUE || $('HTTP Request1').item.json.result.PHONE[2].VALUE}}",
+            "tipodoc": "={{ $('HTTP Request1').item.json.result.UF_CRM_1695763056 }}",
+            "nrodoc": "={{ $('HTTP Request1').item.json.result.UF_CRM_3237DE05 }}",
+            "edadrango": "={{ $('HTTP Request').item.json.result.UF_CRM_1614197113242 }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "apellido",
+              "displayName": "apellido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tipodoc",
+              "displayName": "tipodoc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "nrodoc",
+              "displayName": "nrodoc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "edadrango",
+              "displayName": "edadrango",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "nrocelular",
+              "displayName": "nrocelular",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -280,
+        220
+      ],
+      "id": "8f83bc75-e2f3-4040-9247-9451a9d37029",
+      "name": "Postgres1",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ca186f36-2589-46a6-ba62-6a405320039f",
+              "leftValue": "={{ $('HTTP Request1').item.json.result.ID }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -500,
+        220
+      ],
+      "id": "880f04c3-0ae6-4585-b162-88638b7aed6c",
+      "name": "Filter1"
+    },
+    {
+      "parameters": {
+        "content": "## ✝\n**Confio en ti\n20.06.25 Apagado"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2040,
+        60
+      ],
+      "id": "fa89789b-9099-4bf1-b8db-898855ecb6c8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.result.CATEGORY_ID }}",
+                    "rightValue": "5",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "c469e77e-6b32-4f29-97d1-67609442e604"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e7910571-2c24-448d-aef8-09bbf6b809f8",
+                    "leftValue": "={{ $json.result.CATEGORY_ID }}",
+                    "rightValue": "7",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1160,
+        220
+      ],
+      "id": "dd37d8c8-b809-44a1-9a31-92f5721ba718",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "url": "=https://proper.bitrix24.com/rest/8233/6oexxrfrydt4p9xu/crm.contact.get.json?id={{ $json.result.CONTACT_ID }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -940,
+        420
+      ],
+      "id": "7481efef-72a3-4fea-9cf1-71b76ed73094",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1d6df916-7896-4bfa-9f36-00665c2f5ad4",
+              "leftValue": "={{ $('HTTP Request3').item.json.result.ID }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -500,
+        420
+      ],
+      "id": "726ff140-17c8-4f81-bdd8-6bdff2e8cd59",
+      "name": "Filter2"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "value": "rentas",
+          "mode": "list",
+          "cachedResultName": "rentas"
+        },
+        "table": {
+          "__rl": true,
+          "value": "neg_rentas",
+          "mode": "list",
+          "cachedResultName": "neg_rentas"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.result.ID }}",
+            "idasesor": "={{ $('HTTP Request').item.json.result.ASSIGNED_BY_ID }}",
+            "idcliente": "={{ $('HTTP Request').item.json.result.CONTACT_ID }}",
+            "pipeline": "={{ $('HTTP Request').item.json.result.CATEGORY_ID }}",
+            "stage": "={{ $('HTTP Request').item.json.result.STAGE_ID }}",
+            "idformulario": "={{ $('HTTP Request').item.json.result.UF_CRM_1717694134 }}",
+            "fechacreacion": "={{ $('HTTP Request').item.json.result.DATE_CREATE }}",
+            "fechamodif": "={{ $('HTTP Request').item.json.result.DATE_MODIFY }}",
+            "fechacierre": "={{ $('HTTP Request').item.json.result.CLOSEDATE }}",
+            "numpropiedades": "={{ $('HTTP Request').item.json.result.UF_CRM_1692742206 }}",
+            "departamento": "={{ $('HTTP Request').item.json.result.UF_CRM_1689155356 }}",
+            "distrito": "={{ $if($('HTTP Request').item.json.result.UF_CRM_1692743302,$('HTTP Request').item.json.result.UF_CRM_1692743302,$('HTTP Request').item.json.result.UF_CRM_1689778024) }}",
+            "listo_alquilar_construccion": "={{ $('HTTP Request').item.json.result.UF_CRM_1690909018 }}",
+            "boletininformativo": "={{ $('HTTP Request').item.json.result.UF_CRM_1696617815 }}",
+            "cobertura": "={{$if($('HTTP Request').item.json.result.UF_CRM_1714148136 = 4917, \"Con cobertura\", \"Sin cobertura\")}}",
+            "utm_source": "={{$ifEmpty($('HTTP Request').item.json.result.UTM_SOURCE, $('HTTP Request').item.json.result.UF_CRM_1720631700)}}",
+            "utm_medium": "={{$ifEmpty($('HTTP Request').item.json.result.UTM_MEDIUM, $('HTTP Request').item.json.result.UF_CRM_1720631715)}}",
+            "utm_campaign": "={{ $('HTTP Request').item.json.result.UF_CRM_1720630113 }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "idasesor",
+              "displayName": "idasesor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "idcliente",
+              "displayName": "idcliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "pipeline",
+              "displayName": "pipeline",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "stage",
+              "displayName": "stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "idformulario",
+              "displayName": "idformulario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fechacreacion",
+              "displayName": "fechacreacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fechamodif",
+              "displayName": "fechamodif",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fechacierre",
+              "displayName": "fechacierre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "numpropiedades",
+              "displayName": "numpropiedades",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "departamento",
+              "displayName": "departamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "distrito",
+              "displayName": "distrito",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "listo_alquilar_construccion",
+              "displayName": "listo_alquilar_construccion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "boletininformativo",
+              "displayName": "boletininformativo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "cobertura",
+              "displayName": "cobertura",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -720,
+        420
+      ],
+      "id": "3d8cb42a-883d-40d3-89fb-25a75b4906bd",
+      "name": "Insert or update rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "value": "bitrix",
+          "mode": "list",
+          "cachedResultName": "bitrix"
+        },
+        "table": {
+          "__rl": true,
+          "value": "cliente",
+          "mode": "list",
+          "cachedResultName": "cliente"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('HTTP Request3').item.json.result.ID }}",
+            "nombre": "={{ $('HTTP Request3').item.json.result.NAME }}",
+            "apellido": "={{ $('HTTP Request3').item.json.result.LAST_NAME }}",
+            "email": "={{ $('HTTP Request3').item.json.result.EMAIL[0].VALUE }}",
+            "nrocelular": "={{ $('HTTP Request3').item.json.result.PHONE[0].VALUE || $('HTTP Request3').item.json.result.PHONE[1].VALUE || $('HTTP Request3').item.json.result.PHONE[2].VALUE}}",
+            "tipodoc": "={{ $('HTTP Request3').item.json.result.UF_CRM_1695763056 }}",
+            "nrodoc": "={{ $('HTTP Request3').item.json.result.UF_CRM_3237DE05 }}",
+            "edadrango": "={{ $('HTTP Request').item.json.result.UF_CRM_1614197113242 }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "apellido",
+              "displayName": "apellido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tipodoc",
+              "displayName": "tipodoc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "nrodoc",
+              "displayName": "nrodoc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "edadrango",
+              "displayName": "edadrango",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "nrocelular",
+              "displayName": "nrocelular",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -280,
+        420
+      ],
+      "id": "204b3ff7-0ddf-437b-9b1d-c962514661fd",
+      "name": "Insert or update rows in a table1",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "value": "crm",
+          "mode": "list",
+          "cachedResultName": "crm"
+        },
+        "table": {
+          "__rl": true,
+          "value": "contactos",
+          "mode": "list",
+          "cachedResultName": "contactos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.result.ID }}",
+            "nombre": "={{ $json.result.NAME }}",
+            "apellido_paterno": "={{ $json.result.LAST_NAME }}",
+            "telefono": "={{ $json.result.PHONE[0].VALUE }}",
+            "email": "={{ $json.result.EMAIL[0].VALUE }}",
+            "fecha_creacion": "={{ $json.result.DATE_CREATE }}",
+            "tipo_documento": "={{ $json.result.UF_CRM_1695763056 }}",
+            "nro_documento": "={{ $json.result.UF_CRM_3237DE05 }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "apellido_paterno",
+              "displayName": "apellido_paterno",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "apellido_materno",
+              "displayName": "apellido_materno",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tipo_documento",
+              "displayName": "tipo_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "nro_documento",
+              "displayName": "nro_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha_creacion",
+              "displayName": "fecha_creacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "id_propietario",
+              "displayName": "id_propietario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -720,
+        20
+      ],
+      "id": "588f2d57-77cc-4c7c-ba97-af042bdc75a4",
+      "name": "Insert or update rows in a table2",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "value": "crm",
+          "mode": "list",
+          "cachedResultName": "crm"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads",
+          "mode": "list",
+          "cachedResultName": "leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('HTTP Request').item.json.result.ID }}",
+            "fecha_creacion": "={{ $('HTTP Request').item.json.result.DATE_CREATE }}",
+            "etapa_inmueble": "={{ $('HTTP Request').item.json.result.STAGE_ID }}",
+            "funnel_id": "={{ $('HTTP Request').item.json.result.CATEGORY_ID }}",
+            "asesor_id": "={{ $('HTTP Request').item.json.result.ASSIGNED_BY_ID }}",
+            "contacto_id": "={{ $('HTTP Request').item.json.result.CONTACT_ID }}",
+            "customFields": "={{ $('Code').item.json.custom_fields_json }}",
+            "utm_campaign": "={{ $('HTTP Request').item.json.result.UTM_CAMPAIGN }}",
+            "utm_medium": "={{ $('HTTP Request').item.json.result.UTM_MEDIUM }}",
+            "utm_source": "={{ $('HTTP Request').item.json.result.UTM_SOURCE }}",
+            "kommo_id": "={{ $('HTTP Request').item.json.result.UF_CRM_1716382183688 }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fecha_creacion",
+              "displayName": "fecha_creacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "etapa_inmueble",
+              "displayName": "etapa_inmueble",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "customFields",
+              "displayName": "customFields",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "asesor_id",
+              "displayName": "asesor_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "contacto_id",
+              "displayName": "contacto_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "funnel_id",
+              "displayName": "funnel_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "kommo_id",
+              "displayName": "kommo_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "id_inmueble",
+              "displayName": "id_inmueble",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        380,
+        120
+      ],
+      "id": "cddda167-bca0-468f-9672-ca1335f7d57b",
+      "name": "Insert or update rows in a table3",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const deal = $('HTTP Request').first().json.result;\nconst customFields = {};\n\nfor (const key in deal) {\n  if (\n    key.startsWith(\"UF_CRM_\") &&\n    deal[key] !== \"\" &&\n    deal[key] !== null &&\n    !(Array.isArray(deal[key]) && deal[key].length === 0)\n  ) {\n    customFields[key] = deal[key];\n  }\n}\n\n// Retornar el JSON que luego insertarás en tu base de datos\nreturn [\n  {\n    json: {\n      custom_fields_json: customFields\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -500,
+        20
+      ],
+      "id": "28efcf52-995a-46dc-a07f-2d753ecdaac2",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "crm",
+          "mode": "list",
+          "cachedResultName": "crm"
+        },
+        "table": {
+          "__rl": true,
+          "value": "etapas_leads",
+          "mode": "list",
+          "cachedResultName": "etapas_leads"
+        },
+        "where": {
+          "values": [
+            {
+              "column": "codigo",
+              "value": "={{ $json.etapa_inmueble }}"
+            },
+            {
+              "column": "funnel_id",
+              "value": "={{ $json.funnel_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        600,
+        120
+      ],
+      "id": "e3da7039-f0e6-4345-a19e-c3720239d2a2",
+      "name": "Select rows from a table",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8fb69993-68a4-40af-87b3-24d0b028635c",
+              "leftValue": "={{ $json.workflow_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        820,
+        120
+      ],
+      "id": "f3ba800c-3dc6-4e20-86ff-03ad6dd2cf79",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bf2c1lell1.execute-api.us-east-2.amazonaws.com/production/workflows/ejecutar/",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "workflow_id",
+              "value": "={{ $('Select rows from a table').item.json.workflow_id }}"
+            },
+            {
+              "name": "deal_id",
+              "value": "={{ $('Insert or update rows in a table3').item.json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        120
+      ],
+      "id": "8c83cd89-42d2-441f-9300-905ee250c8a0",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "crm",
+          "mode": "list",
+          "cachedResultName": "crm"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads",
+          "mode": "list",
+          "cachedResultName": "leads"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $json.ID }}"
+            }
+          ]
+        },
+        "options": {
+          "outputColumns": [
+            "etapa_inmueble"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -60,
+        20
+      ],
+      "id": "c8fb3d88-98b7-4cd0-a474-52e86f700ade",
+      "name": "Postgres2",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a143d650-9a6f-4af5-8891-6ae673716740",
+              "leftValue": "={{ $('Edit Fields').item.json.STAGE_ID }}",
+              "rightValue": "={{ $json.etapa_inmueble }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        160,
+        20
+      ],
+      "id": "5f331e50-ff22-474e-ab8e-1410ecd9ded7",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "value": "crm",
+          "mode": "list",
+          "cachedResultName": "crm"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads",
+          "mode": "list",
+          "cachedResultName": "leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('HTTP Request').item.json.result.ID }}",
+            "fecha_creacion": "={{ $('HTTP Request').item.json.result.DATE_CREATE }}",
+            "etapa_inmueble": "={{ $('HTTP Request').item.json.result.STAGE_ID }}",
+            "funnel_id": "={{ $('HTTP Request').item.json.result.CATEGORY_ID }}",
+            "asesor_id": "={{ $('HTTP Request').item.json.result.ASSIGNED_BY_ID }}",
+            "contacto_id": "={{ $('HTTP Request').item.json.result.CONTACT_ID }}",
+            "customFields": "={{ $('Code').item.json.custom_fields_json }}",
+            "utm_campaign": "={{ $('HTTP Request').item.json.result.UTM_CAMPAIGN }}",
+            "utm_medium": "={{ $('HTTP Request').item.json.result.UTM_MEDIUM }}",
+            "utm_source": "={{ $('HTTP Request').item.json.result.UTM_SOURCE }}",
+            "kommo_id": "={{ $('HTTP Request').item.json.result.UF_CRM_1716382183688 }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fecha_creacion",
+              "displayName": "fecha_creacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "etapa_inmueble",
+              "displayName": "etapa_inmueble",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "customFields",
+              "displayName": "customFields",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "asesor_id",
+              "displayName": "asesor_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "contacto_id",
+              "displayName": "contacto_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "funnel_id",
+              "displayName": "funnel_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "utm_campaign",
+              "displayName": "utm_campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "utm_medium",
+              "displayName": "utm_medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "utm_source",
+              "displayName": "utm_source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "kommo_id",
+              "displayName": "kommo_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "id_inmueble",
+              "displayName": "id_inmueble",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        380,
+        -80
+      ],
+      "id": "4485096d-2785-4abd-a657-cabab9e25ce5",
+      "name": "Insert or update rows in a table4",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "499ead2c-2e9a-4bb4-9f67-a610c012d0b9",
+              "name": "ID",
+              "value": "={{ $('HTTP Request').item.json.result.ID }}",
+              "type": "number"
+            },
+            {
+              "id": "474857ed-b997-4532-af20-b622bde8561c",
+              "name": "STAGE_ID",
+              "value": "={{ $('HTTP Request').item.json.result.STAGE_ID }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -280,
+        20
+      ],
+      "id": "68cf7bf9-51b8-4fec-8187-e264bc2c584c",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1600,
+        220
+      ],
+      "id": "9d07ece0-dab3-4dcc-a392-4b042a971a07",
+      "name": "Wait",
+      "webhookId": "1f5653b8-139b-460d-b70a-63ca37268be0"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "primary-production-0299.up.railway.app",
+            "user-agent": "Bitrix24 Webhook Engine",
+            "content-length": "373",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-forwarded-for": "52.29.163.104",
+            "x-forwarded-host": "primary-production-0299.up.railway.app",
+            "x-forwarded-proto": "https",
+            "x-railway-edge": "railway/europe-west4-drams3a",
+            "x-railway-request-id": "NdmI-f5WTgKsQuw5jUJq2g",
+            "x-real-ip": "52.29.163.104",
+            "x-request-start": "1755627491054"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "ONCRMDEALADD",
+            "event_handler_id": "261",
+            "data[FIELDS][ID]": "76789",
+            "ts": "1755627487",
+            "auth[domain]": "proper.bitrix24.com",
+            "auth[client_endpoint]": "https://proper.bitrix24.com/rest/",
+            "auth[server_endpoint]": "https://oauth.bitrix.info/rest/",
+            "auth[member_id]": "2ecc4413ce2df3a5fbe41aaf405a8b28",
+            "auth[application_token]": "ijy79a371hyfazxeoraxb3j4deksf38k"
+          },
+          "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/90355a30-9b40-46aa-893d-12bd6d5e4d02",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-08-19T20:31:33.545Z",
+  "versionId": "3911c04a-c277-497a-bbb0-c8b5f4eda0cf"
+}
