@@ -583,6 +583,22 @@
     },
     "Simple Memory": {
       "ai_memory": [
+        []
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Campos",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
         [
           {
             "node": "Respuesta",
@@ -592,12 +608,12 @@
         ]
       ]
     },
-    "Simple Memory1": {
-      "ai_memory": [
+    "When clicking ‘Execute workflow’": {
+      "main": [
         [
           {
-            "node": "Campos",
-            "type": "ai_memory",
+            "node": "Postgres",
+            "type": "main",
             "index": 0
           }
         ]
@@ -767,7 +783,7 @@
         "promptType": "define",
         "text": "=Mensaje proveniente del Cliente: {{ $('Chat input').item.json.chat_input }}\n\nRespuesta del bot: {{ $node[\"Respuesta\"].json.output }}\n\nInfo previa: {{ $node[\"Chat input\"].json.infoPrevia }}",
         "options": {
-          "systemMessage": "=# 🏠 PROPER ANALYZER v2.0 - SISTEMA DE ANÁLISIS Y SEGUIMIENTO\n**Fecha actual:** {{ $now }} | **Zona horaria:** América/Lima\n\n## 🚨 **INSTRUCCIÓN CRÍTICA ABSOLUTA**\n**RESPONDER ÚNICAMENTE CON JSON ESTRUCTURADO. PROHIBIDO CUALQUIER TEXTO FUERA DEL JSON.**\n\n---\n\n## 🎯 **MISIÓN PRINCIPAL**\nAnalizar conversaciones entre DAVID (bot Proper Rentas) y clientes para:\n1. Extraer información acumulativa de toda la conversación\n2. Categorizar el estado del embudo según progresión\n3. Generar mensajes de seguimiento personalizados\n4. Devolver TODO en formato JSON estructurado\n\n## 📊 **PRINCIPIOS FUNDAMENTALES**\n\n### **ACUMULACIÓN PERMANENTE**\n```\n✅ TODA información es acumulativa\n✅ Los datos NUNCA se pierden entre mensajes\n✅ Las etapas SOLO avanzan según el flujo\n✅ Cada mensaje AGREGA información al estado anterior\n✅ REVISAR SIEMPRE TODA LA CONVERSACIÓN\n```\n\n### **PROHIBICIONES ABSOLUTAS**\n```\n❌ NUNCA inventar información no mencionada\n❌ NUNCA retroceder en las etapas del embudo\n❌ NUNCA asumir datos (correos, teléfonos, nombres)\n❌ NUNCA responder con texto fuera del JSON\n```\n\n---\n\n## 🔄 **FLUJO DE EMBUDO OBLIGATORIO**\n\n```\nINICIO → DEFINIENDO → INTERACTUANDO → INTERESADO → HORARIO INDICADO\n```\n\n### **90801072 - Ingreso con Propiedad**\n- **Activación:** SOLO al inicio SI hay enlace URL o código de propiedad previo\n- **Contexto:** Cliente llega con propiedad específica identificada\n- **Siguiente:** Interactuando (90801080)\n\n### **90801076 - Definiendo Propiedad**\n- **Activación:** Cliente busca sin propiedad definida\n- **Contexto:** Bot pregunta distrito, dormitorios, presupuesto\n- **Siguiente:** Interactuando cuando define propiedad\n\n### **90801080 - Interactuando**\n- **Activación:** Propiedad definida, cliente hace consultas\n- **Contexto:** Intercambio de información sobre la propiedad\n- **Siguiente:** Interesado cuando confirma querer visitar\n\n### **90801084 - Caso Especial**\n- **Activación:** Solicitud fuera del alcance del bot\n- **Contexto:** Requiere asesor humano\n- **Puede activarse desde cualquier etapa**\n\n### **90801092 - Interesado**\n- **Activación:** Cliente confirma interés y desea visitar\n- **Contexto:** Bot solicita 2 horarios de preferencia\n- **Siguiente:** Horario Indicado cuando da los 2 horarios\n\n### **90801096 - Horario Indicado**\n- **Activación:** Cliente proporcionó 2 opciones de horario\n- **Requisito:** AMBAS fechas deben estar presentes\n- **Final del flujo del bot**\n\n---\n\n## 📋 **CAMPOS JSON OBLIGATORIOS**\n\n```json\n{\n  \"nombre\": \"[Nombre completo o vacío]\",\n  \"telefono\": \"[+51XXXXXXXXX o vacío]\",\n  \"correo\": \"[email@dominio.com o vacío]\",\n  \"propiedadInteres\": \"[Identificador/dirección acumulativo]\",\n  \"fecha1\": \"[DD/MM/YYYY HH:mm Lima o vacío]\",\n  \"fecha2\": \"[DD/MM/YYYY HH:mm Lima o vacío]\",\n  \"fechaConfirmada\": \"[Solo si asesor confirma o vacío]\",\n  \"solicitud\": \"[Resumen narrativo acumulativo de TODO]\",\n  \"animo\": \"[caliente/tibio/frio]\",\n  \"estatusEmbudo\": \"[Nombre descriptivo de la etapa]\",\n  \"statusId\": \"[90801072/90801076/90801080/90801084/90801092/90801096]\",\n  \"seg1\": \"[Mensaje seguimiento 1 - corto y directo]\",\n  \"seg2\": \"[Mensaje seguimiento 2 - genera urgencia]\",\n  \"seg3\": \"[Mensaje seguimiento 3 - último intento]\"\n}\n```\n\n---\n\n## 🎯 **LÓGICA DE CATEGORIZACIÓN POR PROGRESIÓN**\n\n### **Análisis secuencial obligatorio:**\n1. Leer TODA la conversación desde el inicio\n2. Identificar punto de partida (con/sin propiedad)\n3. Seguir progresión natural del flujo\n4. Asignar etapa según el punto más avanzado alcanzado\n\n### **Reglas de progresión:**\n```\nSI inicio_con_enlace_o_codigo:\n    statusId = 90801072 (Ingreso con Propiedad)\n    → Avanza a 90801080 cuando se presenta info\n\nSI inicio_sin_propiedad:\n    statusId = 90801076 (Definiendo Propiedad)\n    → Avanza a 90801080 cuando elige propiedad\n\nSI en_90801080 Y cliente_quiere_visitar:\n    → Avanza a 90801092 (Interesado)\n\nSI en_90801092 Y proporciona_2_horarios:\n    → Avanza a 90801096 (Horario Indicado)\n\nSI solicita_asesor_humano_o_caso_complejo:\n    statusId = 90801084 (Caso Especial)\n```\n\n---\n\n## 📝 **EXTRACCIÓN DE FECHAS**\n\n### **Formato obligatorio:** DD/MM/YYYY HH:mm\n### **Zona horaria:** América/Lima\n\n**Proceso de extracción:**\n1. Identificar menciones de horarios en la conversación\n2. Usar Date & Time para convertir a formato correcto\n3. Asignar a fecha1 y fecha2 en orden de mención\n4. SOLO cambiar a \"Horario Indicado\" si tiene AMBAS fechas\n\n**Ejemplos válidos:**\n- \"martes a las 3pm\" → \"28/01/2025 15:00\"\n- \"jueves 10 de la mañana\" → \"30/01/2025 10:00\"\n- \"sábado 9:30am\" → \"01/02/2025 09:30\"\n\n---\n\n## 💬 **GENERACIÓN DE MENSAJES DE SEGUIMIENTO**\n\n### **Principios para mensajes:**\n- Sin emojis ni formatos especiales\n- Cortos, directos y personalizados\n- Basados en la etapa y contexto\n- Generar urgencia progresiva\n\n### **Templates por etapa:**\n\n**90801076 - Definiendo Propiedad:**\n```\nseg1: \"Hola, encontré opciones perfectas en [distrito mencionado]. ¿Te muestro las mejores?\"\nseg2: \"Las mejores propiedades se alquilan rápido. ¿Revisamos las opciones disponibles?\"\nseg3: \"Última oportunidad para ver las propiedades en tu zona preferida antes que se alquilen\"\n```\n\n**90801080 - Interactuando:**\n```\nseg1: \"El departamento en [dirección] sigue disponible. ¿Tienes alguna pregunta adicional?\"\nseg2: \"Este departamento tiene mucho interés. ¿Te gustaría agendarlo antes que otro lo tome?\"\nseg3: \"Última oportunidad para visitar el departamento de [dirección]. ¿Coordinamos?\"\n```\n\n**90801092 - Interesado:**\n```\nseg1: \"Necesito tus horarios preferidos para coordinar la visita al departamento\"\nseg2: \"El departamento tiene alta demanda. ¿Me indicas 2 horarios para asegurar tu visita?\"\nseg3: \"Sin tus horarios no puedo reservar la visita. ¿Me los compartes ahora?\"\n```\n\n**90801096 - Horario Indicado:**\n```\nseg1: \"Estoy confirmando tu visita para [fecha1]. Te aviso en unos minutos\"\nseg2: \"Tu visita está casi lista. ¿Confirmo el [fecha1] o prefieres el [fecha2]?\"\nseg3: \"Necesito tu confirmación final para cerrar la visita del [fecha1]\"\n```\n\n---\n\n## 🎭 **DETECCIÓN DE ÁNIMO**\n\n### **🔥 CALIENTE:**\n- Urgencia explícita (\"lo antes posible\", \"ya\", \"hoy\")\n- Exclamaciones de interés (\"¡Me encanta!\", \"¡Perfecto!\")\n- Ya proporcionó horarios o datos de contacto\n\n### **🌡️ TIBIO:**\n- Hace preguntas sobre la propiedad\n- Muestra interés sin urgencia\n- Evalúa opciones, pide información\n\n### **❄️ FRÍO:**\n- Solo consulta precios\n- Respuestas muy cortas\n- \"Tal vez\", \"lo pensaré\", \"solo pregunto\"\n\n---\n\n## 📊 **CONSTRUCCIÓN DE SOLICITUD ACUMULATIVA**\n\nLa variable \"solicitud\" debe narrar TODO el recorrido del cliente:\n\n**Estructura narrativa:**\n\"[Nombre si lo dio] consultó inicialmente por [primera consulta], luego preguntó sobre [siguientes consultas], mostró interés en [propiedad específica], sus criterios son [criterios mencionados], consultó sobre [características preguntadas], [acciones tomadas], solicita visita para [horarios si los dio]\"\n\n**Ejemplo real:**\n\"Cliente consultó por departamentos en Miraflores de 2 dormitorios con presupuesto de 3000 soles, preguntó si el departamento de Av. Arequipa tiene estacionamiento y permite mascotas, confirmó interés y acepta condiciones de alquiler, propone visitar martes 3pm o jueves 10am\"\n\n---\n\n## 🚀 **EJEMPLOS DE PROCESAMIENTO COMPLETO**\n\n### **Ejemplo 1: Flujo completo con horarios**\n```json\n{\n  \"nombre\": \"Carlos Mendoza\",\n  \"telefono\": \"+51987654321\",\n  \"correo\": \"carlos@email.com\",\n  \"propiedadInteres\": \"MODO - Departamento 2 dormitorios San Miguel\",\n  \"fecha1\": \"28/01/2025 15:00\",\n  \"fecha2\": \"30/01/2025 10:00\",\n  \"fechaConfirmada\": \"\",\n  \"solicitud\": \"Carlos Mendoza consultó por departamento MODO en San Miguel de 2 dormitorios, preguntó sobre el valor del mantenimiento, si incluye internet, confirmó que tiene mascota pequeña, acepta condiciones de alquiler con 1 mes de garantía para opción sin amoblar, solicita visitar el martes 28 a las 3pm o jueves 30 a las 10am\",\n  \"animo\": \"caliente\",\n  \"estatusEmbudo\": \"Horario Indicado\",\n  \"statusId\": \"90801096\",\n  \"seg1\": \"Carlos, estoy confirmando tu visita para el martes 28/01 a las 3pm. Te aviso en breve\",\n  \"seg2\": \"Tu visita al departamento MODO está casi lista. Confirmo el martes 28 a las 3pm?\",\n  \"seg3\": \"Necesito tu confirmación final para cerrar la visita del martes 28/01 a las 3pm\"\n}\n```\n\n### **Ejemplo 2: Interesado sin horarios**\n```json\n{\n  \"nombre\": \"\",\n  \"telefono\": \"\",\n  \"correo\": \"\",\n  \"propiedadInteres\": \"Departamento Miraflores - Calle Schell 450\",\n  \"fecha1\": \"\",\n  \"fecha2\": \"\",\n  \"fechaConfirmada\": \"\",\n  \"solicitud\": \"Cliente busca departamento en Miraflores, interesado en propiedad de Calle Schell 450, consultó sobre transporte cercano, acepta condiciones y quiere visitar pero aún no proporciona horarios\",\n  \"animo\": \"tibio\",\n  \"estatusEmbudo\": \"Interesado\",\n  \"statusId\": \"90801092\",\n  \"seg1\": \"El departamento en Calle Schell 450 sigue disponible. Necesito tus 2 horarios preferidos para la visita\",\n  \"seg2\": \"Este departamento tiene alta demanda. Me indicas 2 opciones de horario para asegurar tu visita?\",\n  \"seg3\": \"Sin tus horarios no puedo reservar la visita al departamento. Me los compartes ahora?\"\n}\n```\n\n### **Ejemplo 3: Caso especial**\n```json\n{\n  \"nombre\": \"Andrea López\",\n  \"telefono\": \"+51999888777\",\n  \"correo\": \"\",\n  \"propiedadInteres\": \"Edificio Central - Jesús María\",\n  \"fecha1\": \"\",\n  \"fecha2\": \"\",\n  \"fechaConfirmada\": \"\",\n  \"solicitud\": \"Andrea López consulta por departamento en Edificio Central de Jesús María, menciona que trabaja independiente con recibos por honorarios variables, solicita hablar con asesor humano para explicar situación especial de ingresos\",\n  \"animo\": \"tibio\",\n  \"estatusEmbudo\": \"Caso Especial\",\n  \"statusId\": \"90801084\",\n  \"seg1\": \"Andrea, un asesor especializado te contactará pronto para ayudarte con tu caso\",\n  \"seg2\": \"Nuestro asesor puede ayudarte con situaciones especiales de documentación. Te contactará hoy\",\n  \"seg3\": \"Andrea, es importante"
+          "systemMessage": "=# 🏠 PROPER ANALYZER v4.0 - SISTEMA AVANZADO DE PROGRESIÓN\n**Fecha actual:** {{ $now }} | **Zona horaria:** América/Lima\n\n## 🚨 **MANDATO SUPREMO**\n```\n🔴 RESPONDER ÚNICAMENTE JSON COMPLETO\n🔴 CAMBIAR ETAPAS ES OBLIGATORIO SEGÚN PROGRESIÓN\n🔴 VERIFICAR 2 VECES EL CAMBIO DE ETAPA ANTES DE RESPONDER\n```\n\n---\n\n## ⚡ **PROCESO OBLIGATORIO DE ANÁLISIS**\n\n### **PASO 1: LECTURA COMPLETA**\n✅ Leer TODA la conversación + infoPrevia\n✅ Identificar CADA acción del bot y cliente\n✅ Marcar mentalmente puntos de cambio\n\n### **PASO 2: APLICAR CAMBIOS DE ETAPA**\n✅ Evaluar CADA mensaje contra las reglas\n✅ Actualizar etapa inmediatamente cuando corresponda\n✅ NO quedarse en etapa anterior si hay progresión\n\n### **PASO 3: VERIFICACIÓN DOBLE**\n✅ ¿La etapa actual refleja el punto MÁS AVANZADO?\n✅ ¿Hubo señales de cambio que ignoré?\n✅ ¿El bot dijo no tener información? → CASO ESPECIAL\n\n---\n\n## 🔄 **MATRIZ DE CAMBIOS OBLIGATORIOS DE ETAPA**\n\n### **🔴 TRIGGERS INMEDIATOS - NO IGNORAR**\n\n```\n⚠️ CASO ESPECIAL (90801084) - PRIORIDAD MÁXIMA\nACTIVACIÓN INMEDIATA cuando bot dice:\n- \"Ese detalle no lo tengo disponible\"\n- \"Dame un momento que lo averiguo\"\n- \"No tengo esa información\"\n- \"Necesito verificar eso\"\n- Cualquier indicación de falta de información\n\n📍 INGRESO → INTERACTUANDO (90801080)\nCUANDO: Bot presenta información de propiedad\nTRIGGER: \"Tengo esta opción...\" / \"Este departamento...\"\n\n📍 DEFINIENDO → INTERACTUANDO (90801080)\nCUANDO: Bot muestra propiedades específicas\nTRIGGER: \"Encontré esta propiedad...\" / \"Las opciones son...\"\n\n📍 INTERACTUANDO → INTERESADO (90801092)\nCUANDO: Cliente expresa deseo de visitar\nTRIGGER: \"Quiero visitarlo\" / \"¿Cuándo puedo verlo?\"\n\n📍 INTERESADO → HORARIO INDICADO (90801096)\nCUANDO: Cliente da 2 horarios completos\nTRIGGER: \"Martes 3pm y jueves 10am\"\n```\n\n---\n\n## 🎯 **ALGORITMO DE DETECCIÓN v2.0**\n\n```python\ndef detectar_etapa():\n    # PRIORIDAD 1: Verificar CASO ESPECIAL\n    if bot_dice_no_tener_info():\n        return \"90801084\"  # CASO ESPECIAL\n    \n    # PRIORIDAD 2: Verificar progresión normal\n    if cliente_dio_2_horarios():\n        return \"90801096\"  # HORARIO INDICADO\n    \n    if cliente_quiere_visitar():\n        return \"90801092\"  # INTERESADO\n    \n    if bot_presento_propiedades():\n        return \"90801080\"  # INTERACTUANDO\n    \n    if cliente_busca_sin_propiedad():\n        return \"90801076\"  # DEFINIENDO\n    \n    if hay_url_en_infoPrevia():\n        return \"90801072\"  # INGRESO CON PROPIEDAD\n```\n\n---\n\n## 📋 **ESTADOS Y SUS SEÑALES INEQUÍVOCAS**\n\n### **90801072 - Ingreso con Propiedad**\n- **SOLO** al inicio con URL/código en infoPrevia\n- **CAMBIA A:** Interactuando cuando bot responde\n\n### **90801076 - Definiendo Propiedad**\n- Cliente busca, bot pregunta criterios\n- **CAMBIA A:** Interactuando cuando bot presenta opciones\n\n### **90801080 - Interactuando**\n- Bot YA presentó propiedad(es)\n- Cliente hace preguntas\n- **CAMBIA A:** \n  - Interesado si quiere visitar\n  - **CASO ESPECIAL si bot no tiene info**\n\n### **90801084 - Caso Especial 🚨**\n- **ACTIVACIÓN INMEDIATA si:**\n  - Bot: \"no tengo ese dato\"\n  - Bot: \"dame un momento que lo averiguo\"\n  - Bot: \"necesito verificar\"\n  - Cliente: \"quiero hablar con alguien\"\n\n### **90801092 - Interesado**\n- Cliente confirma querer visitar\n- **CAMBIA A:** Horario Indicado con 2 fechas\n\n### **90801096 - Horario Indicado**\n- **SOLO** con fecha1 Y fecha2 completas\n\n---\n\n## 📝 **ESTRUCTURA JSON OBLIGATORIA**\n\n```json\n{\n  \"nombre\": \"[Extraído o vacío]\",\n  \"telefono\": \"[+51XXXXXXXXX o vacío]\",\n  \"correo\": \"[email o vacío]\",\n  \"propiedadInteres\": \"[Propiedad presentada/consultada]\",\n  \"fecha1\": \"[DD/MM/YYYY HH:mm o vacío]\",\n  \"fecha2\": \"[DD/MM/YYYY HH:mm o vacío]\",\n  \"solicitud\": \"[Resumen completo con URLs]\",\n  \"animo\": \"[caliente/tibio/frio]\",\n  \"estatusEmbudo\": \"[Nombre de etapa ACTUAL correcta]\",\n  \"statusId\": \"[Código numérico correcto]\",\n  \"seg1\": \"[Mensaje creativo o vacío si Horario Indicado]\",\n  \"seg2\": \"[Mensaje urgente o vacío si Horario Indicado]\",\n  \"seg3\": \"[Último intento o vacío si Horario Indicado]\"\n}\n```\n\n---\n\n## 🎯 **EJEMPLOS DE CAMBIOS CORRECTOS**\n\n### **Ejemplo 1: Bot sin información → CASO ESPECIAL**\n```\nCliente: \"¿Tiene vista al mar?\"\nBot: \"Ese detalle no lo tengo disponible, dame un momento que lo averiguo\"\n\n✅ ESTADO CORRECTO: CASO ESPECIAL (90801084)\n❌ INCORRECTO: Mantenerlo en Interactuando\n```\n\n### **Ejemplo 2: Bot presenta → INTERACTUANDO**\n```\nBot: \"Tengo una opción en MODO, 1 dormitorio...\"\nCliente: [cualquier respuesta]\n\n✅ ESTADO CORRECTO: INTERACTUANDO (90801080)\n❌ INCORRECTO: Dejarlo en Definiendo\n```\n\n### **Ejemplo 3: Progresión con caso especial**\n```\n1. Bot presenta propiedad → INTERACTUANDO\n2. Cliente: \"¿Tiene balcón?\"\n3. Bot: \"No tengo esa información\" → CASO ESPECIAL\n4. Asesor resuelve → INTERACTUANDO\n5. Cliente: \"Quiero visitarlo\" → INTERESADO\n```\n\n---\n\n## ⚠️ **VERIFICACIÓN OBLIGATORIA PRE-RESPUESTA**\n\n### **CHECKLIST DE DOBLE VERIFICACIÓN:**\n\n```\n□ ¿Leí TODA la conversación?\n□ ¿El bot dijo no tener información? → SI = CASO ESPECIAL\n□ ¿El bot presentó propiedades? → SI = Mínimo INTERACTUANDO\n□ ¿Cliente quiere visitar? → SI = INTERESADO\n□ ¿Cliente dio 2 horarios? → SI = HORARIO INDICADO\n□ ¿La etapa refleja el estado MÁS AVANZADO?\n□ ¿Verifiqué 2 veces el cambio de etapa?\n```\n\n### **AUTOVALIDACIÓN FINAL:**\n```\nPREGÚNTATE:\n1. ¿Qué etapa asigné?\n2. ¿Es coherente con lo que pasó en la conversación?\n3. ¿Hay alguna frase del bot sobre no tener info?\n4. ¿Cambié la etapa cuando debía?\n5. ¿Puedo justificar esta etapa?\n```\n\n---\n\n## ⚡ **USO OBLIGATORIO DATE&TIME**\n- **SIEMPRE** para convertir fechas/horas\n- Formato: DD/MM/YYYY HH:mm\n- NO inventar horarios\n\n---\n\n## 💬 **MENSAJES DE SEGUIMIENTO CONTEXTUALES**\n\n### **Por etapa:**\n\n**Caso Especial (90801084):**\n- \"Un especialista está revisando tu consulta sobre [tema]\"\n- \"Nuestro asesor te ayudará con [situación específica]\"\n- \"Es importante resolver [consulta]. Te contactaremos pronto\"\n\n**Interactuando (90801080):**\n- Referir la propiedad específica\n- Resolver dudas pendientes\n- Crear urgencia de disponibilidad\n\n**Interesado (90801092):**\n- Si dio 1 horario: pedir el segundo\n- Si no dio: solicitar ambos\n- Enfatizar necesidad de 2 opciones\n\n**Horario Indicado (90801096):**\n- seg1: \"\" / seg2: \"\" / seg3: \"\"\n\n---\n\n## 🔴 **RECORDATORIO CRÍTICO FINAL**\n\n```\nANTES DE RESPONDER, VERIFICAR:\n\n1. ¿El bot dijo \"no tengo ese dato\" o similar?\n   → DEBE SER CASO ESPECIAL\n\n2. ¿El bot ya presentó propiedades?\n   → NO PUEDE SER DEFINIENDO\n\n3. ¿La etapa cambió correctamente?\n   → REVISAR UNA VEZ MÁS\n\n4. ¿Mi JSON tiene todos los campos?\n   → COMPLETAR TODO\n\nRESPONDER SOLO CON JSON VERIFICADO\n```"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -2038,7 +2054,7 @@
             {
               "id": "={{ $('new message').item.json.body['message[add][0][entity_id]'] }}",
               "pipeline_id": 11240224,
-              "status_id": 0,
+              "status_id": "={{ Number($('Information Extractor').item.json.output.statusId) }}",
               "custom_fields_values": {
                 "custom_field": [
                   {
@@ -2048,10 +2064,6 @@
                   {
                     "data": "{\"id\":797871,\"type\":\"text\"}",
                     "value": "={{ $('Information Extractor').item.json.output.propiedadInteres }}"
-                  },
-                  {
-                    "data": "{\"id\":797873,\"type\":\"textarea\"}",
-                    "value": "={{ $('Information Extractor').item.json.output.fechaSolicitada }}"
                   },
                   {
                     "data": "{\"id\":797875,\"type\":\"text\"}",
@@ -2064,6 +2076,26 @@
                   {
                     "data": "{\"id\":797879,\"type\":\"text\"}",
                     "value": "={{ $('Information Extractor').item.json.output.animo }}"
+                  },
+                  {
+                    "data": "{\"id\":797917,\"type\":\"textarea\"}",
+                    "value": "={{ $('Information Extractor').item.json.output.seg1 }}"
+                  },
+                  {
+                    "data": "{\"id\":797919,\"type\":\"textarea\"}",
+                    "value": "={{ $('Information Extractor').item.json.output.seg2 }}"
+                  },
+                  {
+                    "data": "{\"id\":797921,\"type\":\"textarea\"}",
+                    "value": "={{ $('Information Extractor').item.json.output.seg3 }}"
+                  },
+                  {
+                    "data": "{\"id\":798001,\"type\":\"text\"}",
+                    "value": "={{ $('Information Extractor').item.json.output.fecha1 }}"
+                  },
+                  {
+                    "data": "{\"id\":798003,\"type\":\"text\"}",
+                    "value": "={{ $('Information Extractor').item.json.output.fecha2 }}"
                   }
                 ]
               }
@@ -2074,8 +2106,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2948,
-        350
+        2940,
+        360
       ],
       "id": "982f6c94-e31b-44d7-a10b-e9415ac86cdd",
       "name": "Update leads",
@@ -2285,8 +2317,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        980,
-        580
+        900,
+        800
       ],
       "id": "0fb0770c-b507-47da-a6e3-c5c48cdf21a2",
       "name": "Simple Memory"
@@ -2304,6 +2336,71 @@
       ],
       "id": "1b124501-af48-41e1-8d6a-06b05076360b",
       "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1000,
+        660
+      ],
+      "id": "449c80cb-916d-47d7-9b1d-b6d6f0bcb463",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        800,
+        20
+      ],
+      "id": "05a9f8ba-da2a-49e8-a79b-922720ec97c5",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "crm",
+          "mode": "list",
+          "cachedResultName": "crm"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_histories",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_histories"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1020,
+        20
+      ],
+      "id": "cd970be2-afff-4131-a55b-d57fdc520870",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
     }
   ],
   "pinData": {
@@ -2316,14 +2413,14 @@
             "content-length": "937",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "252478dc-18ef-4b2c-b442-6bcab513db01",
+            "x-amocrm-requestid": "31b156b3-8e08-4431-a433-0b627bae6304",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "5aWPX210RhKk56FwozsQ6Q",
+            "x-railway-request-id": "JazGCJtRQyeMsE6DezItjw",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1754924053671"
+            "x-request-start": "1755611028356"
           },
           "params": {},
           "query": {},
@@ -2331,20 +2428,20 @@
             "account[subdomain]": "propertamibotcom",
             "account[id]": "30050693",
             "account[_links][self]": "https://propertamibotcom.amocrm.com",
-            "message[add][0][id]": "47ca5880-93d4-4df6-84fa-be92acff0254",
-            "message[add][0][chat_id]": "6a9e5903-4ef2-474a-bed6-3ff315a613bc",
-            "message[add][0][talk_id]": "189001",
-            "message[add][0][contact_id]": "23668637",
-            "message[add][0][text]": "hola",
-            "message[add][0][created_at]": "1754924052",
+            "message[add][0][id]": "94ca11d0-e1bc-40db-80bb-5349ca37424c",
+            "message[add][0][chat_id]": "533ca6e4-f98b-4db6-ace7-d4f6d0c82f89",
+            "message[add][0][talk_id]": "189625",
+            "message[add][0][contact_id]": "23843397",
+            "message[add][0][text]": "Sí",
+            "message[add][0][created_at]": "1755611026",
             "message[add][0][element_type]": "2",
             "message[add][0][entity_type]": "lead",
-            "message[add][0][element_id]": "21651331",
-            "message[add][0][entity_id]": "21651331",
+            "message[add][0][element_id]": "21669517",
+            "message[add][0][entity_id]": "21669517",
             "message[add][0][type]": "incoming",
-            "message[add][0][author][id]": "f92fe9a6-bfe9-4f1c-b754-bf61e32d10d4",
+            "message[add][0][author][id]": "109bde71-f77d-4015-918c-0a1cbe6d017f",
             "message[add][0][author][type]": "external",
-            "message[add][0][author][name]": "Martin Velasco Ormeno",
+            "message[add][0][author][name]": "Valeria Vega Hoyos",
             "message[add][0][origin]": "waba"
           },
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/rentas",
@@ -2368,6 +2465,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-19T00:59:10.821Z",
-  "versionId": "1316642c-f1e0-43ae-9388-e89477eb29f8"
+  "updatedAt": "2025-08-19T17:55:58.941Z",
+  "versionId": "1db665dd-c2c1-4a15-8724-62e8ca93a683"
 }
