@@ -1,0 +1,227 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Kommo API Node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kommo API Node": {
+      "main": [
+        [
+          {
+            "node": "Kommo API Node1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kommo API Node1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-20T13:24:52.577Z",
+  "id": "Mr7NjqCl2qtQqMLy",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Actualizacion Horario",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "rentas-registro-horario",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "67c128eb-f32d-4469-9f27-165cc963c9b5",
+      "name": "Webhook",
+      "webhookId": "76ef197b-58cb-47ef-95b6-75724e34d176"
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "leads",
+        "filter": {
+          "id": "={{ $json.query.id }}"
+        },
+        "options": {
+          "with": [
+            "contacts"
+          ]
+        },
+        "limit": 1
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "cf7c6b70-d033-4819-aa4e-bcacf4d08a56",
+      "name": "Kommo API Node",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "21f0faaf-ceb5-4138-91cd-6c288f47ab96",
+              "name": "telefono",
+              "value": "={{$json._embedded.contacts[0].custom_fields_values\n  .find(f => f.field_code === \"PHONE\").values[0].value}}",
+              "type": "string"
+            },
+            {
+              "id": "1552d482-8a09-4b3d-a951-228e45f81903",
+              "name": "horario1",
+              "value": "={{ $node[\"Kommo API Node\"].json.custom_fields_values.find(f => f.field_name === \"n8n - fecha1\").values[0].value }}",
+              "type": "string"
+            },
+            {
+              "id": "c5934f19-e3c5-4af7-8e92-5ae02ba80d20",
+              "name": "horario2",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        660,
+        0
+      ],
+      "id": "a6360aa9-7d1f-4a58-b6c9-91da54fb702e",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "contacts",
+        "filter": {
+          "id": "={{ $json._embedded.leads[0]._embedded.contacts[0].id }}"
+        },
+        "options": {},
+        "limit": 1
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ],
+      "id": "39027daf-fd18-4ceb-8987-d1882482c47b",
+      "name": "Kommo API Node1",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bf2c1lell1.execute-api.us-east-2.amazonaws.com/production/disponibilidad/registrar-disponibilidad/",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n\"telefono\":\"998037772\",\n\"horarios\":[\"2025-08-19 09:00\",\"2025-08-19 10:00\"],\n\"utm_source\":\"BOT IA\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        0
+      ],
+      "id": "19effe34-86aa-455f-9ead-3356df0136a1",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "primary-production-0299.up.railway.app",
+            "user-agent": "PostmanRuntime/7.45.0",
+            "content-length": "0",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br",
+            "cache-control": "no-cache",
+            "postman-token": "81516eaf-bf7b-4a64-902d-6930f5394657",
+            "x-forwarded-for": "132.191.2.125",
+            "x-forwarded-host": "primary-production-0299.up.railway.app",
+            "x-forwarded-proto": "https",
+            "x-railway-edge": "railway/us-east4-eqdc4a",
+            "x-railway-request-id": "JJGZnza5QeSNmRUoBT7zVQ",
+            "x-real-ip": "132.191.2.125",
+            "x-request-start": "1755696525686"
+          },
+          "params": {},
+          "query": {
+            "id": "21651331"
+          },
+          "body": {},
+          "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/rentas-registro-horario",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-08-01T18:41:06.465Z",
+      "updatedAt": "2025-08-01T18:41:06.465Z",
+      "id": "94z6tcDoVU8DriEW",
+      "name": "IA"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-08-20T17:33:06.286Z",
+  "versionId": "56e60ade-3e74-4298-8103-aef8dcad5d5b"
+}
