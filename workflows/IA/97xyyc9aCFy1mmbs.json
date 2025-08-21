@@ -581,22 +581,6 @@
         ]
       ]
     },
-    "Simple Memory": {
-      "ai_memory": [
-        []
-      ]
-    },
-    "Simple Memory1": {
-      "ai_memory": [
-        [
-          {
-            "node": "Campos",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Postgres Chat Memory": {
       "ai_memory": [
         [
@@ -608,7 +592,18 @@
         ]
       ]
     },
-    "When clicking ‘Execute workflow’": {
+    "Postgres Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Campos",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Memory Manager1": {
       "main": [
         [
           {
@@ -789,8 +784,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        1540,
-        320
+        1536,
+        325
       ],
       "id": "2a6e3e65-5548-4e7d-989a-b45e5fc702b7",
       "name": "Campos",
@@ -1216,7 +1211,7 @@
                   {
                     "id": "74e8af3c-1784-4894-a07e-778136e794c0",
                     "leftValue": "={{ JSON.parse($json.message.last()).timestamp }}",
-                    "rightValue": "={{ $now.minus(5, \"seconds\") }}",
+                    "rightValue": "={{ $now.minus(10, \"seconds\") }}",
                     "operator": {
                       "type": "dateTime",
                       "operation": "before"
@@ -1534,7 +1529,9 @@
       "name": "No Operation, do nothing"
     },
     {
-      "parameters": {},
+      "parameters": {
+        "amount": 10
+      },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
@@ -2070,10 +2067,6 @@
                     "value": "={{ $('Information Extractor').item.json.output.estatusEmbudo }}"
                   },
                   {
-                    "data": "{\"id\":797877,\"type\":\"text\"}",
-                    "value": "={{ $('Information Extractor').item.json.output.solicitud }}"
-                  },
-                  {
                     "data": "{\"id\":797879,\"type\":\"text\"}",
                     "value": "={{ $('Information Extractor').item.json.output.animo }}"
                   },
@@ -2106,8 +2099,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2940,
-        360
+        2948,
+        350
       ],
       "id": "982f6c94-e31b-44d7-a10b-e9415ac86cdd",
       "name": "Update leads",
@@ -2145,8 +2138,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        940,
-        300
+        1008,
+        325
       ],
       "id": "9e2466a1-6a29-4303-8cd4-68385cba7849",
       "name": "Respuesta",
@@ -2202,8 +2195,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1220,
-        660
+        1216,
+        545
       ],
       "id": "933c94c0-f172-475b-9475-da92a0f234c6",
       "name": "BUSQUEDA LINK URBANIA"
@@ -2250,8 +2243,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1360,
-        620
+        1336,
+        545
       ],
       "id": "200bf275-c257-410d-b125-0c305b2487e1",
       "name": "PROPERTIES - SQL"
@@ -2312,42 +2305,14 @@
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}"
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "typeVersion": 1.3,
-      "position": [
-        900,
-        800
-      ],
-      "id": "0fb0770c-b507-47da-a6e3-c5c48cdf21a2",
-      "name": "Simple Memory"
-    },
-    {
-      "parameters": {
-        "sessionIdType": "customKey",
-        "sessionKey": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}"
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "typeVersion": 1.3,
-      "position": [
-        1680,
-        720
-      ],
-      "id": "1b124501-af48-41e1-8d6a-06b05076360b",
-      "name": "Simple Memory1"
-    },
-    {
-      "parameters": {
-        "sessionIdType": "customKey",
         "sessionKey": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}",
         "contextWindowLength": 20
       },
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        1000,
-        660
+        980,
+        540
       ],
       "id": "449c80cb-916d-47d7-9b1d-b6d6f0bcb463",
       "name": "Postgres Chat Memory",
@@ -2359,19 +2324,29 @@
       }
     },
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
       "position": [
-        800,
-        20
+        1684,
+        545
       ],
-      "id": "05a9f8ba-da2a-49e8-a79b-922720ec97c5",
-      "name": "When clicking ‘Execute workflow’"
+      "id": "e3637405-e799-4c31-8b79-c55e5736713b",
+      "name": "Postgres Chat Memory1",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
     },
     {
       "parameters": {
-        "operation": "select",
+        "operation": "deleteTable",
         "schema": {
           "__rl": true,
           "value": "crm",
@@ -2384,16 +2359,24 @@
           "mode": "list",
           "cachedResultName": "n8n_chat_histories"
         },
-        "returnAll": true,
+        "deleteCommand": "delete",
+        "where": {
+          "values": [
+            {
+              "column": "session_id",
+              "value": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}"
+            }
+          ]
+        },
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1020,
-        20
+        -3000,
+        800
       ],
-      "id": "cd970be2-afff-4131-a55b-d57fdc520870",
+      "id": "a6f2f3a4-d8d5-49a4-8c2b-4b5a05a71076",
       "name": "Postgres",
       "credentials": {
         "postgres": {
@@ -2410,17 +2393,17 @@
           "headers": {
             "host": "primary-production-0299.up.railway.app",
             "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "937",
+            "content-length": "952",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "31b156b3-8e08-4431-a433-0b627bae6304",
+            "x-amocrm-requestid": "06eb7663-a329-4028-8453-2f63acdb0db3",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "JazGCJtRQyeMsE6DezItjw",
+            "x-railway-request-id": "xjRQkl4oQSux4J5Og4a9AQ",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1755611028356"
+            "x-request-start": "1755696576100"
           },
           "params": {},
           "query": {},
@@ -2428,12 +2411,12 @@
             "account[subdomain]": "propertamibotcom",
             "account[id]": "30050693",
             "account[_links][self]": "https://propertamibotcom.amocrm.com",
-            "message[add][0][id]": "94ca11d0-e1bc-40db-80bb-5349ca37424c",
+            "message[add][0][id]": "3ce045b7-465a-4e82-9c12-f5dc1ac72c64",
             "message[add][0][chat_id]": "533ca6e4-f98b-4db6-ace7-d4f6d0c82f89",
             "message[add][0][talk_id]": "189625",
             "message[add][0][contact_id]": "23843397",
-            "message[add][0][text]": "Sí",
-            "message[add][0][created_at]": "1755611026",
+            "message[add][0][text]": "Sí quiero visitar",
+            "message[add][0][created_at]": "1755696574",
             "message[add][0][element_type]": "2",
             "message[add][0][entity_type]": "lead",
             "message[add][0][element_id]": "21669517",
@@ -2465,6 +2448,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-19T17:55:58.941Z",
-  "versionId": "1db665dd-c2c1-4a15-8724-62e8ca93a683"
+  "updatedAt": "2025-08-20T18:26:20.370Z",
+  "versionId": "bd08b14a-6f07-4813-8c73-ed8939bd1a0b"
 }
