@@ -392,7 +392,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://18.222.192.40:3000/scrape",
+        "url": "http://3.138.116.123:3000/scrape",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={\n\"url\":\"{{ $json.headers.location }}\"\n}",
@@ -454,6 +454,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-07-31T17:34:13.027Z",
-  "versionId": "f0520724-3e9b-486f-b3e3-af4cb7d4cfc6"
+  "updatedAt": "2025-08-20T15:16:03.564Z",
+  "versionId": "e68cdab5-0a85-42ae-94f4-587ddfeb709f"
 }
