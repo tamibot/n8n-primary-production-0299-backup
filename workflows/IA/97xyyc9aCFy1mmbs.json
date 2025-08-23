@@ -508,7 +508,7 @@
       "main": [
         [
           {
-            "node": "Switch",
+            "node": "Wait3",
             "type": "main",
             "index": 0
           }
@@ -613,6 +613,17 @@
           }
         ]
       ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-08-01T18:40:51.374Z",
@@ -670,7 +681,7 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        -3104,
+        -2884,
         500
       ],
       "id": "316666bc-2247-43ca-866b-f6080cf5d975",
@@ -769,7 +780,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2728,
+        2948,
         350
       ]
     },
@@ -784,7 +795,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        1536,
+        1756,
         325
       ],
       "id": "2a6e3e65-5548-4e7d-989a-b45e5fc702b7",
@@ -853,7 +864,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        2288,
+        2508,
         350
       ],
       "id": "53c6beb6-7d84-4901-a595-dc61fb6bcd48",
@@ -926,7 +937,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2884,
+        -2664,
         500
       ],
       "id": "93971de1-1355-4181-89b2-3fbb7e83e06e",
@@ -1011,7 +1022,7 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        1912,
+        2132,
         325
       ],
       "id": "d5aff622-8e8e-4baa-a01e-5c6156837be6",
@@ -1053,7 +1064,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2508,
+        2728,
         350
       ],
       "id": "92a9f874-fd66-4acb-bf1b-6a6c3921ed41",
@@ -1074,7 +1085,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -3392,
+        -3172,
         1020
       ],
       "id": "d8f4b9f3-15b9-404d-9baa-b3f21a15a1f9",
@@ -1136,7 +1147,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -3700,
+        -3480,
         650
       ],
       "id": "0406e78a-3876-46c2-bf6c-bbb0c9acb3c1",
@@ -1150,7 +1161,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryManager",
       "typeVersion": 1.1,
       "position": [
-        -3480,
+        -3260,
         800
       ],
       "id": "bc5a0bc8-edef-4244-8430-792343cec249",
@@ -1233,7 +1244,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -2224,
+        -2004,
         375
       ],
       "id": "1fcc15f7-9d7c-4110-bb57-d0b308bc8d4e",
@@ -1264,7 +1275,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -244,
+        -24,
         850
       ]
     },
@@ -1293,7 +1304,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -244,
+        -24,
         600
       ]
     },
@@ -1322,7 +1333,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -244,
+        -24,
         400
       ]
     },
@@ -1351,7 +1362,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -244,
+        -24,
         200
       ]
     },
@@ -1371,7 +1382,7 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        416,
+        636,
         350
       ],
       "id": "44febada-8fe6-499e-9eac-0f7a57718a49",
@@ -1391,7 +1402,7 @@
       "type": "n8n-nodes-base.sort",
       "typeVersion": 1,
       "position": [
-        196,
+        416,
         350
       ],
       "id": "31c1f935-7028-43b1-92d7-bed8813ae169",
@@ -1404,7 +1415,7 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.1,
       "position": [
-        -24,
+        196,
         308
       ],
       "id": "20384c1a-7f9b-46b5-a909-a2d0a156136a",
@@ -1435,7 +1446,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        636,
+        856,
         350
       ]
     },
@@ -1464,7 +1475,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -244,
+        -24,
         0
       ]
     },
@@ -1477,7 +1488,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1564,
+        -1344,
         325
       ],
       "id": "d33e86c3-93c7-45b6-b244-8a0574812853",
@@ -1491,7 +1502,7 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        -1784,
+        -1564,
         325
       ],
       "id": "4f54baf2-e4a4-4d25-a3fb-fdb1bd9bfc86",
@@ -1505,7 +1516,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -2004,
+        -1784,
         325
       ],
       "id": "840a696c-69d0-454b-ae7d-2dd5acbc4162",
@@ -1522,7 +1533,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -2004,
+        -1784,
         125
       ],
       "id": "3c22ddd7-b7ee-47e9-b644-493a9f8c76d8",
@@ -1535,7 +1546,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -2004,
+        -1784,
         550
       ],
       "id": "0eb230b4-0110-4a11-9a75-22afd04aeaa0",
@@ -1552,7 +1563,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -2444,
+        -2224,
         500
       ],
       "id": "2d04d9d4-19a3-42c3-9a17-238cf1726a45",
@@ -1574,7 +1585,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -2664,
+        -2444,
         500
       ],
       "id": "936d4611-eabf-4777-abc4-48e30c55b6db",
@@ -1594,7 +1605,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -1124,
+        -904,
         850
       ],
       "id": "62c24a61-9ab5-4c19-a74e-105a7da8d840",
@@ -1621,7 +1632,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -464,
+        -244,
         600
       ],
       "id": "8339dcc1-b9cb-4d0b-9ca3-28948cf87f2e",
@@ -1660,7 +1671,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -904,
+        -684,
         600
       ],
       "id": "9a1cd6b0-b3b6-4113-869a-4f9b4292a6c9",
@@ -1703,7 +1714,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -904,
+        -684,
         850
       ],
       "id": "cbe979a4-a365-4716-b85d-cd4603f50b0e",
@@ -1730,7 +1741,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -464,
+        -244,
         850
       ],
       "id": "6e3d1112-a538-4397-a047-f4b6d29c12c6",
@@ -1743,7 +1754,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -684,
+        -464,
         850
       ],
       "id": "3e61e416-bda4-4f6f-ba6a-5f0710205ec9",
@@ -1758,7 +1769,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -1124,
+        -904,
         600
       ],
       "id": "94429558-1aba-4a37-aec0-2483cf045b18",
@@ -1771,7 +1782,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -684,
+        -464,
         600
       ],
       "id": "6a6b77bf-382f-4bde-b257-36ec4a4e1186",
@@ -1786,7 +1797,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -684,
+        -464,
         400
       ],
       "id": "d8dd626d-ffdb-4d92-8318-463e0e41348e",
@@ -1809,7 +1820,7 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -464,
+        -244,
         400
       ],
       "id": "16f7e2af-5e2d-49bd-a800-3308c8a8a85a",
@@ -1952,7 +1963,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -1344,
+        -1124,
         283
       ],
       "id": "4003969f-6b19-4d22-8953-42a563090cfd",
@@ -1969,7 +1980,7 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -464,
+        -244,
         200
       ],
       "credentials": {
@@ -1989,7 +2000,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -684,
+        -464,
         200
       ]
     },
@@ -2005,7 +2016,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        1564,
+        1784,
         545
       ],
       "id": "5bf87c99-2cd5-4be6-bb4c-c7418f578e2c",
@@ -2029,7 +2040,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        2000,
+        2220,
         545
       ],
       "id": "ff62467a-3c67-4ac3-a62b-bcbeef7b1f68",
@@ -2099,7 +2110,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2948,
+        3168,
         350
       ],
       "id": "982f6c94-e31b-44d7-a10b-e9415ac86cdd",
@@ -2138,7 +2149,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        1008,
+        1228,
         325
       ],
       "id": "9e2466a1-6a29-4303-8cd4-68385cba7849",
@@ -2153,7 +2164,7 @@
       "type": "n8n-nodes-base.dateTimeTool",
       "typeVersion": 2,
       "position": [
-        1096,
+        1316,
         545
       ],
       "id": "5b5f484a-ccb1-43ce-ab61-256c0af134d7",
@@ -2195,7 +2206,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1216,
+        1436,
         545
       ],
       "id": "933c94c0-f172-475b-9475-da92a0f234c6",
@@ -2243,7 +2254,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1336,
+        1556,
         545
       ],
       "id": "200bf275-c257-410d-b125-0c305b2487e1",
@@ -2265,7 +2276,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -3402,
+        -3182,
         500
       ],
       "id": "d5793e5e-7a56-4830-913e-f258f79ba03c",
@@ -2290,7 +2301,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        856,
+        1076,
         545
       ],
       "id": "a5f89af4-aac6-4573-b240-13abe9677c86",
@@ -2311,7 +2322,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        980,
+        1200,
         540
       ],
       "id": "449c80cb-916d-47d7-9b1d-b6d6f0bcb463",
@@ -2332,7 +2343,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        1684,
+        1904,
         545
       ],
       "id": "e3637405-e799-4c31-8b79-c55e5736713b",
@@ -2373,7 +2384,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -3000,
+        -2780,
         800
       ],
       "id": "a6f2f3a4-d8d5-49a4-8c2b-4b5a05a71076",
@@ -2384,6 +2395,20 @@
           "name": "Postgres account"
         }
       }
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -3700,
+        660
+      ],
+      "id": "6c34ba59-0fc9-468d-bda3-83789d44ce16",
+      "name": "Wait3",
+      "webhookId": "9876edcd-221f-4bac-a091-b377eb9f0447"
     }
   ],
   "pinData": {
@@ -2393,17 +2418,17 @@
           "headers": {
             "host": "primary-production-0299.up.railway.app",
             "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "952",
+            "content-length": "1122",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "06eb7663-a329-4028-8453-2f63acdb0db3",
+            "x-amocrm-requestid": "3fbc0ab5-4494-45ee-9166-725d0a8b31fa",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "xjRQkl4oQSux4J5Og4a9AQ",
+            "x-railway-request-id": "Eqt3M2UVRqaKKW48Cx5-qw",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1755696576100"
+            "x-request-start": "1755889184920"
           },
           "params": {},
           "query": {},
@@ -2411,20 +2436,20 @@
             "account[subdomain]": "propertamibotcom",
             "account[id]": "30050693",
             "account[_links][self]": "https://propertamibotcom.amocrm.com",
-            "message[add][0][id]": "3ce045b7-465a-4e82-9c12-f5dc1ac72c64",
-            "message[add][0][chat_id]": "533ca6e4-f98b-4db6-ace7-d4f6d0c82f89",
-            "message[add][0][talk_id]": "189625",
-            "message[add][0][contact_id]": "23843397",
-            "message[add][0][text]": "Sí quiero visitar",
-            "message[add][0][created_at]": "1755696574",
+            "message[add][0][id]": "0d3f8cbf-9c8f-4b79-bc7c-2c5179e955b3",
+            "message[add][0][chat_id]": "a11eb9f0-d6e5-4dc5-a4f5-b6f35c0ee94e",
+            "message[add][0][talk_id]": "196217",
+            "message[add][0][contact_id]": "24157797",
+            "message[add][0][text]": "Hola, me interesa este inmueble que vi en Adondevivir.\nhttps://www.adondevivir.com/propiedades/clasificado/alclapin-moderno-y-luminoso-departamento-en-alquiler-barranco-147185328.html",
+            "message[add][0][created_at]": "1755889183",
             "message[add][0][element_type]": "2",
             "message[add][0][entity_type]": "lead",
-            "message[add][0][element_id]": "21669517",
-            "message[add][0][entity_id]": "21669517",
+            "message[add][0][element_id]": "21746949",
+            "message[add][0][entity_id]": "21746949",
             "message[add][0][type]": "incoming",
-            "message[add][0][author][id]": "109bde71-f77d-4015-918c-0a1cbe6d017f",
+            "message[add][0][author][id]": "cd83ef10-6b00-4ad8-a433-9ceee38b8d61",
             "message[add][0][author][type]": "external",
-            "message[add][0][author][name]": "Valeria Vega Hoyos",
+            "message[add][0][author][name]": "Marina Brum",
             "message[add][0][origin]": "waba"
           },
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/rentas",
@@ -2448,6 +2473,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-20T18:26:20.370Z",
-  "versionId": "bd08b14a-6f07-4813-8c73-ed8939bd1a0b"
+  "updatedAt": "2025-08-22T23:29:53.655Z",
+  "versionId": "d2a29fb2-a8e5-4c20-85f0-9dbd0fd3b685"
 }
