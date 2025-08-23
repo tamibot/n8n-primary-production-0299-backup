@@ -38,6 +38,17 @@
       "main": [
         [
           {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
             "node": "HTTP Request",
             "type": "main",
             "index": 0
@@ -111,14 +122,20 @@
             },
             {
               "id": "1552d482-8a09-4b3d-a951-228e45f81903",
-              "name": "horario1",
-              "value": "={{ $node[\"Kommo API Node\"].json.custom_fields_values.find(f => f.field_name === \"n8n - fecha1\").values[0].value }}",
+              "name": "fecha1",
+              "value": "={{ \n  ($('Kommo API Node').item.json._embedded.leads[0].custom_fields_values || [])\n    .find(f => (f.field_name || '').trim() === 'n8n - fecha1')\n    ?.values?.[0]?.value || '' \n}}",
               "type": "string"
             },
             {
               "id": "c5934f19-e3c5-4af7-8e92-5ae02ba80d20",
-              "name": "horario2",
-              "value": "",
+              "name": "fecha2",
+              "value": "={{    ($('Kommo API Node').item.json._embedded.leads[0].custom_fields_values || [])     .find(f => (f.field_name || '').trim() === 'n8n - fecha2')     ?.values?.[0]?.value || ''  }}",
+              "type": "string"
+            },
+            {
+              "id": "d74b2a87-23f5-4801-a3c9-425412a71f6a",
+              "name": "utm_source",
+              "value": "BOT IA",
               "type": "string"
             }
           ]
@@ -165,17 +182,52 @@
         "url": "https://bf2c1lell1.execute-api.us-east-2.amazonaws.com/production/disponibilidad/registrar-disponibilidad/",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "{\n\"telefono\":\"998037772\",\n\"horarios\":[\"2025-08-19 09:00\",\"2025-08-19 10:00\"],\n\"utm_source\":\"BOT IA\"\n}",
+        "jsonBody": "={\n\"telefono\":\"{{ $json.telefono_formateado }}\",\n\"horarios\":[\"{{ $json.fecha1_formateada }}\",\"{{ $json.fecha2_formateada }}\"],\n\"utm_source\":\"BOT IA\"\n} ",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        880,
+        1100,
         0
       ],
       "id": "19effe34-86aa-455f-9ead-3356df0136a1",
       "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8645f397-dcc0-42c2-a93e-39ce5084ea6a",
+              "name": "fecha1_formateada",
+              "value": "={{ DateTime\n    .fromFormat($json.fecha1, 'dd/LL/yyyy HH:mm', { zone: 'America/Lima' })\n    .toFormat('yyyy-LL-dd HH:mm') }}",
+              "type": "string"
+            },
+            {
+              "id": "59748b5f-5848-4a10-a1a6-9ce892ff222f",
+              "name": "fecha2_formateada",
+              "value": "={{ DateTime\n    .fromFormat($json.fecha2, 'dd/LL/yyyy HH:mm', { zone: 'America/Lima' })\n    .toFormat('yyyy-LL-dd HH:mm') }}",
+              "type": "string"
+            },
+            {
+              "id": "dcbfb20d-6144-43fd-ba15-b3ae6d3a51c7",
+              "name": "telefono_formateado",
+              "value": "={{ String($json.telefono).replace(/^\\+?51/, '') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        880,
+        0
+      ],
+      "id": "db5a60dc-0aff-496b-99a5-ef86ef40e39d",
+      "name": "Edit Fields1"
     }
   ],
   "pinData": {
@@ -222,6 +274,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-20T17:33:06.286Z",
-  "versionId": "56e60ade-3e74-4298-8103-aef8dcad5d5b"
+  "updatedAt": "2025-08-22T13:37:34.003Z",
+  "versionId": "dba81bf6-515a-4082-96a7-1f71bd6f846c"
 }
