@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "Kommo API Node",
+            "node": "Wait",
             "type": "main",
             "index": 0
           }
@@ -55,6 +55,17 @@
           }
         ]
       ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Kommo API Node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-08-20T13:24:52.577Z",
@@ -86,7 +97,7 @@
         "authentication": "longLivedToken",
         "resource": "leads",
         "filter": {
-          "id": "={{ $json.query.id }}"
+          "id": "={{ $json.body[\"leads[add][0][id]\"] }}"
         },
         "options": {
           "with": [
@@ -98,7 +109,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        220,
+        440,
         0
       ],
       "id": "cf7c6b70-d033-4819-aa4e-bcacf4d08a56",
@@ -145,7 +156,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        660,
+        880,
         0
       ],
       "id": "a6360aa9-7d1f-4a58-b6c9-91da54fb702e",
@@ -164,7 +175,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        440,
+        660,
         0
       ],
       "id": "39027daf-fd18-4ceb-8987-d1882482c47b",
@@ -188,7 +199,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1100,
+        1320,
         0
       ],
       "id": "19effe34-86aa-455f-9ead-3356df0136a1",
@@ -223,11 +234,25 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        880,
+        1100,
         0
       ],
       "id": "db5a60dc-0aff-496b-99a5-ef86ef40e39d",
       "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "a173abd8-826e-44ff-b37f-2dc69839f826",
+      "name": "Wait",
+      "webhookId": "01da71ca-c05f-4545-9faf-b00dd37f8bcb"
     }
   ],
   "pinData": {
@@ -236,25 +261,26 @@
         "json": {
           "headers": {
             "host": "primary-production-0299.up.railway.app",
-            "user-agent": "PostmanRuntime/7.45.0",
-            "content-length": "0",
-            "accept": "*/*",
-            "accept-encoding": "gzip, deflate, br",
-            "cache-control": "no-cache",
-            "postman-token": "81516eaf-bf7b-4a64-902d-6930f5394657",
-            "x-forwarded-for": "132.191.2.125",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "103",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "947f3e53-9fc7-4180-ab0f-7dd1360ebc48",
+            "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "JJGZnza5QeSNmRUoBT7zVQ",
-            "x-real-ip": "132.191.2.125",
-            "x-request-start": "1755696525686"
+            "x-railway-request-id": "6nYg8VgrQ8WBEza6woOzXw",
+            "x-real-ip": "169.150.216.79",
+            "x-request-start": "1755964743782"
           },
           "params": {},
-          "query": {
-            "id": "21651331"
+          "query": {},
+          "body": {
+            "leads[add][0][id]": "21750991",
+            "account[id]": "30050693",
+            "account[subdomain]": "propertamibotcom"
           },
-          "body": {},
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/rentas-registro-horario",
           "executionMode": "production"
         }
@@ -274,6 +300,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-22T13:37:34.003Z",
-  "versionId": "dba81bf6-515a-4082-96a7-1f71bd6f846c"
+  "updatedAt": "2025-08-23T16:01:23.357Z",
+  "versionId": "3af991a3-e9c6-4816-945c-6b940d4c0148"
 }
