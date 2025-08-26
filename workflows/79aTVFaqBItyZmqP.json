@@ -1281,7 +1281,7 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "id": "={{ $json.result.ID }}",
+            "id": "={{ $('HTTP Request').item.json.result.ID }}",
             "idasesor": "={{ $('HTTP Request').item.json.result.ASSIGNED_BY_ID }}",
             "idcliente": "={{ $('HTTP Request').item.json.result.CONTACT_ID }}",
             "pipeline": "={{ $('HTTP Request').item.json.result.CATEGORY_ID }}",
@@ -1466,6 +1466,16 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha_llamada_hecha",
+              "displayName": "fecha_llamada_hecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -2381,6 +2391,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-08-19T20:31:33.545Z",
-  "versionId": "3911c04a-c277-497a-bbb0-c8b5f4eda0cf"
+  "updatedAt": "2025-08-25T14:12:19.190Z",
+  "versionId": "045e515c-8b1c-4779-bc3c-4f40e44652ff"
 }
