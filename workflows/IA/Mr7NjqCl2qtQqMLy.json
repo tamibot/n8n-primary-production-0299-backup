@@ -97,7 +97,7 @@
         "authentication": "longLivedToken",
         "resource": "leads",
         "filter": {
-          "id": "={{ $json.body[\"leads[add][0][id]\"] }}"
+          "id": "={{ $json.body?.['leads[add][0][id]'] ?? $json.body?.['leads[status][0][id]'] }}"
         },
         "options": {
           "with": [
@@ -262,22 +262,26 @@
           "headers": {
             "host": "primary-production-0299.up.railway.app",
             "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "103",
+            "content-length": "314",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "947f3e53-9fc7-4180-ab0f-7dd1360ebc48",
+            "x-amocrm-requestid": "48cee5d4-b7e9-4576-9d19-32fadc1987df",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "6nYg8VgrQ8WBEza6woOzXw",
+            "x-railway-request-id": "pdqXdzysTgOhSJvqozsQ6Q",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1755964743782"
+            "x-request-start": "1756140031787"
           },
           "params": {},
           "query": {},
           "body": {
-            "leads[add][0][id]": "21750991",
+            "leads[status][0][id]": "21760229",
+            "leads[status][0][status_id]": "90801096",
+            "leads[status][0][pipeline_id]": "11240224",
+            "leads[status][0][old_status_id]": "90801080",
+            "leads[status][0][old_pipeline_id]": "11240224",
             "account[id]": "30050693",
             "account[subdomain]": "propertamibotcom"
           },
@@ -300,6 +304,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-08-23T16:01:23.357Z",
-  "versionId": "3af991a3-e9c6-4816-945c-6b940d4c0148"
+  "updatedAt": "2025-08-26T13:57:40.039Z",
+  "versionId": "968e2838-aea8-4642-afb8-c31d75cd4653"
 }
