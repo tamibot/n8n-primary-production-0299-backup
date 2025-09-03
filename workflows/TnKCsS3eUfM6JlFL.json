@@ -17,7 +17,7 @@
         [],
         [
           {
-            "node": "HTTP Request1",
+            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -111,6 +111,24 @@
           }
         ]
       ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Postgres2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-08-20T16:40:21.555Z",
@@ -152,7 +170,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2320,
+        2528,
         464
       ],
       "id": "05bc2ba1-31eb-4718-93cf-2679f1d89944",
@@ -204,13 +222,13 @@
             {
               "id": "49fb6d11-be98-4779-88fc-a4f09640fc12",
               "name": "linkUrbania",
-              "value": "={{ $json[\"Link Urbania\"] }}",
+              "value": "={{ $json[\"Link Urbania\"] && $json[\"Link Urbania\"].trim() !== '' ? $json[\"Link Urbania\"] : 'sin link urbania' }}",
               "type": "string"
             },
             {
               "id": "b84e1d89-de02-4512-8c44-9abdd1b9b011",
               "name": "linkAdondevivir",
-              "value": "={{ $json[\"Link Adondevivir\"] }}",
+              "value": "={{ $json[\"Link Adondevivir\"] && $json[\"Link Adondevivir\"].trim() !== '' ? $json[\"Link Adondevivir\"] : 'sin link adondevivir' }}",
               "type": "string"
             }
           ]
@@ -279,8 +297,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2112,
-        464
+        2336,
+        528
       ],
       "id": "87f25e8c-cb0d-47ca-855f-49e177b3ff6f",
       "name": "HTTP Request1",
@@ -458,7 +476,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2544,
+        2752,
         544
       ],
       "id": "99689c30-3e23-4a79-855a-7d738993b12f",
@@ -520,6 +538,39 @@
       ],
       "id": "586f1c9a-cf17-479f-a33f-02842bda88d5",
       "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "80c73a46-6548-45ca-9d72-e28fcac549bf",
+              "leftValue": "={{ $json.linkUrbania }}",
+              "rightValue": "sin link urbania",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2096,
+        560
+      ],
+      "id": "b2893eec-8260-45e7-a781-d5de912bae04",
+      "name": "If"
     }
   ],
   "pinData": {},
@@ -542,6 +593,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-08-28T16:12:15.630Z",
-  "versionId": "991d1115-d953-4689-b9fb-329314393049"
+  "updatedAt": "2025-09-02T13:50:53.475Z",
+  "versionId": "0b6acd0f-d55b-4ee1-8566-ae27420466c0"
 }
