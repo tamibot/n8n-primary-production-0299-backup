@@ -667,7 +667,7 @@
             },
             {
               "id": "2b4ab1f5-9898-4795-95ea-aaaa31a04cae",
-              "leftValue": "={{ $('GET Lead').json._embedded.tags }}",
+              "leftValue": "={{ $('GET Lead').item.json._embedded }}",
               "rightValue": "stop_ai",
               "operator": {
                 "type": "string",
@@ -676,7 +676,7 @@
             },
             {
               "id": "9a5e4625-cdcb-496c-8c2b-36b73b513e19",
-              "leftValue": "={{ $('GET Lead').json._embedded.tags }}",
+              "leftValue": "={{ $('GET Lead').item.json._embedded }}",
               "rightValue": "RENTAS",
               "operator": {
                 "type": "string",
@@ -2463,17 +2463,17 @@
           "headers": {
             "host": "primary-production-0299.up.railway.app",
             "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "950",
+            "content-length": "1146",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "2c546430-3e16-46ba-a9b8-bdb277d4c080",
+            "x-amocrm-requestid": "467183e9-1b39-4894-a2d9-2b9c5c6ca326",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "B1p4wOXPSbmzjag6Aax-fw",
+            "x-railway-request-id": "9Cp4UGvOTpSW3SRiCx5-qw",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1756770692974"
+            "x-request-start": "1756829092664"
           },
           "params": {},
           "query": {},
@@ -2481,20 +2481,20 @@
             "account[subdomain]": "propertamibotcom",
             "account[id]": "30050693",
             "account[_links][self]": "https://propertamibotcom.amocrm.com",
-            "message[add][0][id]": "5e089f2b-5d6a-478b-acb0-678f09c26568",
-            "message[add][0][chat_id]": "db120137-2d47-4345-a165-b7675e669223",
-            "message[add][0][talk_id]": "191020",
-            "message[add][0][contact_id]": "23631507",
-            "message[add][0][text]": "Entonces lo que pagué ahora?",
-            "message[add][0][created_at]": "1756770691",
+            "message[add][0][id]": "575a66f5-d051-4911-bd69-24c1f2fa4599",
+            "message[add][0][chat_id]": "5b2cc9bd-b89c-405a-bb61-7cc1375af4cb",
+            "message[add][0][talk_id]": "197277",
+            "message[add][0][contact_id]": "24221945",
+            "message[add][0][text]": "¡Hola! Quiero que se comuniquen conmigo por este inmueble en    alquiler que vi en  Urbania. https://urbania.pe/inmueble/clasificado/alclapin-alquiler-de-departamento-en-jesus-maria-lima-1-dormitorio-146729713",
+            "message[add][0][created_at]": "1756829091",
             "message[add][0][element_type]": "2",
             "message[add][0][entity_type]": "lead",
-            "message[add][0][element_id]": "21164657",
-            "message[add][0][entity_id]": "21164657",
+            "message[add][0][element_id]": "21826463",
+            "message[add][0][entity_id]": "21826463",
             "message[add][0][type]": "incoming",
-            "message[add][0][author][id]": "3e85cb28-a24c-42af-92b7-bb7d5c5336fe",
+            "message[add][0][author][id]": "756d339d-ed1b-4ecb-b531-3687e80f3e63",
             "message[add][0][author][type]": "external",
-            "message[add][0][author][name]": "Ger",
+            "message[add][0][author][name]": "Sharon",
             "message[add][0][origin]": "waba"
           },
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/rentas",
@@ -2527,6 +2527,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-09-01T23:53:28.077Z",
-  "versionId": "6ae59916-67aa-496f-9c0e-e183c52ba326"
+  "updatedAt": "2025-09-02T16:19:30.126Z",
+  "versionId": "876350a3-2c6c-441c-9f10-966a15724e30"
 }
