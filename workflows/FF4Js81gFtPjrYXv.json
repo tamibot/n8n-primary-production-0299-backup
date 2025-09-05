@@ -1,0 +1,45 @@
+{
+  "active": true,
+  "connections": {},
+  "createdAt": "2025-09-04T19:39:54.369Z",
+  "id": "FF4Js81gFtPjrYXv",
+  "isArchived": false,
+  "meta": null,
+  "name": "Evento: Crédito Hipotecario FINAL",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "credito-hipotecario-final",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "cb2fa50e-ea8c-4b04-9457-3932a9b810fb",
+      "name": "Webhook",
+      "webhookId": "e6990a70-5015-4ec2-804e-ef143154a1ef"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-04T19:39:54.369Z",
+      "updatedAt": "2025-09-04T19:39:54.369Z",
+      "role": "workflow:owner",
+      "workflowId": "FF4Js81gFtPjrYXv",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-04T19:47:24.317Z",
+  "versionId": "6f02bf7f-a298-40df-909e-5ecc6da52fa0"
+}
