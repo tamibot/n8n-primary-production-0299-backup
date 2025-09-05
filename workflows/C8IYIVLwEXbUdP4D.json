@@ -82,18 +82,14 @@
       "main": [
         [
           {
-            "node": "Existe Lead",
+            "node": "Update contacts",
             "type": "main",
             "index": 0
           }
-        ]
-      ]
-    },
-    "Existe Lead": {
-      "main": [
+        ],
         [
           {
-            "node": "Update contacts",
+            "node": "Create new contacts",
             "type": "main",
             "index": 0
           }
@@ -113,7 +109,35 @@
     },
     "Update leads": {
       "main": [
-        []
+        [
+          {
+            "node": "Update a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new contacts": {
+      "main": [
+        [
+          {
+            "node": "Create new leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new leads": {
+      "main": [
+        [
+          {
+            "node": "Update a record1",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -135,7 +159,7 @@
       "typeVersion": 2.1,
       "position": [
         0,
-        0
+        -80
       ],
       "id": "3e8639a7-4287-4238-94b3-d5f52cdc2de3",
       "name": "Webhook",
@@ -148,8 +172,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        208,
-        0
+        224,
+        -80
       ],
       "id": "fb546f6d-4305-413f-938a-ec3a94284e02",
       "name": "Wait",
@@ -159,13 +183,13 @@
       "parameters": {
         "authentication": "bitrixWebhookApi",
         "operation": "get",
-        "id": "={{ $json.body[0].document_id[2].replace('DEAL_', '') }}"
+        "id": "={{ $('Webhook').item.json.query.content.replace('DEAL_', '') }}"
       },
       "type": "n8n-nodes-bitrix.bitrix",
       "typeVersion": 1,
       "position": [
-        416,
-        0
+        448,
+        -80
       ],
       "id": "68ce9061-ecf1-4138-9a9b-45d084421f38",
       "name": "Get a record",
@@ -186,8 +210,8 @@
       "type": "n8n-nodes-bitrix.bitrix",
       "typeVersion": 1,
       "position": [
-        624,
-        0
+        672,
+        -80
       ],
       "id": "5f290090-51be-450f-9541-f2b8b25f360d",
       "name": "Get a record1",
@@ -226,8 +250,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        832,
-        0
+        896,
+        -80
       ],
       "id": "84123435-e1f2-41d6-bcfb-3ae5b2515a3c",
       "name": "Select rows from a table",
@@ -315,8 +339,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1040,
-        0
+        1120,
+        -80
       ],
       "id": "3ce1e006-4659-4442-a42a-d44bd9f6dc6a",
       "name": "Edit Fields"
@@ -338,8 +362,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1248,
-        0
+        1344,
+        -80
       ],
       "id": "211bed53-a84f-4813-9c61-5ad702d81f1f",
       "name": "Get list of contacts",
@@ -379,46 +403,11 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1456,
-        0
+        1568,
+        -80
       ],
       "id": "869f2483-d5b4-4633-9329-1e930658ecb8",
       "name": "Existe Contacto"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "431f0452-34bd-4745-a22b-a2058066ac84",
-              "leftValue": "={{ $json._embedded.contacts[0]._embedded.leads[0].id }}",
-              "rightValue": "",
-              "operator": {
-                "type": "number",
-                "operation": "exists",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "looseTypeValidation": true,
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        1664,
-        -96
-      ],
-      "id": "7f45ccdc-6f68-4dea-9144-209b39144507",
-      "name": "Existe Lead"
     },
     {
       "parameters": {
@@ -465,8 +454,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1872,
-        -179.3883870967742
+        1792,
+        -176
       ],
       "id": "b6fadbab-3647-404b-930b-288d836ef6e9",
       "name": "Update contacts",
@@ -495,7 +484,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2080,
+        2016,
         -176
       ],
       "id": "96a0958a-a2ca-4d1e-aca5-b91a2465e576",
@@ -506,6 +495,171 @@
           "name": "Kommo Long Lived Token account"
         }
       }
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "contacts",
+        "operation": "createContacts",
+        "collection": {
+          "contact": [
+            {
+              "name": "={{ $('Edit Fields').item.json.Nombre }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":522504,\"type\":\"multitext\"}",
+                    "value": "={{ $('Edit Fields').item.json.Telefono }}"
+                  },
+                  {
+                    "data": "{\"id\":522506,\"type\":\"multitext\"}",
+                    "value": "={{ $('Edit Fields').item.json.Correo }}"
+                  },
+                  {
+                    "data": "{\"id\":794335,\"type\":\"text\"}",
+                    "value": "={{ $('Edit Fields').item.json['Responsible person ID'] }}"
+                  },
+                  {
+                    "data": "{\"id\":794337,\"type\":\"text\"}",
+                    "value": "={{ $('Edit Fields').item.json['Contact ID'] }}"
+                  },
+                  {
+                    "data": "{\"id\":794339,\"type\":\"text\"}",
+                    "value": "={{ $('Edit Fields').item.json['Deal ID'] }}"
+                  },
+                  {
+                    "data": "{\"id\":794945,\"type\":\"text\"}",
+                    "value": "={{ $('Edit Fields').item.json['Categoría del Cliente'] }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        16
+      ],
+      "id": "fbfb6932-a2a3-40dd-95ac-a6aeb91f9263",
+      "name": "Create new contacts",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "operation": "update",
+        "id": "={{ Number($('Get a record').item.json.result.ID) }}",
+        "fields": {
+          "values": [
+            {
+              "name": "UF_CRM_1716382183688",
+              "value": "={{ Number($json._embedded.leads[0].id) }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        -176
+      ],
+      "id": "443aaa2c-0a6c-4555-a936-6ebd25aef6ee",
+      "name": "Update a record",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "name": "={{ $('Get a record1').item.json.result.ID }}",
+              "pipeline_id": 8874156,
+              "status_id": "={{ Number($('Select rows from a table').item.json.Kommo) }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":522512,\"type\":\"tracking_data\"}",
+                    "value": "={{ $('Edit Fields').item.json[\"Categoría del Cliente\"] }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ Number($json._embedded.contacts[0].id) }}"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        2016,
+        16
+      ],
+      "id": "e64e45ed-e01b-4d8e-ab6c-4820977e4ba5",
+      "name": "Create new leads",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "operation": "update",
+        "id": "={{ Number($('Get a record').item.json.result.ID) }}",
+        "fields": {
+          "values": [
+            {
+              "name": "UF_CRM_1716382183688",
+              "value": "={{ Number($json._embedded.leads[0].id) }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        16
+      ],
+      "id": "64f4a55b-d906-4a0d-8681-7652628d2ccf",
+      "name": "Update a record1",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
     }
   ],
   "pinData": {
@@ -514,40 +668,30 @@
         "json": {
           "headers": {
             "host": "primary-production-0299.up.railway.app",
-            "user-agent": "PostmanRuntime/7.45.0",
-            "content-length": "394",
-            "accept": "*/*",
-            "accept-encoding": "gzip, deflate, br",
-            "cache-control": "no-cache",
-            "content-type": "application/json",
-            "postman-token": "a7d055c2-7c69-4714-8b6d-b91b261fffaa",
-            "x-forwarded-for": "132.191.0.178",
+            "user-agent": "Make/production",
+            "content-length": "0",
+            "accept-encoding": "gzip, br, deflate",
+            "traceparent": "00-68b9ddf100000000405983539e25ea70-405983539e25ea70-00",
+            "tracestate": "dd=t.tid:68b9ddf100000000;t.dm:-1;s:0;p:405983539e25ea70",
+            "x-datadog-parent-id": "4636881686513445488",
+            "x-datadog-sampling-priority": "0",
+            "x-datadog-tags": "_dd.p.tid=68b9ddf100000000",
+            "x-datadog-trace-id": "4636881686513445488",
+            "x-forwarded-for": "54.209.79.175",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "YCLHvpZbRACpIIBzezItjw",
-            "x-real-ip": "132.191.0.178",
-            "x-request-start": "1756917169148"
+            "x-railway-request-id": "pur1UVxTRSuwdqS-PvyhXg",
+            "x-real-ip": "54.209.79.175",
+            "x-request-start": "1757011441779"
           },
           "params": {},
-          "query": {},
-          "body": [
-            {
-              "document_id": [
-                "crm",
-                "CCrmDocumentDeal",
-                "DEAL_77353"
-              ],
-              "auth": {
-                "domain": "proper.bitrix24.com",
-                "client_endpoint": "https://proper.bitrix24.com/rest/",
-                "server_endpoint": "https://oauth.bitrix.info/rest/",
-                "member_id": "2ecc4413ce2df3a5fbe41aaf405a8b28"
-              }
-            }
-          ],
-          "webhookUrl": "https://primary-production-0299.up.railway.app/webhook-test/bitrix-kommo-produccion",
-          "executionMode": "test"
+          "query": {
+            "content": "DEAL_77425"
+          },
+          "body": {},
+          "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/bitrix-kommo-produccion",
+          "executionMode": "production"
         }
       }
     ]
@@ -567,6 +711,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-03T22:14:14.322Z",
-  "versionId": "a7401120-d8d2-4770-b2e2-13282a16177c"
+  "updatedAt": "2025-09-04T18:44:40.406Z",
+  "versionId": "8d66c1ff-5e12-4ce5-935d-f1f11332d4b5"
 }
