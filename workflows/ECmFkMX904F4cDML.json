@@ -115,8 +115,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        780,
-        200
+        784,
+        208
       ],
       "id": "ceb2938a-3742-4aeb-b5cf-8a362f1d6d85",
       "name": "Edit Fields"
@@ -158,7 +158,7 @@
       "typeVersion": 2.2,
       "position": [
         560,
-        200
+        208
       ],
       "id": "9c0271cc-6c85-427d-bf64-af828c546f8b",
       "name": "Filter"
@@ -188,8 +188,8 @@
       "type": "n8n-nodes-base.html",
       "typeVersion": 1.2,
       "position": [
-        1660,
-        200
+        1664,
+        208
       ],
       "id": "71dcef57-2d1b-461b-aace-254ed3464a7f",
       "name": "HTML"
@@ -201,8 +201,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1880,
-        200
+        1888,
+        208
       ],
       "id": "8ca30014-7767-470c-aa79-9d5df12eacbc",
       "name": "Code"
@@ -216,8 +216,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        340,
-        200
+        352,
+        208
       ],
       "id": "48803a8d-8e93-4724-a09d-e38b58146ffa",
       "name": "Correo",
@@ -230,8 +230,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1000,
-        200
+        1008,
+        208
       ],
       "id": "6fb55fe5-7bb8-444b-abb2-e486f6d812ff",
       "name": "Code1"
@@ -257,8 +257,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1220,
-        200
+        1232,
+        208
       ],
       "id": "4d156c6a-74dc-497b-8273-f34551da701e",
       "name": "HTTP Request2",
@@ -377,8 +377,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2100,
-        200
+        2112,
+        208
       ],
       "id": "49354b46-865a-4698-99e8-a86e8d10d521",
       "name": "Postgres",
@@ -392,7 +392,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://3.138.116.123:3000/scrape",
+        "url": "http://18.216.121.43:3000/scrape",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={\n\"url\":\"{{ $json.headers.location }}\"\n}",
@@ -404,7 +404,7 @@
       "typeVersion": 4.2,
       "position": [
         1440,
-        200
+        208
       ],
       "id": "a92a6847-a35d-4bba-a366-fadb0c1dc167",
       "name": "HTTP Request",
@@ -463,6 +463,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-08-20T15:16:03.564Z",
-  "versionId": "e68cdab5-0a85-42ae-94f4-587ddfeb709f"
+  "updatedAt": "2025-09-05T17:35:21.418Z",
+  "versionId": "346019ed-5df9-40e6-b3b9-ca8869586c11"
 }
