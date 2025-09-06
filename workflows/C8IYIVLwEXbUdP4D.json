@@ -49,7 +49,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields",
+            "node": "tiene Lead ID",
             "type": "main",
             "index": 0
           }
@@ -139,6 +139,57 @@
           }
         ]
       ]
+    },
+    "tiene Lead ID": {
+      "main": [
+        [
+          {
+            "node": "Get list of leads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads1": {
+      "main": [
+        [
+          {
+            "node": "Update a record2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list of leads": {
+      "main": [
+        [
+          {
+            "node": "Update contacts1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update contacts1": {
+      "main": [
+        [
+          {
+            "node": "Update leads1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-09-03T16:31:43.568Z",
@@ -159,7 +210,7 @@
       "typeVersion": 2.1,
       "position": [
         0,
-        -80
+        -192
       ],
       "id": "3e8639a7-4287-4238-94b3-d5f52cdc2de3",
       "name": "Webhook",
@@ -173,7 +224,7 @@
       "typeVersion": 1.1,
       "position": [
         224,
-        -80
+        -192
       ],
       "id": "fb546f6d-4305-413f-938a-ec3a94284e02",
       "name": "Wait",
@@ -189,7 +240,7 @@
       "typeVersion": 1,
       "position": [
         448,
-        -80
+        -192
       ],
       "id": "68ce9061-ecf1-4138-9a9b-45d084421f38",
       "name": "Get a record",
@@ -211,7 +262,7 @@
       "typeVersion": 1,
       "position": [
         672,
-        -80
+        -192
       ],
       "id": "5f290090-51be-450f-9541-f2b8b25f360d",
       "name": "Get a record1",
@@ -251,7 +302,7 @@
       "typeVersion": 2.6,
       "position": [
         896,
-        -80
+        -192
       ],
       "id": "84123435-e1f2-41d6-bcfb-3ae5b2515a3c",
       "name": "Select rows from a table",
@@ -339,8 +390,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1120,
-        -80
+        1344,
+        -96
       ],
       "id": "3ce1e006-4659-4442-a42a-d44bd9f6dc6a",
       "name": "Edit Fields"
@@ -362,8 +413,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1344,
-        -80
+        1568,
+        -96
       ],
       "id": "211bed53-a84f-4813-9c61-5ad702d81f1f",
       "name": "Get list of contacts",
@@ -403,8 +454,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1568,
-        -80
+        1792,
+        -96
       ],
       "id": "869f2483-d5b4-4633-9329-1e930658ecb8",
       "name": "Existe Contacto"
@@ -454,8 +505,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1792,
-        -176
+        2016,
+        -192
       ],
       "id": "b6fadbab-3647-404b-930b-288d836ef6e9",
       "name": "Update contacts",
@@ -484,8 +535,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2016,
-        -176
+        2240,
+        -192
       ],
       "id": "96a0958a-a2ca-4d1e-aca5-b91a2465e576",
       "name": "Update leads",
@@ -540,8 +591,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1792,
-        16
+        2016,
+        0
       ],
       "id": "fbfb6932-a2a3-40dd-95ac-a6aeb91f9263",
       "name": "Create new contacts",
@@ -569,8 +620,8 @@
       "type": "n8n-nodes-bitrix.bitrix",
       "typeVersion": 1,
       "position": [
-        2240,
-        -176
+        2464,
+        -192
       ],
       "id": "443aaa2c-0a6c-4555-a936-6ebd25aef6ee",
       "name": "Update a record",
@@ -620,8 +671,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2016,
-        16
+        2240,
+        0
       ],
       "id": "e64e45ed-e01b-4d8e-ab6c-4820977e4ba5",
       "name": "Create new leads",
@@ -649,8 +700,8 @@
       "type": "n8n-nodes-bitrix.bitrix",
       "typeVersion": 1,
       "position": [
-        2240,
-        16
+        2464,
+        0
       ],
       "id": "64f4a55b-d906-4a0d-8681-7652628d2ccf",
       "name": "Update a record1",
@@ -658,6 +709,164 @@
         "bitrixWebhookApi": {
           "id": "ROP1MNW41IyhXNQY",
           "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "baaa647a-0dae-46ab-b832-57db991e03fd",
+              "leftValue": "={{ Number($('Get a record').item.json.result.UF_CRM_1716382183688) }}",
+              "rightValue": "=",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1120,
+        -192
+      ],
+      "id": "edeb0f27-6dc4-4057-8500-1cc55e1acc0a",
+      "name": "tiene Lead ID"
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ Number($('Get a record').item.json.result.UF_CRM_1716382183688) }}",
+              "pipeline_id": 8874156,
+              "status_id": "={{ Number($('Select rows from a table').item.json.Kommo) }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        -384
+      ],
+      "id": "85a72589-753f-429e-b688-80da597741e2",
+      "name": "Update leads1",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "operation": "update",
+        "id": "={{ Number($('Get a record').item.json.result.ID) }}",
+        "fields": {
+          "values": [
+            {
+              "name": "UF_CRM_1716382183688",
+              "value": "={{ Number($json._embedded.leads[0].id) }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        2016,
+        -384
+      ],
+      "id": "ffcd5b75-f905-4e86-bc54-685f2c0f4588",
+      "name": "Update a record2",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "leads",
+        "filter": {
+          "id": "={{ Number($('Get a record').item.json.result.UF_CRM_1716382183688) }}"
+        },
+        "options": {
+          "with": [
+            "contacts"
+          ]
+        },
+        "limit": 1
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        -384
+      ],
+      "id": "2e728208-3809-4b50-8de9-b2ed7880b3e0",
+      "name": "Get list of leads",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "contacts",
+        "operation": "updateContacts",
+        "collection": {
+          "contact": [
+            {
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":794335,\"type\":\"text\"}",
+                    "value": "={{ Number($('Get a record').item.json.result.ASSIGNED_BY_ID) }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        -384
+      ],
+      "id": "f681e2b7-89b8-4343-a2f6-e9b66ebe1fd1",
+      "name": "Update contacts1",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
         }
       }
     }
@@ -711,6 +920,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-04T18:44:40.406Z",
-  "versionId": "8d66c1ff-5e12-4ce5-935d-f1f11332d4b5"
+  "updatedAt": "2025-09-05T18:21:26.291Z",
+  "versionId": "7146fdf2-80b4-41e6-82be-1437a0cded0b"
 }
