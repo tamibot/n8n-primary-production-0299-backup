@@ -725,11 +725,10 @@
             {
               "id": "baaa647a-0dae-46ab-b832-57db991e03fd",
               "leftValue": "={{ Number($('Get a record').item.json.result.UF_CRM_1716382183688) }}",
-              "rightValue": "=",
+              "rightValue": "=0",
               "operator": {
                 "type": "number",
-                "operation": "exists",
-                "singleValue": true
+                "operation": "gt"
               }
             }
           ],
@@ -843,6 +842,7 @@
         "collection": {
           "contact": [
             {
+              "id": "={{ $json._embedded.leads[0]._embedded.contacts[0].id }}",
               "custom_fields_values": {
                 "custom_field": [
                   {
@@ -880,23 +880,23 @@
             "user-agent": "Make/production",
             "content-length": "0",
             "accept-encoding": "gzip, br, deflate",
-            "traceparent": "00-68b9ddf100000000405983539e25ea70-405983539e25ea70-00",
-            "tracestate": "dd=t.tid:68b9ddf100000000;t.dm:-1;s:0;p:405983539e25ea70",
-            "x-datadog-parent-id": "4636881686513445488",
+            "traceparent": "00-68bf11b800000000430b051773dc6945-430b051773dc6945-00",
+            "tracestate": "dd=t.tid:68bf11b800000000;t.dm:-1;s:0;p:430b051773dc6945",
+            "x-datadog-parent-id": "4830960623571200325",
             "x-datadog-sampling-priority": "0",
-            "x-datadog-tags": "_dd.p.tid=68b9ddf100000000",
-            "x-datadog-trace-id": "4636881686513445488",
-            "x-forwarded-for": "54.209.79.175",
+            "x-datadog-tags": "_dd.p.tid=68bf11b800000000",
+            "x-datadog-trace-id": "4830960623571200325",
+            "x-forwarded-for": "54.161.178.114",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "pur1UVxTRSuwdqS-PvyhXg",
-            "x-real-ip": "54.209.79.175",
-            "x-request-start": "1757011441779"
+            "x-railway-request-id": "jfxBkYhjQKagvfEmBT7zVQ",
+            "x-real-ip": "54.161.178.114",
+            "x-request-start": "1757352376532"
           },
           "params": {},
           "query": {
-            "content": "DEAL_77425"
+            "content": "DEAL_29327"
           },
           "body": {},
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/bitrix-kommo-produccion",
@@ -920,6 +920,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-05T18:21:26.291Z",
-  "versionId": "7146fdf2-80b4-41e6-82be-1437a0cded0b"
+  "updatedAt": "2025-09-08T17:33:12.303Z",
+  "versionId": "86121c40-defd-46b7-be69-beb7ca963b60"
 }
