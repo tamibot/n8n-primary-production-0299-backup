@@ -1,0 +1,2296 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "List records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List records": {
+      "main": [
+        [
+          {
+            "node": "List records1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List records1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Existe ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a record": {
+      "main": [
+        [
+          {
+            "node": "List records2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List records2": {
+      "main": [
+        [
+          {
+            "node": "Existe DEAL ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record": {
+      "main": [
+        [
+          {
+            "node": "Get a record1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a record1": {
+      "main": [
+        [
+          {
+            "node": "Insert or update rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Existe DEAL ID": {
+      "main": [
+        [
+          {
+            "node": "STAGE ACTIVO",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "STAGE ACTIVO": {
+      "main": [
+        [
+          {
+            "node": "Insert or update rows in a table1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create a record1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record1": {
+      "main": [
+        [
+          {
+            "node": "Get a record2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a record2": {
+      "main": [
+        [
+          {
+            "node": "Insert or update rows in a table2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Existe ID": {
+      "main": [
+        [
+          {
+            "node": "Get a record",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Existe Telefono",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Existe Telefono": {
+      "main": [
+        [
+          {
+            "node": "Create a record4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create a record2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record2": {
+      "main": [
+        [
+          {
+            "node": "Create a record3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record3": {
+      "main": [
+        [
+          {
+            "node": "Get a record3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a record3": {
+      "main": [
+        [
+          {
+            "node": "Insert or update rows in a table3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record4": {
+      "main": [
+        [
+          {
+            "node": "Create a record5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record5": {
+      "main": [
+        [
+          {
+            "node": "Get a record4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a record4": {
+      "main": [
+        [
+          {
+            "node": "Insert or update rows in a table4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-09T14:56:59.645Z",
+  "id": "otlN6Ao2tMsQkEQR",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "LOGIN MARKETPLACE FINAL UPDATE FINAL",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "LOGIN-MARKETPLACE-FINAL-UPDATE-FINAL",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        96
+      ],
+      "id": "f7f34065-7132-4699-aa7a-0d3b8c0027cf",
+      "name": "Webhook",
+      "webhookId": "3ec0585a-a00a-453f-84bb-4ece628b9a7c"
+    },
+    {
+      "parameters": {
+        "amount": "={{ Math.floor(Math.random() * 3) + 2 }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        96
+      ],
+      "id": "18cce3a0-f11f-4908-98fb-f246e4214dbf",
+      "name": "Wait",
+      "webhookId": "2d00913b-f6b6-4df3-8ce5-231ffcffe6bf"
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "resource": "crm.contact",
+        "operation": "list",
+        "parameters": {
+          "filter": {
+            "property": [
+              {
+                "field": "EMAIL",
+                "value": "={{ $json.body.data.email }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        448,
+        96
+      ],
+      "id": "63a505d0-7589-4913-9196-874917595a3a",
+      "name": "List records",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "resource": "crm.contact",
+        "operation": "list",
+        "parameters": {
+          "filter": {
+            "property": [
+              {
+                "field": "PHONE",
+                "value": "={{ $('Webhook').item.json.body.data.nrocedular === \"\" ? \"123456789\" : $('Webhook').item.json.body.data.nrocedular }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        672,
+        96
+      ],
+      "id": "40c63bae-6fda-4157-a94e-32037c6c84f0",
+      "name": "List records1",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6862cbc5-961c-456f-a14d-5599900b960f",
+              "name": "ID CONTACTO",
+              "value": "={{ $('List records').item.json.result[0]?.ID || $('List records1').item.json.result[0]?.ID || null }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        896,
+        96
+      ],
+      "id": "e7327edc-5e4f-466f-9a68-38f728125cf5",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "resource": "crm.contact",
+        "operation": "get",
+        "id": "={{ $json['ID CONTACTO'] }}"
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        -96
+      ],
+      "id": "d50d872f-91af-4ee1-9746-2fa50d7061e7",
+      "name": "Get a record",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "operation": "list",
+        "parameters": {
+          "filter": {
+            "property": [
+              {
+                "field": "CONTACT_ID",
+                "value": "={{ $json.result.ID }}"
+              },
+              {
+                "field": "CATEGORY_ID",
+                "value": "5"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        -96
+      ],
+      "id": "a2557b3f-0c83-4a44-ac46-5b7bfb351b81",
+      "name": "List records2",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "fields": {
+          "values": [
+            {
+              "name": "TITLE",
+              "value": "={{ $('Webhook').item.json.body.data.nombre }} {{ $('Webhook').item.json.body.data.apellido_paterno }} {{ $('Webhook').item.json.body.data.apellido_materno }}"
+            },
+            {
+              "name": "CATEGORY_ID",
+              "value": "85"
+            },
+            {
+              "name": "STAGE_ID",
+              "value": "C85:NEW"
+            },
+            {
+              "name": "CONTACT_IDS",
+              "value": "={{ $('Edit Fields').item.json['ID CONTACTO'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        2016,
+        96
+      ],
+      "id": "fb6d2246-8c3e-4d6a-8ed0-f4545110e3a6",
+      "name": "Create a record",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "operation": "get",
+        "id": "={{ $json.result }}"
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        96
+      ],
+      "id": "e17bad5f-a88f-4d4f-871f-7974780873c1",
+      "name": "Get a record1",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "registro_web_usuario",
+          "mode": "list",
+          "cachedResultName": "registro_web_usuario"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Webhook').item.json.body.data.id }}",
+            "id_deal_web": "={{ $json.result.ID }}",
+            "id_contacto": "={{ $json.result.CONTACT_ID }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "apellido_materno",
+              "displayName": "apellido_materno",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "apellido_paterno",
+              "displayName": "apellido_paterno",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "correo",
+              "displayName": "correo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tipo_documento",
+              "displayName": "tipo_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "nro_documento",
+              "displayName": "nro_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "celular",
+              "displayName": "celular",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "type_auth",
+              "displayName": "type_auth",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "created",
+              "displayName": "created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "updated",
+              "displayName": "updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "id_deal_web",
+              "displayName": "id_deal_web",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "residencia",
+              "displayName": "residencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "monto_ingresos",
+              "displayName": "monto_ingresos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "credito_hipotecario",
+              "displayName": "credito_hipotecario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "otras_deudas",
+              "displayName": "otras_deudas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "modalidad_trabajo",
+              "displayName": "modalidad_trabajo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "cuota_hipotecaria",
+              "displayName": "cuota_hipotecaria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "cuota_otros",
+              "displayName": "cuota_otros",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "monto_inicial",
+              "displayName": "monto_inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "continuidad_laboral",
+              "displayName": "continuidad_laboral",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "id_contacto",
+              "displayName": "id_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tipo_conversion",
+              "displayName": "tipo_conversion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2464,
+        96
+      ],
+      "id": "3023d58f-fdb4-4e0e-9ec6-adaacbe4d129",
+      "name": "Insert or update rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1cd5775-7619-4b45-86bc-740566715eea",
+              "leftValue": "={{ Number($json.result[0].ID) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1792,
+        -96
+      ],
+      "id": "5ac5fb68-455d-4eef-807c-156979cb0110",
+      "name": "Existe DEAL ID"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1fc49020-cdc2-4049-82e2-811098ba6d67",
+              "leftValue": "={{ $('List records2').item.json.result[0].STAGE_ID }}",
+              "rightValue": "C5:UC_GFZ3OE",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "48d732a6-3ac2-466c-8fb3-fc7081494650",
+              "leftValue": "={{ $('List records2').item.json.result[0].STAGE_ID }}",
+              "rightValue": "C5:LOSE",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "db357cad-9b82-448e-924a-5c9bbece3e64",
+              "leftValue": "={{ $('List records2').item.json.result[0].STAGE_ID }}",
+              "rightValue": "C5:APOLOGY",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "d143fe54-eda3-414b-9371-74dfb2971752",
+              "leftValue": "={{ $('List records2').item.json.result[0].STAGE_ID }}",
+              "rightValue": "C5:WON",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2016,
+        -192
+      ],
+      "id": "68ac48e2-2488-44e5-a44c-2e5c845f9bbc",
+      "name": "STAGE ACTIVO"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "registro_web_usuario",
+          "mode": "list",
+          "cachedResultName": "registro_web_usuario"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Webhook').item.json.body.data.id }}",
+            "id_deal_web": "={{ $('List records2').item.json.result[0].ID }}",
+            "monto_ingresos": 0,
+            "cuota_hipotecaria": 0,
+            "cuota_otros": 0,
+            "monto_inicial": 0,
+            "continuidad_laboral": 0,
+            "id_contacto": "={{ $('List records2').item.json.result[0].CONTACT_ID }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "apellido_materno",
+              "displayName": "apellido_materno",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "apellido_paterno",
+              "displayName": "apellido_paterno",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "correo",
+              "displayName": "correo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tipo_documento",
+              "displayName": "tipo_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "nro_documento",
+              "displayName": "nro_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "celular",
+              "displayName": "celular",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "type_auth",
+              "displayName": "type_auth",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "created",
+              "displayName": "created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "updated",
+              "displayName": "updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "id_deal_web",
+              "displayName": "id_deal_web",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "residencia",
+              "displayName": "residencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "monto_ingresos",
+              "displayName": "monto_ingresos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "credito_hipotecario",
+              "displayName": "credito_hipotecario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "otras_deudas",
+              "displayName": "otras_deudas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "modalidad_trabajo",
+              "displayName": "modalidad_trabajo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "cuota_hipotecaria",
+              "displayName": "cuota_hipotecaria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "cuota_otros",
+              "displayName": "cuota_otros",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "monto_inicial",
+              "displayName": "monto_inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "continuidad_laboral",
+              "displayName": "continuidad_laboral",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "id_contacto",
+              "displayName": "id_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tipo_conversion",
+              "displayName": "tipo_conversion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2240,
+        -288
+      ],
+      "id": "d7632f94-d679-456a-9068-286c71ed67a4",
+      "name": "Insert or update rows in a table1",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "fields": {
+          "values": [
+            {
+              "name": "TITLE",
+              "value": "={{ $('Webhook').item.json.body.data.nombre }} {{ $('Webhook').item.json.body.data.apellido_paterno }} {{ $('Webhook').item.json.body.data.apellido_materno }}"
+            },
+            {
+              "name": "CATEGORY_ID",
+              "value": "85"
+            },
+            {
+              "name": "STAGE_ID",
+              "value": "C85:NEW"
+            },
+            {
+              "name": "CONTACT_IDS",
+              "value": "={{ $('List records2').item.json.result[0].CONTACT_ID }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        -96
+      ],
+      "id": "2c895875-9b7a-4d03-92fd-5b780f5eb017",
+      "name": "Create a record1",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "operation": "get",
+        "id": "={{ $json.result }}"
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        2464,
+        -96
+      ],
+      "id": "8dfcabb4-d563-4222-bda1-504c2c336efc",
+      "name": "Get a record2",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "registro_web_usuario",
+          "mode": "list",
+          "cachedResultName": "registro_web_usuario"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Webhook').item.json.body.data.id }}",
+            "id_deal_web": "={{ $json.result.ID }}",
+            "id_contacto": "={{ $json.result.CONTACT_ID }}",
+            "monto_ingresos": 0,
+            "cuota_hipotecaria": 0,
+            "cuota_otros": 0,
+            "monto_inicial": 0,
+            "continuidad_laboral": 0
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "apellido_materno",
+              "displayName": "apellido_materno",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "apellido_paterno",
+              "displayName": "apellido_paterno",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "correo",
+              "displayName": "correo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tipo_documento",
+              "displayName": "tipo_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "nro_documento",
+              "displayName": "nro_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "celular",
+              "displayName": "celular",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "type_auth",
+              "displayName": "type_auth",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "created",
+              "displayName": "created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "updated",
+              "displayName": "updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "id_deal_web",
+              "displayName": "id_deal_web",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "residencia",
+              "displayName": "residencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "monto_ingresos",
+              "displayName": "monto_ingresos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "credito_hipotecario",
+              "displayName": "credito_hipotecario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "otras_deudas",
+              "displayName": "otras_deudas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "modalidad_trabajo",
+              "displayName": "modalidad_trabajo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "cuota_hipotecaria",
+              "displayName": "cuota_hipotecaria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "cuota_otros",
+              "displayName": "cuota_otros",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "monto_inicial",
+              "displayName": "monto_inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "continuidad_laboral",
+              "displayName": "continuidad_laboral",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "id_contacto",
+              "displayName": "id_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tipo_conversion",
+              "displayName": "tipo_conversion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2688,
+        -96
+      ],
+      "id": "30c17fcd-4a0a-4b10-bc99-8dfee4c6110a",
+      "name": "Insert or update rows in a table2",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e142c357-85dd-4d6e-8625-b5cea2c586c4",
+              "leftValue": "={{ $json['ID CONTACTO'] }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1120,
+        96
+      ],
+      "id": "85bc6d85-86b1-4892-8859-b045abb3ecc3",
+      "name": "Existe ID"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9c7e009d-8f26-42fc-837f-b58a1db76dc4",
+              "leftValue": "={{ $('Webhook').item.json.body.data.nrocedular }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        384
+      ],
+      "id": "c3fe17d1-9ace-4e97-b523-b8e8507dfa39",
+      "name": "Existe Telefono"
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "resource": "crm.contact",
+        "fields": {
+          "values": [
+            {
+              "name": "NAME",
+              "value": "={{ $('Webhook').item.json.body.data.nombre }}"
+            },
+            {
+              "name": "LAST_NAME",
+              "value": "={{ $('Webhook').item.json.body.data.apellido_paterno }} {{ $('Webhook').item.json.body.data.apellido_materno }}"
+            },
+            {
+              "name": "EMAIL",
+              "value": "={{ $('Webhook').item.json.body.data.email }}"
+            },
+            {
+              "name": "UF_CRM_3237DE05",
+              "value": "={{ $('Webhook').item.json.body.data.nrodoc }}"
+            },
+            {
+              "name": "UF_CRM_1737438953454",
+              "value": "={{ $('Webhook').item.json.body.data.email }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        480
+      ],
+      "id": "789aa061-dbb8-4d27-95e3-9775e50b9aee",
+      "name": "Create a record2",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "fields": {
+          "values": [
+            {
+              "name": "TITLE",
+              "value": "={{ $('Webhook').item.json.body.data.nombre }} {{ $('Webhook').item.json.body.data.apellido_paterno }} {{ $('Webhook').item.json.body.data.apellido_materno }}"
+            },
+            {
+              "name": "CATEGORY_ID",
+              "value": "85"
+            },
+            {
+              "name": "STAGE_ID",
+              "value": "C85:NEW"
+            },
+            {
+              "name": "CONTACT_IDS",
+              "value": "={{ $json.result }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        480
+      ],
+      "id": "ce410de3-4fd7-4ba4-8076-9ae7566ae89b",
+      "name": "Create a record3",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "operation": "get",
+        "id": "={{ $json.result }}"
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        2016,
+        480
+      ],
+      "id": "b5b3ad44-401f-4748-baa0-371a7c221265",
+      "name": "Get a record3",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "registro_web_usuario",
+          "mode": "list",
+          "cachedResultName": "registro_web_usuario"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Webhook').item.json.body.data.id }}",
+            "id_deal_web": "={{ $json.result.ID }}",
+            "id_contacto": "={{ $json.result.CONTACT_ID }}",
+            "monto_ingresos": 0,
+            "cuota_hipotecaria": 0,
+            "cuota_otros": 0,
+            "monto_inicial": 0,
+            "continuidad_laboral": 0
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "apellido_materno",
+              "displayName": "apellido_materno",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "apellido_paterno",
+              "displayName": "apellido_paterno",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "correo",
+              "displayName": "correo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tipo_documento",
+              "displayName": "tipo_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "nro_documento",
+              "displayName": "nro_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "celular",
+              "displayName": "celular",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "type_auth",
+              "displayName": "type_auth",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "created",
+              "displayName": "created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "updated",
+              "displayName": "updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "id_deal_web",
+              "displayName": "id_deal_web",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "residencia",
+              "displayName": "residencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "monto_ingresos",
+              "displayName": "monto_ingresos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "credito_hipotecario",
+              "displayName": "credito_hipotecario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "otras_deudas",
+              "displayName": "otras_deudas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "modalidad_trabajo",
+              "displayName": "modalidad_trabajo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "cuota_hipotecaria",
+              "displayName": "cuota_hipotecaria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "cuota_otros",
+              "displayName": "cuota_otros",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "monto_inicial",
+              "displayName": "monto_inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "continuidad_laboral",
+              "displayName": "continuidad_laboral",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "id_contacto",
+              "displayName": "id_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tipo_conversion",
+              "displayName": "tipo_conversion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2240,
+        480
+      ],
+      "id": "87967a71-c92b-4435-a861-ec49e49776a2",
+      "name": "Insert or update rows in a table3",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "resource": "crm.contact",
+        "fields": {
+          "values": [
+            {
+              "name": "NAME",
+              "value": "={{ $('Webhook').item.json.body.data.nombre }}"
+            },
+            {
+              "name": "LAST_NAME",
+              "value": "={{ $('Webhook').item.json.body.data.apellido_paterno }} {{ $('Webhook').item.json.body.data.apellido_materno }}"
+            },
+            {
+              "name": "EMAIL",
+              "value": "={{ $('Webhook').item.json.body.data.email }}"
+            },
+            {
+              "name": "UF_CRM_3237DE05",
+              "value": "={{ $('Webhook').item.json.body.data.nrodoc }}"
+            },
+            {
+              "name": "UF_CRM_1737438953454",
+              "value": "={{ $('Webhook').item.json.body.data.email }}"
+            },
+            {
+              "name": "PHONE",
+              "value": "={{ $('Webhook').item.json.body.data.nrocedular }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        288
+      ],
+      "id": "17f42a39-8581-45f5-9c30-b2f2ec202e3b",
+      "name": "Create a record4",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "fields": {
+          "values": [
+            {
+              "name": "TITLE",
+              "value": "={{ $('Webhook').item.json.body.data.nombre }} {{ $('Webhook').item.json.body.data.apellido_paterno }} {{ $('Webhook').item.json.body.data.apellido_materno }}"
+            },
+            {
+              "name": "CATEGORY_ID",
+              "value": "85"
+            },
+            {
+              "name": "STAGE_ID",
+              "value": "C85:NEW"
+            },
+            {
+              "name": "CONTACT_IDS",
+              "value": "={{ $json.result }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        288
+      ],
+      "id": "14ddf26d-b8b1-4551-b35f-7eb48e26ef22",
+      "name": "Create a record5",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "operation": "get",
+        "id": "={{ $json.result }}"
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        2016,
+        288
+      ],
+      "id": "e4f58c03-5203-4c6f-81f9-caf79a6aa090",
+      "name": "Get a record4",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "registro_web_usuario",
+          "mode": "list",
+          "cachedResultName": "registro_web_usuario"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Webhook').item.json.body.data.id }}",
+            "id_deal_web": "={{ $json.result.ID }}",
+            "id_contacto": "={{ $json.result.CONTACT_ID }}",
+            "monto_ingresos": 0,
+            "cuota_hipotecaria": 0,
+            "cuota_otros": 0,
+            "monto_inicial": 0,
+            "continuidad_laboral": 0
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "apellido_materno",
+              "displayName": "apellido_materno",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "apellido_paterno",
+              "displayName": "apellido_paterno",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "correo",
+              "displayName": "correo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tipo_documento",
+              "displayName": "tipo_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "nro_documento",
+              "displayName": "nro_documento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "celular",
+              "displayName": "celular",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "type_auth",
+              "displayName": "type_auth",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "created",
+              "displayName": "created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "updated",
+              "displayName": "updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "id_deal_web",
+              "displayName": "id_deal_web",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "residencia",
+              "displayName": "residencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "monto_ingresos",
+              "displayName": "monto_ingresos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "credito_hipotecario",
+              "displayName": "credito_hipotecario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "otras_deudas",
+              "displayName": "otras_deudas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "modalidad_trabajo",
+              "displayName": "modalidad_trabajo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "cuota_hipotecaria",
+              "displayName": "cuota_hipotecaria",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "cuota_otros",
+              "displayName": "cuota_otros",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "monto_inicial",
+              "displayName": "monto_inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "continuidad_laboral",
+              "displayName": "continuidad_laboral",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "id_contacto",
+              "displayName": "id_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tipo_conversion",
+              "displayName": "tipo_conversion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2240,
+        288
+      ],
+      "id": "9500b9be-0ca4-493a-83ab-f3dbb1319629",
+      "name": "Insert or update rows in a table4",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "primary-production-0299.up.railway.app",
+            "user-agent": "Make/production",
+            "content-length": "379",
+            "accept-encoding": "gzip, br, deflate",
+            "content-type": "application/json",
+            "traceparent": "00-68c07fcc000000005b0e7f307c36197e-5b0e7f307c36197e-00",
+            "tracestate": "dd=t.tid:68c07fcc00000000;t.dm:-1;s:0;p:5b0e7f307c36197e",
+            "x-datadog-parent-id": "6561321553344469374",
+            "x-datadog-sampling-priority": "0",
+            "x-datadog-tags": "_dd.p.tid=68c07fcc00000000",
+            "x-datadog-trace-id": "6561321553344469374",
+            "x-forwarded-for": "54.161.178.114",
+            "x-forwarded-host": "primary-production-0299.up.railway.app",
+            "x-forwarded-proto": "https",
+            "x-railway-edge": "railway/us-east4-eqdc4a",
+            "x-railway-request-id": "1Bnh6giXSBGVe9oRPvyhXg",
+            "x-real-ip": "54.161.178.114",
+            "x-request-start": "1757446092330"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "data": {
+              "nrodoc": "",
+              "email": "lizzie.leon.woodman@gmail.com",
+              "nrocedular": "",
+              "nombre": "Lizzie",
+              "apellido_paterno": "León",
+              "apellido_materno": "",
+              "id": "91cbe5d0-f0e1-7075-a239-fd488760d1dc",
+              "utm_source": "simulador hipotecario"
+            },
+            "metadata": {
+              "received_at": "2025-09-09T19:28:12.258Z",
+              "source": "make_webhook"
+            }
+          },
+          "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/LOGIN-MARKETPLACE-FINAL-UPDATE-FINAL",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-09T14:56:59.645Z",
+      "updatedAt": "2025-09-09T14:56:59.645Z",
+      "role": "workflow:owner",
+      "workflowId": "otlN6Ao2tMsQkEQR",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-10T00:11:44.968Z",
+  "versionId": "037d64d1-ba1c-4188-8eee-01bfc7a75d57"
+}
