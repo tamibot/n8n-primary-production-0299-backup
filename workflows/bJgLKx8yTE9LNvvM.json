@@ -1,0 +1,45 @@
+{
+  "active": true,
+  "connections": {},
+  "createdAt": "2025-09-10T00:13:04.492Z",
+  "id": "bJgLKx8yTE9LNvvM",
+  "isArchived": false,
+  "meta": null,
+  "name": "Proper - Cotizaciones DNI - Bitrix",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "proper-cotizacionesdni-bitrix",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "dceba98b-4eb7-49a5-9d54-d9cddd05de22",
+      "name": "Webhook",
+      "webhookId": "b623c622-4068-44a5-a595-02dc0a889141"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-10T00:13:04.492Z",
+      "updatedAt": "2025-09-10T00:13:04.492Z",
+      "role": "workflow:owner",
+      "workflowId": "bJgLKx8yTE9LNvvM",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-10T00:21:51.822Z",
+  "versionId": "8252b8e8-b0b5-4599-b801-58ccfc0b2014"
+}
