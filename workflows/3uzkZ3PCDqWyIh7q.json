@@ -83,7 +83,7 @@
       "main": [
         [
           {
-            "node": "Update a record1",
+            "node": "List records1",
             "type": "main",
             "index": 0
           }
@@ -108,11 +108,11 @@
         ]
       ]
     },
-    "Update a record1": {
+    "List records1": {
       "main": [
         [
           {
-            "node": "Create a record2",
+            "node": "Update a record1",
             "type": "main",
             "index": 0
           }
@@ -435,29 +435,26 @@
     {
       "parameters": {
         "authentication": "bitrixWebhookApi",
-        "operation": "update",
-        "id": "={{ $('List records').item.json.result[0].ID }}",
-        "fields": {
-          "values": [
-            {
-              "name": "STAGE_ID",
-              "value": "={{ $('Execute a SQL query').item.json.Bitrix___Produccion }}"
-            },
-            {
-              "name": "UF_CRM_1716382183688",
-              "value": "={{ $('Get list of leads').item.json._embedded.leads[0].id }}"
-            }
-          ]
+        "operation": "list",
+        "parameters": {
+          "filter": {
+            "property": [
+              {
+                "field": "CONTACT_ID",
+                "value": "={{ $json.result[0].ID }}"
+              }
+            ]
+          }
         }
       },
       "type": "n8n-nodes-bitrix.bitrix",
       "typeVersion": 1,
       "position": [
-        1504,
-        32
+        1520,
+        16
       ],
       "id": "d1622a0b-b2ec-4aaa-8b90-b276a90b5c73",
-      "name": "Update a record1",
+      "name": "List records1",
       "credentials": {
         "bitrixWebhookApi": {
           "id": "ROP1MNW41IyhXNQY",
@@ -468,23 +465,21 @@
     {
       "parameters": {
         "authentication": "bitrixWebhookApi",
+        "operation": "update",
+        "id": "={{ $json.result[0].ID }}",
         "fields": {
           "values": [
             {
-              "name": "TITLE",
-              "value": "={{ $('Get list of leads').item.json._embedded.leads[0].id }}"
-            },
-            {
               "name": "STAGE_ID",
-              "value": "C5:UC_6VML64"
-            },
-            {
-              "name": "CONTACT_IDS",
-              "value": "={{ $json.result }}"
+              "value": "={{ $('Execute a SQL query').item.json.Bitrix___Produccion }}"
             },
             {
               "name": "UF_CRM_1716382183688",
               "value": "={{ $('Get list of leads').item.json._embedded.leads[0].id }}"
+            },
+            {
+              "name": "ID",
+              "value": "={{ $json.result[0].ID }}"
             }
           ]
         }
@@ -496,7 +491,7 @@
         16
       ],
       "id": "ba4e7215-1a1a-441d-b427-43f9f62b3bbd",
-      "name": "Create a record2",
+      "name": "Update a record1",
       "credentials": {
         "bitrixWebhookApi": {
           "id": "ROP1MNW41IyhXNQY",
@@ -514,24 +509,22 @@
             "user-agent": "Make/production",
             "content-length": "0",
             "accept-encoding": "gzip, br, deflate",
-            "traceparent": "00-68b9df1c000000000c80a074e5542667-0c80a074e5542667-01",
-            "tracestate": "dd=t.dm:-0;t.tid:68b9df1c00000000;s:1;p:0c80a074e5542667",
-            "x-datadog-parent-id": "900896349398247015",
-            "x-datadog-sampling-priority": "1",
-            "x-datadog-tags": "_dd.p.tid=68b9df1c00000000,_dd.p.dm=-0",
-            "x-datadog-trace-id": "900896349398247015",
-            "x-forwarded-for": "54.80.47.193",
+            "traceparent": "00-68c029420000000032ad96b970d46190-32ad96b970d46190-00",
+            "tracestate": "dd=t.tid:68c0294200000000;t.dm:-1;s:0;p:32ad96b970d46190",
+            "x-datadog-parent-id": "3651740596073423248",
+            "x-datadog-sampling-priority": "0",
+            "x-datadog-tags": "_dd.p.tid=68c0294200000000",
+            "x-datadog-trace-id": "3651740596073423248",
+            "x-forwarded-for": "54.161.178.114",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "ErLBJQCHSQWROaHIozsQ6Q",
-            "x-real-ip": "54.80.47.193",
-            "x-request-start": "1757011740238"
+            "x-railway-request-id": "7e9jpCdtRamZYboHAax-fw",
+            "x-real-ip": "54.161.178.114",
+            "x-request-start": "1757423938081"
           },
           "params": {},
-          "query": {
-            "value": "21823499"
-          },
+          "query": {},
           "body": {},
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/kommo-bitrix-produccion",
           "executionMode": "production"
@@ -554,6 +547,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-04T19:39:00.817Z",
-  "versionId": "e0e4f55c-7480-4f47-ad09-591ea787b9e5"
+  "updatedAt": "2025-09-09T14:26:02.855Z",
+  "versionId": "7836eb69-1ef0-4517-9226-abc98ef0edca"
 }
