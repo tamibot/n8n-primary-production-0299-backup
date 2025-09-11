@@ -1,0 +1,174 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-10T15:08:50.441Z",
+  "id": "wYmpWFfhOtCztar9",
+  "isArchived": false,
+  "meta": null,
+  "name": "ParticipantesZoom",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "participanteszoom",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0419e2d8-3a7d-48ee-9178-0b0d41a62d82",
+      "name": "Webhook",
+      "webhookId": "adbe6404-9b46-4555-9518-2d8571ec7b8f"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        512,
+        0
+      ],
+      "id": "4ae04678-05a6-48f7-8e02-9f52e3f3b227",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f580d804-c391-4eb1-9f26-ab0ea5d08f1b",
+              "name": "",
+              "value": "={{ $json.query.participants }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "e377e471-70f1-4d82-9f47-c3f4f1bc451d",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "primary-production-0299.up.railway.app",
+            "user-agent": "Make/production",
+            "content-length": "757",
+            "accept-encoding": "gzip, br, deflate",
+            "content-type": "application/json",
+            "traceparent": "00-68c207fd0000000054c0c00094fabb50-54c0c00094fabb50-00",
+            "tracestate": "dd=t.tid:68c207fd00000000;t.dm:-1;s:0;p:54c0c00094fabb50",
+            "x-datadog-parent-id": "6107092203446385488",
+            "x-datadog-sampling-priority": "0",
+            "x-datadog-tags": "_dd.p.tid=68c207fd00000000",
+            "x-datadog-trace-id": "6107092203446385488",
+            "x-forwarded-for": "54.161.178.114",
+            "x-forwarded-host": "primary-production-0299.up.railway.app",
+            "x-forwarded-proto": "https",
+            "x-railway-edge": "railway/us-east4-eqdc4a",
+            "x-railway-request-id": "hyq1pob6TgemdjipezItjw",
+            "x-real-ip": "54.161.178.114",
+            "x-request-start": "1757546493508"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "zoom_data": {
+              "page_count": 1,
+              "page_size": 300,
+              "total_records": 2,
+              "next_page_token": "",
+              "participants": [
+                {
+                  "id": "UpwoRu5gTPeIr1zl9q1XmQ",
+                  "user_id": "16778240",
+                  "name": "Proper - Tu mejor (in)versión",
+                  "user_email": "info@propinvest.com.pe",
+                  "join_time": "2025-09-09T20:40:28Z",
+                  "leave_time": "2025-09-09T22:09:00Z",
+                  "duration": 5312,
+                  "registrant_id": "",
+                  "failover": false,
+                  "status": "in_meeting",
+                  "groupId": "",
+                  "internal_user": true
+                },
+                {
+                  "id": "UpwoRu5gTPeIr1zl9q1XmQ",
+                  "user_id": "33555456",
+                  "name": "Proper - Tu mejor (in)versión",
+                  "user_email": "info@propinvest.com.pe",
+                  "join_time": "2025-09-09T20:42:55Z",
+                  "leave_time": "2025-09-09T22:09:00Z",
+                  "duration": 5165,
+                  "registrant_id": "",
+                  "failover": false,
+                  "status": "in_meeting",
+                  "groupId": "",
+                  "internal_user": true
+                }
+              ]
+            },
+            "object_id": "87689245296"
+          },
+          "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/participanteszoom",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-10T15:08:50.441Z",
+      "updatedAt": "2025-09-10T15:08:50.441Z",
+      "role": "workflow:owner",
+      "workflowId": "wYmpWFfhOtCztar9",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-10T23:22:07.488Z",
+  "versionId": "472c1c7e-3c9e-47bc-99f5-6f1e2ddc3544"
+}
