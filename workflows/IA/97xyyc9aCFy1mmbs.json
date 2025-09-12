@@ -643,7 +643,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "RENTAS IA",
+  "name": "RENTAS IA - DAVID",
   "nodes": [
     {
       "parameters": {
@@ -2527,6 +2527,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-09-03T16:21:37.211Z",
-  "versionId": "876350a3-2c6c-441c-9f10-966a15724e30"
+  "updatedAt": "2025-09-11T20:56:50.124Z",
+  "versionId": "b0e54b68-79c6-444a-8b27-375e4c633cef"
 }
