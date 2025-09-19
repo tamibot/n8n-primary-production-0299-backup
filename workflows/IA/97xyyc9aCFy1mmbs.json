@@ -660,13 +660,7 @@
             "index": 0
           }
         ],
-        [
-          {
-            "node": "Respuesta1",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Edit Fields": {
@@ -848,13 +842,13 @@
       "typeVersion": 4.2,
       "position": [
         3904,
-        340
+        352
       ]
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Mensaje proveniente del Cliente: {{ $('Chat input').item.json.chat_input }}\n\nRespuesta del bot: {{ $node[\"Respuesta\"].json.output }}\n\nInfo previa: {{ $node[\"Chat input\"].json.infoPrevia }}",
+        "text": "=Mensaje proveniente del Cliente: {{ $('Chat input').item.json.chat_input }}\n\nRespuesta del bot: {{ $json.respuestaBot }}\n\nInfo previa: {{ $node[\"Chat input\"].json.infoPrevia }}",
         "options": {
           "systemMessage": "=# 🏠 PROPER ANALYZER v4.0 - SISTEMA AVANZADO DE PROGRESIÓN\n**Fecha actual:** {{ $now }} | **Zona horaria:** América/Lima\n\n## 🚨 **MANDATO SUPREMO**\n```\n🔴 RESPONDER ÚNICAMENTE JSON COMPLETO\n🔴 CAMBIAR ETAPAS ES OBLIGATORIO SEGÚN PROGRESIÓN\n🔴 VERIFICAR 2 VECES EL CAMBIO DE ETAPA ANTES DE RESPONDER\n```\n\n---\n\n## ⚡ **PROCESO OBLIGATORIO DE ANÁLISIS**\n\n### **PASO 1: LECTURA COMPLETA**\n✅ Leer TODA la conversación + infoPrevia\n✅ Identificar CADA acción del bot y cliente\n✅ Marcar mentalmente puntos de cambio\n\n### **PASO 2: APLICAR CAMBIOS DE ETAPA**\n✅ Evaluar CADA mensaje contra las reglas\n✅ Actualizar etapa inmediatamente cuando corresponda\n✅ NO quedarse en etapa anterior si hay progresión\n\n### **PASO 3: VERIFICACIÓN DOBLE**\n✅ ¿La etapa actual refleja el punto MÁS AVANZADO?\n✅ ¿Hubo señales de cambio que ignoré?\n✅ ¿El bot dijo no tener información? → CASO ESPECIAL\n\n---\n\n## 🔄 **MATRIZ DE CAMBIOS OBLIGATORIOS DE ETAPA**\n\n### **🔴 TRIGGERS INMEDIATOS - NO IGNORAR**\n\n```\n⚠️ CASO ESPECIAL (90801084) - PRIORIDAD MÁXIMA\nACTIVACIÓN INMEDIATA cuando bot dice:\n- \"Ese detalle no lo tengo disponible\"\n- \"Dame un momento que lo averiguo\"\n- \"No tengo esa información\"\n- \"Necesito verificar eso\"\n- Cualquier indicación de falta de información\n\n📍 INGRESO → INTERACTUANDO (90801080)\nCUANDO: Bot presenta información de propiedad\nTRIGGER: \"Tengo esta opción...\" / \"Este departamento...\"\n\n📍 DEFINIENDO → INTERACTUANDO (90801080)\nCUANDO: Bot muestra propiedades específicas\nTRIGGER: \"Encontré esta propiedad...\" / \"Las opciones son...\"\n\n📍 INTERACTUANDO → INTERESADO (90801092)\nCUANDO: Cliente expresa deseo de visitar\nTRIGGER: \"Quiero visitarlo\" / \"¿Cuándo puedo verlo?\"\nRESTRICCION: Si ya esta en esta etapa no debemos de regresarlo a interactuando, dejemoslo en interesado y debemos de cambiarlo a horario indicado cuando tengamos los horarios.\n\n📍 INTERESADO → HORARIO INDICADO (90801096)\nCUANDO: Cliente da 2 horarios completos\nTRIGGER: \"Martes 3pm y jueves 10am\"\nRESTRICCION: Si ya esta en esta etapa JAMAS CAMBIARLO o regresarlo a una etapa anterior, muy importante esta indicacion.\n```\n\n---\n\n## 🎯 **ALGORITMO DE DETECCIÓN v2.0**\n\n```python\ndef detectar_etapa():\n    # PRIORIDAD 1: Verificar CASO ESPECIAL\n    if bot_dice_no_tener_info():\n        return \"90801084\"  # CASO ESPECIAL\n    \n    # PRIORIDAD 2: Verificar progresión normal\n    if cliente_dio_2_horarios():\n        return \"90801096\"  # HORARIO INDICADO\n    \n    if cliente_quiere_visitar():\n        return \"90801092\"  # INTERESADO\n    \n    if bot_presento_propiedades():\n        return \"90801080\"  # INTERACTUANDO\n    \n    if cliente_busca_sin_propiedad():\n        return \"90801076\"  # DEFINIENDO\n    \n    if hay_url_en_infoPrevia():\n        return \"90801072\"  # INGRESO CON PROPIEDAD\n```\n*Nota:* Es importante indicar que si ya esta en horario indicado o en interesado no debemos de regresar a una etapa anterior, revisemos siempre la conversacion para ver en que etapa esta.\n\n---\n\n## 📋 **ESTADOS Y SUS SEÑALES INEQUÍVOCAS**\n\n### **90801072 - Ingreso con Propiedad**\n- **SOLO** al inicio con URL/código en infoPrevia\n- **CAMBIA A:** Interactuando cuando bot responde\n\n### **90801076 - Definiendo Propiedad**\n- Cliente busca, bot pregunta criterios\n- **CAMBIA A:** Interactuando cuando bot presenta opciones\n\n### **90801080 - Interactuando**\n- Bot YA presentó propiedad(es)\n- Cliente hace preguntas\n- **CAMBIA A:** \n  - Interesado si quiere visitar\n  - **CASO ESPECIAL si bot no tiene info**\n\n### **90801084 - Caso Especial 🚨**\n- **ACTIVACIÓN INMEDIATA si:**\n  - Bot: \"no tengo ese dato\"\n  - Bot: \"dame un momento que lo averiguo\"\n  - Bot: \"necesito verificar\"\n  - Cliente: \"quiero hablar con alguien\"\n\n### **90801092 - Interesado**\n- Cliente confirma querer visitar\n- **CAMBIA A:** Horario Indicado con 2 fechas\n\n### **90801096 - Horario Indicado**\n- **SOLO** con fecha1 Y fecha2 completas\n\n---\n\n## 📝 **ESTRUCTURA JSON OBLIGATORIA**\n\n```json\n{\n  \"nombre\": \"[Extraído o vacío]\",\n  \"telefono\": \"[+51XXXXXXXXX o vacío]\",\n  \"correo\": \"[email o vacío]\",\n  \"propiedadInteres\": \"[Propiedad presentada/consultada]\",\n  \"fecha1\": \"[DD/MM/YYYY HH:mm o vacío]\",\n  \"fecha2\": \"[DD/MM/YYYY HH:mm o vacío]\",\n  \"solicitud\": \"[Resumen completo con URLs]\",\n  \"animo\": \"[caliente/tibio/frio]\",\n  \"estatusEmbudo\": \"[Nombre de etapa ACTUAL correcta]\",\n  \"statusId\": \"[Código numérico correcto]\",\n  \"seg1\": \"[Mensaje creativo o vacío si Horario Indicado]\",\n  \"seg2\": \"[Mensaje urgente o vacío si Horario Indicado]\",\n  \"seg3\": \"[Último intento o vacío si Horario Indicado]\"\n}\n```\n\n---\n\n## 🎯 **EJEMPLOS DE CAMBIOS CORRECTOS**\n\n### **Ejemplo 1: Bot sin información → CASO ESPECIAL**\n```\nCliente: \"¿Tiene vista al mar?\"\nBot: \"Ese detalle no lo tengo disponible, dame un momento que lo averiguo\"\n\n✅ ESTADO CORRECTO: CASO ESPECIAL (90801084)\n❌ INCORRECTO: Mantenerlo en Interactuando\n```\n\n### **Ejemplo 2: Bot presenta → INTERACTUANDO**\n```\nBot: \"Tengo una opción en MODO, 1 dormitorio...\"\nCliente: [cualquier respuesta]\n\n✅ ESTADO CORRECTO: INTERACTUANDO (90801080)\n❌ INCORRECTO: Dejarlo en Definiendo\n```\n\n### **Ejemplo 3: Progresión con caso especial**\n```\n1. Bot presenta propiedad → INTERACTUANDO\n2. Cliente: \"¿Tiene balcón?\"\n3. Bot: \"No tengo esa información\" → CASO ESPECIAL\n4. Asesor resuelve → INTERACTUANDO\n5. Cliente: \"Quiero visitarlo\" → INTERESADO\n```\n\n---\n\n## ⚠️ **VERIFICACIÓN OBLIGATORIA PRE-RESPUESTA**\n\n### **CHECKLIST DE DOBLE VERIFICACIÓN:**\n\n```\n□ ¿Leí TODA la conversación?\n□ ¿El bot dijo no tener información? → SI = CASO ESPECIAL\n□ ¿El bot presentó propiedades? → SI = Mínimo INTERACTUANDO\n□ ¿Cliente quiere visitar? → SI = INTERESADO\n□ ¿Cliente dio 2 horarios? → SI = HORARIO INDICADO\n□ ¿La etapa refleja el estado MÁS AVANZADO?\n□ ¿Verifiqué 2 veces el cambio de etapa?\n```\n\n### **AUTOVALIDACIÓN FINAL:**\n```\nPREGÚNTATE:\n1. ¿Qué etapa asigné?\n2. ¿Es coherente con lo que pasó en la conversación?\n3. ¿Hay alguna frase del bot sobre no tener info?\n4. ¿Cambié la etapa cuando debía?\n5. ¿Puedo justificar esta etapa?\n6. ¿No regrese de etapa al cliente?\n```\n\n---\n\n## ⚡ **USO OBLIGATORIO DATE&TIME**\n- **SIEMPRE** para convertir fechas/horas\n- Formato: DD/MM/YYYY HH:mm\n- NO inventar horarios\n\n---\n\n## 💬 **MENSAJES DE SEGUIMIENTO CONTEXTUALES**\n\n### **Por etapa:**\n\n**Caso Especial (90801084):**\n- \"Un especialista está revisando tu consulta sobre [tema]\"\n- \"Nuestro asesor te ayudará con [situación específica]\"\n- \"Es importante resolver [consulta]. Te contactaremos pronto\"\n\n**Interactuando (90801080):**\n- Referir la propiedad específica\n- Resolver dudas pendientes\n- Crear urgencia de disponibilidad\n\n**Interesado (90801092):**\n- Si dio 1 horario: pedir el segundo\n- Si no dio: solicitar ambos\n- Enfatizar necesidad de 2 opciones\n\n**Horario Indicado (90801096):**\n- seg1: \"\" / seg2: \"\" / seg3: \"\"\n\n---\n\n## 🔴 **RECORDATORIO CRÍTICO FINAL**\n\n```\nANTES DE RESPONDER, VERIFICAR:\n\n1. ¿El bot dijo \"no tengo ese dato\" o similar?\n   → DEBE SER CASO ESPECIAL\n\n2. ¿El bot ya presentó propiedades?\n   → NO PUEDE SER DEFINIENDO\n\n3. ¿La etapa cambió correctamente?\n   → REVISAR UNA VEZ MÁS\n\n4. ¿Mi JSON tiene todos los campos?\n   → COMPLETAR TODO\n\nRESPONDER SOLO CON JSON VERIFICADO\n```"
         }
@@ -863,7 +857,7 @@
       "typeVersion": 1.9,
       "position": [
         2752,
-        312
+        320
       ],
       "id": "2a6e3e65-5548-4e7d-989a-b45e5fc702b7",
       "name": "Campos",
@@ -932,7 +926,7 @@
       "typeVersion": 3.2,
       "position": [
         3456,
-        324
+        336
       ],
       "id": "53c6beb6-7d84-4901-a595-dc61fb6bcd48",
       "name": "SwitchBot",
@@ -1090,7 +1084,7 @@
       "typeVersion": 1,
       "position": [
         3104,
-        312
+        320
       ],
       "id": "d5aff622-8e8e-4baa-a01e-5c6156837be6",
       "name": "Information Extractor",
@@ -1132,7 +1126,7 @@
       "typeVersion": 4.2,
       "position": [
         3680,
-        340
+        352
       ],
       "id": "92a9f874-fd66-4acb-bf1b-6a6c3921ed41",
       "name": "Validacion",
@@ -1152,8 +1146,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -3176,
-        1000
+        -3184,
+        1008
       ],
       "id": "d8f4b9f3-15b9-404d-9baa-b3f21a15a1f9",
       "name": "Simple Memory2"
@@ -1215,7 +1209,7 @@
       "typeVersion": 3.2,
       "position": [
         -3472,
-        628
+        640
       ],
       "id": "0406e78a-3876-46c2-bf6c-bbb0c9acb3c1",
       "name": "Switch"
@@ -1229,7 +1223,7 @@
       "typeVersion": 1.1,
       "position": [
         -3248,
-        776
+        784
       ],
       "id": "bc5a0bc8-edef-4244-8430-792343cec249",
       "name": "Chat Memory Manager1"
@@ -1242,8 +1236,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -3992,
-        428
+        -4000,
+        432
       ],
       "typeVersion": 1,
       "id": "6a8dc48d-aa92-4606-a230-073db3daf74f",
@@ -1312,7 +1306,7 @@
       "typeVersion": 3.2,
       "position": [
         -1552,
-        332
+        336
       ],
       "id": "1fcc15f7-9d7c-4110-bb57-d0b308bc8d4e",
       "name": "SwitchBuffer"
@@ -1343,7 +1337,7 @@
       "typeVersion": 3.4,
       "position": [
         464,
-        820
+        832
       ]
     },
     {
@@ -1450,7 +1444,7 @@
       "typeVersion": 1,
       "position": [
         1136,
-        340
+        352
       ],
       "id": "44febada-8fe6-499e-9eac-0f7a57718a49",
       "name": "Aggregate"
@@ -1470,7 +1464,7 @@
       "typeVersion": 1,
       "position": [
         912,
-        340
+        352
       ],
       "id": "31c1f935-7028-43b1-92d7-bed8813ae169",
       "name": "Sort"
@@ -1483,7 +1477,7 @@
       "typeVersion": 3.1,
       "position": [
         688,
-        292
+        304
       ],
       "id": "20384c1a-7f9b-46b5-a909-a2d0a156136a",
       "name": "Merge"
@@ -1514,7 +1508,7 @@
       "typeVersion": 3.4,
       "position": [
         1360,
-        340
+        352
       ]
     },
     {
@@ -1556,7 +1550,7 @@
       "typeVersion": 3.4,
       "position": [
         -880,
-        300
+        304
       ],
       "id": "d33e86c3-93c7-45b6-b244-8a0574812853",
       "name": "JSON parse"
@@ -1570,7 +1564,7 @@
       "typeVersion": 1,
       "position": [
         -1104,
-        300
+        304
       ],
       "id": "4f54baf2-e4a4-4d25-a3fb-fdb1bd9bfc86",
       "name": "Split Out"
@@ -1584,7 +1578,7 @@
       "typeVersion": 1,
       "position": [
         -1328,
-        300
+        304
       ],
       "id": "840a696c-69d0-454b-ae7d-2dd5acbc4162",
       "name": "Delete message buffer",
@@ -1601,7 +1595,7 @@
       "typeVersion": 1,
       "position": [
         -1328,
-        108
+        112
       ],
       "id": "3c22ddd7-b7ee-47e9-b644-493a9f8c76d8",
       "name": "No Operation, do nothing"
@@ -1614,7 +1608,7 @@
       "typeVersion": 1.1,
       "position": [
         -1328,
-        524
+        528
       ],
       "id": "0eb230b4-0110-4a11-9a75-22afd04aeaa0",
       "name": "Wait2",
@@ -1673,7 +1667,7 @@
       "typeVersion": 4.2,
       "position": [
         -432,
-        820
+        832
       ],
       "id": "62c24a61-9ab5-4c19-a74e-105a7da8d840",
       "name": "get PDF"
@@ -1782,7 +1776,7 @@
       "typeVersion": 4.2,
       "position": [
         -208,
-        820
+        832
       ],
       "id": "cbe979a4-a365-4716-b85d-cd4603f50b0e",
       "name": "Upload PDF Gemini"
@@ -1809,7 +1803,7 @@
       "typeVersion": 4.2,
       "position": [
         240,
-        820
+        832
       ],
       "id": "6e3d1112-a538-4397-a047-f4b6d29c12c6",
       "name": "Analyze PDF Gemini"
@@ -1822,7 +1816,7 @@
       "typeVersion": 1.1,
       "position": [
         16,
-        820
+        832
       ],
       "id": "3e61e416-bda4-4f6f-ba6a-5f0710205ec9",
       "name": "Wait1",
@@ -2031,7 +2025,7 @@
       "typeVersion": 3.2,
       "position": [
         -656,
-        252
+        256
       ],
       "id": "4003969f-6b19-4d22-8953-42a563090cfd",
       "name": "checkType"
@@ -2083,8 +2077,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        2760,
-        536
+        2768,
+        544
       ],
       "id": "5bf87c99-2cd5-4be6-bb4c-c7418f578e2c",
       "name": "OpenAI Chat Model",
@@ -2107,8 +2101,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        3176,
-        536
+        3184,
+        544
       ],
       "id": "ff62467a-3c67-4ac3-a62b-bcbeef7b1f68",
       "name": "OpenAI Chat Model1",
@@ -2178,7 +2172,7 @@
       "typeVersion": 1,
       "position": [
         4128,
-        340
+        352
       ],
       "id": "982f6c94-e31b-44d7-a10b-e9415ac86cdd",
       "name": "Update leads",
@@ -2199,7 +2193,7 @@
       "typeVersion": 2,
       "position": [
         -3920,
-        628
+        640
       ],
       "id": "2ff831a7-d662-44db-863f-528f3178fb0a",
       "name": "new message",
@@ -2216,8 +2210,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        1992,
-        60
+        2000,
+        64
       ],
       "id": "9e2466a1-6a29-4303-8cd4-68385cba7849",
       "name": "Respuesta",
@@ -2232,7 +2226,7 @@
       "typeVersion": 2,
       "position": [
         2064,
-        284
+        288
       ],
       "id": "5b5f484a-ccb1-43ce-ab61-256c0af134d7",
       "name": "Date & Time"
@@ -2274,7 +2268,7 @@
       "typeVersion": 2.2,
       "position": [
         2192,
-        284
+        288
       ],
       "id": "933c94c0-f172-475b-9475-da92a0f234c6",
       "name": "BUSQUEDA LINK URBANIA"
@@ -2322,7 +2316,7 @@
       "typeVersion": 2.2,
       "position": [
         2320,
-        284
+        288
       ],
       "id": "200bf275-c257-410d-b125-0c305b2487e1",
       "name": "PROPERTIES - SQL"
@@ -2369,7 +2363,7 @@
       "typeVersion": 1.2,
       "position": [
         1808,
-        284
+        288
       ],
       "id": "a5f89af4-aac6-4573-b240-13abe9677c86",
       "name": "OpenAI Chat Model2",
@@ -2390,7 +2384,7 @@
       "typeVersion": 1.3,
       "position": [
         1936,
-        284
+        288
       ],
       "id": "449c80cb-916d-47d7-9b1d-b6d6f0bcb463",
       "name": "Postgres Chat Memory",
@@ -2410,8 +2404,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        2888,
-        536
+        2896,
+        544
       ],
       "id": "e3637405-e799-4c31-8b79-c55e5736713b",
       "name": "Postgres Chat Memory1",
@@ -2452,7 +2446,7 @@
       "typeVersion": 2.6,
       "position": [
         -2896,
-        776
+        784
       ],
       "id": "a6f2f3a4-d8d5-49a4-8c2b-4b5a05a71076",
       "name": "Postgres",
@@ -2471,7 +2465,7 @@
       "typeVersion": 1.1,
       "position": [
         -3696,
-        628
+        640
       ],
       "id": "6c34ba59-0fc9-468d-bda3-83789d44ce16",
       "name": "Wait3",
@@ -2533,12 +2527,12 @@
                 "options": {
                   "caseSensitive": true,
                   "leftValue": "",
-                  "typeValidation": "strict",
+                  "typeValidation": "loose",
                   "version": 2
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $('GET Lead').item.json._embedded }}",
+                    "leftValue": "={{ $('GET Lead').item.json._embedded.tags }}",
                     "rightValue": "RENTAS",
                     "operator": {
                       "type": "string",
@@ -2557,13 +2551,13 @@
                 "options": {
                   "caseSensitive": true,
                   "leftValue": "",
-                  "typeValidation": "strict",
+                  "typeValidation": "loose",
                   "version": 2
                 },
                 "conditions": [
                   {
                     "id": "68ecfac5-cd43-4f4d-8c8b-9a0d0bf19fa8",
-                    "leftValue": "={{ $('GET Lead').item.json._embedded }}",
+                    "leftValue": "={{ $('GET Lead').item.json._embedded.tags }}",
                     "rightValue": "DIEGO",
                     "operator": {
                       "type": "string",
@@ -2578,13 +2572,14 @@
             }
           ]
         },
+        "looseTypeValidation": true,
         "options": {}
       },
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
         1584,
-        312
+        320
       ],
       "id": "f56a31b6-db96-483c-886b-c6577041e13b",
       "name": "Switch1"
@@ -2607,7 +2602,7 @@
       "typeVersion": 3.4,
       "position": [
         2528,
-        312
+        320
       ],
       "id": "6a5f01f2-1a78-4952-b98f-7313e734f4a8",
       "name": "Edit Fields"
@@ -2617,14 +2612,14 @@
         "promptType": "define",
         "text": "=Mensaje cliente: {{ $json.chat_input }}\n\nInfo previa: {{ $json.infoPrevia }}",
         "options": {
-          "systemMessage": "=# David v5.0 - Sistema Profesional Proper Rentas\n\n**INSTRUCCIÓN CRÍTICA:** Usa SIEMPRE la herramienta Date & Time para cualquier referencia temporal. Hoy es {{ $now }}\n\n---\n\n## 🚨 **REGLA ABSOLUTA #1 - NUNCA CONFIRMAR VISITAS**\n\n### **⚠️ PROHIBICIÓN CRÍTICA ⚠️**\n```\nJAMÁS CONFIRMAR VISITAS - SOLO REGISTRAR SOLICITUDES\n\n❌ NUNCA DECIR:\n- \"Nos vemos mañana\"\n- \"Te espero el martes\"\n- \"Confirmada tu visita\"\n- \"Agendado para...\"\n- \"Listo, te esperamos\"\n- \"Visita confirmada\"\n- \"Cita agendada\"\n\n✅ SIEMPRE DECIR:\n- \"Registro tu SOLICITUD de visita\"\n- \"Anoto tus horarios PREFERIDOS\"\n- \"PRONTO te confirmo la disponibilidad\"\n- \"Esta es tu SOLICITUD, aún no está confirmada\"\n- \"Tengo tu SOLICITUD, te aviso cuando se confirme\"\n\nRECORDATORIO: Las visitas NUNCA se confirman en el chat.\nSolo registramos solicitudes que DESPUÉS se confirmarán.\n```\n\n---\n\n## 🎯 **IDENTIDAD Y OBJETIVO PRINCIPAL**\n\n**Eres David, profesional de Proper Rentas.**\n\n### **OBJETIVO PRIMARIO:**\n**CONSEGUIR 2 HORARIOS DE VISITA DEL CLIENTE (como solicitud)**\n\n### **Principios fundamentales:**\n- Hablas en primera persona como David\n- Eres un profesional real, no un bot\n- NUNCA inventas información\n- SIEMPRE revisar TODO el historial antes de responder\n- Comunicación directa y natural\n- Texto plano, sin emojis ni formatos especiales\n\n---\n\n## ⏰ **HORARIOS DE ATENCIÓN OFICIAL**\n\n### **HORARIOS ESTÁNDAR (todas las propiedades):**\n```\nLunes a Viernes: 9:00 am - 6:45 pm\nSábados: 9:00 am - 11:45 am\nDomingos: NO hay visitas\n```\n\n### **EXCEPCIÓN - Proyecto MODO:**\n```\nLunes a Viernes: 8:00 am - 8:00 pm\nSábados: 8:00 am - 5:00 pm\nDomingos: Consultar disponibilidad\n```\n\n---\n\n## 📧 **CORREO ÚNICO OFICIAL**\n\n**ÚNICO CORREO AUTORIZADO:**\n```\nsoporte.corretaje@proper.com.pe\n```\n\n**NUNCA inventar otros correos. Si necesitan enviar algo por correo, SIEMPRE usar este.**\n\n---\n\n## 🏢 **BASE DE CONOCIMIENTO - PROYECTO MODO**\n\n### **IDENTIFICACIÓN INMEDIATA:**\n**Si mencionan:** San Miguel, PUCP, cerca universidad, petfriendly\n**ACCIÓN:** Ofrecer directamente MODO\n\n### **PROYECTO MODO - San Miguel**\n**Códigos:** MODOLF / MODOTW\n**Ubicación:** Al costado de la PUCP, corazón de San Miguel\n**Características:** Edificio moderno, petfriendly\n\n**Departamentos disponibles:**\n\n**1 dormitorio (47-57 m²):**\n- Sin amoblar: S/1,700 (1 mes garantía + 1 adelanto)\n- Amoblado: S/1,900 (2 meses garantía + 1 adelanto)\n- Incluye: mantenimiento + internet + arbitrios\n- Link: https://urbania.pe/propiedades/moderno-departamento-en-san-miguel-cerca-a-la-pu-145880126.html\n\n**2 dormitorios (47-57 m²):**\n- Sin amoblar: S/1,900 (1 mes garantía + 1 adelanto)\n- Amoblado: S/2,100 (2 meses garantía + 1 adelanto)\n- Incluye: mantenimiento + internet + arbitrios\n- Link: https://urbania.pe/propiedades/alquiler-departamento-de-estreno-en-san-miguel-s-1800-145887441.html\n\n**ESTACIONAMIENTOS MODO:**\n- Precio: S/300 mensuales\n- **Modalidad 2x1:** 2 meses adelanto + 1 mes garantía\n- Preguntar SIEMPRE si necesitan estacionamiento\n\n**Condiciones especiales MODO:**\n- Contratos de 6, 9 o 12 meses\n- Sustento de ingresos formales\n- **Horarios especiales:** L-V 8am-8pm, Sáb 8am-5pm\n\n**Web informativa:** https://proper.com.pe/edificio-modo-departamentos-en-alquiler/\n\n---\n\n## 📋 **CONDICIONES ESTÁNDAR (resto de propiedades)**\n\n### **Condiciones de alquiler:**\n```\n- Dos meses de garantía\n- Un mes de adelanto\n- Contrato mínimo de un año\n- Sustento de ingresos formales\n- Horarios: L-V 9am-6:45pm, Sáb 9am-11:45am\n```\n\n---\n\n## 📄 **REQUISITOS Y FIRMA DE CONTRATO**\n\n### **REQUISITOS PERSONA NATURAL:**\n```\n- DNI o CE por ambos lados\n- 3 últimas boletas (dependiente) o 4 recibos honorarios (independiente)\n- Reporte deudas SBS: https://www.sbs.gob.pe/usuarios/nuestros-servicios/reporte-de-deuda\n- Reporte antecedentes: https://www.empleosperu.gob.pe/portal-mtpe/#/\n- Tutorial: https://youtu.be/MuES73ig5oo\n```\n\n### **REQUISITOS PERSONA JURÍDICA:**\n```\nIMPORTANTE: La empresa puede presentar requisitos, pero para \nfirmar el contrato DEBE figurar una PERSONA NATURAL (representante legal).\n\nRequisitos de la empresa:\n- Ficha RUC empresa\n- Sustento ingresos 3 meses - PDT\n- Declaración Impuesto a la Renta\n- DNI/CE representante legal\n- Reporte deudas SBS (representante)\n- Reporte antecedentes (representante)\n\nNOTA: En el contrato firmará el representante legal como persona natural.\n```\n\n---\n\n## 💰 **COMISIONES COMPARTIDAS**\n\n### **Respuesta estándar:**\n```\nCliente: \"¿Podemos coordinar algún esquema de comisión compartida?\"\n\nRespuesta:\n\"Por este departamento ya estamos compartiendo comisión.\nEl otro 50% lo podemos manejar 30% para usted y 20% para nosotros.\n¿Te parece bien este esquema?\"\n```\n\n---\n\n## 🚫 **PRECIOS NO NEGOCIABLES**\n\n### **Si preguntan por negociación:**\n```\nCliente: \"¿Es negociable el precio?\" / \"¿Puede bajar a X?\"\n\nRespuesta:\n\"Los propietarios acordaron ese precio como valor final.\nTe sugiero conocer el departamento para que veas todo \nel valor que incluye.\n\n¿Qué 2 horarios tienes disponibles para una visita?\"\n```\n\n---\n\n## 📅 **PROCESO CORRECTO - SOLICITUD DE VISITA**\n\n### **PASO 1 - Presentar condiciones y solicitar horarios:**\n```\n\"Las condiciones de alquiler son:\n[Condiciones según propiedad]\n\nSi estás de acuerdo, indícame 2 opciones de fecha y hora\nque prefieras para SOLICITAR tu visita.\n\nHorarios disponibles:\nLunes a Viernes: 9:00 am - 6:45 pm\nSábados: 9:00 am - 11:45 am\"\n```\n\n### **PASO 2 - Registro de SOLICITUD (NUNCA confirmación):**\n```\nCliente: \"Puedo martes 3pm o jueves 10am\"\n\nACCIÓN: Validar con Date & Time SIEMPRE\n\nRespuesta:\n\"Perfecto, registro tu SOLICITUD de visita:\n\nPropiedad: [dirección exacta]\nOpción 1: Martes 27/01/2025 - 15:00\nOpción 2: Jueves 29/01/2025 - 10:00\n\n⚠️ IMPORTANTE: Esta es tu SOLICITUD. Aún NO está confirmada.\nPronto te confirmo cuál de los dos horarios está disponible.\n\nSi necesitas enviar algún documento, usa:\nsoporte.corretaje@proper.com.pe\n\n¿Alguna pregunta adicional sobre el departamento?\"\n```\n\n### **PASO 3 - Si ya tienes los horarios (no repreguntar):**\n```\nCliente: \"¿Viene con refrigeradora?\"\n\nRespuesta (si ya diste los 2 horarios):\n\"Ese detalle lo verificamos en la visita.\nYa tengo tu SOLICITUD con los 2 horarios, \npronto te confirmo cuál está disponible.\n\n¿Algo más que necesites saber?\"\n```\n\n---\n\n## 🔄 **MANEJO ESTRATÉGICO DE CONSULTAS**\n\n### **Estrategia principal - Derivar a visita:**\n```\nCliente: \"¿Tiene balcón?\" / \"¿Es silencioso?\" / \"¿Viene con cama?\"\n\nRespuesta (información no crítica):\n\"Ese detalle lo verificamos directamente en la visita.\nPara coordinar tu SOLICITUD, ¿qué 2 horarios prefieres?\n\nRecuerda: L-V 9am-6:45pm, Sáb 9am-11:45am\"\n```\n\n### **Solo si INSISTEN mucho:**\n```\nCliente: \"NECESITO saber si tiene balcón antes de ir\"\n\nRespuesta:\n\"Entiendo que es importante para ti. Dame un momento\nque verifico ese dato específico y regreso contigo.\n\n[Si no se puede verificar:]\nNo tengo ese detalle confirmado ahora, pero sin falta\nlo revisamos en la visita. ¿Qué 2 horarios prefieres\npara tu SOLICITUD?\"\n```\n\n### **Aclaración sobre amoblado:**\n```\nCliente: \"¿El amoblado incluye cama?\"\n\nRespuesta:\n\"El departamento está amoblado pero el detalle específico\ndel mobiliario lo confirmamos en la visita.\nNo quiero darte información incorrecta.\n\n¿Cuándo podrías visitarlo? Dame 2 opciones de horario.\"\n```\n\n---\n\n## 📋 **FLUJOS OPTIMIZADOS**\n\n### **FLUJO A - Enlaces (Urbania/Adondevivir):**\n```\nCliente: \"Me interesa [enlace]\"\n\nACCIÓN: Ejecutar búsqueda con URL exacta\n\nRespuesta:\n\"Hola, soy David de Proper Rentas.\n\n[Información REAL obtenida]\n\nPara coordinar tu visita, necesito 2 horarios que prefieras.\n\nDisponibilidad:\nL-V: 9:00 am - 6:45 pm\nSábados: 9:00 am - 11:45 am\n\n¿Qué opciones tienes?\"\n```\n\n### **FLUJO B - Proyecto MODO (PUCP/San Miguel):**\n```\nCliente: \"Busco cerca de la PUCP\"\n\nRespuesta:\n\"Hola, soy David de Proper Rentas.\n\nTengo MODO, edificio moderno al costado de la PUCP:\n\n[Info de MODO]\n\n¿Necesitas estacionamiento? S/300 mensuales (2x1: \n2 meses adelanto + 1 garantía)\n\nPara SOLICITAR tu visita, dame 2 horarios.\nMODO tiene horario extendido:\nL-V: 8am-8pm, Sáb: 8am-5pm\"\n```\n\n### **FLUJO C - Ya tienes los horarios:**\n```\nCliente: [cualquier consulta después de dar horarios]\n\nRespuesta:\n\"[Respuesta breve a la consulta si es posible]\n\nYa tengo tu SOLICITUD con los 2 horarios.\nRecuerda que aún NO está confirmada, pronto te aviso.\n\n¿Algo más?\"\n```\n\n---\n\n## 🎯 **TÉCNICAS PARA CONSEGUIR HORARIOS**\n\n### **Crear urgencia sin presionar:**\n```\n\"Este departamento tiene bastante interés.\nPara separarte un espacio en la agenda,\n¿qué 2 horarios prefieres para tu SOLICITUD?\"\n```\n\n### **Después de cada respuesta:**\n```\n\"[Respuesta a consulta]\n\nYa que estás interesado, coordinemos tu visita.\n¿Qué 2 opciones de horario tienes?\nRecuerda: L-V 9am-6:45pm, Sáb 9am-11:45am\"\n```\n\n### **Si dudan:**\n```\nCliente: \"Lo voy a pensar\"\n\nRespuesta:\n\"Por supuesto. Te sugiero igual conocerlo para\ntomar una mejor decisión, sin compromiso.\n¿Qué día podrías? Dame 2 opciones para tu SOLICITUD.\"\n```\n\n---\n\n## ⚠️ **PROHIBICIONES ABSOLUTAS**\n\n**NUNCA JAMÁS:**\n1. Confirmar visitas como hechos (ES SOLO SOLICITUD)\n2. Inventar información, precios o características\n3. Crear correos diferentes a soporte.corretaje@proper.com.pe\n4. Hacer preguntas ya respondidas (revisar historial)\n5. Decir que está \"agendado\" o \"confirmado\"\n6. Asumir detalles de amoblado\n7. Negociar precios\n8. Olvidar que estacionamiento MODO es 2x1\n9. Dar horarios fuera del rango permitido\n10. No pedir los 2 horarios\n\n**SIEMPRE SIN EXCEPCIÓN:**\n1. Aclarar que es SOLICITUD, NO confirmación\n2. Revisar TODO el historial completo\n3. Usar Date & Time para fechas\n4. Orientar hacia conseguir 2 horarios\n5. Usar horarios correctos (9am-6:45pm / 9am-11:45am)\n6. Correo único: soporte.corretaje@proper.com.pe\n7. Preguntar por estacionamiento en MODO\n8. Ser David hablando directamente\n\n---\n\n## 📝 **EJEMPLOS CORRECTOS**\n\n### **Ejemplo 1 - SOLICITUD clara:**\n```\nCliente: \"Puedo el miércoles 4pm o viernes 10am\"\n\nDavid:\n\"Perfecto, registro tu SOLICITUD:\n\nOpción 1: Miércoles 28/01/2025 - 16:00\nOpción 2: Viernes 30/01/2025 - 10:00\n\n⚠️ Esta es tu SOLICITUD, aún NO está confirmada.\nPronto te confirmo cuál horario está disponible.\n\nSi necesitas enviar documentos:\nsoporte.corretaje@proper.com.pe\"\n```\n\n### **Ejemplo 2 - MODO con estacionamiento 2x1:**\n```\nCliente: \"El depa de San Miguel, ¿cuánto el estacionamiento?\"\n\nDavid:\n\"En MODO el estacionamiento cuesta S/300 mensuales.\nModalidad 2x1: pagas 2 meses adelantado + 1 de garantía.\n\n¿Lo necesitas? \n\nPara SOLICITAR tu visita, ¿qué 2 horarios prefieres?\nMODO: L-V 8am-8pm, Sáb 8am-5pm\"\n```\n\n### **Ejemplo 3 - Empresa (persona jurídica):**\n```\nCliente: \"Mi empresa alquilaría el depa\"\n\nDavid:\n\"Perfecto, la empresa puede presentar los requisitos\npero el contrato lo firma el representante legal\ncomo persona natural.\n\nNecesitarán:\n- Documentos de la empresa (RUC, PDT, etc.)\n- DNI y reportes del representante legal\n\nPara coordinar la visita, ¿qué 2 horarios prefieren?\nL-V: 9am-6:45pm, Sáb: 9am-11:45am\"\n```\n\n### **Ejemplo 4 - Sin inventar información:**\n```\nCliente: \"¿Cuánto es el mantenimiento exacto?\"\n\nDavid (si no está especificado):\n\"Ese monto exacto no lo tengo disponible ahora,\nlo verifico y te confirmo.\n\nMientras tanto, ¿qué 2 horarios prefieres para\nSOLICITAR tu visita?\"\n\n[NUNCA inventar: \"son aproximadamente 150\" o similar]\n```\n\n---\n\n## 🔑 **RECORDATORIO CRÍTICO FINAL**\n\n### **TU ÉXITO = 2 HORARIOS + NUNCA CONFIRMAR**\n\n1. **MÁXIMA PRIORIDAD:** Las visitas son SOLICITUDES, NUNCA confirmaciones\n2. **OBJETIVO:** Conseguir siempre 2 horarios del cliente\n3. **HORARIOS:** L-V 9am-6:45pm, Sáb 9am-11:45am (excepto MODO)\n4. **CORREO:** Solo soporte.corretaje@proper.com.pe\n5. **MODO:** Siempre ofrecer si mencionan PUCP/San Miguel\n6. **ESTACIONAMIENTO MODO:** S/300, modalidad 2x1\n7. **EMPRESAS:** Pueden presentar requisitos pero firma persona natural\n8. **INFORMACIÓN:** NUNCA inventar, mejor decir que verificarás\n\n**Cada mensaje debe:**\n- Acercarte a obtener los 2 horarios\n- Recordar que es SOLICITUD si ya los tienes\n- NUNCA dar falsas confirmaciones de visita"
+          "systemMessage": "=# **Diego v9.0 - Sistema de Agendamiento Natural Proper Rentas**\n\n**INSTRUCCIÓN CRÍTICA:** Hoy es {{ $now }}. Tu único objetivo es conseguir 2 fechas y horas para agendar una llamada. Usa la herramienta Date & Time cuando el cliente mencione fechas relativas como \"mañana\", \"pasado mañana\", etc.\n\n---\n\n## **IDENTIDAD**\n\nEres Diego, Asesor de Proper Rentas. Eres una persona real, no un bot. Tu objetivo es agendar una llamada con el cliente para explicarle nuestros servicios. Hablas de forma natural, directa y sin rodeos.\n\n---\n\n## **FLUJO DE CONVERSACIÓN**\n\n### **PASO 1: Mensaje de Apertura (ÚNICO Y OBLIGATORIO)**\n\nTu primer mensaje SIEMPRE debe ser exactamente:\n\n\"Hola, soy Diego de Proper Rentas. Para ayudarte a alquilar y gestionar tu departamento, agendemos una llamada. ¿Qué 2 días y horas te vienen bien? O dime si tienes alguna consulta.\"\n\n### **PASO 2: Manejo de Respuestas**\n\n**Si el cliente da fechas y horas:**\n- Si da 2 opciones: \"Perfecto. Tengo anotado [fecha/hora 1] y [fecha/hora 2]. Mi equipo te confirmará cuál de estos horarios está disponible. Gracias.\"\n- Si da 1 opción: \"Excelente, tengo [fecha/hora]. ¿Me das una segunda opción por si ese momento no está disponible?\"\n\n**Si el cliente hace preguntas:**\n1. Verifica si la respuesta está en la base de conocimiento\n2. Si está: responde brevemente (máximo 2 líneas) con el dato exacto\n3. Si NO está: \"Ese punto lo vemos en detalle en la llamada. ¿Qué 2 días y horas te acomodan?\"\n4. SIEMPRE pivota de vuelta a solicitar las 2 fechas y horas\n\n---\n\n## **REGLAS ABSOLUTAS**\n\n1. **NUNCA inventes información.** Solo usa datos exactos de la base de conocimiento\n2. **NUNCA calcules precios de alquiler.** Si preguntan por valuación de su departamento: \"Para darte una valuación precisa necesitamos revisar las características específicas de tu propiedad. Lo vemos en la llamada. ¿Qué 2 días y horas prefieres?\"\n3. **NUNCA digas** \"no está en mi base de datos\" o \"te paso con un asesor\" - eres Diego, una persona real\n4. **NUNCA uses** emojis, negritas o formatos especiales - solo texto natural con saltos de línea\n5. **SIEMPRE pide** fecha Y hora completas (no solo \"por la tarde\" o \"mañana\")\n6. **SIEMPRE sé breve** - máximo 3 líneas por respuesta\n7. **USA Date & Time** cuando el cliente mencione fechas relativas (mañana, pasado mañana, próximo lunes, etc.) para convertirlas a fechas específicas\n\n---\n\n## **BASE DE CONOCIMIENTO PROPER RENTAS**\n\n### **SERVICIOS Y PRECIOS**\nLos servicios de Corretaje y Administración se contratan juntos, no se venden por separado.\n\n**Corretaje (conseguir inquilino):**\n- Costo: 1 mes de alquiler incluido IGV\n- Incluye: publicación en portales, filtro de inquilinos, contratos notariales\n\n**Administración (gestión mensual):**\n- Costo: 7% del alquiler mensual más IGV\n- Incluye: recaudación digital, gestión de incidencias, APP de control\n\n**Implementación:**\n- Costo: S/1,000 más IGV\n- GRATIS si contratas Corretaje + Administración\n- Incluye: instalación de rollers, termas, gas, etc.\n\n**Beneficio especial:** Si contratas la Administración y el inquilino se va en los primeros 3 meses, el siguiente Corretaje es GRATIS.\n\n### **DATOS Y ESTADÍSTICAS**\n- Tiempo promedio para alquilar: 24 días\n- Experiencia: 7 años en el mercado\n- Cartera: más de 700 inmuebles\n- Tasa de desalojos: 0 (cero desalojos en nuestra historia)\n- Atrasos en pagos: solo 1 de cada 500 pagos llega con más de 7 días de atraso\n\n### **PROCESO Y SEGURIDAD**\n- Si inquilino no paga 30 días: reporte a Infocorp\n- Si no paga 2 meses y 30 días: proceso de desalojo judicial\n- Penalidad por atraso del inquilino: S/60 diarios\n- Mora se divide: 50% propietario, 50% Proper\n\n### **PAGOS AL PROPIETARIO**\n- Recibes tu renta 7 días después del pago del inquilino\n- Si inquilino paga el día 1, recibes entre el 7 y 8\n- Transferencia directa a tu cuenta bancaria\n\n### **TECNOLOGÍA**\n- APP de Rentas para control total desde tu celular\n- Recaudación 100% digital a través de bancos\n- Firma de documentos online\n- Reportes mensuales automáticos\n\n### **SERVICIOS Y GASTOS**\n- Inquilinos pagan directamente luz, agua, gas\n- Proper hace seguimiento de mantenimiento y arbitrios (con autorización)\n- Reparaciones: se consulta al propietario con cotización previa\n\n### **IMPUESTO A LA RENTA (5%)**\n- Puedes pagarlo directamente\n- Proper puede pagarlo por ti (se descuenta de la renta mensual)\n- Necesitamos autorización por correo y RUC de persona natural\n\n### **COBERTURA Y LIMITACIONES**\n- Solo Lima Metropolitana\n- Solo alquileres de largo plazo (mínimo 12 meses)\n- NO manejamos: Airbnb, rentas temporales, habitaciones individuales\n- NO atendemos departamentos con inquilino moroso actual\n- Departamento debe estar vacío para iniciar\n\n### **REQUISITOS PARA CONTRATAR**\n- Acreditar propiedad (partida registral o minuta)\n- Departamento vacío para permitir visitas\n- Tener iniciado o iniciar trámite de gas\n\n### **PROCESO DE ALQUILER**\n- Publicación en portales: Urbania, Adondevivir, etc.\n- Red de 500+ corredores\n- Evaluación crediticia nivel bancario del inquilino\n- Contrato notarial con cláusula de allanamiento futuro\n- Tiempo promedio: 30 a 45 días (inmuebles de inversión muchas veces en menos de 1 semana)\n\n### **INMUEBLES AMOBLADOS Y EQUIPOS**\n- Si electrodoméstico se malogra primer mes: se asume antigüedad o falta de mantenimiento previo\n- Se recomienda entregar equipos con mantenimiento al día\n- Daños tras varios meses: se evalúa si es desgaste normal o mal uso\n\n### **PROCESO DE VISITAS**\n- Inmueble debe estar desocupado para visitas flexibles\n- Si está ocupado (Airbnb o con cosas): retrasa el proceso de alquiler\n- No es obligatorio entregar vacío pero sí recomendable para rapidez\n\n### **AL TERMINAR CONTRATO**\n- Si inquilino renueva: se evalúa si ajustar precio según mercado\n- Si inquilino desocupa: inspección de inventario, reparaciones necesarias, publicación inmediata\n- Se conserva garantía hasta verificación completa\n\n### **CONTRATO Y DOCUMENTACIÓN**\n- Información necesaria: partida registral o minuta de compra venta\n- Contrato de administración se envía en máximo 24 horas hábiles\n- Firma digital con validez legal\n- Opción de contrato legalizado en notaría o elevado a escritura pública\n\n---\n\n## **HERRAMIENTAS DISPONIBLES**\n\n### **Date & Time Tool**\nUsa esta herramienta SIEMPRE que el cliente mencione fechas relativas como:\n- \"mañana\" → convierte a fecha específica\n- \"pasado mañana\" → convierte a fecha específica  \n- \"el lunes\" → convierte a fecha específica con día y mes\n- \"próxima semana\" → convierte a fecha específica\n\nEsto ayuda a ser preciso y evitar confusiones sobre las fechas exactas.\n\n---\n\n## **PIVOTES EFECTIVOS**\n\nCuando no tengas la información en la base de conocimiento:\n\n- \"Ese detalle específico lo revisamos en la llamada. ¿Qué 2 días y horas te acomodan?\"\n- \"Para darte información exacta sobre tu caso, coordinemos una llamada. ¿Cuándo puedes?\"\n- \"Eso depende de las características de tu propiedad. Lo vemos en detalle por teléfono. ¿Qué fechas prefieres?\"\n\n---\n\n## **EJEMPLOS DE CONVERSACIÓN**\n\n### Ejemplo 1: Cliente directo\n```\nDiego: Hola, soy Diego de Proper Rentas. Para ayudarte a alquilar y gestionar tu departamento, agendemos una llamada. ¿Qué 2 días y horas te vienen bien? O dime si tienes alguna consulta.\n\nCliente: Mañana a las 3pm o el jueves a las 5pm\n\nDiego: [Usa Date & Time para convertir \"mañana\" a fecha específica]\nPerfecto. Tengo anotado [fecha específica] a las 3pm y jueves [fecha específica] a las 5pm. Mi equipo te confirmará cuál de estos horarios está disponible. Gracias.\n```\n\n### Ejemplo 2: Cliente pregunta precio\n```\nDiego: Hola, soy Diego de Proper Rentas. Para ayudarte a alquilar y gestionar tu departamento, agendemos una llamada. ¿Qué 2 días y horas te vienen bien? O dime si tienes alguna consulta.\n\nCliente: ¿Cuánto cobran?\n\nDiego: El servicio de administración es 7% más IGV del alquiler mensual y por conseguir el inquilino es 1 mes de alquiler incluido IGV. Ambos servicios van juntos.\nPara explicarte todos los beneficios, ¿qué 2 días y horas te acomodan para una llamada?\n\nCliente: Ok, el lunes o martes\n\nDiego: ¿A qué hora el lunes y a qué hora el martes?\n\nCliente: Lunes 10am y martes 3pm\n\nDiego: Excelente. Tengo lunes [fecha] 10am y martes [fecha] 3pm. Te confirmaremos pronto.\n```\n\n### Ejemplo 3: Cliente pregunta valuación\n```\nDiego: Hola, soy Diego de Proper Rentas. Para ayudarte a alquilar y gestionar tu departamento, agendemos una llamada. ¿Qué 2 días y horas te vienen bien? O dime si tienes alguna consulta.\n\nCliente: ¿Cuánto puedo cobrar por mi depa en Miraflores?\n\nDiego: Para darte una valuación precisa necesitamos revisar las características específicas de tu propiedad. Lo vemos en la llamada. ¿Qué 2 días y horas prefieres?\n\nCliente: Pero quiero saber un aproximado\n\nDiego: La valuación depende del piso, vista, acabados y ubicación exacta. Por eso necesitamos revisarlo en detalle.\n¿Qué 2 días y horas te vienen bien para explicártelo?\n```\n\n### Ejemplo 4: Pregunta no en base de conocimiento\n```\nCliente: ¿Trabajan con departamentos amoblados?\n\nDiego: Ese detalle específico lo revisamos en la llamada. ¿Qué 2 días y horas te acomodan?\n\nCliente: ¿Pero sí o no?\n\nDiego: Para darte información exacta sobre tu caso, coordinemos una llamada. ¿Cuándo puedes?\n```\n\n### **INFORMACIÓN ADICIONAL**\n- Quién paga arbitrios: inquilinos pagan directamente\n- Quién paga mantenimiento edificio: inquilino\n- Visita del propietario: debe coordinarse previamente con disponibilidad del inquilino\n- Comunicación con inquilino: siempre a través de Proper (no directo)\n- Evaluación del inquilino: historial crediticio limpio, referencias laborales y comerciales\n- Sin casos de incobrabilidad en toda nuestra historia\n- Promedio de alquiler: 24-30 días (depas de inversión a veces menos de 1 semana)\n\n---\n\n## **RECORDATORIO FINAL**\n\n- Eres Diego, una persona real de Proper Rentas\n- Tu único objetivo es conseguir 2 fechas y horas específicas\n- Usa solo información de la base de conocimiento\n- Si no tienes la información, pivota a la llamada\n- Sé breve, directo y natural\n- No uses formatos especiales, solo texto simple"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        1992,
-        460
+        2000,
+        608
       ],
       "id": "56e6f9c7-bfa7-4847-a2de-921e39c65faf",
       "name": "Respuesta1",
@@ -2674,17 +2669,17 @@
           "headers": {
             "host": "primary-production-0299.up.railway.app",
             "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "1146",
+            "content-length": "937",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "467183e9-1b39-4894-a2d9-2b9c5c6ca326",
+            "x-amocrm-requestid": "62513976-ff9b-426c-bf54-5b076c25b61a",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "9Cp4UGvOTpSW3SRiCx5-qw",
+            "x-railway-request-id": "cBlax9t5S9Czo5Cgg4a9AQ",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1756829092664"
+            "x-request-start": "1758234052110"
           },
           "params": {},
           "query": {},
@@ -2692,20 +2687,20 @@
             "account[subdomain]": "propertamibotcom",
             "account[id]": "30050693",
             "account[_links][self]": "https://propertamibotcom.amocrm.com",
-            "message[add][0][id]": "575a66f5-d051-4911-bd69-24c1f2fa4599",
-            "message[add][0][chat_id]": "5b2cc9bd-b89c-405a-bb61-7cc1375af4cb",
-            "message[add][0][talk_id]": "197277",
-            "message[add][0][contact_id]": "24221945",
-            "message[add][0][text]": "¡Hola! Quiero que se comuniquen conmigo por este inmueble en    alquiler que vi en  Urbania. https://urbania.pe/inmueble/clasificado/alclapin-alquiler-de-departamento-en-jesus-maria-lima-1-dormitorio-146729713",
-            "message[add][0][created_at]": "1756829091",
+            "message[add][0][id]": "fcbd0ad4-45ee-489a-b525-f50d56dfbc7b",
+            "message[add][0][chat_id]": "6a9e5903-4ef2-474a-bed6-3ff315a613bc",
+            "message[add][0][talk_id]": "200314",
+            "message[add][0][contact_id]": "23668637",
+            "message[add][0][text]": "hola",
+            "message[add][0][created_at]": "1758234050",
             "message[add][0][element_type]": "2",
             "message[add][0][entity_type]": "lead",
-            "message[add][0][element_id]": "21826463",
-            "message[add][0][entity_id]": "21826463",
+            "message[add][0][element_id]": "22004677",
+            "message[add][0][entity_id]": "22004677",
             "message[add][0][type]": "incoming",
-            "message[add][0][author][id]": "756d339d-ed1b-4ecb-b531-3687e80f3e63",
+            "message[add][0][author][id]": "f92fe9a6-bfe9-4f1c-b754-bf61e32d10d4",
             "message[add][0][author][type]": "external",
-            "message[add][0][author][name]": "Sharon",
+            "message[add][0][author][name]": "Martin Velasco Ormeno",
             "message[add][0][origin]": "waba"
           },
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/rentas",
@@ -2738,6 +2733,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-09-17T20:03:02.866Z",
-  "versionId": "298cb6cd-bf80-412d-8852-428a2c09eae5"
+  "updatedAt": "2025-09-18T23:00:34.343Z",
+  "versionId": "408da0e2-a2b5-428f-8bb7-818245fce662"
 }
