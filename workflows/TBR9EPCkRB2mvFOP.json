@@ -1,0 +1,81 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get list of leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-20T13:52:50.808Z",
+  "id": "TBR9EPCkRB2mvFOP",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "horarioLlamadasPropietarios",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "horarioLlamadaPropietarios",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "07f8b792-0b0e-4c4e-a407-0a77bad025d4",
+      "name": "Webhook",
+      "webhookId": "2171d65f-867e-4340-9530-a048c2c99f38"
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "leads",
+        "filter": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "4cd43131-9a3d-4138-a28b-a53dacbd29d4",
+      "name": "Get list of leads",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-20T13:52:50.808Z",
+      "updatedAt": "2025-09-20T13:52:50.808Z",
+      "role": "workflow:owner",
+      "workflowId": "TBR9EPCkRB2mvFOP",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-20T13:53:04.230Z",
+  "versionId": "7b567f16-c18f-4f91-9da4-6758ba03b627"
+}
