@@ -1,0 +1,528 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kommo API Node": {
+      "main": [
+        [
+          {
+            "node": "Kommo API Node1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kommo API Node1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Kommo API Node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert rows in a table": {
+      "main": [
+        [
+          {
+            "node": "Send email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-22T06:25:15.789Z",
+  "id": "7PLnoUk2oopeg3xw",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "DAVID - HORARIO MODO",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "david-modo",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "de81debc-81f5-4a8c-a60b-4ac96d4dd2f1",
+      "name": "Webhook",
+      "webhookId": "2f43721a-6e19-4cf6-8b45-6300420cb2ed"
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "leads",
+        "filter": {
+          "id": "={{ $json.body?.['leads[add][0][id]'] ?? $json.body?.['leads[status][0][id]'] }}"
+        },
+        "options": {
+          "with": [
+            "contacts"
+          ]
+        },
+        "limit": 1
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        448,
+        0
+      ],
+      "id": "cc05d731-b650-4055-9e00-dfdb46982a81",
+      "name": "Kommo API Node",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "21f0faaf-ceb5-4138-91cd-6c288f47ab96",
+              "name": "telefono",
+              "value": "={{$json._embedded.contacts[0].custom_fields_values\n  .find(f => f.field_code === \"PHONE\").values[0].value}}",
+              "type": "string"
+            },
+            {
+              "id": "1552d482-8a09-4b3d-a951-228e45f81903",
+              "name": "fechaMODO",
+              "value": "={{ \n  ($('Kommo API Node').item.json._embedded.leads[0].custom_fields_values || [])\n    .find(f => (f.field_name || '').trim() === 'n8n - fechaMODO')\n    ?.values?.[0]?.value || '' \n}}",
+              "type": "string"
+            },
+            {
+              "id": "d74b2a87-23f5-4801-a3c9-425412a71f6a",
+              "name": "utm_source",
+              "value": "BOT IA - MODO",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        880,
+        0
+      ],
+      "id": "3470bf23-060f-461f-85a6-cb122b2ba970",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "contacts",
+        "filter": {
+          "id": "={{ $json._embedded.leads[0]._embedded.contacts[0].id }}"
+        },
+        "options": {},
+        "limit": 1
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        672,
+        0
+      ],
+      "id": "936a1f27-aca3-4801-b304-885f451179d8",
+      "name": "Kommo API Node1",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8645f397-dcc0-42c2-a93e-39ce5084ea6a",
+              "name": "fechaMODO_formateada",
+              "value": "={{ DateTime\n   .fromFormat($json.fechaMODO, 'dd/LL/yyyy HH:mm', { zone: 'America/Lima' })\n   .minus({ hours: 4 })\n   .toFormat('yyyy-LL-dd HH:mm') \n}}",
+              "type": "string"
+            },
+            {
+              "id": "dcbfb20d-6144-43fd-ba15-b3ae6d3a51c7",
+              "name": "telefono_formateado",
+              "value": "={{ String($json.telefono).replace(/^\\+?51/, '') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1104,
+        0
+      ],
+      "id": "fb08cd0a-5eec-4cda-bab2-2439c0dac642",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "ed5c7c54-0b0e-4256-9e50-e1c304304c9c",
+      "name": "Wait",
+      "webhookId": "3969b4e4-717d-485c-a3cb-6c66a66bab39"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "rentas_crm",
+          "mode": "list",
+          "cachedResultName": "rentas_crm"
+        },
+        "table": {
+          "__rl": true,
+          "value": "visitas",
+          "mode": "list",
+          "cachedResultName": "visitas"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "agregar_alquileres": false,
+            "cliente_asistio": false,
+            "codigo_inmueble": "MODO",
+            "estado": "Pendiente",
+            "id": "={{ 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) { var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8); return v.toString(16); }) }}",
+            "fecha_programada": "={{ $json.fechaMODO_formateada }}",
+            "formulario": "=Inquilino interesado",
+            "celular": "={{ $('Edit Fields').item.json.telefono }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "codigo_inmueble",
+              "displayName": "codigo_inmueble",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fecha_programada",
+              "displayName": "fecha_programada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "inicio",
+              "displayName": "inicio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fin",
+              "displayName": "fin",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "duracion",
+              "displayName": "duracion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "formulario",
+              "displayName": "formulario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "celular",
+              "displayName": "celular",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "agregar_alquileres",
+              "displayName": "agregar_alquileres",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "calendar_id",
+              "displayName": "calendar_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tiempo_reunion",
+              "displayName": "tiempo_reunion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "foto_inicio",
+              "displayName": "foto_inicio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "foto_fin",
+              "displayName": "foto_fin",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cliente_asistio",
+              "displayName": "cliente_asistio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "inmueble_id",
+              "displayName": "inmueble_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1312,
+        0
+      ],
+      "id": "a69e0392-2a78-4e64-a689-701dd836c091",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "TamiBot - MODO <tamibotperu@gmail.com>",
+        "toEmail": "mvelascoo@tamibot.com",
+        "subject": "=TamiBot - MODO - Nueva Visita -  {{ $json.celular }} - {{ $('Edit Fields').item.json.fechaMODO }}",
+        "emailFormat": "text",
+        "text": "=Se registra nueva solicitud de visita del cliente:\n\nNombre: {{ $('Kommo API Node1').item.json._embedded.contacts[0].name }}\nTelefono: {{ $('Edit Fields').item.json.telefono }}\nFecha: {{ $('Edit Fields').item.json.fechaMODO }}\nURL Kommo: https://propertamibotcom.kommo.com/leads/detail/{{ $('Kommo API Node').item.json._embedded.leads[0].id }}\n\nFavor confirmar ",
+        "options": {
+          "appendAttribution": true
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1520,
+        0
+      ],
+      "id": "e44a3f78-1cd7-4ab5-a3b8-58a4120a35d3",
+      "name": "Send email",
+      "webhookId": "67dc1ca1-49c8-4a1b-b450-d097e8bd1489",
+      "credentials": {
+        "smtp": {
+          "id": "1VmOAxpSVwjt9JAy",
+          "name": "SMTP account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "primary-production-0299.up.railway.app",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "314",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "57e575c5-a06f-4e8f-b23d-08105e9bd7ff",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "primary-production-0299.up.railway.app",
+            "x-forwarded-proto": "https",
+            "x-railway-edge": "railway/us-east4-eqdc4a",
+            "x-railway-request-id": "vR26tr-1TBKvQEzlCx5-qw",
+            "x-real-ip": "169.150.216.79",
+            "x-request-start": "1758528021972"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[status][0][id]": "22004677",
+            "leads[status][0][status_id]": "92800052",
+            "leads[status][0][pipeline_id]": "11240224",
+            "leads[status][0][old_status_id]": "90801080",
+            "leads[status][0][old_pipeline_id]": "11240224",
+            "account[id]": "30050693",
+            "account[subdomain]": "propertamibotcom"
+          },
+          "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/david-modo",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-22T06:25:15.789Z",
+      "updatedAt": "2025-09-22T06:25:15.789Z",
+      "role": "workflow:owner",
+      "workflowId": "7PLnoUk2oopeg3xw",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-09-22T06:25:14.306Z",
+      "updatedAt": "2025-09-22T06:25:14.306Z",
+      "id": "SAC5Y0KRuxIFToZ4",
+      "name": "DAVID"
+    },
+    {
+      "createdAt": "2025-08-01T18:41:06.465Z",
+      "updatedAt": "2025-08-01T18:41:06.465Z",
+      "id": "94z6tcDoVU8DriEW",
+      "name": "IA"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-22T08:46:55.997Z",
+  "versionId": "1e5b2c37-3e4a-48d6-8bc5-977464b15e35"
+}
