@@ -54,7 +54,7 @@
       "main": [
         [
           {
-            "node": "Insert or update rows in a table",
+            "node": "Execute a SQL query",
             "type": "main",
             "index": 0
           }
@@ -216,6 +216,39 @@
           }
         ]
       ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Insert or update rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-09-23T04:15:40.700Z",
@@ -344,7 +377,7 @@
             {
               "id": "1ffd7449-5232-40fd-8fe0-5b6520736d1f",
               "name": "etapa",
-              "value": "={{ $json.etapa }}",
+              "value": "={{ $('Edit Fields1').item.json.etapa }}",
               "type": "string"
             },
             {
@@ -455,7 +488,7 @@
             {
               "id": "9cd639ed-d911-486c-8770-5fbe6f7e9670",
               "name": "etapa",
-              "value": "={{\n  (()=>{\n    const statuses =\n      $('HTTP Request').item.json?._embedded?.statuses ??\n      $('HTTP Request').item.json?.[0]?._embedded?.statuses ??\n      [];\n    const idx = $itemIndex; // índice actual del branch\n    const statusId = $items('Filter')[idx].json.status_id; // mismo índice\n    const hit = statuses.find(s => String(s.id) === String(statusId));\n    return hit?.name || '';\n  })()\n}}",
+              "value": "={{\n  (() => {\n    const statuses = $('HTTP Request').item.json?._embedded?.statuses ?? [];\n    const statusId = $('Split Out1').item.json.status_id;\n    const hit = statuses.find(s => String(s.id) === String(statusId));\n    return hit?.name || '';\n  })()\n}}",
               "type": "string"
             }
           ]
@@ -489,19 +522,27 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "id": "={{ $json.idKommo }}",
-            "nombre": "={{ $json.nombre }}",
-            "telefono": "={{ $json.telefono }}",
-            "fechaCreacion": "={{ new Date($json.fechaCreacion * 1000).toISOString().replace('T',' ').substring(0,19) }}",
-            "statusID": "={{ $json.statusID }}",
-            "codInmueble": "={{ $json.codInmueble }}",
-            "idKommo": "={{ $json.idKommo }}",
-            "origen": "={{ $json.origen }}",
-            "etapa": "={{ $json.etapa }}",
+            "id": "={{ $('Edit Fields').item.json.idKommo }}",
+            "nombre": "={{ $('Edit Fields').item.json.nombre }}",
+            "telefono": "={{ $('Edit Fields').item.json.telefono }}",
+            "fechaCreacion": "={{ new Date($('Edit Fields').item.json.fechaCreacion * 1000).toISOString().replace('T',' ').substring(0,19) }}",
+            "statusID": "={{ $('Edit Fields').item.json.statusID }}",
+            "codInmueble": "={{ $('Edit Fields').item.json.codInmueble }}",
+            "idKommo": "={{ $('Edit Fields').item.json.idKommo }}",
+            "origen": "={{ $('Edit Fields').item.json.origen }}",
+            "etapa": "={{ $('Edit Fields').item.json.etapa }}",
             "nc_order": 0,
-            "fecha1": "={{ $json.fecha1 }}",
-            "fecha2": "={{ $json.fecha2 }}",
-            "fecha_modo": "={{ $json.fechaMODO }}"
+            "fecha1": "={{ $('Edit Fields').item.json.fecha1 }}",
+            "fecha2": "={{ $('Edit Fields').item.json.fecha2 }}",
+            "fecha_modo": "={{ $('Edit Fields').item.json.fechaMODO }}",
+            "dio_horario": "={{ $json.dio_horario }}",
+            "agendo_visita": "={{ $json.agendo_visita }}",
+            "inmueble_entregado": "={{ $json.inmueble_entregado }}",
+            "realizo_visita": "={{ $json.realizo_visita }}",
+            "inmueble_identificado": "={{ $json.inmueble_identificado }}",
+            "caso_especial": "={{ $json.caso_especial }}",
+            "fecha_mes": "={{ $json.fecha_mes }}",
+            "fecha_dia": "={{ $json.fecha_dia }}"
           },
           "matchingColumns": [
             "id"
@@ -704,6 +745,46 @@
               "type": "boolean",
               "canBeUsedToMatch": false,
               "removed": false
+            },
+            {
+              "id": "inmueble_identificado",
+              "displayName": "inmueble_identificado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "caso_especial",
+              "displayName": "caso_especial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "fecha_mes",
+              "displayName": "fecha_mes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "fecha_dia",
+              "displayName": "fecha_dia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -714,7 +795,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2016,
+        2592,
         48
       ],
       "id": "1a8576e0-7c93-404f-b24b-c2333a33c8fb",
@@ -1145,15 +1226,23 @@
             },
             {
               "name": "filter[created_at][from]",
-              "value": "1758344400"
+              "value": "1756702800"
             },
             {
               "name": "filter[created_at][to]",
-              "value": "1758690000"
+              "value": "={{ Math.floor(new Date(new Date($now).setHours(0,0,0,0) + 24*60*60*1000).getTime() / 1000) }}"
             },
             {
               "name": "filter[pipeline_id][]",
               "value": "11240224"
+            },
+            {
+              "name": "limit",
+              "value": "250"
+            },
+            {
+              "name": "page",
+              "value": "1"
             }
           ]
         },
@@ -1170,6 +1259,23 @@
           "response": {
             "response": {
               "responseFormat": "json"
+            }
+          },
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "page",
+                    "value": "={{ ($response?.body?._page || 1) + 1 }}"
+                  }
+                ]
+              },
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ !$response.body?._links?.next?.href }}",
+              "limitPagesFetched": true,
+              "maxRequests": 10,
+              "requestInterval": 5
             }
           }
         }
@@ -1246,6 +1352,117 @@
           "name": "Proper"
         }
       }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5e1bb824-6e86-4bd3-9268-334c0aa98eb5",
+              "name": "dio_horario",
+              "value": "={{ !!($('Edit Fields').item.json.fecha1?.trim() || $('Edit Fields').item.json.fecha2?.trim() || $('Edit Fields').item.json.fechaMODO?.trim()) }}",
+              "type": "string"
+            },
+            {
+              "id": "6f7b16c5-fd23-4ace-92e9-e64f0911f1b5",
+              "name": "inmueble_identificado",
+              "value": "={{ !!$('Edit Fields').item.json.codInmueble }}",
+              "type": "string"
+            },
+            {
+              "id": "bd372d99-89ae-4496-bdbf-314005ef08e0",
+              "name": "agendo_visita",
+              "value": "={{ $('Execute a SQL query1').item.json.existe_en_visitas }}",
+              "type": "boolean"
+            },
+            {
+              "id": "503a1740-4b14-471f-ae76-e95e3bf341f2",
+              "name": "realizo_visita",
+              "value": "={{ $('Execute a SQL query1').item.json.tiene_inicio }}",
+              "type": "boolean"
+            },
+            {
+              "id": "327d03b2-aaf6-44dd-b5a8-316dff59661e",
+              "name": "inmueble_entregado",
+              "value": "={{ $('Execute a SQL query').item.json.ya_entregado }}",
+              "type": "boolean"
+            },
+            {
+              "id": "4f38fa84-0d64-4c5c-b21d-3dc7f6537c70",
+              "name": "fecha_dia",
+              "value": "={{ new Date($('Edit Fields').item.json.fechaCreacion * 1000).toISOString().slice(0, 10) }}",
+              "type": "string"
+            },
+            {
+              "id": "2384ba2c-ab71-4a04-a800-2758c608a5c9",
+              "name": "fecha_mes",
+              "value": "={{ new Date($('Edit Fields').item.json.fechaCreacion * 1000).toISOString().split('T')[0].slice(0,7) + \"-01\" }}",
+              "type": "string"
+            },
+            {
+              "id": "49900d16-c092-4124-99c9-45e066f7dcdb",
+              "name": "caso_especial",
+              "value": "={{ $('Edit Fields').item.json.statusID === \"90801084\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2416,
+        48
+      ],
+      "id": "d70dab22-317f-435a-9be8-0c6dfd4824e8",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT EXISTS (\n  SELECT 1\n  FROM RENTAS_CRM.ENTREGA_INMUEBLE A\n  JOIN RENTAS_CRM.INQUILINOS B ON A.INQUILINO_ID = B.ID\n  WHERE RIGHT(REGEXP_REPLACE($1, '\\D', '', 'g'), 9) IN (\n    B.CLEAN_TELEFONO,\n    RIGHT(REGEXP_REPLACE(B.TELEFONO, '\\D', '', 'g'), 9)\n  )\n) AS ya_entregado;",
+        "options": {
+          "queryReplacement": "={{ $('Edit Fields').item.json.telefono }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2000,
+        48
+      ],
+      "id": "4e808f1e-95f8-41cb-bd91-f505e9f42bd1",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH num AS (\n  -- Normaliza el número de entrada: solo dígitos y últimos 9\n  SELECT RIGHT(REGEXP_REPLACE($1, '\\D', '', 'g'), 9) AS n\n),\nvis AS (\n  -- Normaliza todos los celulares de la tabla\n  SELECT\n    v.*,\n    RIGHT(REGEXP_REPLACE(COALESCE(v.celular, ''), '\\D', '', 'g'), 9) AS cel9\n  FROM RENTAS_CRM.VISITAS v\n),\nhits AS (\n  -- Coincidencias por celular normalizado (evita vacíos)\n  SELECT 1\n  FROM vis\n  JOIN num ON vis.cel9 = num.n\n  WHERE vis.cel9 <> ''\n),\nhits_con_inicio AS (\n  SELECT 1\n  FROM vis\n  JOIN num ON vis.cel9 = num.n\n  WHERE vis.cel9 <> '' AND vis.inicio IS NOT NULL\n)\nSELECT\n  EXISTS(SELECT 1 FROM hits)           AS existe_en_visitas,\n  EXISTS(SELECT 1 FROM hits_con_inicio) AS tiene_inicio;",
+        "options": {
+          "queryReplacement": "={{ $('Edit Fields').item.json.telefono }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2208,
+        48
+      ],
+      "id": "07828782-fdc8-41ad-b3b3-03364de3f4a5",
+      "name": "Execute a SQL query1",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -1268,6 +1485,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-23T18:00:42.740Z",
-  "versionId": "d1f4a88d-baaf-4f7b-a4e7-ee15b6bdaabe"
+  "updatedAt": "2025-09-24T19:49:06.522Z",
+  "versionId": "622c4587-4f14-4527-8891-722d425b96a0"
 }
