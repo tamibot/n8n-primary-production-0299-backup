@@ -44,6 +44,17 @@
           }
         ]
       ]
+    },
+    "Send email": {
+      "main": [
+        [
+          {
+            "node": "Insert or update rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-09-20T13:52:50.808Z",
@@ -189,7 +200,7 @@
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
       "position": [
-        832,
+        800,
         0
       ],
       "id": "884bfc5c-4bd6-4216-8f5a-7cdfc1664e0f",
@@ -199,6 +210,186 @@
         "smtp": {
           "id": "1VmOAxpSVwjt9JAy",
           "name": "SMTP account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "value": "crm",
+          "mode": "list",
+          "cachedResultName": "crm"
+        },
+        "table": {
+          "__rl": true,
+          "value": "registro_horarios_propietarios",
+          "mode": "list",
+          "cachedResultName": "registro_horarios_propietarios"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nc_order": 0,
+            "id": "={{ $('Edit Fields').item.json.idKommo }}",
+            "fecha_registro": "={{ new Date($now).toISOString().replace('T',' ').slice(0,19) }}",
+            "idKommo": "={{ $('Edit Fields').item.json.idKommo }}",
+            "nombre_cliente": "={{ $('Edit Fields').item.json.nombre }}",
+            "telefono_cliente": "={{ $('Edit Fields').item.json.telefono }}",
+            "correo_cliente": "={{ $('Edit Fields').item.json.correo }}",
+            "fecha_llamada1": "={{\n  (() => {\n    const raw = $('Edit Fields').item.json.fecha1; // \"22/09/2025 10:00\"\n    if (!raw) return null;    // si viene vacío\n    const [d, m, yAndHour] = raw.split('/');\n    const [y, hm] = yAndHour.split(' ');\n    const [h, min] = hm.split(':');\n    const dte = new Date(`${y}-${m}-${d}T${h}:${min}:00`);\n    return dte.toISOString().replace('T',' ').slice(0,19);\n  })()\n}}",
+            "fecha_llamada2": "={{\n  (() => {\n    const raw = $('Edit Fields').item.json.fecha2; // \"20/09/2025 09:18\"\n    if (!raw) return null;\n    const [d, m, yAndHour] = raw.split('/');\n    const [y, hm] = yAndHour.split(' ');\n    const [h, min] = hm.split(':');\n    const dte = new Date(`${y}-${m}-${d}T${h}:${min}:00`);\n    return dte.toISOString().replace('T',' ').slice(0,19);\n  })()\n}}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "created_by",
+              "displayName": "created_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "updated_by",
+              "displayName": "updated_by",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "nc_order",
+              "displayName": "nc_order",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha_registro",
+              "displayName": "fecha_registro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "idKommo",
+              "displayName": "idKommo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "nombre_cliente",
+              "displayName": "nombre_cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "telefono_cliente",
+              "displayName": "telefono_cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "correo_cliente",
+              "displayName": "correo_cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha_llamada1",
+              "displayName": "fecha_llamada1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "estatus",
+              "displayName": "estatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha_llamada2",
+              "displayName": "fecha_llamada2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1040,
+        0
+      ],
+      "id": "766c0eb8-3fb1-4724-81b7-d9cafa5ac84f",
+      "name": "Insert or update rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
         }
       }
     }
@@ -213,19 +404,19 @@
             "content-length": "312",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "0df65b18-05e9-434c-a920-f5bf7fde1b3b",
+            "x-amocrm-requestid": "9f48f917-bec6-4d00-8e55-8c39bd57b170",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "oiZV5UpHQjSCLQVGPvyhXg",
+            "x-railway-request-id": "FjIZ1UBGRZWkiD4DezItjw",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1758377853178"
+            "x-request-start": "1758751127035"
           },
           "params": {},
           "query": {},
           "body": {
-            "leads[status][0][id]": "22004677",
+            "leads[status][0][id]": "22055337",
             "leads[status][0][status_id]": "92821232",
             "leads[status][0][pipeline_id]": "9165176",
             "leads[status][0][old_status_id]": "92821228",
@@ -254,6 +445,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-22T05:35:40.810Z",
-  "versionId": "a1ceca4c-a7c9-4858-a7e0-e3a91586ae1c"
+  "updatedAt": "2025-09-25T11:35:43.329Z",
+  "versionId": "0fe8e421-6fa4-40b1-99b8-ca7deb1844e0"
 }
