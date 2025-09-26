@@ -25,13 +25,7 @@
     },
     "SwitchBot": {
       "main": [
-        [
-          {
-            "node": "Validacion",
-            "type": "main",
-            "index": 0
-          }
-        ],
+        [],
         [
           {
             "node": "Chat input",
@@ -50,13 +44,7 @@
     },
     "Filter": {
       "main": [
-        [
-          {
-            "node": "Set Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Information Extractor": {
@@ -645,13 +633,7 @@
             "index": 0
           }
         ],
-        [
-          {
-            "node": "Respuesta1",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Respuesta1": {
@@ -669,7 +651,7 @@
       "main": [
         [
           {
-            "node": "Filter",
+            "node": "Switch2",
             "type": "main",
             "index": 0
           }
@@ -700,13 +682,7 @@
     },
     "SwitchBot2": {
       "main": [
-        [
-          {
-            "node": "Validacion2",
-            "type": "main",
-            "index": 0
-          }
-        ],
+        [],
         [
           {
             "node": "Chat input",
@@ -815,6 +791,57 @@
       "main": [
         []
       ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Set Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get list of contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list of contacts": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-08-01T18:40:51.374Z",
@@ -862,8 +889,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        -2448,
-        768
+        -2592,
+        560
       ],
       "id": "316666bc-2247-43ca-866b-f6080cf5d975",
       "name": "Filter"
@@ -1108,7 +1135,7 @@
             {
               "id": "f5ef142c-3165-4b6e-bbec-15491ee97519",
               "name": "user.infoPrevia",
-              "value": "={{ $json.custom_fields_values.find(field => field.field_name === \"n8n - infoPrevia\")?.values[0]?.value || \"sin info\" }}",
+              "value": "={{ $('GET Lead').item.json.custom_fields_values.find(field => field.field_name === \"n8n - infoPrevia\")?.values[0]?.value || \"sin info\" }}",
               "type": "string"
             }
           ]
@@ -1260,8 +1287,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2752,
-        336
+        2800,
+        160
       ],
       "id": "92a9f874-fd66-4acb-bf1b-6a6c3921ed41",
       "name": "Validacion",
@@ -2473,6 +2500,15 @@
         "url": "=https://{{ $('new message').item.json.body[\"account[subdomain]\"] }}.kommo.com/api/v4/leads/{{ $('new message').item.json.body[\"message[add][0][element_id]\"] }}",
         "authentication": "genericCredentialType",
         "genericAuthType": "oAuth2Api",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "with",
+              "value": "contacts"
+            }
+          ]
+        },
         "options": {
           "response": {
             "response": {
@@ -2646,7 +2682,7 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        -2896,
+        -2992,
         768
       ],
       "id": "0c4c446d-a782-4376-b930-fe9a00b82532",
@@ -2779,7 +2815,7 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        -2672,
+        -2800,
         768
       ],
       "id": "907c7f6f-bc26-49b1-8e1c-bf7d488beb06",
@@ -3086,7 +3122,7 @@
       "typeVersion": 4.2,
       "position": [
         2752,
-        736
+        576
       ],
       "id": "398e1836-4db6-46a2-b1f6-3d1ec41dd4c0",
       "name": "Validacion2",
@@ -3290,6 +3326,166 @@
       ],
       "id": "e8290e6a-3686-453b-8949-d67278eaaef5",
       "name": "Date & Time1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('GET Lead').item.json._embedded }}",
+                    "rightValue": "RENTAS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "37c6ba57-c3c0-4d67-9d60-7092c0fe9ba4"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "DAVID"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f5dde85d-7e7d-459b-85a0-cb0ed105b301",
+                    "leftValue": "={{ $('GET Lead').item.json._embedded }}",
+                    "rightValue": "DIEGO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "DIEGO"
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -2592,
+        768
+      ],
+      "id": "19c70351-80de-4a0f-8bb3-ca72b5c9c0d2",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "contacts",
+        "filter": {
+          "id": "={{ $('GET Lead').item.json._embedded.contacts[0].id }}"
+        },
+        "options": {},
+        "limit": 1
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -2384,
+        880
+      ],
+      "id": "966c0f2e-59b2-4450-b47a-1eeed276080b",
+      "name": "Get list of contacts",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c5c25714-e062-4d24-810b-931da98ae842",
+              "name": "telefono",
+              "value": "={{ $('Get list of contacts').item.json._embedded.contacts[0].custom_fields_values      .find(f => f.field_name === 'Phone')?.values?.[0]?.value || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2144,
+        992
+      ],
+      "id": "845f92c3-6af0-4681-8b00-1181f299511e",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH num AS (\n  -- Normaliza el número recibido\n  SELECT RIGHT(REGEXP_REPLACE($1, '\\D', '', 'g'), 9) AS n\n),\ncli AS (\n  -- Normaliza todos los celulares de la tabla\n  SELECT\n    RIGHT(REGEXP_REPLACE(COALESCE(nrocelular, ''), '\\D', '', 'g'), 9) AS cel9\n  FROM BITRIX.CLIENTE\n),\nhits AS (\n  SELECT 1\n  FROM cli\n  JOIN num ON cli.cel9 = num.n\n  WHERE cli.cel9 <> '' AND cli.cel9 NOT IN ('0','000000000')\n)\nSELECT EXISTS(SELECT 1 FROM hits) AS existe_en_cliente;",
+        "options": {
+          "queryReplacement": "={{ $('Edit Fields').item.json.telefono }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1936,
+        992
+      ],
+      "id": "086031ee-4f29-44f7-8278-42538d33cfe0",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT EXISTS (\n  SELECT 1\n  FROM RENTAS_CRM.ENTREGA_INMUEBLE A\n  JOIN RENTAS_CRM.INQUILINOS B ON A.INQUILINO_ID = B.ID\n  WHERE RIGHT(REGEXP_REPLACE($1, '\\D', '', 'g'), 9) IN (\n    B.CLEAN_TELEFONO,\n    RIGHT(REGEXP_REPLACE(B.TELEFONO, '\\D', '', 'g'), 9)\n  )\n) AS ya_entregado;",
+        "options": {
+          "queryReplacement": ""
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1728,
+        992
+      ],
+      "id": "0d4670fa-b7e7-47e9-a27a-3a957a2b4fba",
+      "name": "Execute a SQL query1",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
     }
   ],
   "pinData": {
@@ -3299,17 +3495,17 @@
           "headers": {
             "host": "primary-production-0299.up.railway.app",
             "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "928",
+            "content-length": "2160",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "4eab989f-5a4e-4f43-b760-f9175efca3e4",
+            "x-amocrm-requestid": "55f2ce4c-2609-47e6-b3e8-5c5d5419505c",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "c7VoV2e9RPSBbXO6Aax-fw",
+            "x-railway-request-id": "jAVIWAApQwW7DKW3ozsQ6Q",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1758318617928"
+            "x-request-start": "1758835411281"
           },
           "params": {},
           "query": {},
@@ -3317,20 +3513,23 @@
             "account[subdomain]": "propertamibotcom",
             "account[id]": "30050693",
             "account[_links][self]": "https://propertamibotcom.amocrm.com",
-            "message[add][0][id]": "4f675015-9b00-4301-b22c-f3e46b62633e",
-            "message[add][0][chat_id]": "806a2df6-2802-4392-b6e8-7b1a43c8358e",
-            "message[add][0][talk_id]": "200503",
-            "message[add][0][contact_id]": "22683775",
-            "message[add][0][text]": "hola",
-            "message[add][0][created_at]": "1758318616",
+            "message[add][0][id]": "abfde1c5-b999-46ee-b6c5-26eb63e5afe3",
+            "message[add][0][chat_id]": "b9cda176-f0d3-4b10-b631-2da215faf28b",
+            "message[add][0][talk_id]": "200975",
+            "message[add][0][contact_id]": "23668503",
+            "message[add][0][text]": "*¡Hola vecinos del EDIFICIO S29 ( TORRES I y II)*! 👋\n\n🎉 ¡WIN ya está disponible con tecnología 100% fibra óptica!\n\n🚀 *¿Por qué elegirnos?*\n✔ Internet rápido y estable para trabajar, estudiar y entretenerse.\n✔ N°1 en satisfacción y velocidad en Perú (OSIPTEL y NPERF).\n✔ Más de 600,000 usuarios ya disfrutan de WIN.\n\n🎁 *Beneficios exclusivos para su edificio:*\n💡 Conexión sin interrupciones.\n💬 Soporte premium.\n🏷 Ofertas especiales solo para ustedes.\n\n📲 Contáctenme al 912307794 o escriban a mmoralesv@win.pe\ny les  guiare en todo el proceso.\n\n*¡Súmense a la comunidad de WINNERS!* 💪\n\nFrank Bucarelo \nEjecutivo Comercial – WIN",
+            "message[add][0][created_at]": "1758835408",
+            "message[add][0][attachment][type]": "picture",
+            "message[add][0][attachment][link]": "https://amojo.kommo.com/v2/46db3794-cd6c-4506-a0a6-6205b2f546e9/attachments/49586dd7-14f8-4197-8aab-6ab3564fdd5b/file.jpeg",
+            "message[add][0][attachment][file_name]": "file.jpeg",
             "message[add][0][element_type]": "2",
             "message[add][0][entity_type]": "lead",
-            "message[add][0][element_id]": "22017143",
-            "message[add][0][entity_id]": "22017143",
+            "message[add][0][element_id]": "22027567",
+            "message[add][0][entity_id]": "22027567",
             "message[add][0][type]": "incoming",
-            "message[add][0][author][id]": "109bde71-f77d-4015-918c-0a1cbe6d017f",
+            "message[add][0][author][id]": "ae5955f3-1b82-4e88-8243-c7d30be48775",
             "message[add][0][author][type]": "external",
-            "message[add][0][author][name]": "Valeria Vega",
+            "message[add][0][author][name]": "Diego Sánchez",
             "message[add][0][origin]": "waba"
           },
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/rentas",
@@ -3363,6 +3562,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-09-23T17:55:13.445Z",
-  "versionId": "18beceed-548d-416b-9b7c-c6e7f560e86d"
+  "updatedAt": "2025-09-25T23:39:46.189Z",
+  "versionId": "d3dfbadd-8c44-4df3-950e-8af35e64648f"
 }
