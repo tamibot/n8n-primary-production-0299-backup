@@ -25,7 +25,13 @@
     },
     "SwitchBot": {
       "main": [
-        [],
+        [
+          {
+            "node": "Validacion",
+            "type": "main",
+            "index": 0
+          }
+        ],
         [
           {
             "node": "Chat input",
@@ -633,7 +639,13 @@
             "index": 0
           }
         ],
-        []
+        [
+          {
+            "node": "Respuesta1",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Respuesta1": {
@@ -823,24 +835,12 @@
     },
     "Edit Fields": {
       "main": [
-        [
-          {
-            "node": "Execute a SQL query",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Execute a SQL query": {
       "main": [
-        [
-          {
-            "node": "Execute a SQL query1",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     }
   },
@@ -3475,7 +3475,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -1728,
+        -1712,
         992
       ],
       "id": "0d4670fa-b7e7-47e9-a27a-3a957a2b4fba",
@@ -3562,6 +3562,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-09-25T23:39:46.189Z",
-  "versionId": "d3dfbadd-8c44-4df3-950e-8af35e64648f"
+  "updatedAt": "2025-09-26T23:44:17.215Z",
+  "versionId": "89712db6-77e4-4f23-8596-231f2cf752c2"
 }
