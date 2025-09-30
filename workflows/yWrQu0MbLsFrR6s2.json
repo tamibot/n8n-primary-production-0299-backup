@@ -94,17 +94,17 @@
       "main": [
         [
           {
-            "node": "HTTP Request5",
-            "type": "main",
-            "index": 0
-          },
-          {
             "node": "HTTP Request2",
             "type": "main",
             "index": 0
           },
           {
             "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request5",
             "type": "main",
             "index": 0
           }
@@ -423,7 +423,7 @@
             {
               "id": "02b2ae1b-ec65-420d-88c7-f0edf9038110",
               "name": "origen",
-              "value": "={{ \n  (()=>{\n    const lead = $('Split Out1').item.json;\n    const cf = (lead.custom_fields_values || []).find(x => x.field_name === 'n8n - Origen');\n    return (cf && cf.values && cf.values[0]) ? cf.values[0].value : '';\n  })()\n}}",
+              "value": "={{\n  (()=>{\n    const lead = $('Split Out1').item.json;\n    const customFields = lead.custom_fields_values || [];\n\n    // 1. Primero, buscamos si 'LinkUrbania' tiene algún valor.\n    const cfUrbania = customFields.find(x => x.field_name === 'LinkUrbania');\n    const hasLinkUrbania = (cfUrbania && cfUrbania.values && cfUrbania.values[0] && cfUrbania.values[0].value);\n\n    if (hasLinkUrbania) {\n      return 'URBANIA';\n    }\n\n    // 2. Si no, buscamos el valor de 'n8n - Origen' como alternativa.\n    const cfOrigen = customFields.find(x => x.field_name === 'n8n - Origen');\n    const origenValue = (cfOrigen && cfOrigen.values && cfOrigen.values[0]) ? cfOrigen.values[0].value : '';\n    \n    return origenValue;\n  })()\n}}",
               "type": "string"
             },
             {
@@ -449,6 +449,12 @@
               "name": "fechaMODO",
               "value": "={{   (()=>{     const lead = $('Split Out1').item.json;     const cf = (lead.custom_fields_values || []).find(x => x.field_name === 'n8n - fechaMODO');     return (cf && cf.values && cf.values[0]) ? cf.values[0].value : '';   })() }}",
               "type": "string"
+            },
+            {
+              "id": "b2b50474-be45-4d6d-9123-d7a6594fbf2e",
+              "name": "LinkUrbania",
+              "value": "={{   (()=>{     const lead = $('Split Out1').item.json;     const cf = (lead.custom_fields_values || []).find(x => x.field_name === 'LinkUrbania');     const val = (cf && cf.values && cf.values[0]) ? cf.values[0].value : '';     return val;   })() }}",
+              "type": "string"
             }
           ]
         },
@@ -458,7 +464,7 @@
       "typeVersion": 3.4,
       "position": [
         1952,
-        200
+        176
       ],
       "id": "8e333d0d-1ba7-482f-90ec-985e9b116896",
       "name": "Edit Fields"
@@ -481,7 +487,7 @@
       "typeVersion": 1,
       "position": [
         1056,
-        200
+        176
       ],
       "id": "2c8ecad3-06b7-4f1b-914d-1142cbfd32cc",
       "name": "Get list of contacts",
@@ -509,7 +515,7 @@
       "typeVersion": 4.2,
       "position": [
         1280,
-        200
+        176
       ],
       "id": "a9a909b6-c353-486d-a2fd-bd20ba2c4eae",
       "name": "HTTP Request",
@@ -551,7 +557,7 @@
       "typeVersion": 3.4,
       "position": [
         1504,
-        200
+        176
       ],
       "id": "7a80d4b8-60dc-4832-a1de-57982043ee9c",
       "name": "Edit Fields1"
@@ -859,10 +865,11 @@
       "typeVersion": 2.6,
       "position": [
         2848,
-        272
+        224
       ],
       "id": "1a8576e0-7c93-404f-b24b-c2333a33c8fb",
       "name": "Insert or update rows in a table",
+      "alwaysOutputData": true,
       "credentials": {
         "postgres": {
           "id": "fuKiWlAN9ojbRM9W",
@@ -884,7 +891,7 @@
       "typeVersion": 1.2,
       "position": [
         -64,
-        152
+        320
       ],
       "id": "1182f8b0-7f44-4b99-bbfa-03684c311629",
       "name": "Schedule Trigger"
@@ -1037,7 +1044,7 @@
       "typeVersion": 3.4,
       "position": [
         2624,
-        208
+        176
       ],
       "id": "d70dab22-317f-435a-9be8-0c6dfd4824e8",
       "name": "Edit Fields4"
@@ -1054,10 +1061,11 @@
       "typeVersion": 2.6,
       "position": [
         2176,
-        200
+        176
       ],
       "id": "4e808f1e-95f8-41cb-bd91-f505e9f42bd1",
       "name": "Execute a SQL query",
+      "alwaysOutputData": true,
       "credentials": {
         "postgres": {
           "id": "fuKiWlAN9ojbRM9W",
@@ -1077,10 +1085,11 @@
       "typeVersion": 2.6,
       "position": [
         2400,
-        200
+        176
       ],
       "id": "07828782-fdc8-41ad-b3b3-03364de3f4a5",
       "name": "Execute a SQL query1",
+      "alwaysOutputData": true,
       "credentials": {
         "postgres": {
           "id": "fuKiWlAN9ojbRM9W",
@@ -1097,7 +1106,7 @@
       "typeVersion": 1,
       "position": [
         384,
-        -64
+        -112
       ],
       "id": "15169c4f-5b2f-4d37-8239-9271f7e46bd4",
       "name": "Split Out2"
@@ -1141,7 +1150,7 @@
       "typeVersion": 2.2,
       "position": [
         608,
-        -64
+        -112
       ],
       "id": "3f3f3ae9-6919-42e8-b570-eb1e87c54534",
       "name": "Filter2"
@@ -1282,7 +1291,7 @@
       "typeVersion": 3,
       "position": [
         832,
-        -64
+        -112
       ],
       "id": "4c1c2f05-8e1f-4529-a421-9fb1026221d2",
       "name": "Loop Over Items2"
@@ -1560,10 +1569,11 @@
       "typeVersion": 2.6,
       "position": [
         2624,
-        -128
+        -160
       ],
       "id": "e2f9cd0e-cbdb-45af-9650-8c048784ea46",
       "name": "Insert or update rows in a table2",
+      "alwaysOutputData": true,
       "credentials": {
         "postgres": {
           "id": "fuKiWlAN9ojbRM9W",
@@ -1642,7 +1652,7 @@
       "typeVersion": 4.2,
       "position": [
         160,
-        -64
+        -112
       ],
       "id": "bb4b01a9-b4e4-4a90-a5c2-de1edf1a5d2a",
       "name": "HTTP Request5",
@@ -1722,6 +1732,7 @@
       ],
       "id": "9c347da1-a0a2-4986-a2c2-12bf4515fece",
       "name": "Execute a SQL query3",
+      "alwaysOutputData": true,
       "credentials": {
         "postgres": {
           "id": "fuKiWlAN9ojbRM9W",
@@ -1745,7 +1756,7 @@
               "rightValue": "",
               "operator": {
                 "type": "string",
-                "operation": "exists",
+                "operation": "notEmpty",
                 "singleValue": true
               }
             }
@@ -1798,7 +1809,7 @@
       "typeVersion": 2.2,
       "position": [
         1728,
-        200
+        176
       ],
       "id": "7a44fce1-167a-41ae-a6cf-a59c5aa45a6f",
       "name": "If1"
@@ -1808,8 +1819,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        192,
-        448
+        160,
+        464
       ],
       "id": "648536ee-34f9-437a-8c94-2b0ccb802553",
       "name": "No Operation, do nothing"
@@ -1837,6 +1848,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-25T11:57:44.680Z",
-  "versionId": "b8dde029-aa31-470d-aac1-8fb68d639fef"
+  "updatedAt": "2025-09-29T16:46:25.068Z",
+  "versionId": "ae883b77-f890-403b-b594-fed6c2a7accb"
 }
