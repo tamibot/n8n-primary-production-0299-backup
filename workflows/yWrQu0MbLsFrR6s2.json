@@ -94,12 +94,12 @@
       "main": [
         [
           {
-            "node": "HTTP Request2",
+            "node": "No Operation, do nothing",
             "type": "main",
             "index": 0
           },
           {
-            "node": "No Operation, do nothing",
+            "node": "HTTP Request2",
             "type": "main",
             "index": 0
           },
@@ -890,8 +890,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -64,
-        320
+        -192,
+        48
       ],
       "id": "1182f8b0-7f44-4b99-bbfa-03684c311629",
       "name": "Schedule Trigger"
@@ -1848,6 +1848,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-29T16:46:25.068Z",
-  "versionId": "ae883b77-f890-403b-b594-fed6c2a7accb"
+  "updatedAt": "2025-09-30T16:41:18.336Z",
+  "versionId": "ed36e524-2b74-406a-8ec5-609b94d6f7aa"
 }
