@@ -1,0 +1,270 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get list of leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list of leads": {
+      "main": [
+        [
+          {
+            "node": "Get list of contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list of contacts": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-22T05:41:56.086Z",
+  "id": "Jr3MXikgusH4R6fe",
+  "isArchived": false,
+  "meta": null,
+  "name": "DIEGO - Caso especial notificacion",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "diegocasoespecial",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -80,
+        128
+      ],
+      "id": "8a2ee80e-922e-4c5b-9f38-c11172968c09",
+      "name": "Webhook",
+      "webhookId": "2171d65f-867e-4340-9530-a048c2c99f38"
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "leads",
+        "filter": {
+          "id": "={{ $json.body['leads[status][0][id]'] }}"
+        },
+        "options": {
+          "with": [
+            "contacts"
+          ]
+        },
+        "limit": 1
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        128,
+        128
+      ],
+      "id": "d5a7cc50-4874-419c-b77f-eddbc803ec76",
+      "name": "Get list of leads",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "contacts",
+        "filter": {
+          "id": "={{ $json._embedded.leads[0]._embedded.contacts[0].id }}"
+        },
+        "options": {},
+        "limit": 1
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        336,
+        128
+      ],
+      "id": "71ede7a7-7a9e-4fb8-995a-9fa4f24993eb",
+      "name": "Get list of contacts",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c2499975-cb86-4638-a297-5d6cba45b460",
+              "name": "telefono",
+              "value": "={{ \n  $json._embedded.contacts[0].custom_fields_values.find(f => f.field_code === \"PHONE\").values[0].value \n}}",
+              "type": "string"
+            },
+            {
+              "id": "4dc70069-d8ce-4872-b972-0e467d464f39",
+              "name": "idKommo",
+              "value": "={{ $('Get list of leads').item.json._embedded.leads[0].id }}",
+              "type": "string"
+            },
+            {
+              "id": "7587d086-f9a8-48cd-802b-34a79615e9ab",
+              "name": "fecha1",
+              "value": "={{ \n  $('Get list of leads').item.json._embedded.leads[0].custom_fields_values.find(f => f.field_name === \"n8n - diego - fecha1\").values[0].value \n}}",
+              "type": "string"
+            },
+            {
+              "id": "2473c05b-58aa-462f-b07b-55ae4c2aced1",
+              "name": "fecha2",
+              "value": "={{    $('Get list of leads').item.json._embedded.leads[0].custom_fields_values.find(f => f.field_name === \"n8n - diego - fecha2\").values[0].value  }}",
+              "type": "string"
+            },
+            {
+              "id": "ccf389ba-a32a-47f9-9dcb-f4ad12047eb5",
+              "name": "correo",
+              "value": "={{    $json._embedded.contacts[0].custom_fields_values.find(f => f.field_code === \"EMAIL\").values[0].value  }}",
+              "type": "string"
+            },
+            {
+              "id": "541d4325-ca72-4c2d-9b26-4ebaa2d6219a",
+              "name": "nombre",
+              "value": "={{ $json._embedded.contacts[0].name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        544,
+        128
+      ],
+      "id": "0891139e-ccf3-4487-b4af-54365a6b81d2",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fromEmail": "TamiBot - DIEGO <tamibotperu@gmail.com>",
+        "toEmail": "=mvelascoo@tamibot.com, valeria.vega@proper.com.pe, diego.sanchez@proper.com.pe",
+        "subject": "=Tami - CASO ESPECIAL - {{ $json.telefono }}",
+        "emailFormat": "text",
+        "text": "=Tienes un caso especial\nNombre: {{ $json.nombre }}\nTelefono: {{ $json.telefono }}\nURL Kommo: https://propertamibotcom.kommo.com/leads/detail/{{ $json.idKommo }}\n\nFavor contactarlo a la brevedad para continuar con su atención.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        752,
+        128
+      ],
+      "id": "a53485de-9ecb-4f4c-b5bc-35213ad7565c",
+      "name": "Send email",
+      "webhookId": "2893b846-2791-41d5-8d5e-124ac6e1826d",
+      "credentials": {
+        "smtp": {
+          "id": "1VmOAxpSVwjt9JAy",
+          "name": "SMTP account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "primary-production-0299.up.railway.app",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "312",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "0df65b18-05e9-434c-a920-f5bf7fde1b3b",
+            "x-forwarded-for": "169.150.216.79",
+            "x-forwarded-host": "primary-production-0299.up.railway.app",
+            "x-forwarded-proto": "https",
+            "x-railway-edge": "railway/us-east4-eqdc4a",
+            "x-railway-request-id": "oiZV5UpHQjSCLQVGPvyhXg",
+            "x-real-ip": "169.150.216.79",
+            "x-request-start": "1758377853178"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[status][0][id]": "22004677",
+            "leads[status][0][status_id]": "92821232",
+            "leads[status][0][pipeline_id]": "9165176",
+            "leads[status][0][old_status_id]": "92821228",
+            "leads[status][0][old_pipeline_id]": "9165176",
+            "account[id]": "30050693",
+            "account[subdomain]": "propertamibotcom"
+          },
+          "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/horarioLlamadaPropietarios",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-22T05:41:56.086Z",
+      "updatedAt": "2025-09-22T05:41:56.086Z",
+      "role": "workflow:owner",
+      "workflowId": "Jr3MXikgusH4R6fe",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-08-01T18:41:06.465Z",
+      "updatedAt": "2025-08-01T18:41:06.465Z",
+      "id": "94z6tcDoVU8DriEW",
+      "name": "IA"
+    },
+    {
+      "createdAt": "2025-09-22T08:48:38.461Z",
+      "updatedAt": "2025-09-22T08:48:38.461Z",
+      "id": "MlogSNDqT9Wxu5XK",
+      "name": "DIEGO"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-22T08:48:40.807Z",
+  "versionId": "321f64ad-b537-4be7-808a-9f238f5cd4d1"
+}
