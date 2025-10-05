@@ -102,11 +102,6 @@
             "node": "HTTP Request2",
             "type": "main",
             "index": 0
-          },
-          {
-            "node": "HTTP Request5",
-            "type": "main",
-            "index": 0
           }
         ]
       ]
@@ -601,7 +596,9 @@
             "caso_especial": "={{ $json.caso_especial }}",
             "fecha_mes": "={{ $json.fecha_mes }}",
             "fecha_dia": "={{ $json.fecha_dia }}",
-            "fecha_semana": "={{ $json.fecha_semana }}"
+            "fecha_semana": "={{ $json.fecha_semana }}",
+            "tipo_cliente": "={{ $json.tipo_cliente }}",
+            "es_nuevo": "={{ $json.es_nuevo }}"
           },
           "matchingColumns": [
             "id"
@@ -854,6 +851,26 @@
               "type": "dateTime",
               "canBeUsedToMatch": false,
               "removed": false
+            },
+            {
+              "id": "tipo_cliente",
+              "displayName": "tipo_cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "es_nuevo",
+              "displayName": "es_nuevo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -1034,6 +1051,18 @@
               "id": "297a8f5c-4972-4930-a9cd-71f9c66783d3",
               "name": "fecha_semana",
               "value": "={{\n  (() => {\n    const d = new Date($('Edit Fields').item.json.fechaCreacion * 1000);\n    const day = d.getDay(); // domingo=0, lunes=1, ..., sábado=6\n    const diff = (day === 0 ? -6 : 1) - day; // retroceder hasta lunes\n    d.setDate(d.getDate() + diff);\n    d.setHours(0, 0, 0, 0);\n    return d.toISOString().split('T')[0]; // YYYY-MM-DD\n  })()\n}}",
+              "type": "string"
+            },
+            {
+              "id": "0fee53d8-b95f-4cb4-a7df-a086bf8fdfa1",
+              "name": "tipo_cliente",
+              "value": "={{   (     ($('Split Out1').item.json.custom_fields_values || [])       .find(x => x.field_name === 'n8n - TipoCliente')       ?.values[0].value   ) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "4dfee34b-8b36-4b9d-b6d6-64848edb38a9",
+              "name": "es_nuevo",
+              "value": "={{\n  (\n    (\n      ($('Split Out1').item.json.custom_fields_values || [])\n        .find(x => x.field_name === 'n8n - TipoCliente')\n        ?.values[0].value\n    ) === 'NUEVO'\n  ) ? 1 : 0\n}}",
               "type": "string"
             }
           ]
@@ -1855,6 +1884,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-03T15:12:49.259Z",
-  "versionId": "a3b272d7-539e-4c6e-9490-ae6e43d45972"
+  "updatedAt": "2025-10-04T13:52:53.820Z",
+  "versionId": "617a9b89-da49-4f2a-8077-18e51f29dd38"
 }
