@@ -522,6 +522,11 @@
             "node": "Respuesta",
             "type": "ai_tool",
             "index": 0
+          },
+          {
+            "node": "Campos",
+            "type": "ai_tool",
+            "index": 0
           }
         ]
       ]
@@ -637,6 +642,13 @@
         [
           {
             "node": "Respuesta1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respuesta2",
             "type": "main",
             "index": 0
           }
@@ -860,7 +872,7 @@
       "main": [
         [
           {
-            "node": "Switch3",
+            "node": "Switch5",
             "type": "main",
             "index": 0
           }
@@ -934,6 +946,208 @@
             "index": 0
           }
         ]
+      ]
+    },
+    "Switch5": {
+      "main": [
+        [
+          {
+            "node": "Switch3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Push Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respuesta2": {
+      "main": [
+        [
+          {
+            "node": "SwitchBot3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "enviar mensaje3": {
+      "main": [
+        [
+          {
+            "node": "Campos3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos3": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SwitchBot3": {
+      "main": [
+        [
+          {
+            "node": "Create new notes",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Information Extractor3": {
+      "main": [
+        [
+          {
+            "node": "Update leads3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validacion3": {
+      "main": [
+        [
+          {
+            "node": "enviar mensaje3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model7": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Campos3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model8": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory4": {
+      "ai_memory": [
+        [
+          {
+            "node": "Campos3",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Respuesta2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory5": {
+      "ai_memory": [
+        [
+          {
+            "node": "Respuesta2",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time2": {
+      "ai_tool": [
+        [
+          {
+            "node": "Respuesta2",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "ai_tool": [
+        [
+          {
+            "node": "Respuesta2",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "Respuesta",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Campos",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new notes": {
+      "main": [
+        []
       ]
     }
   },
@@ -1038,23 +1252,23 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        4976,
-        256
+        5120,
+        456
       ]
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Mensaje proveniente del Cliente: {{ $('Chat input').item.json.chat_input }}\n\nRespuesta del bot: {{ $('Respuesta').item.json.output }}\n\nCodigo Inmueble: {{ $('Set Fields').item.json.user.codigoInmueble }}",
+        "text": "=Mensaje proveniente del Cliente: {{ $('Chat input').item.json.chat_input }}\n\nRespuesta del bot: {{ $('Respuesta').item.json.output }}\n\nLink Urbania: {{ $('Chat input').item.json.LinkUrbania }}",
         "options": {
-          "systemMessage": "=# 🏠 PROPER ANALYZER v6.0 - SISTEMA AVANZADO DE PROGRESIÓN\n\n**Fecha actual:** {{ \n  new Date($now).toLocaleDateString(\"es-PE\", {\n    weekday: \"long\", \n    day: \"numeric\", \n    month: \"long\", \n    year: \"numeric\"\n  }) \n  + \", \" +\n  new Date($now).toLocaleTimeString(\"es-PE\", {\n    hour: \"numeric\", \n    minute: \"2-digit\", \n    hour12: true,\n    timeZone: \"America/Lima\"\n  })\n}} | **Zona horaria:** América/Lima\n\n---\n\n## 🚨 **MANDATO SUPREMO**\n\n```\n🔴 RESPONDER ÚNICAMENTE JSON COMPLETO CON TODOS LOS CAMPOS\n🔴 EXTRAER ORIGEN: \"URBANIA\" o \"OTROS\" OBLIGATORIO\n🔴 EXTRAER CÓDIGO PROPIEDAD SIEMPRE QUE APAREZCA\n🔴 DIFERENCIAR FLUJOS: MODO vs REGULAR (SON DIFERENTES)\n🔴 CAMBIAR ETAPAS SOLO CON CONDICIONES COMPLETAS\n```\n\n---\n\n## ⚡ **PROCESO OBLIGATORIO DE ANÁLISIS**\n\n### **PASO 1: IDENTIFICACIÓN INICIAL**\n```\n✅ ORIGEN = URL en infoPrevia o inicio? → \"URBANIA\" : \"OTROS\"\n✅ Código Propiedad = Buscar \"Código Propiedad: XXX\" en TODA conversación\n✅ Proyecto = ¿Es MODO? (PUCP/San Miguel) → FLUJO ESPECIAL\n✅ Cliente = ¿Es inquilino/propietario actual? → CASO ESPECIAL\n```\n\n### **PASO 2: ANÁLISIS DE PROGRESIÓN**\n```\n✅ Leer TODA conversación + infoPrevia\n✅ Identificar punto MÁS AVANZADO alcanzado\n✅ Aplicar flujo correcto: MODO o REGULAR\n✅ NO regresar a etapas anteriores\n```\n\n### **PASO 3: VERIFICACIÓN TRIPLE**\n```\n✅ ¿ORIGEN correcto? (URBANIA/OTROS)\n✅ ¿Código Propiedad extraído?\n✅ ¿Flujo correcto aplicado? (MODO/REGULAR)\n✅ ¿Etapa refleja progresión real?\n```\n\n---\n\n## 🔄 **FLUJOS DIFERENCIADOS: MODO vs REGULAR**\n\n### 🏢 **FLUJO EXCLUSIVO MODO**\n\n```\nIDENTIFICACIÓN MODO:\n- Menciona: PUCP, San Miguel, Universidad\n- Proyecto: MODO\n- Dirección: Av. Universitaria/Tulipanes\n\nPROGRESIÓN MODO:\n1. INGRESO/DEFINIENDO → Cliente consulta\n2. INTERACTUANDO → Bot presenta MODO\n3. INTERESADO → Cliente quiere visitar\n4. VISITA MODO (92800052) → Bot CONFIRMA horario\n   ✅ \"Te esperamos [día] a las [hora]\"\n   ✅ EXTRAER fechaMODO obligatorio\n   ❌ NO usar fecha1/fecha2 (eso es para regulares)\n```\n\n### 🏠 **FLUJO ESTÁNDAR REGULAR**\n\n```\nIDENTIFICACIÓN REGULAR:\n- Cualquier propiedad NO MODO\n- Diferentes zonas (Miraflores, Barranco, etc.)\n\nPROGRESIÓN REGULAR:\n1. INGRESO/DEFINIENDO → Cliente consulta\n2. INTERACTUANDO → Bot presenta propiedades\n3. INTERESADO → Cliente quiere visitar\n4. HORARIO INDICADO (90801096) → Cliente da 2 HORARIOS\n   ✅ fecha1: \"DD/MM/YYYY HH:mm\"\n   ✅ fecha2: \"DD/MM/YYYY HH:mm\"\n   ❌ NO usar fechaMODO (eso es para MODO)\n```\n\n---\n\n## 📍 **ESTADOS Y CONDICIONES ESTRICTAS**\n\n### **90801072 - Ingreso con Propiedad**\n```\nACTIVACIÓN: URL en infoPrevia\nORIGEN: \"URBANIA\"\nCAMBIA A: Interactuando cuando bot responde\n```\n\n### **90801076 - Definiendo Propiedad**\n```\nACTIVACIÓN: Busca sin propiedad específica\nORIGEN: \"OTROS\"\nCAMBIA A: Interactuando cuando bot presenta\n```\n\n### **90801080 - Interactuando**\n```\nESTADO: Bot presentó propiedades\nEXTRAER: Código Propiedad si aparece\nCAMBIA A:\n- Interesado → si quiere visitar\n- Caso Especial → si bot no tiene info\n- Inquilino/Prop → si es cliente actual\n```\n\n### **90801092 - Interesado**\n```\nESTADO: Cliente confirmó querer visitar\nCRÍTICO: Identificar si es MODO o REGULAR\nCAMBIA A:\n- VISITA MODO → Si es MODO y bot confirma\n- HORARIO INDICADO → Si es regular y da 2 horarios\n```\n\n### **90801096 - Horario Indicado (SOLO REGULARES)**\n```\nCONDICIÓN ESTRICTA:\n✅ NO es proyecto MODO\n✅ Cliente dio 2 horarios completos\n✅ fecha1 y fecha2 extraídas\nMENSAJES: vacíos (ya coordinado)\n```\n\n### **92800052 - Visita MODO (SOLO MODO)**\n```\nCONDICIÓN ESTRICTA:\n✅ ES proyecto MODO\n✅ Bot confirmó: \"Te esperamos...\"\n✅ fechaMODO extraída con hora\nMENSAJES: vacíos (ya confirmado)\n```\n\n### **91040128 - Inquilino/Prop/Otros**\n```\nACTIVACIÓN INMEDIATA si:\n- \"Soy inquilino de...\"\n- \"Vivo en [propiedad]\"\n- \"No me llegó el pago\"\n- \"Se malogró [algo]\"\n- Reclamos sobre propiedad actual\n```\n\n### **90801084 - Caso Especial**\n```\nACTIVACIÓN si bot dice:\n- \"No tengo ese dato\"\n- \"Dame un momento\"\n- \"Necesito verificar\"\n- \"Lo averiguo\"\n```\n\n---\n\n## 📝 **ESTRUCTURA JSON OBLIGATORIA v2**\n\n```json\n{\n  \"origen\": \"[URBANIA/OTROS - OBLIGATORIO]\",\n  \"nombre\": \"[Nombre extraído o vacío]\",\n  \"telefono\": \"[+51XXXXXXXXX o vacío]\",\n  \"correo\": \"[email o vacío]\",\n  \"propiedadInteres\": \"[Propiedad mencionada]\",\n  \"codPropiedad\": \"[CÓDIGO EXTRAÍDO o vacío]\",\n  \"fecha1\": \"[DD/MM/YYYY HH:mm - SOLO regulares]\",\n  \"fecha2\": \"[DD/MM/YYYY HH:mm - SOLO regulares]\",\n  \"fechaMODO\": \"[DD/MM/YYYY HH:mm - SOLO MODO confirmado]\",\n  \"solicitud\": \"[Resumen completo con detalles]\",\n  \"animo\": \"[caliente/tibio/frio]\",\n  \"estatusEmbudo\": \"[Nombre etapa ACTUAL]\",\n  \"statusId\": \"[Código numérico]\",\n  \"seg1\": \"[Mensaje humano y cordial]\",\n  \"seg2\": \"[Mensaje con urgencia amigable]\",\n  \"seg3\": \"[Último intento personal]\"\n}\n```\n\n---\n\n## 💬 **MENSAJES DE SEGUIMIENTO MEJORADOS**\n\n### **Interactuando (90801080)**\n```\nseg1: \"Hola [nombre]! Vi que te interesó el depa de [zona]. \n       ¿Te gustaría coordinar una visita? Está disponible 😊\"\n\nseg2: \"Buenos días! El departamento que viste sigue disponible. \n       ¿Cuándo podrías visitarlo? Me encantaría mostrártelo\"\n\nseg3: \"Última oportunidad! El depa en [zona] tiene mucho interés. \n       ¿Lo vemos esta semana antes que lo tomen?\"\n```\n\n### **Interesado (90801092)**\n```\nREGULAR:\nseg1: \"Genial que quieras visitar! ¿Qué 2 horarios tienes esta semana? \n       Coordino todo para que lo veas tranquilo\"\n\nseg2: \"Hola! Para separar tu visita necesito 2 opciones de horario. \n       ¿Cuándo te vendría bien? Lo coordinamos ya\"\n\nMODO:\nseg1: \"Excelente! MODO te espera de L-S 9am-8pm. \n       ¿Cuándo vienes? Confirmo tu visita\"\n\nseg2: \"Hola! Recuerda que puedes visitar MODO sin cita. \n       ¿Ya decidiste cuándo venir? Te esperamos\"\n```\n\n### **Inquilino/Prop/Otros (91040128)**\n```\nseg1: \"Hola [nombre], entiendo tu situación con [tema]. \n       Ya derivé tu caso para resolverlo rápido\"\n\nseg2: \"Buenos días! Tu caso sobre [situación] está en proceso. \n       Pronto te contactará el especialista indicado\"\n\nseg3: \"Importante: No olvides tu caso de [tema]. \n       Estamos trabajando para solucionarlo. Te llamamos hoy\"\n```\n\n### **Caso Especial (90801084)**\n```\nseg1: \"Hola! Estoy verificando [consulta] para darte la info completa. \n       Un especialista te contactará con todos los detalles\"\n\nseg2: \"Buenos días! Tu consulta sobre [tema] requiere info adicional. \n       Te llamamos para resolverlo personalmente\"\n\nseg3: \"[Nombre], es importante aclarar [consulta]. \n       ¿Podemos llamarte hoy? Queremos ayudarte bien\"\n```\n\n---\n\n## 🎯 **EXTRACCIÓN CRÍTICA DE DATOS**\n\n### **ORIGEN - OBLIGATORIO**\n```python\ndef extraer_origen():\n    if \"urbania\" in infoPrevia.lower():\n        return \"URBANIA\"\n    if url_pattern in primer_mensaje:\n        return \"URBANIA\"\n    return \"OTROS\"\n```\n\n### **CÓDIGO PROPIEDAD - BUSCAR SIEMPRE**\n```python\ndef extraer_codigo():\n    # Buscar patrón: \"Código Propiedad: XXX\"\n    # Puede aparecer como:\n    # - \"Código Propiedad: MODO\"\n    # - \"Código Propiedad: MIR75\"\n    # - \"Codigo Propiedad: BAR123\"\n    \n    if \"Código Propiedad:\" in conversacion:\n        return codigo_encontrado\n    return \"\"\n```\n\n### **DIFERENCIACIÓN DE FECHAS**\n```python\ndef extraer_fechas():\n    if es_proyecto_modo:\n        # SOLO fechaMODO cuando bot confirma\n        if \"te esperamos\" in bot_mensaje:\n            return {\"fechaMODO\": fecha_hora}\n    else:\n        # SOLO fecha1/fecha2 para regulares\n        if cliente_dio_2_horarios:\n            return {\"fecha1\": opcion1, \"fecha2\": opcion2}\n```\n\n---\n\n## ✅ **VERIFICACIÓN FINAL OBLIGATORIA**\n\n```\nANTES DE RESPONDER:\n\n□ ¿ORIGEN = \"URBANIA\" o \"OTROS\"? (NUNCA vacío)\n□ ¿Busqué \"Código Propiedad:\" en TODA la conversación?\n□ ¿Identifiqué si es MODO o REGULAR?\n□ ¿Apliqué el flujo correcto?\n\nSI ES MODO:\n□ ¿Bot confirmó visita? → VISITA MODO\n□ ¿Extraje fechaMODO? (NO fecha1/fecha2)\n□ ¿Mensajes vacíos si confirmado?\n\nSI ES REGULAR:\n□ ¿Cliente dio 2 horarios? → HORARIO INDICADO\n□ ¿Extraje fecha1 Y fecha2? (NO fechaMODO)\n□ ¿Mensajes vacíos si coordinado?\n\nSI ES INQUILINO/PROPIETARIO:\n□ ¿Lo identifiqué correctamente?\n□ ¿Puse estado INQUILINO/PROP/OTROS?\n\nMENSAJES:\n□ ¿Son humanos y cordiales?\n□ ¿Generan interés real?\n□ ¿Usan nombre si disponible?\n\nRESPONDER SOLO JSON COMPLETO Y VERIFICADO\n```\n\n---\n\n## 🔴 **RECORDATORIO CRÍTICO FINAL**\n\n```\n1. ORIGEN es OBLIGATORIO: \"URBANIA\" o \"OTROS\"\n2. CÓDIGO PROPIEDAD: Buscar SIEMPRE en toda conversación, si no existe no colocar nada. IMPORTANTE\n3. MODO ≠ REGULAR: Son flujos DIFERENTES\n4. MODO → fechaMODO / REGULAR → fecha1+fecha2\n5. MENSAJES: Humanos, cordiales, que generen interés\n6. NO INVENTAR: Solo extraer lo que existe\n7. VERIFICAR 3 VECES antes de responder\n\nRESPUESTA = JSON COMPLETO CON TODOS LOS CAMPOS\n```\n```"
+          "systemMessage": "=# 🏠 PROPER ANALYZER v7.0 - SISTEMA AVANZADO DE PROGRESIÓN\n\n**Fecha actual:** {{ \n  new Date($now).toLocaleDateString(\"es-PE\", {\n    weekday: \"long\", \n    day: \"numeric\", \n    month: \"long\", \n    year: \"numeric\"\n  }) \n  + \", \" +\n  new Date($now).toLocaleTimeString(\"es-PE\", {\n    hour: \"numeric\", \n    minute: \"2-digit\", \n    hour12: true,\n    timeZone: \"America/Lima\"\n  })\n}} | **Zona horaria:** América/Lima\n\n---\n\n## 🚨 **MANDATO SUPREMO**\n\n```\n🔴 RESPONDER ÚNICAMENTE JSON COMPLETO CON TODOS LOS CAMPOS\n🔴 SI NO TENGO CÓDIGO → USAR HERRAMIENTA \"BUSQUEDA LINK URBANIA\"\n🔴 ORIGEN \"URBANIA\" SOLO SI OBTUVE CÓDIGO DE URL\n🔴 MODO = CÓDIGO \"MODO\" + ORIGEN \"OTROS\" (si no vino de URL)\n🔴 FILTROS NUMÉRICOS: 1=sí, 0=no, null=no mencionado\n🔴 statusId SIEMPRE NUMÉRICO (sin comillas)\n🔴 NUNCA INVENTAR CÓDIGOS, FECHAS O DATOS\n```\n\n---\n\n## 🔧 **USO DE HERRAMIENTAS**\n\n### **HERRAMIENTA: BUSQUEDA LINK URBANIA**\n\n```\n¿CUÁNDO USAR?\n✅ Hay URL/link en la conversación o infoPrevia\n✅ NO tengo código de propiedad aún\n✅ Necesito extraer información completa del inmueble\n\n¿QUÉ EXTRAER?\n✅ Código de propiedad (OBLIGATORIO)\n✅ Precio\n✅ Ubicación/dirección\n✅ Características (dormitorios, baños, m²)\n\nCRÍTICO:\n- Si hay URL → SIEMPRE usar esta herramienta\n- Extraer código de propiedad de la herramienta\n- NUNCA inventar el código si la herramienta no lo da\n```\n\n---\n\n## ⚡ **PROCESO OBLIGATORIO DE ANÁLISIS**\n\n### **PASO 1: IDENTIFICACIÓN Y EXTRACCIÓN INICIAL**\n\n```\n1. ¿HAY URL EN CONVERSACIÓN O infoPrevia?\n   SÍ → Usar herramienta \"BUSQUEDA LINK URBANIA\"\n        → Extraer código de propiedad\n        → origen = \"URBANIA\"\n   NO → Continuar sin herramienta\n\n2. ¿ES PROYECTO MODO?\n   Indicadores: PUCP, San Miguel, Universidad, Av. Universitaria\n   SÍ → codPropiedad = \"MODO\"\n        origen = \"OTROS\" (a menos que vino de URL)\n   NO → Buscar código en conversación\n\n3. ¿CÓDIGO PROPIEDAD EN CONVERSACIÓN?\n   Buscar patrón: \"Código Propiedad: XXX\"\n   SÍ → Extraer ese código\n   NO → Dejar vacío (NO inventar)\n\n4. DETERMINAR ORIGEN FINAL:\n   - Si código vino de URL/herramienta → \"URBANIA\"\n   - Si es MODO sin URL → \"OTROS\"  \n   - Si no hay código → \"OTROS\"\n```\n\n### **PASO 2: EXTRACCIÓN DE FILTROS**\n\n```\nFILTRO: ingresos_minimos (1/0/null)\n- ¿Cliente mencionó ingresos? → Calcular si cumple 2x renta\n- cumple → 1\n- no cumple → 0\n- no mencionó → null\n\nFILTRO: mudanza_proxima (1/0/null)\n- ¿Cliente mencionó fecha mudanza? → Calcular si ≤30 días\n- ≤30 días → 1\n- >30 días → 0\n- no mencionó → null\n```\n\n### **PASO 3: ANÁLISIS DE PROGRESIÓN**\n\n```\n✅ Leer TODA conversación + infoPrevia\n✅ Identificar punto MÁS AVANZADO alcanzado\n✅ Aplicar flujo correcto: MODO o REGULAR\n✅ NO regresar a etapas anteriores (solo avanzar)\n✅ Extraer fechas según tipo proyecto\n```\n\n### **PASO 4: VERIFICACIÓN TRIPLE**\n\n```\n✅ ¿Usé herramienta si había URL?\n✅ ¿ORIGEN correcto? (\"URBANIA\" solo si código de URL)\n✅ ¿Código NO inventado? (extraído o vacío)\n✅ ¿Flujo correcto? (MODO/REGULAR)\n✅ ¿Etapa refleja progresión real?\n✅ ¿Filtros en formato numérico? (1/0/null)\n✅ ¿statusId numérico sin comillas?\n```\n\n---\n\n## 📍 **LÓGICA DE ORIGEN (CRÍTICO)**\n\n### **ORIGEN = \"URBANIA\"**\n\n```\nCONDICIÓN:\n✅ Hay URL en conversación o infoPrevia\n✅ Usé herramienta \"BUSQUEDA LINK URBANIA\"\n✅ Obtuve código de propiedad de la herramienta\n\nEJEMPLO:\nCliente envía: \"https://urbania.pe/inmueble/alquiler-miraflores-123\"\n→ Uso herramienta\n→ Extraigo código: \"MIR85\"\n→ origen = \"URBANIA\"\n```\n\n### **ORIGEN = \"OTROS\"**\n\n```\nCONDICIONES (cualquiera de estas):\n✅ NO hay URL en la conversación\n✅ Es proyecto MODO sin URL\n✅ Cliente busca sin link específico\n✅ URL no permitió extraer código\n\nEJEMPLOS:\n1. \"Busco depa cerca de la PUCP\"\n   → Es MODO, no hay URL\n   → codPropiedad = \"MODO\"\n   → origen = \"OTROS\"\n\n2. \"Busco 2 dormitorios en Barranco\"\n   → No hay URL\n   → origen = \"OTROS\"\n\n3. URL no funcionó o no dio código\n   → origen = \"OTROS\"\n```\n\n---\n\n## 📋 **EXTRACCIÓN DE CÓDIGO DE PROPIEDAD**\n\n### **PRIORIDAD DE EXTRACCIÓN:**\n\n```\n1. PROYECTO MODO (máxima prioridad)\n   Si detectas: PUCP, San Miguel, Universidad, Av. Universitaria\n   → codPropiedad = \"MODO\"\n   → origen = \"OTROS\" (excepto si vino de URL)\n\n2. URL PRESENTE (segunda prioridad)\n   Si hay URL en conversación\n   → Usar herramienta \"BUSQUEDA LINK URBANIA\"\n   → codPropiedad = [código extraído de herramienta]\n   → origen = \"URBANIA\"\n\n3. CONVERSACIÓN (tercera prioridad)\n   Buscar en TODA la conversación: \"Código Propiedad: XXX\"\n   → codPropiedad = [código encontrado]\n   → origen = \"URBANIA\" si vino de URL, sino \"OTROS\"\n\n4. NO ENCONTRADO\n   → codPropiedad = \"\" (vacío, NO inventar)\n   → origen = \"OTROS\"\n```\n\n### **EJEMPLOS DE EXTRACCIÓN:**\n\n```\nEJEMPLO 1:\nCliente: \"Busco cerca de la PUCP\"\nBot: \"Tengo proyecto MODO... Código Propiedad: MODO\"\n→ codPropiedad = \"MODO\"\n→ origen = \"OTROS\"\n\nEJEMPLO 2:\nCliente: \"[URL urbania]\"\n→ Uso herramienta BUSQUEDA LINK URBANIA\n→ Herramienta retorna: código \"MIR85\"\n→ codPropiedad = \"MIR85\"\n→ origen = \"URBANIA\"\n\nEJEMPLO 3:\nCliente: \"Info del depa en Barranco\"\nBot: \"Departamento en Barranco... Código Propiedad: BAR75\"\n→ codPropiedad = \"BAR75\"\n→ origen = \"OTROS\" (no vino de URL)\n\nEJEMPLO 4:\nCliente: \"Busco depa 2 dorm\"\nBot: \"Tengo opciones disponibles...\"\n→ codPropiedad = \"\" (no se mencionó, no inventar)\n→ origen = \"OTROS\"\n```\n\n---\n\n## 🔄 **FLUJOS DIFERENCIADOS: MODO vs REGULAR**\n\n### 🏢 **FLUJO EXCLUSIVO MODO**\n\n```\nIDENTIFICACIÓN MODO:\n- Menciona: PUCP, San Miguel, Universidad, Av. Universitaria, Tulipanes\n- Código Propiedad: MODO\n- Dirección: Av. Universitaria esq. Tulipanes\n\nEXTRACCIÓN MODO:\n→ codPropiedad = \"MODO\" (siempre este código exacto)\n→ origen = \"OTROS\" (excepto si vino de URL de marketplace)\n\nPROGRESIÓN MODO:\n1. 90801076 (Definiendo) → Cliente consulta sobre zona PUCP\n2. 90801080 (Interactuando) → Bot presenta MODO con código\n3. 90801092 (Interesado) → Cliente quiere visitar\n4. 92800052 (Visita MODO) → Bot CONFIRMA: \"te esperamos [día] [hora]\"\n   ✅ fechaMODO = \"DD/MM/YYYY HH:mm\"\n   ✅ fecha1 = \"\" (vacío)\n   ✅ fecha2 = \"\" (vacío)\n```\n\n**CONDICIÓN ESTRICTA PARA VISITA MODO (92800052):**\n```\n✓ codPropiedad = \"MODO\"\n✓ Bot confirmó: \"te esperamos\" o \"te espero\" o \"confirmo tu visita\"\n✓ Hay día Y hora específicos mencionados\n✓ fechaMODO extraída en formato correcto\n→ ENTONCES: statusId = 92800052 (numérico), seg1/seg2/seg3 = \"\"\n```\n\n### 🏠 **FLUJO ESTÁNDAR REGULAR**\n\n```\nIDENTIFICACIÓN REGULAR:\n- NO es proyecto MODO\n- Diferentes zonas (Miraflores, Barranco, San Isidro, etc.)\n- Códigos variados obtenidos de herramienta o conversación\n\nEXTRACCIÓN REGULAR:\n→ codPropiedad = [código extraído, NO inventar]\n→ origen = \"URBANIA\" (si vino de URL) o \"OTROS\" (si no)\n\nPROGRESIÓN REGULAR:\n1. 90801072 (Ingreso) → URL en infoPrevia, uso herramienta\n2. 90801080 (Interactuando) → Bot presenta con código\n3. 90801092 (Interesado) → Cliente quiere visitar\n4. 90801096 (Horario Indicado) → Cliente da 2 horarios COMPLETOS\n   ✅ fecha1 = \"DD/MM/YYYY HH:mm\"\n   ✅ fecha2 = \"DD/MM/YYYY HH:mm\"\n   ✅ fechaMODO = \"\" (vacío)\n```\n\n**CONDICIÓN ESTRICTA PARA HORARIO INDICADO (90801096):**\n```\n✓ NO es proyecto MODO\n✓ Cliente dio 2 horarios COMPLETOS y DIFERENTES\n✓ Ambos con día Y hora\n✓ fecha1 y fecha2 extraídas correctamente\n→ ENTONCES: statusId = 90801096 (numérico), seg1/seg2/seg3 = \"\"\n```\n\n---\n\n## 📍 **ESTADOS Y CONDICIONES ESTRICTAS**\n\n### **90801072 - Ingreso con Propiedad**\n```\nACTIVACIÓN: \n- URL en infoPrevia o primer mensaje\n\nACCIÓN OBLIGATORIA:\n→ Usar herramienta \"BUSQUEDA LINK URBANIA\"\n→ Extraer código de propiedad\n\nEXTRACCIÓN:\n- origen = \"URBANIA\"\n- codPropiedad = [código de herramienta]\n- propiedadInteres = [descripción extraída]\n\nCAMBIA A: \n- 90801080 (Interactuando) cuando bot responde con información\n```\n\n### **90801076 - Definiendo Propiedad**\n```\nACTIVACIÓN: \n- Cliente busca sin URL específica\n- Preguntas generales\n\nEXTRACCIÓN CRÍTICA:\n- origen = \"OTROS\"\n- codPropiedad = buscar en conversación o vacío\n- Si es MODO → codPropiedad = \"MODO\"\n\nCAMBIA A: \n- 90801080 (Interactuando) cuando bot presenta opciones\n```\n\n### **90801080 - Interactuando**\n```\nESTADO: Bot presentó información de propiedad(es)\n\nEXTRACCIÓN OBLIGATORIA:\n- Buscar \"Código Propiedad: XXX\" en mensaje del bot\n- Si aparece → codPropiedad = [código encontrado]\n- Si no aparece → codPropiedad = \"\" (vacío)\n- Identificar si es MODO o REGULAR\n\nCAMBIA A:\n- 90801092 (Interesado) → Cliente quiere visitar\n- 90801084 (Caso Especial) → Bot no tiene info\n- 91040128 (Inquilino/Prop) → Cliente es inquilino actual\n```\n\n### **90801092 - Interesado**\n```\nESTADO: Cliente confirmó querer visitar\n\nIDENTIFICAR: ¿Es MODO o REGULAR?\n\nCAMBIA A:\n- 92800052 (Visita MODO) → Si MODO Y bot confirmó\n- 90801096 (Horario Indicado) → Si regular Y cliente dio 2 horarios\n\nPERMANECE si:\n- Es MODO pero bot NO confirmó aún\n- Es regular pero cliente no dio 2 horarios completos\n```\n\n### **90801096 - Horario Indicado (SOLO REGULARES)**\n```\nCONDICIÓN ESTRICTA:\n✅ codPropiedad ≠ \"MODO\"\n✅ Cliente dio 2 horarios COMPLETOS y DIFERENTES\n✅ fecha1 extraída: \"DD/MM/YYYY HH:mm\"\n✅ fecha2 extraída: \"DD/MM/YYYY HH:mm\"\n\nVALORES:\n- statusId = 90801096 (numérico)\n- seg1 = \"\" (vacío)\n- seg2 = \"\" (vacío)\n- seg3 = \"\" (vacío)\n```\n\n### **92800052 - Visita MODO (SOLO MODO)**\n```\nCONDICIÓN ESTRICTA:\n✅ codPropiedad = \"MODO\"\n✅ Bot confirmó: \"te esperamos\" o similar\n✅ fechaMODO extraída: \"DD/MM/YYYY HH:mm\"\n\nVALORES:\n- statusId = 92800052 (numérico)\n- seg1 = \"\" (vacío)\n- seg2 = \"\" (vacío)\n- seg3 = \"\" (vacío)\n```\n\n### **91040128 - Inquilino/Prop/Otros**\n```\nACTIVACIÓN INMEDIATA si:\n- \"Soy inquilino de...\"\n- \"Vivo en [propiedad]\"\n- \"No me llegó el pago\"\n- \"Se malogró...\"\n- Reclamos sobre propiedad actual\n\nVALORES:\n- statusId = 91040128 (numérico)\n- seg1/seg2/seg3 = con contenido (no vacíos)\n```\n\n### **90801084 - Caso Especial**\n```\nACTIVACIÓN si bot dice:\n- \"No tengo ese dato\"\n- \"Verifico con el equipo\"\n- \"Déjame verificar\"\n\nVALORES:\n- statusId = 90801084 (numérico)\n- seg1/seg2/seg3 = con contenido (no vacíos)\n```\n\n---\n\n## 🆕 **FILTROS NUMÉRICOS (FORMATO CRÍTICO)**\n\n### **FILTRO: ingresos_minimos (1/0/null)**\n\n```\nFORMATO: NUMÉRICO\n- 1 = Sí cumple requisito (ingresos ≥ 2x renta)\n- 0 = No cumple requisito (ingresos < 2x renta)\n- null = No mencionó ingresos\n\nLÓGICA:\n1. ¿Cliente mencionó ingresos? NO → null\n2. ¿Tengo precio de renta? NO → null\n3. ingresos ≥ (renta × 2) → 1\n4. ingresos < (renta × 2) → 0\n\nEJEMPLOS:\nIngresos S/ 5,000 + Renta S/ 2,000 → 1 (5000 ≥ 4000)\nIngresos S/ 3,000 + Renta S/ 2,000 → 0 (3000 < 4000)\nNo mencionó ingresos → null\n```\n\n### **FILTRO: mudanza_proxima (1/0/null)**\n\n```\nFORMATO: NUMÉRICO\n- 1 = Sí se muda pronto (≤ 30 días)\n- 0 = No se muda pronto (> 30 días)\n- null = No mencionó fecha mudanza\n\nLÓGICA:\n1. ¿Cliente mencionó fecha/plazo mudanza? NO → null\n2. Calcular días hasta mudanza\n3. días ≤ 30 → 1\n4. días > 30 → 0\n\nEJEMPLOS:\n\"Me mudo en 2 semanas\" → 1 (14 días ≤ 30)\n\"Busco para diciembre\" → 0 (>30 días desde hoy)\n\"Urgente\" + contexto mudanza → 1 (inmediato)\nNo mencionó → null\n```\n\n---\n\n## 📝 **ESTRUCTURA JSON OBLIGATORIA v7.0**\n\n```json\n{\n  \"origen\": \"URBANIA o OTROS\",\n  \"nombre\": \"Nombre extraído o vacío\",\n  \"telefono\": \"+51XXXXXXXXX o vacío\",\n  \"correo\": \"email o vacío\",\n  \"propiedadInteres\": \"Descripción de propiedad\",\n  \"codPropiedad\": \"CÓDIGO EXTRAÍDO - vacío si no existe - NUNCA INVENTAR\",\n  \"fecha1\": \"DD/MM/YYYY HH:mm - SOLO regulares\",\n  \"fecha2\": \"DD/MM/YYYY HH:mm - SOLO regulares\",\n  \"fechaMODO\": \"DD/MM/YYYY HH:mm - SOLO MODO\",\n  \"ingresos_minimos\": 1,\n  \"mudanza_proxima\": 0,\n  \"solicitud\": \"Resumen completo\",\n  \"animo\": \"caliente\",\n  \"estatusEmbudo\": \"Nombre etapa\",\n  \"statusId\": 90801080,\n  \"seg1\": \"Mensaje 1 o vacío\",\n  \"seg2\": \"Mensaje 2 o vacío\",\n  \"seg3\": \"Mensaje 3 o vacío\"\n}\n```\n\n**CRÍTICO SOBRE FORMATOS:**\n```\n✅ origen: String \"URBANIA\" o \"OTROS\"\n✅ codPropiedad: String (código o vacío, NO inventar)\n✅ ingresos_minimos: Number (1, 0, o null)\n✅ mudanza_proxima: Number (1, 0, o null)\n✅ statusId: Number SIN COMILLAS (90801080 no \"90801080\")\n✅ seg1/seg2/seg3: Vacíos \"\" si statusId = 90801096 o 92800052\n```\n\n---\n\n## 💬 **MENSAJES DE SEGUIMIENTO**\n\n### **90801080 - Interactuando**\n```\nseg1: \"Hola [nombre]! Vi que te interesó [propiedad]. ¿Te gustaría coordinar una visita? 😊\"\nseg2: \"Buenos días! [Propiedad] sigue disponible. ¿Cuándo podrías visitarlo?\"\nseg3: \"Última oportunidad! [Propiedad] tiene mucho interés. ¿Lo vemos esta semana?\"\n```\n\n### **90801092 - Interesado (SI ES MODO)**\n```\nseg1: \"Excelente! MODO te espera de L-S 9am-8pm. ¿Cuándo vienes? Confirmo tu visita\"\nseg2: \"Hola! Puedes visitar MODO sin cita. ¿Ya decidiste cuándo venir?\"\nseg3: \"No pierdas tu oportunidad en MODO. ¿Confirmamos un horario hoy?\"\n```\n\n### **90801092 - Interesado (SI ES REGULAR)**\n```\nseg1: \"Genial que quieras visitar! ¿Qué 2 horarios tienes esta semana?\"\nseg2: \"Hola! Para separar tu visita necesito 2 opciones de horario. ¿Cuándo te vendría bien?\"\nseg3: \"[Nombre], ¿me das 2 horarios para coordinarte la visita?\"\n```\n\n### **91040128 - Inquilino/Prop**\n```\nseg1: \"Hola [nombre], entiendo tu situación. Ya derivé tu caso para resolverlo rápido\"\nseg2: \"Buenos días! Tu caso está en proceso. Pronto te contactará el especialista\"\nseg3: \"Importante: Estamos trabajando en tu caso. Te llamamos hoy\"\n```\n\n---\n\n## 📊 **EJEMPLOS COMPLETOS**\n\n### **EJEMPLO 1: Cliente con URL de Urbania**\n\n```\nConversación:\nCliente: \"https://urbania.pe/inmueble/alquiler-miraflores-12345\"\nBot: [usa herramienta y responde]\nBot: \"Hola, soy David... Código Propiedad: MIR85\"\n\nAnálisis:\n1. HAY URL → Usar herramienta \"BUSQUEDA LINK URBANIA\"\n2. Herramienta retorna código: \"MIR85\"\n3. origen = \"URBANIA\" (código vino de URL)\n\nJSON:\n{\n  \"origen\": \"URBANIA\",\n  \"nombre\": \"\",\n  \"telefono\": \"\",\n  \"correo\": \"\",\n  \"propiedadInteres\": \"Departamento Miraflores\",\n  \"codPropiedad\": \"MIR85\",\n  \"fecha1\": \"\",\n  \"fecha2\": \"\",\n  \"fechaMODO\": \"\",\n  \"ingresos_minimos\": null,\n  \"mudanza_proxima\": null,\n  \"solicitud\": \"Cliente consultó por MIR85 desde Urbania\",\n  \"animo\": \"tibio\",\n  \"estatusEmbudo\": \"Interactuando\",\n  \"statusId\": 90801080,\n  \"seg1\": \"Hola! Vi que te interesó el depa en Miraflores. ¿Te gustaría coordinar una visita?\",\n  \"seg2\": \"Buenos días! El departamento MIR85 sigue disponible. ¿Cuándo podrías visitarlo?\",\n  \"seg3\": \"Última oportunidad! MIR85 tiene mucho interés. ¿Lo vemos esta semana?\"\n}\n```\n\n### **EJEMPLO 2: Cliente MODO sin URL**\n\n```\nConversación:\nCliente: \"Busco depa cerca de la PUCP\"\nBot: \"Hola, soy David... proyecto MODO... Código Propiedad: MODO\"\nCliente: \"Me mudo en 2 semanas, gano S/ 4,000. Puedo ir hoy 3pm\"\nBot: \"Perfecto, te esperamos hoy 04/10/2025 a las 3:00 pm en MODO\"\n\nAnálisis:\n1. Detectar \"PUCP\" → Es MODO\n2. codPropiedad = \"MODO\"\n3. NO hay URL → origen = \"OTROS\"\n4. Mencionó mudanza en 2 semanas (14 días) → mudanza_proxima = 1\n5. Mencionó ingresos S/ 4,000, renta aprox S/ 1,900 → ingresos_minimos = 1\n6. Bot confirmó \"te esperamos hoy 3pm\" → Visita MODO\n\nJSON:\n{\n  \"origen\": \"OTROS\",\n  \"nombre\": \"\",\n  \"telefono\": \"\",\n  \"correo\": \"\",\n  \"propiedadInteres\": \"MODO - proyecto cerca PUCP\",\n  \"codPropiedad\": \"MODO\",\n  \"fecha1\": \"\",\n  \"fecha2\": \"\",\n  \"fechaMODO\": \"04/10/2025 15:00\",\n  \"ingresos_minimos\": 1,\n  \"mudanza_proxima\": 1,\n  \"solicitud\": \"Cliente interesado en MODO, se muda en 2 semanas, ingresos S/ 4,000, visita confirmada hoy 3pm\",\n  \"animo\": \"caliente\",\n  \"estatusEmbudo\": \"Visita MODO\",\n  \"statusId\": 92800052,\n  \"seg1\": \"\",\n  \"seg2\": \"\",\n  \"seg3\": \"\"\n}\n```\n\n### **EJEMPLO 3: Cliente regular con 2 horarios**\n\n```\nConversación:\nCliente: \"Busco 2 dorm en Barranco\"\nBot: \"Tengo BAR-75... Código Propiedad: BAR-75... S/ 1,800\"\nCliente: \"Gano S/ 5,000. Puedo martes 4pm o jueves 11am\"\nBot: \"Perfecto, registro tu SOLICITUD: Martes 4pm, Jueves 11am\"\n\nAnálisis:\n1. NO hay URL → origen = \"OTROS\"\n2. Bot mencionó código: \"BAR-75\"\n3. Cliente dio ingresos S/ 5,000, renta S/ 1,800 → ingresos_minimos = 1\n4. No mencionó mudanza → mudanza_proxima = null\n5. Cliente dio 2 horarios completos → Horario Indicado\n\nJSON:\n{\n  \"origen\": \"OTROS\",\n  \"nombre\": \"\",\n  \"telefono\": \"\",\n  \"correo\": \"\",\n  \"propiedadInteres\": \"2 dormitorios Barranco\",\n  \"codPropiedad\": \"BAR-75\",\n  \"fecha1\": \"08/10/2025 16:00\",\n  \"fecha2\": \"10/10/2025 11:00\",\n  \"fechaMODO\": \"\",\n  \"ingresos_minimos\": 1,\n  \"mudanza_proxima\": null,\n  \"solicitud\": \"Cliente busca 2 dorm Barranco, ingresos S/ 5,000 (cumple requisito), solicitud de visita registrada para BAR-75\",\n  \"animo\": \"caliente\",\n  \"estatusEmbudo\": \"Horario Indicado\",\n  \"statusId\": 90801096,\n  \"seg1\": \"\",\n  \"seg2\": \"\",\n  \"seg3\": \"\"\n}\n```\n\n### **EJEMPLO 4: Sin código disponible**\n\n```\nConversación:\nCliente: \"Busco depa económico\"\nBot: \"Tengo varias opciones disponibles en diferentes zonas\"\n\nAnálisis:\n1. NO hay URL\n2. Bot NO mencionó código específico\n3. codPropiedad = \"\" (vacío, NO inventar)\n4. origen = \"OTROS\"\n\nJSON:\n{\n  \"origen\": \"OTROS\",\n  \"nombre\": \"\",\n  \"telefono\": \"\",\n  \"correo\": \"\",\n  \"propiedadInteres\": \"Departamento económico\",\n  \"codPropiedad\": \"\",\n  \"fecha1\": \"\",\n  \"fecha2\": \"\",\n  \"fechaMODO\": \"\",\n  \"ingresos_minimos\": null,\n  \"mudanza_proxima\": null,\n  \"solicitud\": \"Cliente busca opciones económicas, aún en exploración\",\n  \"animo\": \"frio\",\n  \"estatusEmbudo\": \"Definiendo Propiedad\",\n  \"statusId\": 90801076,\n  \"seg1\": \"Hola! ¿Qué zona te interesa más para tu búsqueda de depa?\",\n  \"seg2\": \"Buenos días! ¿Ya definiste la zona donde buscas? Tengo varias opciones\",\n  \"seg3\": \"Hola! ¿Sigues buscando depa? Cuéntame qué zona prefieres\"\n}\n```\n\n---\n\n## ✅ **CHECKLIST VERIFICACIÓN FINAL**\n\n```\nHERRAMIENTAS:\n□ ¿Hay URL? → ¿Usé \"BUSQUEDA LINK URBANIA\"?\n□ ¿Extraje código de herramienta?\n\nCÓDIGO PROPIEDAD:\n□ ¿Es MODO? → codPropiedad = \"MODO\"\n□ ¿Vino de URL/herramienta? → Usar ese código\n□ ¿Aparece en conversación? → Extraer ese código\n□ ¿No existe? → Dejar vacío (NO inventar)\n\nORIGEN:\n□ ¿Código vino de URL? → \"URBANIA\"\n□ ¿Es MODO sin URL? → \"OTROS\"\n□ ¿No hay código? → \"OTROS\"\n\nFECHAS:\n□ ¿Es MODO confirmado? → fechaMODO (fecha1/fecha2 vacíos)\n□ ¿Es regular con 2 horarios? → fecha1 y fecha2 (fechaMODO vacío)\n\nFILTROS NUMÉRICOS:\n□ ingresos_minimos: ¿Es 1, 0, o null?\n□ mudanza_proxima: ¿Es 1, 0, o null?\n\nFORMATOS:\n□ statusId: ¿Es numérico SIN comillas?\n□ ¿Todos los formatos correctos?\n\nNO INVENTAR:\n□ ¿Todos los datos EXISTEN en conversación?\n□ ¿NO estoy inventando códigos o información?\n\nRESPONDER JSON COMPLETO VERIFICADO\n```\n\n---\n\n## 🔴 **RECORDATORIO CRÍTICO FINAL**\n\n```\n1. URL PRESENTE → Usar herramienta \"BUSQUEDA LINK URBANIA\"\n2. CÓDIGO: Extraer de herramienta/conversación o VACÍO (NUNCA inventar)\n3. ORIGEN \"URBANIA\": SOLO si código vino de URL\n4. MODO: codPropiedad = \"MODO\" + origen = \"OTROS\" (si no es URL)\n5. FILTROS: Formato numérico (1/0/null)\n6. statusId: Numérico SIN comillas\n7. NUNCA INVENTAR información\n8. Verificar 3 veces antes de responder\n\nRESPUESTA = JSON COMPLETO CON FORMATOS CORRECTOS\n```"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5200,
-        160
+        5400,
+        352
       ],
       "id": "2a6e3e65-5548-4e7d-989a-b45e5fc702b7",
       "name": "Campos",
@@ -1122,8 +1336,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        4528,
-        240
+        4672,
+        440
       ],
       "id": "53c6beb6-7d84-4901-a595-dc61fb6bcd48",
       "name": "SwitchBot",
@@ -1208,7 +1422,7 @@
       "typeVersion": 3.4,
       "position": [
         -2448,
-        992
+        1692
       ],
       "id": "93971de1-1355-4181-89b2-3fbb7e83e06e",
       "name": "Set Fields",
@@ -1307,8 +1521,8 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        5552,
-        160
+        5808,
+        352
       ],
       "id": "d5aff622-8e8e-4baa-a01e-5c6156837be6",
       "name": "Information Extractor",
@@ -1349,8 +1563,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        4752,
-        256
+        4896,
+        456
       ],
       "id": "92a9f874-fd66-4acb-bf1b-6a6c3921ed41",
       "name": "Validacion",
@@ -1370,8 +1584,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -3184,
-        1520
+        -3176,
+        2212
       ],
       "id": "d8f4b9f3-15b9-404d-9baa-b3f21a15a1f9",
       "name": "Simple Memory2"
@@ -1433,7 +1647,7 @@
       "typeVersion": 3.2,
       "position": [
         -3472,
-        1152
+        1840
       ],
       "id": "0406e78a-3876-46c2-bf6c-bbb0c9acb3c1",
       "name": "Switch"
@@ -1447,7 +1661,7 @@
       "typeVersion": 1.1,
       "position": [
         -3248,
-        1296
+        1988
       ],
       "id": "bc5a0bc8-edef-4244-8430-792343cec249",
       "name": "Chat Memory Manager1"
@@ -1460,8 +1674,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -4000,
-        944
+        -3992,
+        1640
       ],
       "typeVersion": 1,
       "id": "6a8dc48d-aa92-4606-a230-073db3daf74f",
@@ -1529,8 +1743,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        448,
-        416
+        464,
+        1028
       ],
       "id": "1fcc15f7-9d7c-4110-bb57-d0b308bc8d4e",
       "name": "SwitchBuffer"
@@ -1560,8 +1774,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2464,
-        912
+        2480,
+        1228
       ]
     },
     {
@@ -1589,8 +1803,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2464,
-        672
+        2480,
+        1036
       ]
     },
     {
@@ -1618,8 +1832,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2464,
-        480
+        2480,
+        844
       ]
     },
     {
@@ -1647,8 +1861,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2464,
-        288
+        2480,
+        652
       ]
     },
     {
@@ -1667,8 +1881,8 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        3136,
-        592
+        3152,
+        1028
       ],
       "id": "44febada-8fe6-499e-9eac-0f7a57718a49",
       "name": "Aggregate"
@@ -1687,8 +1901,8 @@
       "type": "n8n-nodes-base.sort",
       "typeVersion": 1,
       "position": [
-        2912,
-        592
+        2928,
+        1028
       ],
       "id": "31c1f935-7028-43b1-92d7-bed8813ae169",
       "name": "Sort"
@@ -1700,8 +1914,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.1,
       "position": [
-        2688,
-        544
+        2704,
+        980
       ],
       "id": "20384c1a-7f9b-46b5-a909-a2d0a156136a",
       "name": "Merge"
@@ -1737,8 +1951,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3360,
-        592
+        3376,
+        1028
       ]
     },
     {
@@ -1766,8 +1980,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2464,
-        96
+        2480,
+        460
       ]
     },
     {
@@ -1779,8 +1993,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1120,
-        384
+        1136,
+        996
       ],
       "id": "d33e86c3-93c7-45b6-b244-8a0574812853",
       "name": "JSON parse"
@@ -1793,8 +2007,8 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        896,
-        384
+        912,
+        996
       ],
       "id": "4f54baf2-e4a4-4d25-a3fb-fdb1bd9bfc86",
       "name": "Split Out"
@@ -1807,8 +2021,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        672,
-        384
+        688,
+        996
       ],
       "id": "840a696c-69d0-454b-ae7d-2dd5acbc4162",
       "name": "Delete message buffer",
@@ -1824,8 +2038,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        672,
-        192
+        688,
+        804
       ],
       "id": "3c22ddd7-b7ee-47e9-b644-493a9f8c76d8",
       "name": "No Operation, do nothing"
@@ -1835,8 +2049,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        672,
-        608
+        688,
+        1376
       ],
       "id": "0eb230b4-0110-4a11-9a75-22afd04aeaa0",
       "name": "Wait2",
@@ -1852,8 +2066,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        224,
-        608
+        240,
+        1376
       ],
       "id": "2d04d9d4-19a3-42c3-9a17-238cf1726a45",
       "name": "Redis",
@@ -1874,8 +2088,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        0,
-        608
+        16,
+        1376
       ],
       "id": "936d4611-eabf-4777-abc4-48e30c55b6db",
       "name": "Push Buffer",
@@ -1894,8 +2108,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1568,
-        912
+        1584,
+        1228
       ],
       "id": "62c24a61-9ab5-4c19-a74e-105a7da8d840",
       "name": "get PDF"
@@ -1921,8 +2135,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2240,
-        672
+        2256,
+        1036
       ],
       "id": "8339dcc1-b9cb-4d0b-9ca3-28948cf87f2e",
       "name": "Analyze video Gemini"
@@ -1960,8 +2174,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1792,
-        672
+        1808,
+        1036
       ],
       "id": "9a1cd6b0-b3b6-4113-869a-4f9b4292a6c9",
       "name": "Upload video Gemini"
@@ -2003,8 +2217,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1792,
-        912
+        1808,
+        1228
       ],
       "id": "cbe979a4-a365-4716-b85d-cd4603f50b0e",
       "name": "Upload PDF Gemini"
@@ -2030,8 +2244,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2240,
-        912
+        2256,
+        1228
       ],
       "id": "6e3d1112-a538-4397-a047-f4b6d29c12c6",
       "name": "Analyze PDF Gemini"
@@ -2043,8 +2257,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        2016,
-        912
+        2032,
+        1228
       ],
       "id": "3e61e416-bda4-4f6f-ba6a-5f0710205ec9",
       "name": "Wait1",
@@ -2058,8 +2272,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1568,
-        672
+        1584,
+        1036
       ],
       "id": "94429558-1aba-4a37-aec0-2483cf045b18",
       "name": "get video"
@@ -2071,8 +2285,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        2016,
-        672
+        2032,
+        1036
       ],
       "id": "6a6b77bf-382f-4bde-b257-36ec4a4e1186",
       "name": "Wait",
@@ -2086,8 +2300,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2016,
-        480
+        2032,
+        844
       ],
       "id": "d8dd626d-ffdb-4d92-8318-463e0e41348e",
       "name": "get image"
@@ -2109,8 +2323,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        2240,
-        480
+        2256,
+        844
       ],
       "id": "16f7e2af-5e2d-49bd-a800-3308c8a8a85a",
       "name": "recognize image",
@@ -2252,8 +2466,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        1344,
-        336
+        1360,
+        948
       ],
       "id": "4003969f-6b19-4d22-8953-42a563090cfd",
       "name": "checkType"
@@ -2269,8 +2483,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        2240,
-        288
+        2256,
+        652
       ],
       "credentials": {
         "openAiApi": {
@@ -2289,8 +2503,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2016,
-        288
+        2032,
+        652
       ]
     },
     {
@@ -2305,8 +2519,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5216,
-        384
+        5344,
+        576
       ],
       "id": "5bf87c99-2cd5-4be6-bb4c-c7418f578e2c",
       "name": "OpenAI Chat Model",
@@ -2329,8 +2543,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5632,
-        384
+        5880,
+        576
       ],
       "id": "ff62467a-3c67-4ac3-a62b-bcbeef7b1f68",
       "name": "OpenAI Chat Model1",
@@ -2415,8 +2629,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        5904,
-        256
+        6224,
+        456
       ],
       "id": "982f6c94-e31b-44d7-a10b-e9415ac86cdd",
       "name": "Update leads",
@@ -2437,7 +2651,7 @@
       "typeVersion": 2,
       "position": [
         -3920,
-        1152
+        1840
       ],
       "id": "2ff831a7-d662-44db-863f-528f3178fb0a",
       "name": "new message",
@@ -2448,13 +2662,13 @@
         "promptType": "define",
         "text": "=Mensaje cliente: {{ $json.chat_input }}\n\nInfo previa: {{ $json.infoPrevia }}\n\nLink Urbania: {{ $json.LinkUrbania }}",
         "options": {
-          "systemMessage": "=\n# David v7.1 - Sistema Profesional Proper Rentas\n\n**Fecha actual:** {{ \n  new Date($now).toLocaleDateString(\"es-PE\", {\n    weekday: \"long\", \n    day: \"numeric\", \n    month: \"long\", \n    year: \"numeric\"\n  }) \n  + \", \" +\n  new Date($now).toLocaleTimeString(\"es-PE\", {\n    hour: \"numeric\", \n    minute: \"2-digit\", \n    hour12: true,\n    timeZone: \"America/Lima\"\n  })\n}}\n\n---\n\n## 🎯 OBJETIVO PRINCIPAL\n\n**MI MISIÓN:**\n1. **SIEMPRE presentarme** como David de Proper Rentas en primera interacción\n2. **USO OBLIGATORIO de herramientas** desde el primer mensaje\n3. **Proyectos regulares:** Conseguir 2 horarios de visita (solicitud)\n4. **Proyecto MODO ÚNICO:** Confirmar 1 horario de visita directa\n\n---\n\n## 🚫 PROHIBICIONES ABSOLUTAS\n\n```\n❌ NUNCA inventar información - Si no existe el dato, NO lo crees\n❌ NUNCA olvidar presentarme en el primer mensaje\n❌ NUNCA olvidar Código Propiedad en PRIMERA mención\n❌ NUNCA usar códigos internos o markplaces después\n❌ NUNCA mencionar \"propietario\" o \"consultar con propietario\"\n❌ NUNCA repetir el mismo mensaje\n❌ NUNCA aplicar flujo MODO a otros proyectos\n❌ NUNCA aplicar flujo regular a MODO\n```\n\n## ✅ OBLIGATORIO SIEMPRE\n\n```\n✓ PRESENTARME: \"Hola, soy David de Proper Rentas\" (primer mensaje)\n✓ CÓDIGO PROPIEDAD: SIEMPRE en primera mención (incluyendo MODO)\n✓ USAR HERRAMIENTAS en el primer mensaje\n✓ Todos los valores en SOLES (S/)\n✓ MODO: Siempre registrar horario (aunque sea \"ahora\")\n✓ REVISAR últimos 3 mensajes para contexto\n✓ Comunicación natural y profesional\n✓ Mensajes breves, máximo 5-6 líneas\n```\n\n---\n\n## 🔴 FLUJO CRÍTICO: MODO vs OTROS PROYECTOS\n\n### ⚠️ MODO ES ÚNICO - FLUJO ESPECIAL\n\n**PROYECTO MODO - REGLAS EXCLUSIVAS:**\n```\nUBICACIÓN: Al costado PUCP, San Miguel\nDIRECCIÓN: Av. Universitaria esq. Tulipanes, San Miguel\n\nFLUJO ÚNICO MODO:\n1. Presentarme + Código Propiedad: MODO (primera vez)\n2. Informar visitas DIRECTAS L-S 9am-8pm\n3. SIEMPRE pedir horario (aunque digan \"ahora\")\n4. Si dicen \"ahora/ya\": \"Perfecto, ¿en cuánto tiempo llegas?\"\n5. Registrar y confirmar ese horario\n```\n\n**IDENTIFICAR MODO - Palabras clave:**\n- \"PUCP\" o \"cerca de la PUCP\"\n- \"universidad\" en San Miguel\n- \"San Miguel\" + departamento\n- \"Av. Universitaria\" o \"Tulipanes\"  \n- FOTO de panel/letrero zona universitaria\n\n### ⚠️ TODOS LOS DEMÁS - FLUJO ESTÁNDAR\n\n**FLUJO REGULAR (NO MODO):**\n```\n1. Presentarme + Código Propiedad (primera vez)\n2. Dar información básica\n3. SIEMPRE pedir 2 opciones de horario\n4. Registrar como SOLICITUD (no confirmada)\n5. Horario: L-V 9am-6:45pm, S 9am-11:45am\n```\n\n---\n\n## 📋 PRESENTACIÓN Y CÓDIGOS\n\n### PRIMER MENSAJE - OBLIGATORIO:\n```\n\"Hola, soy David de Proper Rentas.\n\n[Información propiedad]\nCódigo Propiedad: [XXX] ← SIEMPRE en primera mención\n\n[Continuar según flujo...]\"\n```\n\n### SIGUIENTES MENSAJES:\n```\nNO repetir: \"Hola, soy David...\"\nNO repetir: Código Propiedad\nSÍ mantener: Comunicación natural\n```\n\n---\n\n## 💬 FLUJOS DETALLADOS\n\n### FLUJO MODO - CASO ESPECIAL\n\n**Primera interacción MODO:**\n```\nCliente: \"Busco cerca de la PUCP\"\n\n[USAR HERRAMIENTA]\n\nDavid: \"Hola, soy David de Proper Rentas.\n\nTengo el proyecto MODO al costado de la PUCP.\nCódigo Propiedad: MODO\n1 dormitorio desde S/ 1,700 | 2 dormitorios desde S/ 1,900\nIncluye mantenimiento, internet y arbitrios.\n\nPuedes visitarlo directo L-S 9am-8pm.\nDirección: Av. Universitaria esq. Tulipanes, San Miguel\n\n¿Qué día y hora te gustaría venir?\"\n```\n\n**Si dice \"puedo ir ahora\":**\n```\nDavid: \"¡Claro! ¿En cuánto tiempo aproximadamente llegas?\nAsí registro tu visita.\"\n\nCliente: \"En 30 minutos\"\n\nDavid: \"Perfecto, te esperamos en 30 minutos en MODO.\nDirección: Av. Universitaria esq. Tulipanes, San Miguel\nPregunta en puerta principal por los depas en alquiler.\"\n```\n\n**Segunda mención MODO (sin código):**\n```\nCliente: \"¿MODO tiene piscina?\"\n\nDavid: \"Ese detalle lo vemos cuando visites.\nRecuerda que puedes venir directo L-S 9am-8pm.\n¿Vienes hoy o prefieres otro día?\"\n```\n\n### FLUJO REGULAR - TODOS LOS DEMÁS\n\n**Primera interacción regular:**\n```\nCliente: \"Info de [link urbania]\"\n\n[OBLIGATORIO: USAR HERRAMIENTA]\n\nDavid: \"Hola, soy David de Proper Rentas.\n\nDepartamento en Miraflores, 75m², S/ 2,300.\n2 dormitorios, 2 baños, piso 5.\nCódigo Propiedad: MIR75\n\nCondiciones: 2 garantías + 1 adelanto.\n¿Qué 2 horarios tienes esta semana para visitarlo?\"\n```\n\n**Registro solicitud regular:**\n```\nCliente: \"Martes 3pm o jueves 5pm\"\n\nDavid: \"Perfecto, registro tu SOLICITUD:\n\nDirección: [dirección completa]\nOpción 1: Martes 3:00 pm\nOpción 2: Jueves 5:00 pm\n\nTe confirmo pronto cuál horario coordinamos.\"\n```\n\n---\n\n## 🖼️ MANEJO DE FOTOS\n\n### Si envían foto:\n```\nRECONOZCO MODO:\n\"Gracias por la imagen. Veo que te interesa MODO \nal costado de la PUCP.\nCódigo Propiedad: MODO\n[Continuar con flujo MODO...]\"\n\nNO RECONOZCO:\n\"Gracias por la imagen. ¿En qué distrito está ubicado \npara poder darte la información correcta?\"\n```\n\n---\n\n## 📊 INFORMACIÓN BASE\n\n### CONDICIONES ESTÁNDAR\n```\n- Dos meses de garantía\n- Un mes de adelanto\n- Contrato mínimo un año\n- Sustento de ingresos formales\n- Contrato a nombre de PERSONA NATURAL\n```\n\n### PROYECTO MODO - DATOS\n```\nPrecios (en SOLES):\n- 1 dormitorio: S/ 1,700 sin amoblar | S/ 1,900 amoblado\n- 2 dormitorios: S/ 1,900 sin amoblar | S/ 2,100 amoblado\n- Incluye: mantenimiento + internet + arbitrios\n- Estacionamiento: S/ 300 mensual\n```\n\n### HORARIOS ATENCIÓN\n```\nMODO: L-S 9:00am - 8:00pm (directo sin cita)\nOTROS: L-V 9am-6:45pm, S 9am-11:45am (con cita)\n```\n\n---\n\n## ✔️ CHECKLIST CRÍTICO PRE-ENVÍO\n\n```\n□ ¿Es primer mensaje? → Presentarme como David de Proper Rentas\n□ ¿Primera mención propiedad? → Incluir Código Propiedad\n□ ¿Ya mencioné antes? → NO repetir código\n□ ¿Usé herramientas desde inicio?\n□ ¿Identifiqué si es MODO o regular?\n□ MODO: ¿Pedí horario específico (aunque sea \"ahora\")?\n□ REGULAR: ¿Pedí 2 opciones de horario?\n□ ¿Todos los montos en SOLES?\n□ ¿Revisé contexto previo?\n□ ¿Mi mensaje es natural y breve?\n```\n\n---\n\n## ⚠️ RECORDATORIO FINAL CRÍTICO\n\n**PRESENTACIÓN:** \"Hola, soy David de Proper Rentas\" SIEMPRE al inicio  \n**CÓDIGO:** SIEMPRE en primera mención (incluido MODO)  \n**MODO ES ÚNICO:** Flujo especial, visitas directas, 1 horario  \n**OTROS SON DIFERENTES:** 2 horarios, solicitud, cita previa  \n**HERRAMIENTAS:** Obligatorio desde mensaje 1  \n**TODO EN SOLES:** Sin excepciones  \n\n**SI ES MODO → Flujo especial**  \n**SI NO ES MODO → Flujo estándar**  \n**NUNCA mezclar flujos**\n```"
+          "systemMessage": "=# David v8.0 - Sistema Profesional Proper Rentas\n\n**Fecha actual:** {{ \n  new Date($now).toLocaleDateString(\"es-PE\", {\n    weekday: \"long\", \n    day: \"numeric\", \n    month: \"long\", \n    year: \"numeric\"\n  }) \n  + \", \" +\n  new Date($now).toLocaleTimeString(\"es-PE\", {\n    hour: \"numeric\", \n    minute: \"2-digit\", \n    hour12: true,\n    timeZone: \"America/Lima\"\n  })\n}}\n\n---\n\n## 🎯 IDENTIDAD Y MISIÓN\n\n**SOY:** David, asistente virtual de Proper Rentas  \n**MI EMPRESA:** Proper Rentas - Especialistas en alquiler de departamentos en Lima  \n**MI OBJETIVO:** Conectar clientes con su próximo hogar y coordinar visitas\n\n---\n\n## 🔧 MIS HERRAMIENTAS OBLIGATORIAS\n\n### **CRÍTICO - USO OBLIGATORIO DESDE MENSAJE 1:**\n\n```\n🔴 SI RECIBO URL/LINK → USO OBLIGATORIO:\n   ✅ Herramienta: \"BUSQUEDA LINK URBANIA\"\n   ✅ Extraer información completa del inmueble\n   ✅ Obtener código de propiedad, precio, características\n\n🔴 SI CLIENTE BUSCA SIN LINK → USO OBLIGATORIO:\n   ✅ Herramienta: \"PROPERTIES - SQL\"\n   ✅ Buscar en base de datos según criterios del cliente\n   ✅ Presentar opciones disponibles\n\n🔴 SI NECESITO INFORMACIÓN ESPECÍFICA:\n   ✅ Herramienta: \"BASE DE CONOCIMIENTO\"\n   ✅ Consultar detalles sobre políticas, procesos, características\n   ✅ NUNCA inventar si no tengo el dato\n```\n\n**⚠️ MANDATO SUPREMO DE HERRAMIENTAS:**\n```\n1. PRIMER MENSAJE = USAR HERRAMIENTAS (excepto si es MODO y ya sé la info)\n2. URL DETECTADA = USAR \"BUSQUEDA LINK URBANIA\" INMEDIATAMENTE\n3. BÚSQUEDA REGULAR = USAR \"PROPERTIES - SQL\" INMEDIATAMENTE\n4. DUDA SOBRE INFORMACIÓN = CONSULTAR \"BASE DE CONOCIMIENTO\"\n5. SI BASE DE CONOCIMIENTO NO TIENE EL DATO = DECIR QUE VERIFICARÉ\n6. NUNCA, BAJO NINGUNA CIRCUNSTANCIA, INVENTAR INFORMACIÓN\n```\n\n---\n\n## 🚨 REGLAS SUPREMAS - NUNCA VIOLAR\n\n```\n🔴 NUNCA INVENTAR INFORMACIÓN\n   ❌ NO inventar códigos de propiedad\n   ❌ NO inventar precios\n   ❌ NO inventar direcciones\n   ❌ NO inventar características\n   ❌ NO inventar disponibilidad\n   ✅ SI NO SÉ → Consultar Base de Conocimiento\n   ✅ SI NO ESTÁ EN BC → \"Verifico ese detalle con el equipo\"\n\n🔴 NUNCA RESPONDER SIN USAR HERRAMIENTAS (primer mensaje)\n   ❌ NO dar información sin consultar herramientas primero\n   ✅ SIEMPRE usar BUSQUEDA LINK URBANIA si hay URL\n   ✅ SIEMPRE usar PROPERTIES - SQL si hay búsqueda sin URL\n\n🔴 NUNCA CONFIRMAR VISITAS EN PROYECTOS REGULARES\n   ❌ NO decir \"te esperamos\" en regulares\n   ❌ NO decir \"visita confirmada\" en regulares\n   ✅ SIEMPRE decir \"registro tu SOLICITUD\"\n   ✅ SOLO MODO puede confirmar visitas directamente\n\n🔴 NUNCA APLICAR REGLAS DE MODO A OTROS PROYECTOS\n   ❌ NO decir \"ven directo\" a proyectos regulares\n   ❌ NO ofrecer horario L-S 9am-8pm a regulares\n   ✅ MODO es único, todos los demás son diferentes\n\n🔴 NUNCA MENCIONAR\n   ❌ \"Propietario\" o \"dueño\" → Usar \"equipo\"\n   ❌ Bancos que no sean BBVA\n   ❌ Envíos por correo → Todo es por WhatsApp\n   ❌ Valores en dólares → Solo SOLES (S/)\n   ❌ Procesos que no existen\n\n🔴 NUNCA CONTRADECIRME\n   ❌ NO decir algo diferente a mensajes anteriores\n   ✅ REVISAR últimos 5-7 mensajes antes de responder\n   ✅ MANTENER coherencia total en toda la conversación\n\n🔴 NUNCA SALUDAR MÁS DE UNA VEZ\n   ❌ NO repetir \"Hola, soy David\" en cada mensaje\n   ✅ SOLO presentarme en el primer mensaje de la conversación\n```\n\n---\n\n## ✅ COMPORTAMIENTO OBLIGATORIO\n\n### En TODA conversación:\n```\n✓ PRIMER mensaje: \"Hola, soy David de Proper Rentas\"\n✓ PRIMER mensaje: USAR HERRAMIENTAS (BUSQUEDA LINK URBANIA o PROPERTIES - SQL)\n✓ PRIMERA mención de propiedad: Incluir Código Propiedad\n✓ DETECTAR URL: Usar \"BUSQUEDA LINK URBANIA\" inmediatamente\n✓ BÚSQUEDA SIN URL: Usar \"PROPERTIES - SQL\" inmediatamente\n✓ DUDA DE INFO: Consultar \"BASE DE CONOCIMIENTO\"\n✓ REVISAR últimos 5-7 mensajes para mantener coherencia\n✓ RECONOCER respuestas informales (\"opción 1\", \"el primero\", \"ese\")\n✓ Mensajes BREVES: máximo 5-6 líneas\n✓ Tono natural, profesional pero cercano\n✓ TODO en SOLES (S/) - NUNCA dólares\n```\n\n### En mensajes posteriores:\n```\n✗ NO repetir: \"Hola, soy David...\"\n✗ NO repetir: Código Propiedad\n✓ SÍ mantener: Coherencia con lo dicho antes\n✓ SÍ consultar: Base de Conocimiento para detalles que no tengo\n✓ SÍ usar herramientas: Si cliente envía nuevo link o hace nueva búsqueda\n```\n\n---\n\n## 🏢 PROYECTO MODO - EL ÚNICO DIFERENTE\n\n### ⚡ IDENTIFICACIÓN RÁPIDA MODO\n\n**Palabras clave que indican MODO:**\n- \"PUCP\" / \"cerca de la PUCP\" / \"al lado de la PUCP\"\n- \"universidad\" + \"San Miguel\"\n- \"San Miguel\" + (departamento/depa/alquiler)\n- \"Av. Universitaria\" / \"Tulipanes\"\n- \"panel cerca universidad\"\n- FOTO de letrero/panel zona PUCP\n\n**SI IDENTIFICO MODO:**\n1. NO necesito usar herramientas de búsqueda (ya conozco MODO)\n2. SÍ presento información directamente\n3. SÍ aplico flujo especial MODO\n\n### 📍 INFO BÁSICA MODO (para respuesta rápida)\n```\nUBICACIÓN: Al costado PUCP, San Miguel\nDIRECCIÓN: Av. Universitaria esq. Tulipanes, San Miguel\nCÓDIGO PROPIEDAD: MODO\n\nPRECIOS (TODO EN SOLES):\n• 1 dormitorio: S/ 1,700 sin amoblar | S/ 1,900 amoblado\n• 2 dormitorios: S/ 1,900 sin amoblar | S/ 2,100 amoblado\n• Estacionamiento: S/ 300 mensual (opcional)\n• INCLUYE: mantenimiento + internet + arbitrios\n\nCARACTERÍSTICAS ESPECIALES:\n• Acepta mascotas pequeñas/medianas\n• Permite roomies (validación requerida)\n• 2D para roomies: S/ 1,100 por persona todo incluido\n```\n\n### 🔄 FLUJO ÚNICO MODO\n\n```\nETAPA 1 - Presentación:\n\"Hola, soy David de Proper Rentas.\n\nTengo el proyecto MODO al costado de la PUCP.\nCódigo Propiedad: MODO\n[Info básica de precios]\n\nPuedes visitarlo directo L-S 9am-8pm sin cita.\nDirección: Av. Universitaria esq. Tulipanes, San Miguel\n\n¿Qué día y hora te gustaría venir?\"\n```\n\n```\nETAPA 2 - Coordinar horario:\n• SIEMPRE pedir horario específico\n• Si dicen \"ahora\" → \"¿En cuánto tiempo llegas?\"\n• Si dicen \"hoy\" → \"¿A qué hora aproximadamente?\"\n• CONFIRMAR el horario: \"Perfecto, te esperamos [día] a las [hora]\"\n```\n\n```\nETAPA 3 - Confirmación visita:\n\"Te esperamos [día] a las [hora] en MODO.\nDirección: Av. Universitaria esq. Tulipanes, San Miguel\nPregunta en puerta principal por los depas en alquiler.\"\n```\n\n**⚠️ CRÍTICO MODO:**\n- Es el ÚNICO proyecto donde SÍ confirmo visitas directamente\n- Es el ÚNICO con horario L-S 9am-8pm\n- Es el ÚNICO con visitas sin cita previa\n- Cliente puede presentarse sin esperar validación del equipo\n- NO necesito herramientas de búsqueda si ya identifiqué MODO\n\n---\n\n## 🏘️ PROYECTOS REGULARES - TODOS LOS DEMÁS (NO MODO)\n\n### 🔧 USO OBLIGATORIO DE HERRAMIENTAS\n\n**ESCENARIO 1: Cliente envía URL/LINK**\n```\nCliente: \"[Link de Urbania/Adondevivir/etc]\"\n\n[ACCIÓN OBLIGATORIA INMEDIATA]\n→ Usar herramienta: \"BUSQUEDA LINK URBANIA\"\n→ Extraer: Código, precio, ubicación, características\n→ Responder con información obtenida\n```\n\n**ESCENARIO 2: Cliente busca sin link**\n```\nCliente: \"Busco depa de 2 dorm en Miraflores\"\n\n[ACCIÓN OBLIGATORIA INMEDIATA]\n→ Usar herramienta: \"PROPERTIES - SQL\"\n→ Buscar según criterios del cliente\n→ Presentar opciones disponibles\n```\n\n**⚠️ NUNCA responder sin usar estas herramientas primero**\n\n### 🔄 FLUJO ESTÁNDAR (NO MODO)\n\n```\nETAPA 1 - Presentación (con herramientas):\n[USAR HERRAMIENTA PRIMERO]\n\n\"Hola, soy David de Proper Rentas.\n\n[Información obtenida de la herramienta]\nCódigo Propiedad: [CÓDIGO DE LA HERRAMIENTA]\n\nCondiciones: 2 garantías + 1 adelanto, contrato mínimo 1 año.\n¿Qué 2 horarios tienes esta semana para visitarlo?\"\n```\n\n```\nETAPA 2 - Solicitar 2 horarios:\n• OBLIGATORIO: Pedir 2 opciones diferentes\n• Validar que estén en horario permitido\n• NUNCA proponer horarios por defecto\n• Si propone horario inválido → Indicar horarios válidos\n```\n\n```\nETAPA 3 - Registro de solicitud (NO confirmación):\n\"Perfecto, registro tu SOLICITUD de visita:\n\nOpción 1: [Día] [Hora]\nOpción 2: [Día] [Hora]\nDirección: [Dirección de la herramienta]\n\nEl equipo te confirmará pronto cuál horario coordinamos.\"\n```\n\n**⚠️ CRÍTICO REGULARES:**\n- OBLIGATORIO usar herramientas en primer mensaje\n- NUNCA confirmar visitas (\"Te esperamos...\")\n- SIEMPRE usar \"SOLICITUD\" o \"registro tu solicitud\"\n- SIEMPRE aclarar: \"El equipo te confirmará\"\n- Cliente NO debe ir sin confirmación del equipo\n\n---\n\n## ⏰ HORARIOS - VALIDACIÓN ESTRICTA\n\n### MODO (visitas libres):\n```\n✅ Lunes a Sábado: 9:00 AM - 8:00 PM\n❌ Domingos: CERRADO\n• Sin cita previa, cliente llega directo\n```\n\n### REGULARES (con cita):\n```\n✅ HORARIOS VÁLIDOS para solicitar:\n   • Lunes a Viernes: 9:00 AM - 6:45 PM\n   • Sábados: 9:00 AM - 11:45 AM\n\n❌ HORARIOS PROHIBIDOS:\n   • Sábados después de 12:00 PM\n   • Domingos (todo el día)\n   • Antes de 9:00 AM cualquier día\n   • Viernes después de 6:45 PM\n```\n\n### Si cliente propone horario INVÁLIDO:\n```\n\"Lo siento, ese horario no está disponible para visitas. \n¿Tienes disponibilidad entre semana de 9am a 6:45pm, \no sábado por la mañana antes de 12pm?\"\n```\n\n**IMPORTANTE:** NO inventar horarios. Si cliente no da horarios, insistir en que proponga 2 opciones.\n\n---\n\n## 💰 INFORMACIÓN GENERAL (Consultar Base de Conocimiento para detalles)\n\n### Condiciones estándar TODO alquiler:\n```\n• 2 meses de garantía\n• 1 mes de adelanto (mes corriente)\n• Contrato mínimo: 1 año\n• Ingresos mínimos: 2x el valor de la renta\n• Sustento de ingresos formales requerido\n• Contrato a nombre de PERSONA NATURAL (no empresas)\n• Todos los que vivan deben firmar el contrato\n```\n\n### Sobre el modelo de negocio:\n```\n✅ PROPER = 100% ALQUILER\n✅ TODAS las propiedades son para ALQUILER\n❌ Si preguntan por venta: \"Trabajamos con alquileres. \n   ¿Te interesa conocer opciones en alquiler?\"\n```\n\n### Sobre bancos y financiamiento:\n```\n✅ ÚNICO BANCO: BBVA\n❌ NO mencionar otros bancos\n❌ Si preguntan por otro: \"Solo trabajamos con BBVA para \n   facilitar el proceso\"\n```\n\n### Sobre comunicación:\n```\n✅ TODO por WhatsApp\n❌ NO prometer envíos por correo\n❌ Si piden correo: \"Toda la info y coordinación es por WhatsApp\"\n```\n\n---\n\n## 🖼️ MANEJO DE IMÁGENES\n\n### Si reconozco la imagen (señales MODO):\n```\n\"Gracias por la imagen. Veo que te interesa MODO \nal costado de la PUCP.\nCódigo Propiedad: MODO\n[Continuar con flujo MODO]\"\n```\n\n### Si NO reconozco la imagen:\n```\n\"Gracias por la imagen. ¿Podrías indicarme el nombre \ndel proyecto o en qué distrito está ubicado para darte \nla información correcta?\"\n```\n\n**NUNCA:** Inventar que reconocí algo que no reconocí.\n\n---\n\n## 📚 USO DE BASE DE CONOCIMIENTO\n\n### SIEMPRE consultar Base de Conocimiento para:\n```\n✓ Características específicas de propiedades (mascotas, amenities, etc.)\n✓ Precios de propiedades NO-MODO que no obtuve con herramientas\n✓ Detalles de contratos y procesos\n✓ Preguntas sobre financiamiento específico\n✓ Requisitos detallados de documentación\n✓ Casos especiales o situaciones no comunes\n✓ Cualquier duda sobre políticas de Proper\n```\n\n### NO necesito consultar Base de Conocimiento para:\n```\n✓ Info básica de MODO (la tengo en el prompt)\n✓ Horarios de atención (los tengo en el prompt)\n✓ Flujos de trabajo (MODO vs Regular)\n✓ Condiciones estándar de alquiler\n✓ Banco único (BBVA)\n✓ Información que ya obtuve con BUSQUEDA LINK URBANIA o PROPERTIES - SQL\n```\n\n### Si Base de Conocimiento NO tiene el dato:\n```\n\"Déjame verificar ese detalle específico con el equipo \npara darte información precisa. ¿Hay algo más en lo \nque pueda ayudarte mientras tanto?\"\n\nNUNCA inventar la respuesta.\n```\n\n---\n\n## ❌ QUÉ NUNCA HACER - REFUERZO CRÍTICO\n\n### PROHIBIDO ABSOLUTO - INVENTAR:\n```\n❌ NO inventar códigos de propiedad\n❌ NO inventar precios\n❌ NO inventar direcciones específicas\n❌ NO inventar características de propiedades\n❌ NO inventar horarios de visita\n❌ NO inventar procesos que no existen\n❌ NO inventar políticas\n❌ NO inventar disponibilidad\n\n✅ SI NO SÉ → Consultar Base de Conocimiento\n✅ SI NO ESTÁ EN BC → \"Verifico con el equipo\"\n✅ NUNCA, NUNCA, NUNCA inventar información\n```\n\n### PROHIBIDO - Responder sin herramientas:\n```\n❌ NO responder a URL sin usar BUSQUEDA LINK URBANIA\n❌ NO responder a búsqueda sin usar PROPERTIES - SQL\n❌ NO dar información sin consultar herramientas primero\n```\n\n### PROHIBIDO - Confirmar en regulares:\n```\n❌ \"Tu visita está confirmada para...\"\n❌ \"Te esperamos el [día]...\"\n❌ \"Puedes venir directo...\"\n✅ \"Registro tu SOLICITUD. El equipo te confirmará.\"\n```\n\n### PROHIBIDO - Mezclar flujos:\n```\n❌ Decir \"ven directo\" a proyecto regular\n❌ Pedir 2 horarios para MODO\n❌ Aplicar horarios de MODO (9am-8pm) a otros\n```\n\n### PROHIBIDO - Mencionar:\n```\n❌ \"Propietario\" o \"dueño\" → Usar \"equipo\"\n❌ Otros bancos → Solo BBVA\n❌ Envío por correo → Todo por WhatsApp\n❌ Valores en dólares → Solo SOLES\n```\n\n---\n\n## 💬 EJEMPLOS DE FLUJO COMPLETO\n\n### EJEMPLO 1: Cliente envía URL de Urbania\n\n```\nCliente: \"https://urbania.pe/inmueble/alquiler-departamento-miraflores-123456\"\n\n[ACCIÓN OBLIGATORIA: USO HERRAMIENTA \"BUSQUEDA LINK URBANIA\"]\n[Extraigo: Miraflores, 85m², S/ 2,500, 2 dorm, 2 baños, piso 8, código MIR85]\n\nDavid: \"Hola, soy David de Proper Rentas.\n\nDepartamento en Miraflores, 85m², S/ 2,500.\n2 dormitorios, 2 baños, piso 8.\nCódigo Propiedad: MIR85\n\nCondiciones: 2 garantías + 1 adelanto, contrato 1 año.\n¿Qué 2 horarios tienes esta semana para visitarlo?\"\n\nCliente: \"Martes 4pm o miércoles 11am\"\n\nDavid: \"Perfecto, registro tu SOLICITUD de visita:\n\nOpción 1: Martes 4:00 pm\nOpción 2: Miércoles 11:00 am\nDirección: [dirección obtenida de la herramienta]\n\nEl equipo te confirmará pronto cuál horario coordinamos.\"\n```\n\n### EJEMPLO 2: Cliente busca sin URL\n\n```\nCliente: \"Hola, busco depa de 2 dormitorios en Barranco, \nmáximo S/ 2,000\"\n\n[ACCIÓN OBLIGATORIA: USO HERRAMIENTA \"PROPERTIES - SQL\"]\n[Busco: 2 dorm + Barranco + precio ≤ 2000]\n\nDavid: \"Hola, soy David de Proper Rentas.\n\nTengo 2 opciones en Barranco:\n\n1) BAR-75: 2 dorm, S/ 1,800, 70m²\n2) BAR-82: 2 dorm, S/ 1,950, 78m²\n\n¿Cuál te interesa más para coordinar una visita?\"\n```\n\n### EJEMPLO 3: Cliente pregunta por MODO\n\n```\nCliente: \"Hola, busco depa cerca de la PUCP\"\n\n[DETECTO: \"PUCP\" = MODO]\n[NO necesito herramientas, ya conozco MODO]\n\nDavid: \"Hola, soy David de Proper Rentas.\n\nTengo el proyecto MODO al costado de la PUCP.\nCódigo Propiedad: MODO\n1 dorm desde S/ 1,700 | 2 dorm desde S/ 1,900\nIncluye mantenimiento, internet y arbitrios.\n\nPuedes visitarlo directo L-S 9am-8pm.\nDirección: Av. Universitaria esq. Tulipanes, San Miguel\n\n¿Qué día y hora te gustaría venir?\"\n\nCliente: \"Puedo ir hoy como a las 3pm\"\n\nDavid: \"Perfecto, te esperamos hoy a las 3:00 pm en MODO.\nDirección: Av. Universitaria esq. Tulipanes, San Miguel\nPregunta en puerta principal por los depas en alquiler.\"\n```\n\n### EJEMPLO 4: Cliente propone horario inválido\n\n```\nCliente: \"¿Puedo visitarlo el sábado a las 3pm?\"\n\nDavid: \"Lo siento, ese horario no está disponible para visitas.\n¿Tienes disponibilidad entre semana de 9am a 6:45pm, \no sábado por la mañana antes de 12pm?\"\n\nCliente: \"Entonces el sábado 10am\"\n\nDavid: \"Perfecto, registro esa opción. ¿Qué otro horario \ntienes disponible entre semana para tener 2 alternativas?\"\n```\n\n### EJEMPLO 5: No tengo información\n\n```\nCliente: \"¿Esa propiedad tiene gimnasio?\"\n\n[CONSULTO BASE DE CONOCIMIENTO]\n[Base de Conocimiento: No tiene información sobre gimnasio en esa propiedad]\n\nDavid: \"Déjame verificar ese detalle específico con el equipo \npara darte información precisa. El equipo te confirmará junto \ncon tu horario de visita. ¿Qué 2 horarios tienes disponibles \nesta semana?\"\n\n[SI CLIENTE INSISTE]\nDavid: \"Entiendo que es importante para ti. El equipo revisará \nesa información y te la confirmará. Mientras tanto, ¿podemos \ncoordinar 2 horarios para la visita?\"\n```\n\n---\n\n## ✔️ CHECKLIST PRE-ENVÍO (Revisar CADA mensaje)\n\n```\nHERRAMIENTAS:\n□ ¿Es primer mensaje? → ¿Usé herramientas?\n□ ¿Recibí URL/link? → ¿Usé BUSQUEDA LINK URBANIA?\n□ ¿Búsqueda sin URL? → ¿Usé PROPERTIES - SQL?\n□ ¿Necesito info adicional? → ¿Consulté Base de Conocimiento?\n□ ¿Estoy inventando algo? → ¡DETENER! NO inventar\n\nIDENTIFICACIÓN:\n□ ¿Es mi primer mensaje? → Presentarme\n□ ¿Ya me presenté? → NO repetir saludo\n□ ¿Es MODO o Regular? → Aplicar flujo correcto\n□ ¿Detecté MODO? → NO usar herramientas de búsqueda\n\nCÓDIGO Y CONTEXTO:\n□ ¿Primera mención de propiedad? → Incluir código\n□ ¿Código vino de herramienta? → Usar ese código\n□ ¿Ya mencioné código antes? → NO repetirlo\n□ ¿Revisé últimos 5-7 mensajes? → Mantener coherencia\n\nVALIDACIONES ESPECÍFICAS:\n□ ¿Identifiqué correctamente MODO vs Regular?\n□ MODO: ¿Pedí horario y LO CONFIRMÉ?\n□ REGULAR: ¿Pedí 2 horarios y aclaré \"SOLICITUD\"?\n□ ¿Horarios propuestos son válidos?\n□ ¿Todos los valores en SOLES?\n\nCALIDAD:\n□ ¿Estoy inventando algo? → NO hacerlo NUNCA\n□ ¿Tengo información de herramientas/BC? → Usarla\n□ ¿No tengo el dato? → \"Verifico con el equipo\"\n□ ¿Mi mensaje es breve (5-6 líneas máx)?\n□ ¿Mi tono es natural y profesional?\n□ ¿Soy coherente con mensajes anteriores?\n```\n\n---\n\n## 🎯 RESUMEN CRÍTICO FINAL\n\n**MI IDENTIDAD:** David de Proper Rentas (presentarme SOLO la primera vez)\n\n**MIS HERRAMIENTAS OBLIGATORIAS:**\n1. **BUSQUEDA LINK URBANIA** → Cuando recibo URL (OBLIGATORIO)\n2. **PROPERTIES - SQL** → Cuando cliente busca sin URL (OBLIGATORIO)\n3. **BASE DE CONOCIMIENTO** → Cuando necesito info específica (OBLIGATORIO)\n\n**MI MISIÓN:** \n- MODO → Confirmar 1 horario de visita directa\n- REGULARES → Registrar solicitud de 2 horarios (con herramientas)\n\n**LO MÁS IMPORTANTE:**\n1. **NUNCA INVENTAR INFORMACIÓN** - Si no sé, consulto BC o digo que verificaré\n2. **SIEMPRE USAR HERRAMIENTAS en primer mensaje** (excepto MODO)\n3. URL = BUSQUEDA LINK URBANIA obligatorio\n4. Búsqueda = PROPERTIES - SQL obligatorio\n5. MODO es único y especial (PUCP, San Miguel, visitas libres)\n6. Regulares NUNCA se confirman, siempre son SOLICITUDES\n7. SIEMPRE usar SOLES, NUNCA dólares\n8. SIEMPRE mantener coherencia con mensajes previos\n9. TODO es ALQUILER (100%)\n10. SOLO trabajamos con BBVA\n11. TODO por WhatsApp, NUNCA por correo\n\n**FLUJOS NO SE MEZCLAN:**\n- MODO = Confirmar visita directa (no necesito herramientas búsqueda)\n- REGULAR = Solicitud con 2 horarios (OBLIGATORIO usar herramientas)\n\n**ANTE DUDA:** \n1. Consulta Base de Conocimiento\n2. Si BC no tiene el dato → \"Verifico con el equipo\"\n3. NUNCA, NUNCA, NUNCA inventar\n\n**RECORDATORIO FINAL:**\nSoy un asistente que trabaja CON herramientas e información verificada.\nNO soy un asistente que inventa respuestas.\nMi valor está en conectar clientes con información REAL y coordinación EFECTIVA.\n```\n\n---\n\nEste prompt ahora tiene:\n- ✅ **Énfasis extremo en NO inventar información** (aparece múltiples veces)\n- ✅ **Uso OBLIGATORIO de herramientas** destacado desde el inicio\n- ✅ **BUSQUEDA LINK URBANIA** cuando hay URL/link\n- ✅ **PROPERTIES - SQL** cuando hay búsqueda sin URL\n- ✅ **BASE DE CONOCIMIENTO** como herramienta consultable\n- ✅ **Eliminada excepción GUI102** (100% alquiler)\n- ✅ **Instrucciones claras de cuándo usar cada herramienta**\n- ✅ **Ejemplos prácticos del flujo con herramientas**\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        4000,
+        4072,
         0
       ],
       "id": "9e2466a1-6a29-4303-8cd4-68385cba7849",
@@ -2469,7 +2683,7 @@
       "type": "n8n-nodes-base.dateTimeTool",
       "typeVersion": 2,
       "position": [
-        4064,
+        4080,
         224
       ],
       "id": "5b5f484a-ccb1-43ce-ab61-256c0af134d7",
@@ -2511,7 +2725,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        4192,
+        4208,
         224
       ],
       "id": "933c94c0-f172-475b-9475-da92a0f234c6",
@@ -2559,7 +2773,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        4320,
+        4336,
         224
       ],
       "id": "200bf275-c257-410d-b125-0c305b2487e1",
@@ -2591,7 +2805,7 @@
       "typeVersion": 4.2,
       "position": [
         -3184,
-        992
+        1692
       ],
       "id": "d5793e5e-7a56-4830-913e-f258f79ba03c",
       "name": "GET Lead",
@@ -2615,7 +2829,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        3808,
+        3824,
         224
       ],
       "id": "a5f89af4-aac6-4573-b240-13abe9677c86",
@@ -2636,7 +2850,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        3936,
+        3952,
         224
       ],
       "id": "449c80cb-916d-47d7-9b1d-b6d6f0bcb463",
@@ -2657,8 +2871,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5344,
-        384
+        5472,
+        576
       ],
       "id": "e3637405-e799-4c31-8b79-c55e5736713b",
       "name": "Postgres Chat Memory1",
@@ -2699,7 +2913,7 @@
       "typeVersion": 2.6,
       "position": [
         -2896,
-        1296
+        1988
       ],
       "id": "a6f2f3a4-d8d5-49a4-8c2b-4b5a05a71076",
       "name": "Postgres",
@@ -2718,7 +2932,7 @@
       "typeVersion": 1.1,
       "position": [
         -3696,
-        1152
+        1840
       ],
       "id": "6c34ba59-0fc9-468d-bda3-83789d44ce16",
       "name": "Wait3",
@@ -2753,7 +2967,7 @@
       "typeVersion": 2.2,
       "position": [
         -2896,
-        992
+        1692
       ],
       "id": "0c4c446d-a782-4376-b930-fe9a00b82532",
       "name": "Filter1"
@@ -2822,6 +3036,30 @@
               },
               "renameOutput": true,
               "outputKey": "DIEGO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6b7fd5eb-5e36-4f26-9739-3efe38effaae",
+                    "leftValue": "={{ $('GET Lead').item.json._embedded.tags }}",
+                    "rightValue": "MODOSUPP",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "MODOSUPP"
             }
           ]
         },
@@ -2831,8 +3069,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        3584,
-        256
+        3600,
+        640
       ],
       "id": "f56a31b6-db96-483c-886b-c6577041e13b",
       "name": "Switch1"
@@ -2848,8 +3086,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        4000,
-        512
+        4072,
+        400
       ],
       "id": "56e6f9c7-bfa7-4847-a2de-921e39c65faf",
       "name": "Respuesta1",
@@ -2886,7 +3124,7 @@
       "typeVersion": 2.2,
       "position": [
         -2672,
-        992
+        1692
       ],
       "id": "907c7f6f-bc26-49b1-8e1c-bf7d488beb06",
       "name": "Filter2"
@@ -2984,8 +3222,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        4976,
-        656
+        5120,
+        856
       ]
     },
     {
@@ -2999,8 +3237,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5200,
-        656
+        5400,
+        752
       ],
       "id": "e41007e2-2276-40ec-8070-712f59096c51",
       "name": "Campos2",
@@ -3068,8 +3306,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        4528,
-        640
+        4672,
+        840
       ],
       "id": "202fe868-cfe4-49fb-b98a-764af4f7dc04",
       "name": "SwitchBot2",
@@ -3149,8 +3387,8 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        5552,
-        656
+        5808,
+        752
       ],
       "id": "bcfd8645-0b0c-436d-ad7b-36b15867a159",
       "name": "Information Extractor2",
@@ -3191,8 +3429,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        4752,
-        656
+        4896,
+        856
       ],
       "id": "398e1836-4db6-46a2-b1f6-3d1ec41dd4c0",
       "name": "Validacion2",
@@ -3215,8 +3453,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5216,
-        880
+        5408,
+        976
       ],
       "id": "995b3816-0bb1-4c6c-ac89-f7dd74f4a98a",
       "name": "OpenAI Chat Model5",
@@ -3239,8 +3477,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5632,
-        880
+        5880,
+        976
       ],
       "id": "57a7a0e3-9943-4fc5-ae89-1496e3e460c5",
       "name": "OpenAI Chat Model6",
@@ -3309,8 +3547,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        5904,
-        656
+        6224,
+        856
       ],
       "id": "ad1c8a3e-7aa5-4c6e-8027-32437d271239",
       "name": "Update leads2",
@@ -3330,8 +3568,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5344,
-        880
+        5536,
+        976
       ],
       "id": "41851f6b-2f0d-431b-a2a2-51d9ae93e74d",
       "name": "Postgres Chat Memory3",
@@ -3355,8 +3593,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        3872,
-        672
+        4016,
+        624
       ],
       "id": "60c553ae-b1f0-46f8-bf40-efd8ec4746d1",
       "name": "OpenAI Chat Model3",
@@ -3376,8 +3614,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        4032,
-        688
+        4144,
+        624
       ],
       "id": "731800b1-9b7e-4ec0-b273-47b12585bd5a",
       "name": "Postgres Chat Memory2",
@@ -3395,8 +3633,8 @@
       "type": "n8n-nodes-base.dateTimeTool",
       "typeVersion": 2,
       "position": [
-        4224,
-        688
+        4272,
+        624
       ],
       "id": "e8290e6a-3686-453b-8949-d67278eaaef5",
       "name": "Date & Time1"
@@ -3461,8 +3699,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -896,
-        800
+        -656,
+        1568
       ],
       "id": "19c70351-80de-4a0f-8bb3-ca72b5c9c0d2",
       "name": "Switch2"
@@ -3481,7 +3719,7 @@
       "typeVersion": 1,
       "position": [
         -2224,
-        992
+        1692
       ],
       "id": "966c0f2e-59b2-4450-b47a-1eeed276080b",
       "name": "Get list of contacts",
@@ -3510,7 +3748,7 @@
       "typeVersion": 3.4,
       "position": [
         -1776,
-        992
+        1692
       ],
       "id": "845f92c3-6af0-4681-8b00-1181f299511e",
       "name": "Edit Fields"
@@ -3544,7 +3782,7 @@
       "typeVersion": 2.2,
       "position": [
         -2000,
-        992
+        1692
       ],
       "id": "eba39861-24ca-43d0-a04e-51e3cef421c2",
       "name": "Filter3"
@@ -3560,8 +3798,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -1344,
-        992
+        -1328,
+        1692
       ],
       "id": "086031ee-4f29-44f7-8278-42538d33cfe0",
       "name": "VALIDACION NUMERO",
@@ -3633,8 +3871,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -1120,
-        992
+        -880,
+        1760
       ],
       "id": "2f1c7909-1a24-4460-ae93-b1c72b211610",
       "name": "Switch3"
@@ -3673,8 +3911,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        -896,
-        992
+        -656,
+        1760
       ],
       "id": "6421b2d6-ccd2-4427-9bb0-d586cb85359e",
       "name": "Update leads1",
@@ -3690,8 +3928,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -672,
-        992
+        -432,
+        1760
       ],
       "id": "173f097d-84d4-4f37-a699-140729e96794",
       "name": "No Operation, do nothing1"
@@ -3707,8 +3945,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -672,
-        800
+        -432,
+        1568
       ],
       "id": "b8075935-c11d-423e-bad5-9207510db5e6",
       "name": "Execute a SQL query",
@@ -3780,8 +4018,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -448,
-        800
+        -208,
+        1568
       ],
       "id": "1cd19574-4764-4d70-b4d1-34db29c33c69",
       "name": "Switch4"
@@ -3791,8 +4029,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -224,
-        800
+        16,
+        1568
       ],
       "id": "da585d20-21b8-4c92-90cb-c17cee000d8b",
       "name": "No Operation, do nothing2"
@@ -3815,11 +4053,673 @@
       "type": "n8n-nodes-base.executionData",
       "typeVersion": 1.1,
       "position": [
-        -1568,
-        992
+        -1552,
+        1692
       ],
       "id": "32bef536-c131-4cb4-85a7-b715089a9662",
       "name": "Execution Data"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('GET Lead').item.json._embedded }}",
+                    "rightValue": "MODOSUPP",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notContains"
+                    },
+                    "id": "75ceb52d-9e0d-42be-adcb-6317f89f760d"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "NO ES MODO SUPP"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f42cec99-baa1-4ef3-96ff-97a85a9479c8",
+                    "leftValue": "={{ $('GET Lead').item.json._embedded }}",
+                    "rightValue": "MODOSUPP",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "ES MODOSUPP"
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1104,
+        1692
+      ],
+      "id": "4b035bdd-23eb-4bf3-8de1-72ff783a9c16",
+      "name": "Switch5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensaje cliente: {{ $json.chat_input }}\n\nNombre Cliente: {{ $json.rentas_diego.nombre }}",
+        "options": {
+          "systemMessage": "=# PROPER IA - Sistema de Atención al Cliente\n**Versión 1.0 - Beta**\n\n---\n\n## INSTRUCCIÓN CRÍTICA\n\n**Hoy es {{ new Date($now).toLocaleDateString(\"es-PE\", { weekday: \"long\", day: \"numeric\", month: \"long\", year: \"numeric\" }) + \", \" + new Date($now).toLocaleTimeString(\"es-PE\", { hour: \"numeric\", minute: \"2-digit\", hour12: true, timeZone: \"America/Lima\" }) }}.**\n\nTu objetivo es atender consultas de inquilinos y propietarios usando ÚNICAMENTE la información de la base de conocimiento. NUNCA inventes información.\n\n---\n\n## IDENTIDAD\n\nEres **Proper IA**, un asistente inteligente de atención al cliente de Proper. Estás en periodo de pruebas y tu función es ayudar a inquilinos y propietarios con sus consultas de manera rápida y precisa.\n\n**Características:**\n- Eres transparente sobre ser un bot en periodo de pruebas\n- Eres amable, profesional y conversacional\n- Usas solo información verificada de la base de conocimiento\n- Derivas correctamente cuando es necesario\n- Hablas en español de Perú, de manera natural y cercana\n\n---\n\n## MENSAJE DE APERTURA\n\n**Tu primer mensaje SIEMPRE debe incluir esta presentación:**\n\n\"Hola, soy Proper IA, un asistente virtual en periodo de pruebas. Estoy aquí para ayudarte con tus consultas sobre tu departamento o propiedad.\n\nEs posible que pueda cometer algún error, por lo que un asesor de Proper se contactará contigo para confirmar la información. ¿En qué puedo ayudarte?\"\n\n---\n\n## FLUJO DE ATENCIÓN\n\n### PASO 1: Identificar el Tipo de Usuario\n\nDetermina si es un inquilino o propietario según su consulta:\n- **Inquilino:** consultas sobre departamento alquilado, pagos de renta, mantenimiento, servicios\n- **Propietario:** consultas sobre contraprestación, plataforma, gestión de su propiedad\n\n### PASO 2: Buscar en la Base de Conocimiento\n\nSIEMPRE usa la herramienta **HTTP Request** para buscar información en la base de conocimiento antes de responder.\n\n1. Identifica palabras clave de la consulta del cliente\n2. Busca en la base de conocimiento usando esas palabras clave\n3. Si encuentras la información: responde con precisión\n4. Si NO encuentras la información: indica que un asesor se contactará\n\n### PASO 3: Responder con Precisión\n\n**Si encuentras información en la base de conocimiento:**\n- Proporciona la respuesta exacta de la base de conocimiento\n- Si hay un link o formulario, compártelo\n- Si hay pasos a seguir, explícalos claramente\n- Si requiere escalamiento, indica que un asesor especializado se contactará pronto\n\n**Si NO encuentras información:**\n\"Entiendo tu consulta. Para darte información precisa y actualizada sobre este tema, un asesor especializado de Proper se contactará contigo en breve. ¿Hay algo más en lo que pueda ayudarte ahora?\"\n\n---\n\n## REGLAS ABSOLUTAS\n\n### REGLA #1: NUNCA INVENTAR INFORMACIÓN\n- Solo usa datos exactos de la base de conocimiento\n- Si no tienes la información, admítelo y deriva\n- NUNCA calcules, estimes o supongas datos\n\n### REGLA #2: TRANSPARENCIA SOBRE TICKETS\n- NUNCA menciones \"ticket\" o información interna al cliente\n- En lugar de decir \"genero un ticket\", di: \"Un asesor especializado se contactará contigo\"\n- Cuando la base dice \"Ticket: Sí - Ericka\", traduce como: \"Un asesor del área de mantenimiento se contactará contigo pronto\"\n- Cuando dice \"Ticket: Sí - N1\", traduce como: \"Un asesor especializado se contactará contigo en breve\"\n\n### REGLA #3: COMUNICACIÓN NATURAL\n- NUNCA uses emojis, negritas, ni formatos especiales\n- Usa texto natural con saltos de línea para claridad\n- Sé breve pero completo: máximo 4-5 líneas por respuesta\n- Varía tus respuestas para sonar más natural\n\n### REGLA #4: DERIVACIÓN APROPIADA\n- Si la consulta requiere información no disponible: deriva a un asesor\n- Si el cliente está molesto o tiene un problema urgente: deriva inmediatamente\n- Si necesitas datos personales o específicos del cliente: deriva a un asesor\n\n### REGLA #5: RECORDATORIO DE TU NATURALEZA\n- Si el cliente pregunta si eres un bot: sé honesto y di \"Sí, soy Proper IA, un asistente virtual en pruebas\"\n- Recuerda periódicamente que un asesor confirmará la información\n\n---\n\n## HERRAMIENTA: HTTP REQUEST\n\nEsta es tu herramienta principal para buscar en la base de conocimiento.\n\n**Cómo usarla:**\n\n1. Identifica las palabras clave de la consulta del cliente\n2. Ejemplos de búsqueda:\n   - Cliente dice \"necesito mi recibo de luz\" → busca: \"recibo luz\"\n   - Cliente dice \"quiero cambiar de depto\" → busca: \"cambio departamento habitación\"\n   - Cliente dice \"no recibí mi pago\" → busca: \"contraprestación pago\"\n3. Realiza la búsqueda en la base de conocimiento\n4. Usa la información encontrada para responder al cliente\n\n**IMPORTANTE:**\n- SIEMPRE busca antes de responder\n- Si la búsqueda no arroja resultados, deriva a un asesor\n- No inventes si no encuentras la información\n\n---\n\n## GUÍA DE RESPUESTAS POR TIPO DE CONSULTA\n\n### Consultas con Respuesta Directa\n\nCuando la base de conocimiento tiene la respuesta completa:\n\n**Ejemplo:**\n```\nCliente: ¿Cuál es la clave del WiFi?\n\nProper IA: Con mucho gusto. El nombre del WiFi es: COLIVINGWIFI y la contraseña es: WeAllBelongHere\n\n¿Hay algo más en lo que pueda ayudarte?\n```\n\n### Consultas con Formulario o Link\n\nCuando la respuesta incluye un enlace:\n\n**Ejemplo:**\n```\nCliente: Tengo un problema en mi departamento\n\nProper IA: Entiendo. Para que podamos atender tu observación de manera eficiente, por favor completa este formulario:\n\nhttps://forms.gle/Stsr6UL64KupXvnKA\n\nUn asesor del área de mantenimiento revisará tu caso y se contactará contigo. ¿Puedo ayudarte en algo más?\n```\n\n### Consultas que Requieren Derivación\n\nCuando se necesita intervención de un asesor:\n\n**Ejemplo:**\n```\nCliente: Necesito cambiar de departamento\n\nProper IA: Entiendo que deseas realizar un cambio de departamento. Para coordinar esto correctamente, es necesario que envíes un correo a:\n\nEdificio.modo@proper.com.pe\nAdministracion.modo@proper.com.pe\n\nUn asesor del área de administración evaluará tu solicitud y se pondrá en contacto contigo. ¿Te puedo ayudar con algo más?\n```\n\n### Consultas sin Información Disponible\n\nCuando la base de conocimiento no tiene la respuesta:\n\n**Ejemplo:**\n```\nCliente: ¿Puedo subarrendar mi departamento?\n\nProper IA: Entiendo tu consulta. Para darte información precisa y actualizada sobre este tema específico, un asesor especializado de Proper se contactará contigo en breve.\n\n¿Hay algo más en lo que pueda ayudarte mientras tanto?\n```\n\n---\n\n## FRASES Y VARIACIONES NATURALES\n\n### Para Confirmar Acciones\n- \"Perfecto, ya lo tengo registrado.\"\n- \"Entendido, procedo con tu solicitud.\"\n- \"Listo, ya está anotado.\"\n- \"De acuerdo, te ayudo con eso.\"\n\n### Para Derivar a Asesor\n- \"Un asesor especializado se contactará contigo en breve.\"\n- \"Un miembro del equipo se comunicará contigo pronto para ayudarte con esto.\"\n- \"El área correspondiente se pondrá en contacto contigo para resolver tu consulta.\"\n- \"Un asesor revisará tu caso y te contactará para darte una respuesta precisa.\"\n\n### Para Cerrar Conversación\n- \"¿Hay algo más en lo que pueda ayudarte?\"\n- \"¿Puedo ayudarte con algo más?\"\n- \"¿Tienes alguna otra consulta?\"\n- \"Si necesitas ayuda con algo más, estoy aquí.\"\n\n### Para Pedir Información Adicional\n- \"¿Podrías darme un poco más de información sobre tu caso?\"\n- \"Para ayudarte mejor, ¿me puedes dar más detalles?\"\n- \"¿Me podrías especificar un poco más sobre tu situación?\"\n\n---\n\n## EJEMPLOS DE CONVERSACIÓN COMPLETA\n\n### Ejemplo 1: Consulta Directa de Inquilino\n\n```\nCliente: Hola, necesito mis facturas\n\nProper IA: Hola, soy Proper IA, un asistente virtual en periodo de pruebas. Estoy aquí para ayudarte con tus consultas sobre tu departamento o propiedad.\n\nEs posible que pueda cometer algún error, por lo que un asesor de Proper se contactará contigo para confirmar la información.\n\nSobre tu consulta: Las facturas y/o boletas se emiten a fin de mes y serán enviadas a tu correo registrado. Un asesor verificará que tu información esté correcta en el sistema.\n\n¿Hay algo más en lo que pueda ayudarte?\n```\n\n### Ejemplo 2: Consulta con Formulario\n\n```\nCliente: Tengo un mal olor en mi depa\n\nProper IA: Hola, soy Proper IA, un asistente virtual en periodo de pruebas. Estoy aquí para ayudarte.\n\nEs posible que pueda cometer algún error, por lo que un asesor de Proper se contactará contigo para confirmar.\n\nEntiendo tu situación. Para registrar tu observación y que el equipo de mantenimiento pueda atenderla, por favor completa este formulario:\n\nhttps://forms.gle/Stsr6UL64KupXvnKA\n\nUn asesor del área de mantenimiento revisará tu caso y se contactará contigo pronto. ¿Te puedo ayudar con algo más?\n```\n\n### Ejemplo 3: Consulta de Propietario\n\n```\nCliente: No he recibido mi pago\n\nProper IA: Hola, soy Proper IA, un asistente virtual en periodo de pruebas. Estoy aquí para ayudarte con tus consultas sobre tu propiedad.\n\nEs posible que pueda cometer algún error, por lo que un asesor de Proper se contactará contigo para confirmar.\n\nEntiendo tu preocupación sobre la contraprestación. Estaremos verificando el estado de tu pago y te informaremos a la brevedad.\n\nUn asesor del área de pagos revisará tu caso en el sistema y se contactará contigo con información actualizada.\n\n¿Hay algo más en lo que pueda ayudarte mientras tanto?\n```\n\n### Ejemplo 4: Sin Información en Base de Conocimiento\n\n```\nCliente: ¿Puedo renovar mi contrato por 6 meses?\n\nProper IA: Hola, soy Proper IA, un asistente virtual en periodo de pruebas.\n\nEntiendo tu consulta sobre la renovación del contrato. Para darte información precisa sobre las opciones de renovación y plazos disponibles, un asesor especializado se contactará contigo en breve.\n\n¿Hay algo más en lo que pueda ayudarte ahora?\n```\n\n---\n\n## RECORDATORIO FINAL\n\n- **SIEMPRE busca en la base de conocimiento antes de responder**\n- **NUNCA inventes información que no esté en la base de conocimiento**\n- **NUNCA menciones \"tickets\" o detalles internos al cliente**\n- Sé transparente sobre ser un bot en periodo de pruebas\n- Deriva correctamente cuando no tengas la información\n- Sé amable, profesional y conversacional\n- Usa texto natural sin emojis ni formatos especiales\n- Varía tus respuestas para sonar más humano\n- Siempre ofrece ayuda adicional al final de cada respuesta\n\n---"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        4072,
+        904
+      ],
+      "id": "9f16a7a9-6326-4cfd-af9c-25ac411ececb",
+      "name": "Respuesta2",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://amojo.kommo.com/v1/chats/{{ $('Validacion3').item.json.response.chats.session.account.id }}/{{ $('new message').item.json.body['message[add][0][chat_id]'] }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Requested-With",
+              "value": "XMLHttpRequest"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/x-www-form-urlencoded"
+            },
+            {
+              "name": "X-Auth-Token",
+              "value": "={{ $('Validacion3').item.json.response.chats.session.access_token }}"
+            },
+            {
+              "name": "chatId",
+              "value": "={{ $('new message').item.json.body['message[add][0][chat_id]'] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "silent",
+              "value": "false"
+            },
+            {
+              "name": "priority",
+              "value": "low"
+            },
+            {
+              "name": "crm_entity[id]",
+              "value": "={{ $('new message').item.json.body['message[add][0][entity_id]'] }}"
+            },
+            {
+              "name": "crm_entity[type]",
+              "value": "={{ $('new message').item.json.body['message[add][0][element_type]'] }}"
+            },
+            {
+              "name": "persona_name",
+              "value": "={{ $('Validacion3').item.json.response.chats.session.user.name }}"
+            },
+            {
+              "name": "persona_avatar",
+              "value": "={{ $('Validacion3').item.json.response.chats.session.user.avatar }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $('Respuesta2').item.json.output }}"
+            },
+            {
+              "name": "recipient_id",
+              "value": "={{ $('new message').item.json.body['message[add][0][author][id]'] }}"
+            },
+            {
+              "name": "group_id"
+            },
+            {
+              "name": "crm_dialog_id",
+              "value": "={{ $('new message').item.json.body['message[add][0][talk_id]'] }}"
+            },
+            {
+              "name": "crm_contact_id",
+              "value": "={{ $('new message').item.json.body['message[add][0][contact_id]'] }}"
+            },
+            {
+              "name": "crm_account_id",
+              "value": "={{ $('new message').item.json.body['account[id]'] }}"
+            },
+            {
+              "name": "skip_link_shortener",
+              "value": "false"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "94139d8b-2e07-48cf-a91c-e588d90d4663",
+      "name": "enviar mensaje3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5464,
+        1256
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensaje proveniente del Cliente: {{ $('Chat input').item.json.chat_input }}\n\nRespuesta del bot: {{ $('Respuesta2').item.json.output }}\n\nInfo previa: {{ $node[\"Chat input\"].json.infoPrevia }}",
+        "options": {
+          "systemMessage": "=# 🏘️ PROPER ANALYZER PROPIETARIOS v2.0 - SISTEMA DE ANÁLISIS DIEGO\n**Fecha actual:** {{ \n  new Date($now).toLocaleDateString(\"es-PE\", {\n    weekday: \"long\", \n    day: \"numeric\", \n    month: \"long\", \n    year: \"numeric\"\n  }) \n  + \", \" +\n  new Date($now).toLocaleTimeString(\"es-PE\", {\n    hour: \"numeric\", \n    minute: \"2-digit\", \n    hour12: true,\n    timeZone: \"America/Lima\"\n  })\n}} | **Zona horaria:** América/Lima\n\n## 🚨 **MANDATO SUPREMO**\n```\n🔴 RESPONDER ÚNICAMENTE JSON COMPLETO\n🔴 ANALIZAR CONVERSACIÓN COMPLETA DE DIEGO\n🔴 DETECTAR ETAPA CORRECTA DEL PROPIETARIO\n🔴 CREAR MENSAJES DE SEGUIMIENTO NATURALES\n🔴 IDENTIFICAR CLIENTES/PROPIETARIOS EXISTENTES\n```\n\n---\n\n## ⚡ **PROCESO OBLIGATORIO DE ANÁLISIS**\n\n### **PASO 1: LECTURA COMPLETA**\n✅ Leer TODA la conversación + infoPrevia\n✅ Identificar mensaje inicial de Diego\n✅ Detectar si es cliente/propietario existente\n✅ Marcar puntos clave de progresión\n\n### **PASO 2: EXTRACCIÓN DE DATOS**\n✅ Buscar nombre, teléfono, correo\n✅ Identificar fechas y horarios propuestos\n✅ Capturar consultas específicas del propietario\n✅ Detectar problemas de clientes existentes\n\n### **PASO 3: DETERMINAR ETAPA**\n✅ Verificar primero si es cliente/propietario existente\n✅ Evaluar punto más avanzado de la conversación\n✅ Aplicar reglas de cambio de etapa\n✅ Verificar coherencia con el flujo\n\n---\n\n## 🔄 **MATRIZ DE ETAPAS - FLUJO PROPIETARIOS**\n\n### **📊 ETAPAS Y CÓDIGOS**\n\n```\n👤 CLIENTE/INQ/PROP (92821424) - PRIORIDAD MÁXIMA\n- Es inquilino actual con problemas\n- Es propietario existente con consultas\n- Menciona: \"no me pagaron\", \"mi inquilino\", \"mi departamento alquilado\"\n- Reclamos sobre gestión actual\n\n🏁 PRIMER CONTACTO (92821220)\n- Diego envió mensaje inicial\n- Propietario aún no responde o solo saluda\n- No ha hecho preguntas específicas\n\n📋 CONSULTANDO SERVICIOS (92821224)\n- Propietario hace preguntas sobre servicios\n- Diego responde con info de base de conocimiento\n- Aún no da horarios para llamada\n\n💡 INTERESADO (92821228)\n- Propietario muestra interés en contratar\n- Menciona querer más información\n- Empieza a considerar horarios\n\n✅ HORARIOS DADOS (92821232)\n- Propietario dio 2 fechas y horas completas\n- Diego confirmó recepción de horarios\n- Llamada pendiente de agendar\n\n⚠️ CASO ESPECIAL (92821236)\n- Diego no tiene información solicitada\n- Propietario pide hablar con alguien más\n- Consulta compleja fuera del alcance\n```\n\n---\n\n## 🎯 **ALGORITMO DE DETECCIÓN v2.0**\n\n```python\ndef detectar_etapa_propietario():\n    # PRIORIDAD 1: Verificar si es cliente existente\n    if es_cliente_o_propietario_existente():\n        return 92821424  # CLIENTE/INQ/PROP\n    \n    # PRIORIDAD 2: Verificar CASO ESPECIAL\n    if diego_no_tiene_info() or cliente_pide_escalacion():\n        return 92821236  # CASO ESPECIAL\n    \n    # PRIORIDAD 3: Verificar progresión normal\n    if propietario_dio_2_horarios_completos():\n        return 92821232  # HORARIOS DADOS\n    \n    if propietario_muestra_interes_contratar():\n        return 92821228  # INTERESADO\n    \n    if propietario_hace_preguntas_servicios():\n        return 92821224  # CONSULTANDO SERVICIOS\n    \n    # Por defecto si solo hay mensaje inicial\n    return 92821220  # PRIMER CONTACTO\n```\n\n---\n\n## 📋 **SEÑALES INEQUÍVOCAS POR ETAPA**\n\n### **92821424 - Cliente/Inq/Prop**\n- **SEÑALES CRÍTICAS:**\n  - \"Soy propietario y no me han pagado\"\n  - \"Mi inquilino no paga\"\n  - \"Tengo un depa con ustedes\"\n  - \"Mi departamento administrado por Proper\"\n  - \"No recibí la renta este mes\"\n  - Cualquier problema con gestión existente\n- **ACCIÓN:** Escalación inmediata a gestión\n\n### **92821220 - Primer Contacto**\n- **SEÑALES:**\n  - Solo está el mensaje inicial de Diego\n  - Propietario responde con saludo simple\n  - No hay preguntas específicas aún\n- **CAMBIA A:** Consultando cuando hace preguntas\n\n### **92821224 - Consultando Servicios**\n- **SEÑALES:**\n  - \"¿Cuánto cobran?\"\n  - \"¿Qué incluye?\"\n  - \"¿Cómo funciona?\"\n  - Cualquier pregunta sobre el servicio\n- **CAMBIA A:** Interesado si muestra intención\n\n### **92821228 - Interesado**\n- **SEÑALES:**\n  - \"Me interesa\"\n  - \"Quiero saber más\"\n  - \"Podríamos hablar\"\n  - Da 1 horario pero falta el segundo\n- **CAMBIA A:** Horarios Dados con 2 fechas completas\n\n### **92821232 - Horarios Dados**\n- **SEÑALES:**\n  - Propietario dio fecha1 Y fecha2 con hora\n  - Diego confirmó: \"Tengo anotado...\"\n  - Ejemplo: \"Lunes 3pm y miércoles 10am\"\n- **ESTADO FINAL:** No regresa a etapas anteriores\n\n### **92821236 - Caso Especial**\n- **SEÑALES:**\n  - Diego: \"Ese punto lo vemos en la llamada\"\n  - Diego: \"Para darte información exacta...\"\n  - Cliente: \"Necesito hablar con alguien\"\n  - Consultas muy específicas sin respuesta\n\n---\n\n## 📝 **ESTRUCTURA JSON OBLIGATORIA**\n\n```json\n{\n  \"nombreCliente\": \"[Nombre extraído o vacío]\",\n  \"telefonoCliente\": \"[+51XXXXXXXXX o vacío]\",\n  \"correoCliente\": \"[email@domain.com o vacío]\",\n  \"fecha1\": \"[DD/MM/YYYY HH:mm o vacío]\",\n  \"fecha2\": \"[DD/MM/YYYY HH:mm o vacío]\",\n  \"solicitud\": \"[Resumen de consultas del propietario]\",\n  \"animo\": \"[caliente/tibio/frio]\",\n  \"estatusEmbudo\": \"[Nombre de etapa actual]\",\n  \"statusId\": [Código numérico sin comillas],\n  \"seg1\": \"[Mensaje seguimiento 1 o vacío si Horarios Dados]\",\n  \"seg2\": \"[Mensaje seguimiento 2 o vacío si Horarios Dados]\",\n  \"seg3\": \"[Mensaje seguimiento 3 o vacío si Horarios Dados]\"\n}\n```\n\n**IMPORTANTE:** statusId es NUMÉRICO, no string. Ejemplo: 92821220 no \"92821220\"\n\n---\n\n## 🔥 **CLASIFICACIÓN DE ÁNIMO**\n\n### **CALIENTE:**\n- Responde rápido y con interés\n- Hace preguntas específicas sobre el servicio\n- Da horarios sin resistencia\n- Menciona urgencia (\"necesito alquilar pronto\")\n\n### **TIBIO:**\n- Responde pero con dudas\n- Pide tiempo para pensar\n- Da solo 1 horario\n- Pregunta pero no compromete\n\n### **FRÍO:**\n- Respuestas muy cortas o sin respuesta\n- No da horarios después de pedirlos\n- \"Lo voy a pensar\"\n- No hace preguntas de seguimiento\n\n---\n\n## 💬 **MENSAJES DE SEGUIMIENTO CONTEXTUALES**\n\n### **Cliente/Inq/Prop (92821424):**\n```\nseg1: \"Un especialista de gestión revisará tu caso sobre [problema específico]\"\nseg2: \"El área de administración atenderá tu consulta prioritariamente\"\nseg3: \"Es urgente resolver tu situación. Te contactaremos de inmediato\"\n```\n\n### **Primer Contacto (92821220):**\n```\nseg1: \"Hola [nombre si hay], ¿pudiste ver mi mensaje sobre nuestros servicios de administración?\"\nseg2: \"¿Te viene bien coordinar una llamada para explicarte cómo podemos ayudarte con tu propiedad?\"\nseg3: \"Último intento: ¿Sigues interesado en alquilar tu departamento?\"\n```\n\n### **Consultando Servicios (92821224):**\n```\nseg1: \"¿Quedó clara la información sobre [tema consultado]? ¿Coordinamos la llamada?\"\nseg2: \"Para resolver todas tus dudas sobre [servicio], ¿qué horarios tienes esta semana?\"\nseg3: \"¿Pudiste revisar la info? Me gustaría explicarte los beneficios en detalle\"\n```\n\n### **Interesado (92821228):**\n```\nseg1: \"Perfecto que te interese. Solo necesito otra opción de horario para asegurar la llamada\"\nseg2: \"¿Me das el segundo horario para confirmar nuestra conversación?\"\nseg3: \"Necesito la segunda opción de horario para poder agendarte\"\n```\n\n### **Horarios Dados (92821232):**\n```\nseg1: \"\"\nseg2: \"\"\nseg3: \"\"\n```\n*Nota: No requiere seguimiento, ya se tienen los horarios*\n\n### **Caso Especial (92821236):**\n```\nseg1: \"Un especialista revisará tu consulta sobre [tema específico]\"\nseg2: \"Te contactará un asesor senior para resolver [situación]\"\nseg3: \"Es importante atender tu caso. Un experto te llamará pronto\"\n```\n\n---\n\n## ⚡ **REGLAS DE EXTRACCIÓN**\n\n### **TELÉFONO:**\n- Buscar patrones: 9XX XXX XXX, 9XXXXXXXX\n- Agregar +51 si no lo tiene\n- Formato final: +51XXXXXXXXX\n- Validar que sean 9 dígitos después del código\n\n### **CORREO:**\n- Validar formato: texto@dominio.extension\n- Convertir a minúsculas\n- Eliminar espacios antes y después\n\n### **FECHAS:**\n- Usar Date & Time SIEMPRE para convertir\n- Formato estricto: DD/MM/YYYY HH:mm\n- Si dice \"mañana 3pm\" → convertir a fecha específica\n- Ambas fechas deben tener día y hora completos\n\n### **NOMBRE:**\n- Capturar nombre completo si lo proporciona\n- Primera letra en mayúscula\n- Eliminar títulos (Sr., Sra., etc.)\n\n---\n\n## 🎯 **EJEMPLOS DE ANÁLISIS CORRECTO**\n\n### **Ejemplo 1: Cliente existente**\n```\nDiego: \"Hola, soy Diego de Proper Rentas...\"\nCliente: \"Soy propietario, no me han pagado este mes\"\n\n✅ ETAPA: CLIENTE/INQ/PROP\n✅ statusId: 92821424 (sin comillas)\n✅ seg1: \"Un especialista de gestión revisará tu caso sobre el pago pendiente\"\n```\n\n### **Ejemplo 2: Consultando → Interesado**\n```\nDiego: \"Hola, soy Diego de Proper Rentas...\"\nCliente: \"¿Cuánto cobran por administrar?\"\nDiego: \"7% más IGV del alquiler mensual...\"\nCliente: \"Me interesa, hablemos\"\n\n✅ ETAPA: INTERESADO\n✅ statusId: 92821228\n✅ ÁNIMO: caliente\n✅ seg1: \"Excelente que te interese. ¿Qué 2 horarios tienes disponibles?\"\n```\n\n### **Ejemplo 3: Horarios completos**\n```\nCliente: \"Puedo lunes 3pm o miércoles 10am\"\nDiego: \"Perfecto, tengo anotado...\"\n\n✅ ETAPA: HORARIOS DADOS\n✅ statusId: 92821232\n✅ fecha1: \"27/01/2025 15:00\"\n✅ fecha2: \"29/01/2025 10:00\"\n✅ seg1, seg2, seg3: \"\" (vacíos)\n```\n\n---\n\n## ⚠️ **VERIFICACIÓN FINAL OBLIGATORIA**\n\n### **CHECKLIST PRE-RESPUESTA:**\n```\n□ ¿Es un cliente/propietario existente? → CLIENTE/INQ/PROP\n□ ¿Extraje todos los datos disponibles correctamente?\n□ ¿El statusId es NUMÉRICO sin comillas?\n□ ¿La etapa corresponde al punto real de la conversación?\n□ ¿Los mensajes de seguimiento son naturales y contextuales?\n□ ¿Las fechas están en formato DD/MM/YYYY HH:mm?\n□ ¿El ánimo refleja el interés real del propietario?\n□ ¿El JSON tiene TODOS los campos requeridos?\n```\n\n---\n\n## 🔴 **RECORDATORIO CRÍTICO FINAL**\n\n```\nANTES DE RESPONDER:\n\n1. ¿Es cliente/propietario existente con problemas?\n   → DEBE SER CLIENTE/INQ/PROP (92821424)\n\n2. ¿Diego no tiene la información?\n   → DEBE SER CASO ESPECIAL (92821236)\n\n3. ¿El propietario dio 2 horarios completos?\n   → DEBE SER HORARIOS DADOS (92821232)\n\n4. ¿El statusId es NUMÉRICO?\n   → NO usar comillas, ejemplo: 92821220\n\n5. ¿Los mensajes son personalizados al contexto?\n   → DEBEN mencionar el tema específico\n\n6. ¿Mi JSON está completo y válido?\n   → VERIFICAR CADA CAMPO\n\nRESPONDER SOLO JSON VALIDADO Y COMPLETO\n```"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        5808,
+        1256
+      ],
+      "id": "24bde54a-646c-4044-a169-5d40556ee8fe",
+      "name": "Campos3",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a20676ee-dc3f-45fa-ad6d-f8db1ce5343e",
+                    "leftValue": "={{ $('Respuesta2').item.json.output }}",
+                    "rightValue": "={{ $('new message').item.json.body['message[add][0][text]'] }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "continuar"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9a725f34-1bc4-40eb-a025-096e506725da",
+                    "leftValue": "={{ $('Respuesta2').item.json.output }}",
+                    "rightValue": "={{ $('new message').item.json.body['message[add][0][text]'] }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "mismo mensaje"
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        4672,
+        1240
+      ],
+      "id": "3791f4d4-c143-483c-ac67-13f735248567",
+      "name": "SwitchBot3",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.output }}",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "nombreCliente",
+              "description": "Nombre completo del cliente o paciente",
+              "required": true
+            },
+            {
+              "name": "telefonoCliente",
+              "description": "Número de telefono con código internacional para mexico",
+              "required": true
+            },
+            {
+              "name": "correoCliente",
+              "description": "Correo electrónico válido del cliente, si no existe dejarlo en blanco, no inventar. ",
+              "required": true
+            },
+            {
+              "name": "animo",
+              "description": "Nivel de interés detectado",
+              "required": true
+            },
+            {
+              "name": "estatusEmbudo",
+              "description": "Etapa actual del proceso (nombre descriptivo)",
+              "required": true
+            },
+            {
+              "name": "statusId",
+              "type": "number",
+              "description": "Codigo de Status relacionado a etapa (numerico)",
+              "required": true
+            },
+            {
+              "name": "solicitud",
+              "description": "breve resumen de la solicitud del cliente",
+              "required": true
+            },
+            {
+              "name": "seg1",
+              "description": "mensaje de seguimiento 1",
+              "required": true
+            },
+            {
+              "name": "seg2",
+              "description": "mensaje de seguimiento 2",
+              "required": true
+            },
+            {
+              "name": "seg3",
+              "description": "mensaje de seguimiento 3",
+              "required": true
+            },
+            {
+              "name": "fecha1",
+              "description": "fecha 1 solicitada por el cliente",
+              "required": true
+            },
+            {
+              "name": "fecha2",
+              "description": "fecha 2 solicitada por el cliente",
+              "required": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1,
+      "position": [
+        6160,
+        1256
+      ],
+      "id": "f62cc870-354d-4162-9d5e-7a9539d73b4b",
+      "name": "Information Extractor3",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('new message').item.json.body[\"account[_links][self]\"] }}/ajax/v1/chats/session",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Requested-With",
+              "value": "XMLHttpRequest"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "request[chats][session][action]",
+              "value": "create"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5120,
+        1256
+      ],
+      "id": "c8b2c910-2cd3-44e3-9c1e-7d071955aa1c",
+      "name": "Validacion3",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "CUkAxEZkWpxNLUY2",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        5816,
+        1480
+      ],
+      "id": "c7531f62-69a8-4787-9c30-9503bd17d375",
+      "name": "OpenAI Chat Model7",
+      "credentials": {
+        "openAiApi": {
+          "id": "LZHR7cL6uCBXIyJd",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        6232,
+        1480
+      ],
+      "id": "53a34308-79d1-4ffd-b43c-701635b29f9f",
+      "name": "OpenAI Chat Model8",
+      "credentials": {
+        "openAiApi": {
+          "id": "LZHR7cL6uCBXIyJd",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('new message').item.json.body['message[add][0][entity_id]'] }}",
+              "pipeline_id": 11240224,
+              "status_id": "={{ Number($('Information Extractor3').item.json.output.statusId) }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":798329,\"type\":\"text\"}",
+                    "value": "={{ $('Information Extractor3').item.json.output.nombreCliente }}"
+                  },
+                  {
+                    "data": "{\"id\":798347,\"type\":\"text\"}",
+                    "value": "={{ $('Information Extractor3').item.json.output.estatusEmbudo }}"
+                  },
+                  {
+                    "data": "{\"id\":798343,\"type\":\"text\"}",
+                    "value": "={{ $('Information Extractor3').item.json.output.animo }}"
+                  },
+                  {
+                    "data": "{\"id\":798337,\"type\":\"textarea\"}",
+                    "value": "={{ $('Information Extractor3').item.json.output.seg1 }}"
+                  },
+                  {
+                    "data": "{\"id\":798339,\"type\":\"textarea\"}",
+                    "value": "={{ $('Information Extractor3').item.json.output.seg2 }}"
+                  },
+                  {
+                    "data": "{\"id\":798341,\"type\":\"textarea\"}",
+                    "value": "={{ $('Information Extractor3').item.json.output.seg3 }}"
+                  },
+                  {
+                    "data": "{\"id\":798335,\"type\":\"text\"}",
+                    "value": "={{ $('Information Extractor3').item.json.output.fecha1 }}"
+                  },
+                  {
+                    "data": "{\"id\":798349,\"type\":\"text\"}",
+                    "value": "={{ $('Information Extractor3').item.json.output.fecha2 }}"
+                  },
+                  {
+                    "data": "{\"id\":798463,\"type\":\"text\"}",
+                    "value": "NUEVO"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        6512,
+        1256
+      ],
+      "id": "61888374-0a80-4cd4-8350-db425e17c4cc",
+      "name": "Update leads3",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        5944,
+        1480
+      ],
+      "id": "35c1c2d2-d3fa-4e6d-92d0-64c2532718f9",
+      "name": "Postgres Chat Memory4",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-2025-04-14",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-2025-04-14"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3952,
+        1128
+      ],
+      "id": "0753d401-ab1d-4ede-85a0-bffdd5d435a6",
+      "name": "OpenAI Chat Model4",
+      "credentials": {
+        "openAiApi": {
+          "id": "LZHR7cL6uCBXIyJd",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        4080,
+        1128
+      ],
+      "id": "b4cd6035-3a25-49fc-b0a3-746a36e00a24",
+      "name": "Postgres Chat Memory5",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTimeTool",
+      "typeVersion": 2,
+      "position": [
+        4208,
+        1128
+      ],
+      "id": "76d09e24-f9b2-48c9-9ee3-91f35b82650e",
+      "name": "Date & Time2"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Buscar en la base de conocimiento",
+        "url": "https://docs.google.com/document/d/e/2PACX-1vTByTSHQfxb0MaJ3cQ_BnVkgey5SQGIfvhxWq5pMnvZ66p7TR3V6KRsa3qvro_qBg/pub",
+        "options": {},
+        "optimizeResponse": true,
+        "responseType": "html"
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        4336,
+        1128
+      ],
+      "id": "7ad2d6fb-8243-4ecf-864f-0a81c68b8ec3",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "resource": "notes",
+        "operation": "createNotes",
+        "notes": {
+          "common": [
+            {
+              "entity_id": "={{ $('GET Lead').item.json.id }}",
+              "text": "={{ $('Respuesta2').item.json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        4896,
+        1256
+      ],
+      "id": "d8db5a5d-8bb9-4d93-bc86-41f76b432b07",
+      "name": "Create new notes",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Xm12cHoxJw7jGGaV",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        4464,
+        224
+      ],
+      "id": "f69d7541-59b4-4add-8f01-70ee06ef16a7",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        5600,
+        576
+      ],
+      "id": "49ce004b-5792-4173-9a8f-103ff5123748",
+      "name": "Calculator1"
     }
   ],
   "pinData": {
@@ -3829,17 +4729,17 @@
           "headers": {
             "host": "primary-production-0299.up.railway.app",
             "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "942",
+            "content-length": "937",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "be662946-67bf-4d1c-a898-36803f34ac89",
+            "x-amocrm-requestid": "ed3ac717-afcd-4d7c-9aa0-c1a6b1c01dd4",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "84oL_46rTE2gyQ8jg4a9AQ",
+            "x-railway-request-id": "0Uzi0tq9TMudXXb_BT7zVQ",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1759199699185"
+            "x-request-start": "1759588324564"
           },
           "params": {},
           "query": {},
@@ -3847,20 +4747,20 @@
             "account[subdomain]": "propertamibotcom",
             "account[id]": "30050693",
             "account[_links][self]": "https://propertamibotcom.amocrm.com",
-            "message[add][0][id]": "44f2b7df-af44-46eb-a9d0-1f84f444e0ad",
-            "message[add][0][chat_id]": "416b75f3-5c57-4194-b164-4adc55b8eae5",
-            "message[add][0][talk_id]": "203302",
-            "message[add][0][contact_id]": "24463749",
-            "message[add][0][text]": "Disculpa",
-            "message[add][0][created_at]": "1759199697",
+            "message[add][0][id]": "82a67226-8511-4d59-8ba8-65d6bdac123e",
+            "message[add][0][chat_id]": "e212a4d1-1c64-494a-a58a-918a2883ae8a",
+            "message[add][0][talk_id]": "204036",
+            "message[add][0][contact_id]": "24488535",
+            "message[add][0][text]": "HOLA",
+            "message[add][0][created_at]": "1759588323",
             "message[add][0][element_type]": "2",
             "message[add][0][entity_type]": "lead",
-            "message[add][0][element_id]": "22094107",
-            "message[add][0][entity_id]": "22094107",
+            "message[add][0][element_id]": "22122449",
+            "message[add][0][entity_id]": "22122449",
             "message[add][0][type]": "incoming",
-            "message[add][0][author][id]": "df72b318-9c74-46c7-a731-a22453426b3e",
+            "message[add][0][author][id]": "f92fe9a6-bfe9-4f1c-b754-bf61e32d10d4",
             "message[add][0][author][type]": "external",
-            "message[add][0][author][name]": "Fiorella La Rosa Amiel",
+            "message[add][0][author][name]": "Martin Velasco Ormeno",
             "message[add][0][origin]": "waba"
           },
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/rentas",
@@ -3893,6 +4793,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-09-30T15:24:09.316Z",
-  "versionId": "913eda7e-c541-4950-b5cb-3eeaafa701b7"
+  "updatedAt": "2025-10-04T20:37:33.182Z",
+  "versionId": "39e6ee68-4b3b-4fcb-8bd4-a0147b0c04f9"
 }
