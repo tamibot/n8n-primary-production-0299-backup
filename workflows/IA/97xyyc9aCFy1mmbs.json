@@ -1253,7 +1253,7 @@
       "typeVersion": 4.2,
       "position": [
         5120,
-        456
+        464
       ]
     },
     {
@@ -1267,7 +1267,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5400,
+        5408,
         352
       ],
       "id": "2a6e3e65-5548-4e7d-989a-b45e5fc702b7",
@@ -1337,7 +1337,7 @@
       "typeVersion": 3.2,
       "position": [
         4672,
-        440
+        448
       ],
       "id": "53c6beb6-7d84-4901-a595-dc61fb6bcd48",
       "name": "SwitchBot",
@@ -1422,7 +1422,7 @@
       "typeVersion": 3.4,
       "position": [
         -2448,
-        1692
+        1696
       ],
       "id": "93971de1-1355-4181-89b2-3fbb7e83e06e",
       "name": "Set Fields",
@@ -1564,7 +1564,7 @@
       "typeVersion": 4.2,
       "position": [
         4896,
-        456
+        464
       ],
       "id": "92a9f874-fd66-4acb-bf1b-6a6c3921ed41",
       "name": "Validacion",
@@ -1584,8 +1584,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -3176,
-        2212
+        -3184,
+        2224
       ],
       "id": "d8f4b9f3-15b9-404d-9baa-b3f21a15a1f9",
       "name": "Simple Memory2"
@@ -1661,7 +1661,7 @@
       "typeVersion": 1.1,
       "position": [
         -3248,
-        1988
+        2000
       ],
       "id": "bc5a0bc8-edef-4244-8430-792343cec249",
       "name": "Chat Memory Manager1"
@@ -1674,8 +1674,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -3992,
-        1640
+        -4000,
+        1648
       ],
       "typeVersion": 1,
       "id": "6a8dc48d-aa92-4606-a230-073db3daf74f",
@@ -1744,7 +1744,7 @@
       "typeVersion": 3.2,
       "position": [
         464,
-        1028
+        1040
       ],
       "id": "1fcc15f7-9d7c-4110-bb57-d0b308bc8d4e",
       "name": "SwitchBuffer"
@@ -1775,7 +1775,7 @@
       "typeVersion": 3.4,
       "position": [
         2480,
-        1228
+        1232
       ]
     },
     {
@@ -1804,7 +1804,7 @@
       "typeVersion": 3.4,
       "position": [
         2480,
-        1036
+        1040
       ]
     },
     {
@@ -1833,7 +1833,7 @@
       "typeVersion": 3.4,
       "position": [
         2480,
-        844
+        848
       ]
     },
     {
@@ -1862,7 +1862,7 @@
       "typeVersion": 3.4,
       "position": [
         2480,
-        652
+        656
       ]
     },
     {
@@ -1882,7 +1882,7 @@
       "typeVersion": 1,
       "position": [
         3152,
-        1028
+        1040
       ],
       "id": "44febada-8fe6-499e-9eac-0f7a57718a49",
       "name": "Aggregate"
@@ -1902,7 +1902,7 @@
       "typeVersion": 1,
       "position": [
         2928,
-        1028
+        1040
       ],
       "id": "31c1f935-7028-43b1-92d7-bed8813ae169",
       "name": "Sort"
@@ -1915,7 +1915,7 @@
       "typeVersion": 3.1,
       "position": [
         2704,
-        980
+        992
       ],
       "id": "20384c1a-7f9b-46b5-a909-a2d0a156136a",
       "name": "Merge"
@@ -1952,7 +1952,7 @@
       "typeVersion": 3.4,
       "position": [
         3376,
-        1028
+        1040
       ]
     },
     {
@@ -1981,7 +1981,7 @@
       "typeVersion": 3.4,
       "position": [
         2480,
-        460
+        464
       ]
     },
     {
@@ -1994,7 +1994,7 @@
       "typeVersion": 3.4,
       "position": [
         1136,
-        996
+        1008
       ],
       "id": "d33e86c3-93c7-45b6-b244-8a0574812853",
       "name": "JSON parse"
@@ -2008,7 +2008,7 @@
       "typeVersion": 1,
       "position": [
         912,
-        996
+        1008
       ],
       "id": "4f54baf2-e4a4-4d25-a3fb-fdb1bd9bfc86",
       "name": "Split Out"
@@ -2022,7 +2022,7 @@
       "typeVersion": 1,
       "position": [
         688,
-        996
+        1008
       ],
       "id": "840a696c-69d0-454b-ae7d-2dd5acbc4162",
       "name": "Delete message buffer",
@@ -2039,7 +2039,7 @@
       "typeVersion": 1,
       "position": [
         688,
-        804
+        816
       ],
       "id": "3c22ddd7-b7ee-47e9-b644-493a9f8c76d8",
       "name": "No Operation, do nothing"
@@ -2109,7 +2109,7 @@
       "typeVersion": 4.2,
       "position": [
         1584,
-        1228
+        1232
       ],
       "id": "62c24a61-9ab5-4c19-a74e-105a7da8d840",
       "name": "get PDF"
@@ -2136,7 +2136,7 @@
       "typeVersion": 4.2,
       "position": [
         2256,
-        1036
+        1040
       ],
       "id": "8339dcc1-b9cb-4d0b-9ca3-28948cf87f2e",
       "name": "Analyze video Gemini"
@@ -2175,7 +2175,7 @@
       "typeVersion": 4.2,
       "position": [
         1808,
-        1036
+        1040
       ],
       "id": "9a1cd6b0-b3b6-4113-869a-4f9b4292a6c9",
       "name": "Upload video Gemini"
@@ -2218,7 +2218,7 @@
       "typeVersion": 4.2,
       "position": [
         1808,
-        1228
+        1232
       ],
       "id": "cbe979a4-a365-4716-b85d-cd4603f50b0e",
       "name": "Upload PDF Gemini"
@@ -2245,7 +2245,7 @@
       "typeVersion": 4.2,
       "position": [
         2256,
-        1228
+        1232
       ],
       "id": "6e3d1112-a538-4397-a047-f4b6d29c12c6",
       "name": "Analyze PDF Gemini"
@@ -2258,7 +2258,7 @@
       "typeVersion": 1.1,
       "position": [
         2032,
-        1228
+        1232
       ],
       "id": "3e61e416-bda4-4f6f-ba6a-5f0710205ec9",
       "name": "Wait1",
@@ -2273,7 +2273,7 @@
       "typeVersion": 4.2,
       "position": [
         1584,
-        1036
+        1040
       ],
       "id": "94429558-1aba-4a37-aec0-2483cf045b18",
       "name": "get video"
@@ -2286,7 +2286,7 @@
       "typeVersion": 1.1,
       "position": [
         2032,
-        1036
+        1040
       ],
       "id": "6a6b77bf-382f-4bde-b257-36ec4a4e1186",
       "name": "Wait",
@@ -2301,7 +2301,7 @@
       "typeVersion": 4.2,
       "position": [
         2032,
-        844
+        848
       ],
       "id": "d8dd626d-ffdb-4d92-8318-463e0e41348e",
       "name": "get image"
@@ -2324,7 +2324,7 @@
       "typeVersion": 1.8,
       "position": [
         2256,
-        844
+        848
       ],
       "id": "16f7e2af-5e2d-49bd-a800-3308c8a8a85a",
       "name": "recognize image",
@@ -2467,7 +2467,7 @@
       "typeVersion": 3.2,
       "position": [
         1360,
-        948
+        960
       ],
       "id": "4003969f-6b19-4d22-8953-42a563090cfd",
       "name": "checkType"
@@ -2484,7 +2484,7 @@
       "typeVersion": 1.8,
       "position": [
         2256,
-        652
+        656
       ],
       "credentials": {
         "openAiApi": {
@@ -2504,7 +2504,7 @@
       "typeVersion": 4.2,
       "position": [
         2032,
-        652
+        656
       ]
     },
     {
@@ -2543,7 +2543,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5880,
+        5888,
         576
       ],
       "id": "ff62467a-3c67-4ac3-a62b-bcbeef7b1f68",
@@ -2630,7 +2630,7 @@
       "typeVersion": 1,
       "position": [
         6224,
-        456
+        464
       ],
       "id": "982f6c94-e31b-44d7-a10b-e9415ac86cdd",
       "name": "Update leads",
@@ -2668,7 +2668,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        4072,
+        4080,
         0
       ],
       "id": "9e2466a1-6a29-4303-8cd4-68385cba7849",
@@ -2805,7 +2805,7 @@
       "typeVersion": 4.2,
       "position": [
         -3184,
-        1692
+        1696
       ],
       "id": "d5793e5e-7a56-4830-913e-f258f79ba03c",
       "name": "GET Lead",
@@ -2913,7 +2913,7 @@
       "typeVersion": 2.6,
       "position": [
         -2896,
-        1988
+        2000
       ],
       "id": "a6f2f3a4-d8d5-49a4-8c2b-4b5a05a71076",
       "name": "Postgres",
@@ -2967,7 +2967,7 @@
       "typeVersion": 2.2,
       "position": [
         -2896,
-        1692
+        1696
       ],
       "id": "0c4c446d-a782-4376-b930-fe9a00b82532",
       "name": "Filter1"
@@ -3086,7 +3086,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        4072,
+        4080,
         400
       ],
       "id": "56e6f9c7-bfa7-4847-a2de-921e39c65faf",
@@ -3124,7 +3124,7 @@
       "typeVersion": 2.2,
       "position": [
         -2672,
-        1692
+        1696
       ],
       "id": "907c7f6f-bc26-49b1-8e1c-bf7d488beb06",
       "name": "Filter2"
@@ -3223,7 +3223,7 @@
       "typeVersion": 4.2,
       "position": [
         5120,
-        856
+        864
       ]
     },
     {
@@ -3237,7 +3237,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5400,
+        5408,
         752
       ],
       "id": "e41007e2-2276-40ec-8070-712f59096c51",
@@ -3307,7 +3307,7 @@
       "typeVersion": 3.2,
       "position": [
         4672,
-        840
+        848
       ],
       "id": "202fe868-cfe4-49fb-b98a-764af4f7dc04",
       "name": "SwitchBot2",
@@ -3430,7 +3430,7 @@
       "typeVersion": 4.2,
       "position": [
         4896,
-        856
+        864
       ],
       "id": "398e1836-4db6-46a2-b1f6-3d1ec41dd4c0",
       "name": "Validacion2",
@@ -3477,7 +3477,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5880,
+        5888,
         976
       ],
       "id": "57a7a0e3-9943-4fc5-ae89-1496e3e460c5",
@@ -3548,7 +3548,7 @@
       "typeVersion": 1,
       "position": [
         6224,
-        856
+        864
       ],
       "id": "ad1c8a3e-7aa5-4c6e-8027-32437d271239",
       "name": "Update leads2",
@@ -3719,7 +3719,7 @@
       "typeVersion": 1,
       "position": [
         -2224,
-        1692
+        1696
       ],
       "id": "966c0f2e-59b2-4450-b47a-1eeed276080b",
       "name": "Get list of contacts",
@@ -3748,7 +3748,7 @@
       "typeVersion": 3.4,
       "position": [
         -1776,
-        1692
+        1696
       ],
       "id": "845f92c3-6af0-4681-8b00-1181f299511e",
       "name": "Edit Fields"
@@ -3782,7 +3782,7 @@
       "typeVersion": 2.2,
       "position": [
         -2000,
-        1692
+        1696
       ],
       "id": "eba39861-24ca-43d0-a04e-51e3cef421c2",
       "name": "Filter3"
@@ -3799,7 +3799,7 @@
       "typeVersion": 2.6,
       "position": [
         -1328,
-        1692
+        1696
       ],
       "id": "086031ee-4f29-44f7-8278-42538d33cfe0",
       "name": "VALIDACION NUMERO",
@@ -4054,7 +4054,7 @@
       "typeVersion": 1.1,
       "position": [
         -1552,
-        1692
+        1696
       ],
       "id": "32bef536-c131-4cb4-85a7-b715089a9662",
       "name": "Execution Data"
@@ -4120,7 +4120,7 @@
       "typeVersion": 3.2,
       "position": [
         -1104,
-        1692
+        1696
       ],
       "id": "4b035bdd-23eb-4bf3-8de1-72ff783a9c16",
       "name": "Switch5"
@@ -4136,8 +4136,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        4072,
-        904
+        4080,
+        912
       ],
       "id": "9f16a7a9-6326-4cfd-af9c-25ac411ececb",
       "name": "Respuesta2",
@@ -4237,8 +4237,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5464,
-        1256
+        5472,
+        1264
       ]
     },
     {
@@ -4253,7 +4253,7 @@
       "typeVersion": 1.9,
       "position": [
         5808,
-        1256
+        1264
       ],
       "id": "24bde54a-646c-4044-a169-5d40556ee8fe",
       "name": "Campos3",
@@ -4322,7 +4322,7 @@
       "typeVersion": 3.2,
       "position": [
         4672,
-        1240
+        1248
       ],
       "id": "3791f4d4-c143-483c-ac67-13f735248567",
       "name": "SwitchBot3",
@@ -4403,7 +4403,7 @@
       "typeVersion": 1,
       "position": [
         6160,
-        1256
+        1264
       ],
       "id": "f62cc870-354d-4162-9d5e-7a9539d73b4b",
       "name": "Information Extractor3",
@@ -4445,7 +4445,7 @@
       "typeVersion": 4.2,
       "position": [
         5120,
-        1256
+        1264
       ],
       "id": "c8b2c910-2cd3-44e3-9c1e-7d071955aa1c",
       "name": "Validacion3",
@@ -4468,8 +4468,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5816,
-        1480
+        5824,
+        1488
       ],
       "id": "c7531f62-69a8-4787-9c30-9503bd17d375",
       "name": "OpenAI Chat Model7",
@@ -4492,8 +4492,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6232,
-        1480
+        6240,
+        1488
       ],
       "id": "53a34308-79d1-4ffd-b43c-701635b29f9f",
       "name": "OpenAI Chat Model8",
@@ -4563,7 +4563,7 @@
       "typeVersion": 1,
       "position": [
         6512,
-        1256
+        1264
       ],
       "id": "61888374-0a80-4cd4-8350-db425e17c4cc",
       "name": "Update leads3",
@@ -4583,8 +4583,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5944,
-        1480
+        5952,
+        1488
       ],
       "id": "35c1c2d2-d3fa-4e6d-92d0-64c2532718f9",
       "name": "Postgres Chat Memory4",
@@ -4609,7 +4609,7 @@
       "typeVersion": 1.2,
       "position": [
         3952,
-        1128
+        1136
       ],
       "id": "0753d401-ab1d-4ede-85a0-bffdd5d435a6",
       "name": "OpenAI Chat Model4",
@@ -4630,7 +4630,7 @@
       "typeVersion": 1.3,
       "position": [
         4080,
-        1128
+        1136
       ],
       "id": "b4cd6035-3a25-49fc-b0a3-746a36e00a24",
       "name": "Postgres Chat Memory5",
@@ -4649,7 +4649,7 @@
       "typeVersion": 2,
       "position": [
         4208,
-        1128
+        1136
       ],
       "id": "76d09e24-f9b2-48c9-9ee3-91f35b82650e",
       "name": "Date & Time2"
@@ -4666,7 +4666,7 @@
       "typeVersion": 4.2,
       "position": [
         4336,
-        1128
+        1136
       ],
       "id": "7ad2d6fb-8243-4ecf-864f-0a81c68b8ec3",
       "name": "HTTP Request"
@@ -4688,7 +4688,7 @@
       "typeVersion": 1,
       "position": [
         4896,
-        1256
+        1264
       ],
       "id": "d8db5a5d-8bb9-4d93-bc86-41f76b432b07",
       "name": "Create new notes",
@@ -4793,6 +4793,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-04T20:37:33.182Z",
-  "versionId": "39e6ee68-4b3b-4fcb-8bd4-a0147b0c04f9"
+  "updatedAt": "2025-10-06T23:27:48.027Z",
+  "versionId": "7f650e99-6315-44e0-a6a5-8cbf78b6f75a"
 }
