@@ -143,7 +143,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields4",
+            "node": "Execute a SQL query2",
             "type": "main",
             "index": 0
           }
@@ -307,6 +307,17 @@
           }
         ]
       ]
+    },
+    "Execute a SQL query2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-09-23T04:15:40.700Z",
@@ -325,8 +336,8 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        384,
-        272
+        256,
+        256
       ],
       "id": "016e8895-6f3a-44cb-98e5-db27dd41fdf7",
       "name": "Split Out1"
@@ -369,8 +380,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        608,
-        272
+        480,
+        256
       ],
       "id": "73bb32d5-058b-41b9-ab8a-34a2fee7a7ff",
       "name": "Filter"
@@ -458,8 +469,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1952,
-        176
+        1824,
+        160
       ],
       "id": "8e333d0d-1ba7-482f-90ec-985e9b116896",
       "name": "Edit Fields"
@@ -481,8 +492,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1056,
-        176
+        928,
+        160
       ],
       "id": "2c8ecad3-06b7-4f1b-914d-1142cbfd32cc",
       "name": "Get list of contacts",
@@ -509,8 +520,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1280,
-        176
+        1152,
+        160
       ],
       "id": "a9a909b6-c353-486d-a2fd-bd20ba2c4eae",
       "name": "HTTP Request",
@@ -528,8 +539,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        832,
-        272
+        704,
+        256
       ],
       "id": "f270d9f4-cbda-44c1-a100-6f3e18aa05ba",
       "name": "Loop Over Items"
@@ -551,8 +562,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1504,
-        176
+        1376,
+        160
       ],
       "id": "7a80d4b8-60dc-4832-a1de-57982043ee9c",
       "name": "Edit Fields1"
@@ -881,8 +892,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2848,
-        224
+        2944,
+        208
       ],
       "id": "1a8576e0-7c93-404f-b24b-c2333a33c8fb",
       "name": "Insert or update rows in a table",
@@ -908,7 +919,7 @@
       "typeVersion": 1.2,
       "position": [
         -192,
-        48
+        400
       ],
       "id": "1182f8b0-7f44-4b99-bbfa-03684c311629",
       "name": "Schedule Trigger"
@@ -927,7 +938,7 @@
             },
             {
               "name": "filter[created_at][from]",
-              "value": "1756702800"
+              "value": "1759640400"
             },
             {
               "name": "filter[created_at][to]",
@@ -983,8 +994,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        160,
-        272
+        32,
+        256
       ],
       "id": "cbf10df5-5cd6-4377-8603-473438f969c5",
       "name": "HTTP Request2",
@@ -1072,8 +1083,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2624,
-        176
+        2720,
+        160
       ],
       "id": "d70dab22-317f-435a-9be8-0c6dfd4824e8",
       "name": "Edit Fields4"
@@ -1089,8 +1100,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2176,
-        176
+        2048,
+        160
       ],
       "id": "4e808f1e-95f8-41cb-bd91-f505e9f42bd1",
       "name": "Execute a SQL query",
@@ -1113,8 +1124,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2400,
-        176
+        2272,
+        160
       ],
       "id": "07828782-fdc8-41ad-b3b3-03364de3f4a5",
       "name": "Execute a SQL query1",
@@ -1134,8 +1145,8 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        384,
-        -112
+        32,
+        -64
       ],
       "id": "15169c4f-5b2f-4d37-8239-9271f7e46bd4",
       "name": "Split Out2"
@@ -1178,8 +1189,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        608,
-        -112
+        256,
+        -64
       ],
       "id": "3f3f3ae9-6919-42e8-b570-eb1e87c54534",
       "name": "Filter2"
@@ -1249,7 +1260,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1952,
+        1600,
         -208
       ],
       "id": "fe502faa-cfb4-4aa3-b5d3-b4623cedf787",
@@ -1272,7 +1283,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        1056,
+        704,
         -208
       ],
       "id": "eb090aea-c8e2-4966-8fb3-6a6725316a1f",
@@ -1300,7 +1311,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1280,
+        928,
         -208
       ],
       "id": "c69119fc-a134-4879-88af-131e3b478dcc",
@@ -1319,8 +1330,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        832,
-        -112
+        480,
+        -64
       ],
       "id": "4c1c2f05-8e1f-4529-a421-9fb1026221d2",
       "name": "Loop Over Items2"
@@ -1342,7 +1353,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1504,
+        1152,
         -208
       ],
       "id": "e915282a-6dc1-4a24-a41e-1223d827a864",
@@ -1383,7 +1394,9 @@
             "caso_especial": "={{ $json.caso_especial }}",
             "fecha_dia": "={{ $json.fecha_dia }}",
             "fecha_mes": "={{ $json.fecha_mes }}",
-            "fecha_semana": "={{ $json.fecha_semana }}"
+            "fecha_semana": "={{ $json.fecha_semana }}",
+            "es_nuevo": "={{ $json.es_nuevo }}",
+            "tipo_cliente": "={{ $json.tipo_cliente }}"
           },
           "matchingColumns": [
             "id"
@@ -1587,6 +1600,26 @@
               "type": "number",
               "canBeUsedToMatch": false,
               "removed": false
+            },
+            {
+              "id": "tipo_cliente",
+              "displayName": "tipo_cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "es_nuevo",
+              "displayName": "es_nuevo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -1597,8 +1630,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2624,
-        -160
+        2272,
+        -136
       ],
       "id": "e2f9cd0e-cbdb-45af-9650-8c048784ea46",
       "name": "Insert or update rows in a table2",
@@ -1680,8 +1713,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        160,
-        -112
+        -192,
+        -64
       ],
       "id": "bb4b01a9-b4e4-4a90-a5c2-de1edf1a5d2a",
       "name": "HTTP Request5",
@@ -1731,6 +1764,18 @@
               "name": "fecha_semana",
               "value": "={{\n  (() => {\n    const d = new Date($('Edit Fields5').item.json.fechaCreacion * 1000);\n    const day = d.getDay(); // domingo=0, lunes=1, ..., sábado=6\n    const diff = (day === 0 ? -6 : 1) - day; // retroceder hasta lunes\n    d.setDate(d.getDate() + diff);\n    d.setHours(0, 0, 0, 0);\n    return d.toISOString().split('T')[0]; // YYYY-MM-DD\n  })()\n}}",
               "type": "string"
+            },
+            {
+              "id": "357bb785-faae-4baf-970b-bb883d9b668d",
+              "name": "tipo_cliente",
+              "value": "={{   (     ($('Split Out2').item.json.custom_fields_values || [])       .find(x => x.field_name === 'n8n - TipoCliente')       ?.values[0].value   ) || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "610993e3-e67e-4189-8132-fdb92d517f0c",
+              "name": "es_nuevo",
+              "value": "={{   (     (       ($('Split Out2').item.json.custom_fields_values || [])         .find(x => x.field_name === 'n8n - TipoCliente')         ?.values[0].value     ) === 'NUEVO'   ) ? 1 : 0 }}",
+              "type": "string"
             }
           ]
         },
@@ -1739,7 +1784,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2400,
+        2048,
         -208
       ],
       "id": "e8e58b78-1358-4cd9-9c6a-eb31f0bcda46",
@@ -1756,7 +1801,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2176,
+        1824,
         -208
       ],
       "id": "9c347da1-a0a2-4986-a2c2-12bf4515fece",
@@ -1800,7 +1845,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1728,
+        1376,
         -208
       ],
       "id": "fd180090-52e5-428a-afd3-34ee8ddba466",
@@ -1837,8 +1882,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1728,
-        176
+        1600,
+        160
       ],
       "id": "7a44fce1-167a-41ae-a6cf-a59c5aa45a6f",
       "name": "If1"
@@ -1848,11 +1893,34 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        160,
-        464
+        32,
+        448
       ],
       "id": "648536ee-34f9-437a-8c94-2b0ccb802553",
       "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH num_normalizado AS (\n  -- 1. Normaliza el número de teléfono recibido como parámetro ($1) una sola vez.\n  SELECT RIGHT(REGEXP_REPLACE($1, '\\D', '', 'g'), 9) AS n\n),\nbusqueda_unificada AS (\n  -- 2. Une los teléfonos normalizados de las 3 tablas, etiquetando su origen.\n  SELECT\n    RIGHT(REGEXP_REPLACE(COALESCE(telefono, ''), '\\D', '', 'g'), 9) AS tel9,\n    'INQUILINO' AS fuente\n  FROM RENTAS_CRM.INQUILINOS\n\n  UNION ALL\n\n  SELECT\n    RIGHT(REGEXP_REPLACE(COALESCE(telefono, ''), '\\D', '', 'g'), 9) AS tel9,\n    'PROPIETARIO' AS fuente\n  FROM RENTAS_CRM.PROPIETARIOS\n\n  UNION ALL\n\n  SELECT\n    RIGHT(REGEXP_REPLACE(COALESCE(telefono, ''), '\\D', '', 'g'), 9) AS tel9,\n    'PROPER' AS fuente\n  FROM CRM.equipo_proper_directorio\n),\ncoincidencias AS (\n  -- 3. Encuentra todas las coincidencias del número en la data unificada.\n  SELECT DISTINCT b.fuente\n  FROM busqueda_unificada b\n  JOIN num_normalizado n ON b.tel9 = n.n\n  WHERE b.tel9 IS NOT NULL AND b.tel9 <> '' AND b.tel9 NOT IN ('0', '000000000')\n)\n-- 4. Genera el resultado final: un booleano de existencia y un texto con las fuentes.\nSELECT\n  (SELECT COUNT(*) FROM coincidencias) > 0 AS existe,\n  COALESCE((SELECT STRING_AGG(fuente, ', ') FROM coincidencias), 'NINGUNO') AS encontrado_en;",
+        "options": {
+          "queryReplacement": "={{ $('Edit Fields').item.json.telefono }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2496,
+        160
+      ],
+      "id": "8562fe4a-8995-4f73-8f07-cec22a849248",
+      "name": "Execute a SQL query2",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -1884,6 +1952,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-04T13:52:53.820Z",
-  "versionId": "617a9b89-da49-4f2a-8077-18e51f29dd38"
+  "updatedAt": "2025-10-06T21:57:41.652Z",
+  "versionId": "a63e2f51-92e5-4979-875b-cde48fd26c61"
 }
