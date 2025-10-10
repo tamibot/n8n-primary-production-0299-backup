@@ -434,7 +434,7 @@
     {
       "parameters": {
         "fromEmail": "TamiBot - MODO <tamibotperu@gmail.com>",
-        "toEmail": "mvelascoo@tamibot.com",
+        "toEmail": "mvelascoo@tamibot.com, soporte.corretaje@proper.com.pe, valeria.vega@proper.com.pe",
         "subject": "=TamiBot - MODO - Nueva Visita -  {{ $json.celular }} - {{ $('Edit Fields').item.json.fechaMODO }}",
         "emailFormat": "text",
         "text": "=Se registra nueva solicitud de visita del cliente:\n\nNombre: {{ $('Kommo API Node1').item.json._embedded.contacts[0].name }}\nTelefono: {{ $('Edit Fields').item.json.telefono }}\nFecha: {{ $('Edit Fields').item.json.fechaMODO }}\nURL Kommo: https://propertamibotcom.kommo.com/leads/detail/{{ $('Kommo API Node').item.json._embedded.leads[0].id }}\n\nFavor confirmar ",
@@ -469,19 +469,19 @@
             "content-length": "314",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "57e575c5-a06f-4e8f-b23d-08105e9bd7ff",
+            "x-amocrm-requestid": "dcfe93ab-e748-46c9-9b41-b1f8b3b8f394",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "vR26tr-1TBKvQEzlCx5-qw",
+            "x-railway-request-id": "kKsMY_OgQt2W2b1wPvyhXg",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1758528021972"
+            "x-request-start": "1759851428971"
           },
           "params": {},
           "query": {},
           "body": {
-            "leads[status][0][id]": "22004677",
+            "leads[status][0][id]": "22137867",
             "leads[status][0][status_id]": "92800052",
             "leads[status][0][pipeline_id]": "11240224",
             "leads[status][0][old_status_id]": "90801080",
@@ -523,6 +523,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-09-22T08:46:55.997Z",
-  "versionId": "1e5b2c37-3e4a-48d6-8bc5-977464b15e35"
+  "updatedAt": "2025-10-09T17:21:36.770Z",
+  "versionId": "2c7ead85-7c60-4b25-897a-c99db714fff3"
 }
