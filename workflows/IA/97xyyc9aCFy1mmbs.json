@@ -2331,7 +2331,7 @@
       "credentials": {
         "openAiApi": {
           "id": "LZHR7cL6uCBXIyJd",
-          "name": "Proper"
+          "name": "Proper - Oct 2025"
         }
       }
     },
@@ -2489,7 +2489,7 @@
       "credentials": {
         "openAiApi": {
           "id": "LZHR7cL6uCBXIyJd",
-          "name": "Proper"
+          "name": "Proper - Oct 2025"
         }
       }
     },
@@ -2527,7 +2527,7 @@
       "credentials": {
         "openAiApi": {
           "id": "LZHR7cL6uCBXIyJd",
-          "name": "Proper"
+          "name": "Proper - Oct 2025"
         }
       }
     },
@@ -2551,7 +2551,7 @@
       "credentials": {
         "openAiApi": {
           "id": "LZHR7cL6uCBXIyJd",
-          "name": "Proper"
+          "name": "Proper - Oct 2025"
         }
       }
     },
@@ -2837,7 +2837,7 @@
       "credentials": {
         "openAiApi": {
           "id": "LZHR7cL6uCBXIyJd",
-          "name": "Proper"
+          "name": "Proper - Oct 2025"
         }
       }
     },
@@ -3461,7 +3461,7 @@
       "credentials": {
         "openAiApi": {
           "id": "LZHR7cL6uCBXIyJd",
-          "name": "Proper"
+          "name": "Proper - Oct 2025"
         }
       }
     },
@@ -3485,7 +3485,7 @@
       "credentials": {
         "openAiApi": {
           "id": "LZHR7cL6uCBXIyJd",
-          "name": "Proper"
+          "name": "Proper - Oct 2025"
         }
       }
     },
@@ -3601,7 +3601,7 @@
       "credentials": {
         "openAiApi": {
           "id": "LZHR7cL6uCBXIyJd",
-          "name": "Proper"
+          "name": "Proper - Oct 2025"
         }
       }
     },
@@ -4476,7 +4476,7 @@
       "credentials": {
         "openAiApi": {
           "id": "LZHR7cL6uCBXIyJd",
-          "name": "Proper"
+          "name": "Proper - Oct 2025"
         }
       }
     },
@@ -4500,7 +4500,7 @@
       "credentials": {
         "openAiApi": {
           "id": "LZHR7cL6uCBXIyJd",
-          "name": "Proper"
+          "name": "Proper - Oct 2025"
         }
       }
     },
@@ -4616,7 +4616,7 @@
       "credentials": {
         "openAiApi": {
           "id": "LZHR7cL6uCBXIyJd",
-          "name": "Proper"
+          "name": "Proper - Oct 2025"
         }
       }
     },
@@ -4793,6 +4793,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-09T22:51:11.144Z",
-  "versionId": "3e7e8653-e274-45ab-9d00-1dfd525177b8"
+  "updatedAt": "2025-10-13T20:35:04.055Z",
+  "versionId": "c090a235-a2e2-4dcc-be2f-b6cfcb428082"
 }
