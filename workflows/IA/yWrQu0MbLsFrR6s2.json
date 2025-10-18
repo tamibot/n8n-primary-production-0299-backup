@@ -623,6 +623,12 @@
               "name": "LinkUrbania",
               "value": "={{   (()=>{     const lead = $('Split Out1').item.json;     const cf = (lead.custom_fields_values || []).find(x => x.field_name === 'LinkUrbania');     const val = (cf && cf.values && cf.values[0]) ? cf.values[0].value : '';     return val;   })() }}",
               "type": "string"
+            },
+            {
+              "id": "822bbdd9-d561-4175-a41b-7319f0314822",
+              "name": "n8n - CODPROPIEDAD",
+              "value": "={{   (()=>{     const lead = $('Split Out1').item.json;     const cf = (lead.custom_fields_values || []).find(x => x.field_name === 'n8n - CODPROPIEDAD');     const val = (cf && cf.values && cf.values[0]) ? cf.values[0].value : '';     return val;   })() }}",
+              "type": "string"
             }
           ]
         },
@@ -1181,7 +1187,7 @@
             {
               "id": "6f7b16c5-fd23-4ace-92e9-e64f0911f1b5",
               "name": "inmueble_identificado",
-              "value": "={{ $('Edit Fields').item.json.codInmueble ? 1 : 0 }}",
+              "value": "={{ ($('Edit Fields').item.json.codInmueble || $('Edit Fields').item.json['n8n - CODPROPIEDAD']) ? 1 : 0 }}",
               "type": "string"
             },
             {
@@ -2835,8 +2841,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        816,
-        1360
+        848,
+        1296
       ],
       "id": "9c0230b4-edb9-4f91-9bf8-82082792c7d5",
       "name": "HTTP Request3",
@@ -2917,6 +2923,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-16T21:26:07.370Z",
-  "versionId": "856cba3a-2222-48a7-84cc-a3b838dbfe2f"
+  "updatedAt": "2025-10-17T13:52:43.817Z",
+  "versionId": "3c301c5f-9949-403d-ab07-509204454a89"
 }
