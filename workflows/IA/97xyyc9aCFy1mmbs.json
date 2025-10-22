@@ -1091,7 +1091,13 @@
             "index": 0
           }
         ],
-        []
+        [
+          {
+            "node": "Set Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Respuesta3": {
@@ -4827,7 +4833,7 @@
                   {
                     "id": "8f10d54d-7d26-4e4a-996c-2427395d37fe",
                     "leftValue": "={{ $('new message').item.json.body['message[add][0][origin]'] }}",
-                    "rightValue": "whatsapp lite",
+                    "rightValue": "com.amocrm.amocrmwa",
                     "operator": {
                       "type": "string",
                       "operation": "equals",
@@ -5673,17 +5679,17 @@
           "headers": {
             "host": "primary-production-0299.up.railway.app",
             "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "937",
+            "content-length": "971",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "6211b990-0c84-4f6e-b23e-6c0d1ba2b74c",
+            "x-amocrm-requestid": "826dfc2b-326e-4ef7-b7f4-c6ff147e5aca",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "ccqMbrTCTvKRwZpWCx5-qw",
+            "x-railway-request-id": "LbZHpmlVRIG440DUBT7zVQ",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1760793855297"
+            "x-request-start": "1761053865857"
           },
           "params": {},
           "query": {},
@@ -5691,21 +5697,21 @@
             "account[subdomain]": "propertamibotcom",
             "account[id]": "30050693",
             "account[_links][self]": "https://propertamibotcom.amocrm.com",
-            "message[add][0][id]": "9bf09a34-87c5-4b07-96de-645fad5fa2e0",
-            "message[add][0][chat_id]": "e212a4d1-1c64-494a-a58a-918a2883ae8a",
-            "message[add][0][talk_id]": "204036",
-            "message[add][0][contact_id]": "24488535",
-            "message[add][0][text]": "HOla",
-            "message[add][0][created_at]": "1760793854",
+            "message[add][0][id]": "c5df4ad2-973c-4a43-a77c-f0dd69796d32",
+            "message[add][0][chat_id]": "7ecbfc6b-8cd8-43ae-8c1c-1d08115edea0",
+            "message[add][0][talk_id]": "203372",
+            "message[add][0][contact_id]": "23610089",
+            "message[add][0][text]": "Gracias José",
+            "message[add][0][created_at]": "1761053865",
             "message[add][0][element_type]": "2",
             "message[add][0][entity_type]": "lead",
-            "message[add][0][element_id]": "22122449",
-            "message[add][0][entity_id]": "22122449",
+            "message[add][0][element_id]": "22097783",
+            "message[add][0][entity_id]": "22097783",
             "message[add][0][type]": "incoming",
-            "message[add][0][author][id]": "f92fe9a6-bfe9-4f1c-b754-bf61e32d10d4",
+            "message[add][0][author][id]": "10f8e6be-23ab-4cca-80fc-1245150f52cf",
             "message[add][0][author][type]": "external",
-            "message[add][0][author][name]": "Martin Velasco Ormeno",
-            "message[add][0][origin]": "waba"
+            "message[add][0][author][name]": "Jorge Abraham Girao La Rosa",
+            "message[add][0][origin]": "com.amocrm.amocrmwa"
           },
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/rentas",
           "executionMode": "production"
@@ -5737,6 +5743,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-20T15:56:57.197Z",
-  "versionId": "d97151c8-bcf7-4725-9f78-b00f0adb57b1"
+  "updatedAt": "2025-10-21T13:42:18.791Z",
+  "versionId": "dc97f912-9dc4-499f-8cba-ec38a3627f53"
 }
