@@ -12,29 +12,6 @@
         ]
       ]
     },
-    "Split In Batches": {
-      "main": [
-        [],
-        [
-          {
-            "node": "If",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Process Data": {
-      "main": [
-        [
-          {
-            "node": "Postgres2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Google Sheets1": {
       "main": [
         [
@@ -61,18 +38,7 @@
       "main": [
         [
           {
-            "node": "Split In Batches",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request1": {
-      "main": [
-        [
-          {
-            "node": "Process Data",
+            "node": "Postgres2",
             "type": "main",
             "index": 0
           }
@@ -81,13 +47,7 @@
     },
     "Postgres2": {
       "main": [
-        [
-          {
-            "node": "Split In Batches",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Postgres": {
@@ -106,24 +66,6 @@
         [
           {
             "node": "Postgres",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request1",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Postgres2",
             "type": "main",
             "index": 0
           }
@@ -149,32 +91,6 @@
       ],
       "id": "52515b84-3067-4ef9-a9a5-40640121fbc8",
       "name": "When clicking ‘Execute workflow’"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 3,
-      "position": [
-        1904,
-        512
-      ],
-      "id": "e29d245c-f9fd-4e49-b2de-e33ddaeb6f48",
-      "name": "Split In Batches"
-    },
-    {
-      "parameters": {
-        "jsCode": "// --- Extracción de Datos de Urbania con Regex Específicos (Versión Completa) ---\n\n// 1. OBTENER DATOS INICIALES\nconst html = $json.body.html || '';\nconst codigo = $('Split In Batches').item.json.codigo || '';\nconst link = $('Split In Batches').item.json.link || ''; // Se incluye el link como solicitaste\n\n// 2. INICIALIZAR VARIABLES DE RESULTADO\nlet precio = null;\nlet direccion = null;\nlet distrito = null;\nlet dormitorios = null;\nlet banos = null;\nlet area = null;\nlet antiguedad = null;\nlet descripcion = 'Sin descripción disponible'; // Valor por defecto para la descripción\n\ntry {\n  // --- EXTRACCIÓN CON REGEX PARA CADA CAMPO ---\n\n  // PRECIO: Busca 'precioAlquiler': \"S/ 2,800\"\n  const matchPrecio = html.match(/'precioAlquiler':\\s*\"S\\/\\s*([\\d,]+)\"/);\n  if (matchPrecio && matchPrecio[1]) {\n    const precioStr = matchPrecio[1].replace(/,/g, '');\n    precio = parseInt(precioStr, 10);\n  }\n\n  // DIRECCIÓN: Busca \"streetAddress\": \"...\"\n  const matchDireccion = html.match(/\"streetAddress\"\\s*:\\s*\"([^\"]*)\"/);\n  if (matchDireccion && matchDireccion[1]) {\n    direccion = matchDireccion[1].trim();\n  }\n\n  // DISTRITO: Busca \"addressRegion\": \"...\"\n  const matchDistrito = html.match(/\"addressRegion\"\\s*:\\s*\"([^\"]*)\"/);\n  if (matchDistrito && matchDistrito[1]) {\n    distrito = matchDistrito[1].trim();\n  }\n\n  // DORMITORIOS: Busca \"numberOfBedrooms\": ...\n  const matchDormitorios = html.match(/\"numberOfBedrooms\"\\s*:\\s*(\\d+)/);\n  if (matchDormitorios && matchDormitorios[1]) {\n    dormitorios = parseInt(matchDormitorios[1], 10);\n  }\n\n  // BAÑOS: Busca \"numberOfBathroomsTotal\": ...\n  const matchBanos = html.match(/\"numberOfBathroomsTotal\"\\s*:\\s*(\\d+)/);\n  if (matchBanos && matchBanos[1]) {\n    banos = parseInt(matchBanos[1], 10);\n  }\n  \n  // ÁREA: Busca \"value\": ... en la sección floorSize\n  const matchArea = html.match(/\"floorSize\":\\s*\\{[\\s\\S]*?\"value\":\\s*(\\d+)/);\n  if (matchArea && matchArea[1]) {\n    area = parseInt(matchArea[1], 10);\n  }\n\n  // ANTIGÜEDAD: Busca \"label\":\"antigüedad\" y extrae su \"value\"\n  const matchAntiguedad = html.match(/\"label\":\"antigüedad\"[^}]*\"value\":\"([^\"]*)\"/);\n  if (matchAntiguedad && matchAntiguedad[1]) {\n    antiguedad = matchAntiguedad[1].includes('estrenar') ? 'A estrenar' : `${matchAntiguedad[1]} años`;\n  }\n  \n  // DESCRIPCIÓN: Se usa el regex que confirmaste que funciona.\n  const regexDesc = /'description':\\s*\"([^\"]*(?:\\\\.[^\"]*)*)\"/g;\n  const matchDesc = regexDesc.exec(html);\n  if (matchDesc && matchDesc[1]) {\n      // Limpiar el texto extraído para que sea legible\n      descripcion = matchDesc[1]\n          .replace(/\\\\\"/g, '\"')           // Corrige comillas escapadas\n          .replace(/<br\\s*\\/?>/gi, '\\n')  // Reemplaza <br> por saltos de línea\n          .trim();\n  }\n\n} catch (error) {\n  console.error(\"Ocurrió un error durante la extracción con regex:\", error);\n}\n\n// 3. DEVOLVER EL OBJETO FINAL CON TODOS LOS CAMPOS\nreturn [{\n  codigo: codigo,\n  link: link,\n  precio: precio,\n  direccion: direccion,\n  distrito: distrito,\n  dormitorios: dormitorios,\n  banos: banos,\n  area: area,\n  antiguedad: antiguedad,\n  descripcion: descripcion,\n  fecha_scraping: new Date().toISOString()\n}];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2576,
-        368
-      ],
-      "id": "05bc2ba1-31eb-4718-93cf-2679f1d89944",
-      "name": "Process Data"
     },
     {
       "parameters": {
@@ -230,6 +146,24 @@
               "name": "linkAdondevivir",
               "value": "={{ $json[\"Link Adondevivir\"] && $json[\"Link Adondevivir\"].trim() !== '' ? $json[\"Link Adondevivir\"] : 'sin link adondevivir' }}",
               "type": "string"
+            },
+            {
+              "id": "b7ff549b-0941-410e-ac67-bb1d189592d6",
+              "name": "descripcion",
+              "value": "={{ $json.Descripcion }}",
+              "type": "string"
+            },
+            {
+              "id": "0af9c324-8ea0-42cb-997b-9a6b8fb511ab",
+              "name": "id_urbania",
+              "value": "={{ $json[\"Link Urbania\"] ? $json[\"Link Urbania\"].split('-').pop().replace('.html','').split('?')[0].trim() : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "15ccdd67-e8c2-4f66-9bf0-68cb7d165c65",
+              "name": "id_adondevivir",
+              "value": "={{ $json[\"Link Adondevivir\"] ? $json[\"Link Adondevivir\"].split('-').pop().replace('.html','').split('?')[0].trim() : '' }}",
+              "type": "string"
             }
           ]
         },
@@ -257,11 +191,19 @@
             {
               "id": "7e33eae3-d24b-48ae-94ef-f1c918005512",
               "leftValue": "={{ $json.linkUrbania }}",
-              "rightValue": "",
+              "rightValue": "sin link urbania",
               "operator": {
                 "type": "string",
-                "operation": "notEmpty",
-                "singleValue": true
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "3d808da4-8b98-49d7-a9da-50cdb7f00b60",
+              "leftValue": "={{ $json.linkAdondevivir }}",
+              "rightValue": "sin link adondevivir",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
               }
             }
           ],
@@ -277,33 +219,6 @@
       ],
       "id": "afa0231f-dec6-4433-967a-fc465671cdd4",
       "name": "Filter1"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "http://3.135.238.119:3000/scrape",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"url\": \"{{ $json.linkUrbania }}\"\n}",
-        "options": {
-          "response": {
-            "response": {
-              "fullResponse": true
-            }
-          },
-          "timeout": 360000
-        }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        2352,
-        368
-      ],
-      "id": "87f25e8c-cb0d-47ca-855f-49e177b3ff6f",
-      "name": "HTTP Request1",
-      "retryOnFail": true,
-      "continueOnFail": true
     },
     {
       "parameters": {
@@ -323,17 +238,11 @@
           "mappingMode": "defineBelow",
           "value": {
             "codigo": "={{ $json.codigo }}",
-            "distrito": "={{ $json.distrito }}",
-            "direccion": "={{ $json.direccion }}",
-            "precio": "={{ $json.precio }}",
-            "area": "={{ $json.area }}",
-            "baños": "={{ $json.banos }}",
-            "dormitorios": "={{ $json.dormitorios }}",
-            "antiguedad": "={{ $json.antiguedad }}",
             "descripcion": "={{ $json.descripcion }}",
             "link_urbania": "={{ $('Filter1').item.json.linkUrbania }}",
-            "mantenimiento": 0,
-            "link_adondevivir": "={{ $('Filter1').item.json.linkAdondevivir }}"
+            "link_adondevivir": "={{ $('Filter1').item.json.linkAdondevivir }}",
+            "id_urbania": "={{ $json.id_urbania }}",
+            "id_adondevivir": "={{ $json.id_adondevivir }}"
           },
           "matchingColumns": [
             "id"
@@ -365,7 +274,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "direccion",
@@ -374,7 +284,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "precio",
@@ -383,7 +294,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "number",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "mantenimiento",
@@ -392,7 +304,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "number",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "area",
@@ -401,7 +314,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "number",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "baños",
@@ -410,7 +324,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "number",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "dormitorios",
@@ -419,7 +334,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "number",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "antiguedad",
@@ -428,7 +344,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "descripcion",
@@ -446,7 +363,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "link_urbania",
@@ -466,6 +384,26 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "id_urbania",
+              "displayName": "id_urbania",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "id_adondevivir",
+              "displayName": "id_adondevivir",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -476,7 +414,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2800,
+        1904,
         512
       ],
       "id": "99689c30-3e23-4a79-855a-7d738993b12f",
@@ -538,39 +476,6 @@
       ],
       "id": "586f1c9a-cf17-479f-a33f-02842bda88d5",
       "name": "Schedule Trigger"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "80c73a46-6548-45ca-9d72-e28fcac549bf",
-              "leftValue": "={{ $json.linkUrbania }}",
-              "rightValue": "sin link urbania",
-              "operator": {
-                "type": "string",
-                "operation": "notEquals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        2128,
-        448
-      ],
-      "id": "b2893eec-8260-45e7-a781-d5de912bae04",
-      "name": "If"
     }
   ],
   "pinData": {},
@@ -600,6 +505,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-09-26T21:44:49.793Z",
-  "versionId": "5c0d262f-9d8c-4b70-a774-ef11b60a2848"
+  "updatedAt": "2025-10-22T21:16:48.710Z",
+  "versionId": "140d1258-9caa-4d83-b7c7-aa3e0a443efa"
 }
