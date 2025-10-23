@@ -920,17 +920,6 @@
         []
       ]
     },
-    "Campos3": {
-      "main": [
-        [
-          {
-            "node": "Information Extractor3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "SwitchBot3": {
       "main": [
         [
@@ -956,56 +945,12 @@
         ]
       ]
     },
-    "Information Extractor3": {
-      "main": [
-        [
-          {
-            "node": "Filter5",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Validacion3": {
       "main": [
         [
           {
             "node": "enviar mensaje3",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model7": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Campos3",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model8": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Information Extractor3",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Postgres Chat Memory4": {
-      "ai_memory": [
-        [
-          {
-            "node": "Campos3",
-            "type": "ai_memory",
             "index": 0
           }
         ]
@@ -1070,12 +1015,12 @@
       "main": [
         [
           {
-            "node": "Campos3",
+            "node": "Filter",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Filter",
+            "node": "Campos5",
             "type": "main",
             "index": 0
           }
@@ -1091,13 +1036,7 @@
             "index": 0
           }
         ],
-        [
-          {
-            "node": "Set Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Respuesta3": {
@@ -1156,7 +1095,7 @@
       "main": [
         [
           {
-            "node": "Filter4",
+            "node": "Update leads4",
             "type": "main",
             "index": 0
           }
@@ -1344,23 +1283,56 @@
         ]
       ]
     },
-    "Filter4": {
+    "Campos5": {
       "main": [
         [
           {
-            "node": "Update leads4",
+            "node": "Information Extractor5",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Filter5": {
+    "Information Extractor5": {
       "main": [
         [
           {
-            "node": "Update leads3",
+            "node": "Update leads5",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model13": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Campos5",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model14": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor5",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory9": {
+      "ai_memory": [
+        [
+          {
+            "node": "Campos5",
+            "type": "ai_memory",
             "index": 0
           }
         ]
@@ -4332,24 +4304,6 @@
     },
     {
       "parameters": {
-        "promptType": "define",
-        "text": "=Mensaje proveniente del Cliente: {{ $('Chat input').item.json.chat_input }}\n\nRespuesta del bot: {{ $('Respuesta2').item.json.output }}\n\nInfo previa: {{ $node[\"Chat input\"].json.infoPrevia }}",
-        "options": {
-          "systemMessage": "=# 🏘️ PROPER ANALYZER PROPIETARIOS v2.0 - SISTEMA DE ANÁLISIS DIEGO\n**Fecha actual:** {{ \n  new Date($now).toLocaleDateString(\"es-PE\", {\n    weekday: \"long\", \n    day: \"numeric\", \n    month: \"long\", \n    year: \"numeric\"\n  }) \n  + \", \" +\n  new Date($now).toLocaleTimeString(\"es-PE\", {\n    hour: \"numeric\", \n    minute: \"2-digit\", \n    hour12: true,\n    timeZone: \"America/Lima\"\n  })\n}} | **Zona horaria:** América/Lima\n\n## 🚨 **MANDATO SUPREMO**\n```\n🔴 RESPONDER ÚNICAMENTE JSON COMPLETO\n🔴 ANALIZAR CONVERSACIÓN COMPLETA DE DIEGO\n🔴 DETECTAR ETAPA CORRECTA DEL PROPIETARIO\n🔴 CREAR MENSAJES DE SEGUIMIENTO NATURALES\n🔴 IDENTIFICAR CLIENTES/PROPIETARIOS EXISTENTES\n```\n\n---\n\n## ⚡ **PROCESO OBLIGATORIO DE ANÁLISIS**\n\n### **PASO 1: LECTURA COMPLETA**\n✅ Leer TODA la conversación + infoPrevia\n✅ Identificar mensaje inicial de Diego\n✅ Detectar si es cliente/propietario existente\n✅ Marcar puntos clave de progresión\n\n### **PASO 2: EXTRACCIÓN DE DATOS**\n✅ Buscar nombre, teléfono, correo\n✅ Identificar fechas y horarios propuestos\n✅ Capturar consultas específicas del propietario\n✅ Detectar problemas de clientes existentes\n\n### **PASO 3: DETERMINAR ETAPA**\n✅ Verificar primero si es cliente/propietario existente\n✅ Evaluar punto más avanzado de la conversación\n✅ Aplicar reglas de cambio de etapa\n✅ Verificar coherencia con el flujo\n\n---\n\n## 🔄 **MATRIZ DE ETAPAS - FLUJO PROPIETARIOS**\n\n### **📊 ETAPAS Y CÓDIGOS**\n\n```\n👤 CLIENTE/INQ/PROP (92821424) - PRIORIDAD MÁXIMA\n- Es inquilino actual con problemas\n- Es propietario existente con consultas\n- Menciona: \"no me pagaron\", \"mi inquilino\", \"mi departamento alquilado\"\n- Reclamos sobre gestión actual\n\n🏁 PRIMER CONTACTO (92821220)\n- Diego envió mensaje inicial\n- Propietario aún no responde o solo saluda\n- No ha hecho preguntas específicas\n\n📋 CONSULTANDO SERVICIOS (92821224)\n- Propietario hace preguntas sobre servicios\n- Diego responde con info de base de conocimiento\n- Aún no da horarios para llamada\n\n💡 INTERESADO (92821228)\n- Propietario muestra interés en contratar\n- Menciona querer más información\n- Empieza a considerar horarios\n\n✅ HORARIOS DADOS (92821232)\n- Propietario dio 2 fechas y horas completas\n- Diego confirmó recepción de horarios\n- Llamada pendiente de agendar\n\n⚠️ CASO ESPECIAL (92821236)\n- Diego no tiene información solicitada\n- Propietario pide hablar con alguien más\n- Consulta compleja fuera del alcance\n```\n\n---\n\n## 🎯 **ALGORITMO DE DETECCIÓN v2.0**\n\n```python\ndef detectar_etapa_propietario():\n    # PRIORIDAD 1: Verificar si es cliente existente\n    if es_cliente_o_propietario_existente():\n        return 92821424  # CLIENTE/INQ/PROP\n    \n    # PRIORIDAD 2: Verificar CASO ESPECIAL\n    if diego_no_tiene_info() or cliente_pide_escalacion():\n        return 92821236  # CASO ESPECIAL\n    \n    # PRIORIDAD 3: Verificar progresión normal\n    if propietario_dio_2_horarios_completos():\n        return 92821232  # HORARIOS DADOS\n    \n    if propietario_muestra_interes_contratar():\n        return 92821228  # INTERESADO\n    \n    if propietario_hace_preguntas_servicios():\n        return 92821224  # CONSULTANDO SERVICIOS\n    \n    # Por defecto si solo hay mensaje inicial\n    return 92821220  # PRIMER CONTACTO\n```\n\n---\n\n## 📋 **SEÑALES INEQUÍVOCAS POR ETAPA**\n\n### **92821424 - Cliente/Inq/Prop**\n- **SEÑALES CRÍTICAS:**\n  - \"Soy propietario y no me han pagado\"\n  - \"Mi inquilino no paga\"\n  - \"Tengo un depa con ustedes\"\n  - \"Mi departamento administrado por Proper\"\n  - \"No recibí la renta este mes\"\n  - Cualquier problema con gestión existente\n- **ACCIÓN:** Escalación inmediata a gestión\n\n### **92821220 - Primer Contacto**\n- **SEÑALES:**\n  - Solo está el mensaje inicial de Diego\n  - Propietario responde con saludo simple\n  - No hay preguntas específicas aún\n- **CAMBIA A:** Consultando cuando hace preguntas\n\n### **92821224 - Consultando Servicios**\n- **SEÑALES:**\n  - \"¿Cuánto cobran?\"\n  - \"¿Qué incluye?\"\n  - \"¿Cómo funciona?\"\n  - Cualquier pregunta sobre el servicio\n- **CAMBIA A:** Interesado si muestra intención\n\n### **92821228 - Interesado**\n- **SEÑALES:**\n  - \"Me interesa\"\n  - \"Quiero saber más\"\n  - \"Podríamos hablar\"\n  - Da 1 horario pero falta el segundo\n- **CAMBIA A:** Horarios Dados con 2 fechas completas\n\n### **92821232 - Horarios Dados**\n- **SEÑALES:**\n  - Propietario dio fecha1 Y fecha2 con hora\n  - Diego confirmó: \"Tengo anotado...\"\n  - Ejemplo: \"Lunes 3pm y miércoles 10am\"\n- **ESTADO FINAL:** No regresa a etapas anteriores\n\n### **92821236 - Caso Especial**\n- **SEÑALES:**\n  - Diego: \"Ese punto lo vemos en la llamada\"\n  - Diego: \"Para darte información exacta...\"\n  - Cliente: \"Necesito hablar con alguien\"\n  - Consultas muy específicas sin respuesta\n\n---\n\n## 📝 **ESTRUCTURA JSON OBLIGATORIA**\n\n```json\n{\n  \"nombreCliente\": \"[Nombre extraído o vacío]\",\n  \"telefonoCliente\": \"[+51XXXXXXXXX o vacío]\",\n  \"correoCliente\": \"[email@domain.com o vacío]\",\n  \"fecha1\": \"[DD/MM/YYYY HH:mm o vacío]\",\n  \"fecha2\": \"[DD/MM/YYYY HH:mm o vacío]\",\n  \"solicitud\": \"[Resumen de consultas del propietario]\",\n  \"animo\": \"[caliente/tibio/frio]\",\n  \"estatusEmbudo\": \"[Nombre de etapa actual]\",\n  \"statusId\": [Código numérico sin comillas],\n  \"seg1\": \"[Mensaje seguimiento 1 o vacío si Horarios Dados]\",\n  \"seg2\": \"[Mensaje seguimiento 2 o vacío si Horarios Dados]\",\n  \"seg3\": \"[Mensaje seguimiento 3 o vacío si Horarios Dados]\"\n}\n```\n\n**IMPORTANTE:** statusId es NUMÉRICO, no string. Ejemplo: 92821220 no \"92821220\"\n\n---\n\n## 🔥 **CLASIFICACIÓN DE ÁNIMO**\n\n### **CALIENTE:**\n- Responde rápido y con interés\n- Hace preguntas específicas sobre el servicio\n- Da horarios sin resistencia\n- Menciona urgencia (\"necesito alquilar pronto\")\n\n### **TIBIO:**\n- Responde pero con dudas\n- Pide tiempo para pensar\n- Da solo 1 horario\n- Pregunta pero no compromete\n\n### **FRÍO:**\n- Respuestas muy cortas o sin respuesta\n- No da horarios después de pedirlos\n- \"Lo voy a pensar\"\n- No hace preguntas de seguimiento\n\n---\n\n## 💬 **MENSAJES DE SEGUIMIENTO CONTEXTUALES**\n\n### **Cliente/Inq/Prop (92821424):**\n```\nseg1: \"Un especialista de gestión revisará tu caso sobre [problema específico]\"\nseg2: \"El área de administración atenderá tu consulta prioritariamente\"\nseg3: \"Es urgente resolver tu situación. Te contactaremos de inmediato\"\n```\n\n### **Primer Contacto (92821220):**\n```\nseg1: \"Hola [nombre si hay], ¿pudiste ver mi mensaje sobre nuestros servicios de administración?\"\nseg2: \"¿Te viene bien coordinar una llamada para explicarte cómo podemos ayudarte con tu propiedad?\"\nseg3: \"Último intento: ¿Sigues interesado en alquilar tu departamento?\"\n```\n\n### **Consultando Servicios (92821224):**\n```\nseg1: \"¿Quedó clara la información sobre [tema consultado]? ¿Coordinamos la llamada?\"\nseg2: \"Para resolver todas tus dudas sobre [servicio], ¿qué horarios tienes esta semana?\"\nseg3: \"¿Pudiste revisar la info? Me gustaría explicarte los beneficios en detalle\"\n```\n\n### **Interesado (92821228):**\n```\nseg1: \"Perfecto que te interese. Solo necesito otra opción de horario para asegurar la llamada\"\nseg2: \"¿Me das el segundo horario para confirmar nuestra conversación?\"\nseg3: \"Necesito la segunda opción de horario para poder agendarte\"\n```\n\n### **Horarios Dados (92821232):**\n```\nseg1: \"\"\nseg2: \"\"\nseg3: \"\"\n```\n*Nota: No requiere seguimiento, ya se tienen los horarios*\n\n### **Caso Especial (92821236):**\n```\nseg1: \"Un especialista revisará tu consulta sobre [tema específico]\"\nseg2: \"Te contactará un asesor senior para resolver [situación]\"\nseg3: \"Es importante atender tu caso. Un experto te llamará pronto\"\n```\n\n---\n\n## ⚡ **REGLAS DE EXTRACCIÓN**\n\n### **TELÉFONO:**\n- Buscar patrones: 9XX XXX XXX, 9XXXXXXXX\n- Agregar +51 si no lo tiene\n- Formato final: +51XXXXXXXXX\n- Validar que sean 9 dígitos después del código\n\n### **CORREO:**\n- Validar formato: texto@dominio.extension\n- Convertir a minúsculas\n- Eliminar espacios antes y después\n\n### **FECHAS:**\n- Usar Date & Time SIEMPRE para convertir\n- Formato estricto: DD/MM/YYYY HH:mm\n- Si dice \"mañana 3pm\" → convertir a fecha específica\n- Ambas fechas deben tener día y hora completos\n\n### **NOMBRE:**\n- Capturar nombre completo si lo proporciona\n- Primera letra en mayúscula\n- Eliminar títulos (Sr., Sra., etc.)\n\n---\n\n## 🎯 **EJEMPLOS DE ANÁLISIS CORRECTO**\n\n### **Ejemplo 1: Cliente existente**\n```\nDiego: \"Hola, soy Diego de Proper Rentas...\"\nCliente: \"Soy propietario, no me han pagado este mes\"\n\n✅ ETAPA: CLIENTE/INQ/PROP\n✅ statusId: 92821424 (sin comillas)\n✅ seg1: \"Un especialista de gestión revisará tu caso sobre el pago pendiente\"\n```\n\n### **Ejemplo 2: Consultando → Interesado**\n```\nDiego: \"Hola, soy Diego de Proper Rentas...\"\nCliente: \"¿Cuánto cobran por administrar?\"\nDiego: \"7% más IGV del alquiler mensual...\"\nCliente: \"Me interesa, hablemos\"\n\n✅ ETAPA: INTERESADO\n✅ statusId: 92821228\n✅ ÁNIMO: caliente\n✅ seg1: \"Excelente que te interese. ¿Qué 2 horarios tienes disponibles?\"\n```\n\n### **Ejemplo 3: Horarios completos**\n```\nCliente: \"Puedo lunes 3pm o miércoles 10am\"\nDiego: \"Perfecto, tengo anotado...\"\n\n✅ ETAPA: HORARIOS DADOS\n✅ statusId: 92821232\n✅ fecha1: \"27/01/2025 15:00\"\n✅ fecha2: \"29/01/2025 10:00\"\n✅ seg1, seg2, seg3: \"\" (vacíos)\n```\n\n---\n\n## ⚠️ **VERIFICACIÓN FINAL OBLIGATORIA**\n\n### **CHECKLIST PRE-RESPUESTA:**\n```\n□ ¿Es un cliente/propietario existente? → CLIENTE/INQ/PROP\n□ ¿Extraje todos los datos disponibles correctamente?\n□ ¿El statusId es NUMÉRICO sin comillas?\n□ ¿La etapa corresponde al punto real de la conversación?\n□ ¿Los mensajes de seguimiento son naturales y contextuales?\n□ ¿Las fechas están en formato DD/MM/YYYY HH:mm?\n□ ¿El ánimo refleja el interés real del propietario?\n□ ¿El JSON tiene TODOS los campos requeridos?\n```\n\n---\n\n## 🔴 **RECORDATORIO CRÍTICO FINAL**\n\n```\nANTES DE RESPONDER:\n\n1. ¿Es cliente/propietario existente con problemas?\n   → DEBE SER CLIENTE/INQ/PROP (92821424)\n\n2. ¿Diego no tiene la información?\n   → DEBE SER CASO ESPECIAL (92821236)\n\n3. ¿El propietario dio 2 horarios completos?\n   → DEBE SER HORARIOS DADOS (92821232)\n\n4. ¿El statusId es NUMÉRICO?\n   → NO usar comillas, ejemplo: 92821220\n\n5. ¿Los mensajes son personalizados al contexto?\n   → DEBEN mencionar el tema específico\n\n6. ¿Mi JSON está completo y válido?\n   → VERIFICAR CADA CAMPO\n\nRESPONDER SOLO JSON VALIDADO Y COMPLETO\n```"
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.9,
-      "position": [
-        4672,
-        1744
-      ],
-      "id": "24bde54a-646c-4044-a169-5d40556ee8fe",
-      "name": "Campos3",
-      "alwaysOutputData": true
-    },
-    {
-      "parameters": {
         "rules": {
           "values": [
             {
@@ -4420,87 +4374,6 @@
     },
     {
       "parameters": {
-        "text": "={{ $json.output }}",
-        "attributes": {
-          "attributes": [
-            {
-              "name": "nombreCliente",
-              "description": "Nombre completo del cliente o paciente",
-              "required": true
-            },
-            {
-              "name": "telefonoCliente",
-              "description": "Número de telefono con código internacional para mexico",
-              "required": true
-            },
-            {
-              "name": "correoCliente",
-              "description": "Correo electrónico válido del cliente, si no existe dejarlo en blanco, no inventar. ",
-              "required": true
-            },
-            {
-              "name": "animo",
-              "description": "Nivel de interés detectado",
-              "required": true
-            },
-            {
-              "name": "estatusEmbudo",
-              "description": "Etapa actual del proceso (nombre descriptivo)",
-              "required": true
-            },
-            {
-              "name": "statusId",
-              "type": "number",
-              "description": "Codigo de Status relacionado a etapa (numerico)",
-              "required": true
-            },
-            {
-              "name": "solicitud",
-              "description": "breve resumen de la solicitud del cliente",
-              "required": true
-            },
-            {
-              "name": "seg1",
-              "description": "mensaje de seguimiento 1",
-              "required": true
-            },
-            {
-              "name": "seg2",
-              "description": "mensaje de seguimiento 2",
-              "required": true
-            },
-            {
-              "name": "seg3",
-              "description": "mensaje de seguimiento 3",
-              "required": true
-            },
-            {
-              "name": "fecha1",
-              "description": "fecha 1 solicitada por el cliente",
-              "required": true
-            },
-            {
-              "name": "fecha2",
-              "description": "fecha 2 solicitada por el cliente",
-              "required": true
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
-      "typeVersion": 1,
-      "position": [
-        5088,
-        1744
-      ],
-      "id": "f62cc870-354d-4162-9d5e-7a9539d73b4b",
-      "name": "Information Extractor3",
-      "alwaysOutputData": true,
-      "retryOnFail": true
-    },
-    {
-      "parameters": {
         "method": "POST",
         "url": "={{ $('new message').item.json.body[\"account[_links][self]\"] }}/ajax/v1/chats/session",
         "authentication": "genericCredentialType",
@@ -4542,145 +4415,6 @@
         "oAuth2Api": {
           "id": "CUkAxEZkWpxNLUY2",
           "name": "Proper"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "mode": "list",
-          "value": "gpt-4.1-mini"
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.2,
-      "position": [
-        4688,
-        1968
-      ],
-      "id": "c7531f62-69a8-4787-9c30-9503bd17d375",
-      "name": "OpenAI Chat Model7",
-      "credentials": {
-        "openAiApi": {
-          "id": "LZHR7cL6uCBXIyJd",
-          "name": "Proper - Oct 2025"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "mode": "list",
-          "value": "gpt-4.1-mini"
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.2,
-      "position": [
-        5152,
-        1968
-      ],
-      "id": "53a34308-79d1-4ffd-b43c-701635b29f9f",
-      "name": "OpenAI Chat Model8",
-      "credentials": {
-        "openAiApi": {
-          "id": "LZHR7cL6uCBXIyJd",
-          "name": "Proper - Oct 2025"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "authentication": "longLivedToken",
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
-            {
-              "id": "={{ $('new message').item.json.body['message[add][0][entity_id]'] }}",
-              "pipeline_id": 11240224,
-              "status_id": "={{ Number($('Information Extractor3').item.json.output.statusId) }}",
-              "custom_fields_values": {
-                "custom_field": [
-                  {
-                    "data": "{\"id\":798329,\"type\":\"text\"}",
-                    "value": "={{ $('Information Extractor3').item.json.output.nombreCliente }}"
-                  },
-                  {
-                    "data": "{\"id\":798347,\"type\":\"text\"}",
-                    "value": "={{ $('Information Extractor3').item.json.output.estatusEmbudo }}"
-                  },
-                  {
-                    "data": "{\"id\":798343,\"type\":\"text\"}",
-                    "value": "={{ $('Information Extractor3').item.json.output.animo }}"
-                  },
-                  {
-                    "data": "{\"id\":798337,\"type\":\"textarea\"}",
-                    "value": "={{ $('Information Extractor3').item.json.output.seg1 }}"
-                  },
-                  {
-                    "data": "{\"id\":798339,\"type\":\"textarea\"}",
-                    "value": "={{ $('Information Extractor3').item.json.output.seg2 }}"
-                  },
-                  {
-                    "data": "{\"id\":798341,\"type\":\"textarea\"}",
-                    "value": "={{ $('Information Extractor3').item.json.output.seg3 }}"
-                  },
-                  {
-                    "data": "{\"id\":798335,\"type\":\"text\"}",
-                    "value": "={{ $('Information Extractor3').item.json.output.fecha1 }}"
-                  },
-                  {
-                    "data": "{\"id\":798349,\"type\":\"text\"}",
-                    "value": "={{ $('Information Extractor3').item.json.output.fecha2 }}"
-                  },
-                  {
-                    "data": "{\"id\":798463,\"type\":\"text\"}",
-                    "value": "NUEVO"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        5840,
-        1856
-      ],
-      "id": "61888374-0a80-4cd4-8350-db425e17c4cc",
-      "name": "Update leads3",
-      "credentials": {
-        "kommoLongLivedApi": {
-          "id": "20bzHfzuZvuDPmtm",
-          "name": "Kommo Long Lived Token account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "sessionIdType": "customKey",
-        "sessionKey": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}",
-        "contextWindowLength": 20
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
-      "typeVersion": 1.3,
-      "position": [
-        4816,
-        1968
-      ],
-      "id": "35c1c2d2-d3fa-4e6d-92d0-64c2532718f9",
-      "name": "Postgres Chat Memory4",
-      "credentials": {
-        "postgres": {
-          "id": "fuKiWlAN9ojbRM9W",
-          "name": "Postgres account"
         }
       }
     },
@@ -4833,7 +4567,7 @@
                   {
                     "id": "8f10d54d-7d26-4e4a-996c-2427395d37fe",
                     "leftValue": "={{ $('new message').item.json.body['message[add][0][origin]'] }}",
-                    "rightValue": "com.amocrm.amocrmwa",
+                    "rightValue": "whatsapp lite",
                     "operator": {
                       "type": "string",
                       "operation": "equals",
@@ -4980,7 +4714,7 @@
         "promptType": "define",
         "text": "=Mensaje proveniente del Cliente: {{ $('Chat input').item.json.chat_input }}\n\nRespuesta del bot: {{ $('Respuesta3').item.json.output }}\n\nInfo previa: {{ $node[\"Chat input\"].json.infoPrevia }}",
         "options": {
-          "systemMessage": "=# 🤖 PROPER IA ANALYZER v2.0 - SISTEMA DE ANÁLISIS DE CONVERSACIONES\n**Fecha actual:** {{ \n  new Date($now).toLocaleDateString(\"es-PE\", {\n    weekday: \"long\", \n    day: \"numeric\", \n    month: \"long\", \n    year: \"numeric\"\n  }) \n  + \", \" +\n  new Date($now).toLocaleTimeString(\"es-PE\", {\n    hour: \"numeric\", \n    minute: \"2-digit\", \n    hour12: true,\n    timeZone: \"America/Lima\"\n  })\n}} | **Zona horaria:** América/Lima\n\n## 🚨 **MANDATO SUPREMO**\n```\n🔴 RESPONDER ÚNICAMENTE JSON COMPLETO\n🔴 ANALIZAR CONVERSACIÓN COMPLETA DEL BOT\n🔴 DETECTAR ETAPA CORRECTA DEL FLUJO\n🔴 IDENTIFICAR TIPO DE CLIENTE Y PERFIL\n🔴 DETERMINAR SI REQUIERE TICKET Y URGENCIA\n🔴 EXTRAER DETALLE DE SOLICITUD Y CASO ESPECIAL\n```\n\n---\n\n## ⚡ **PROCESO OBLIGATORIO DE ANÁLISIS**\n\n### **PASO 1: LECTURA COMPLETA**\n✅ Leer TODA la conversación + infoPrevia\n✅ Identificar si cliente fue identificado (PASO 0)\n✅ Detectar tipo de perfil (inquilino/propietario/proveedor)\n✅ Marcar puntos clave de progresión\n\n### **PASO 2: EXTRACCIÓN DE DATOS**\n✅ Buscar nombre, teléfono, correo del cliente\n✅ Identificar codigoInmueble y persona\n✅ Capturar consulta específica del cliente\n✅ Detectar si es urgente y nivel de urgencia\n✅ Identificar si se buscó en base de conocimiento\n\n### **PASO 3: DETERMINAR ETAPA**\n✅ Verificar si cliente está identificado\n✅ Evaluar si encontró respuesta en base de conocimiento\n✅ Determinar si requiere ticket y urgencia\n✅ Identificar si es caso especial y por qué\n\n---\n\n## 🔄 **MATRIZ DE ETAPAS - FLUJO PROPER IA**\n\n### **📊 ETAPAS Y CÓDIGOS**\n```\n🔍 IDENTIFICACIÓN PENDIENTE (10001)\n- Bot aún no ejecutó búsqueda de cliente\n- Cliente no ha proporcionado datos para identificación\n- Conversación recién iniciada\n\n✅ CLIENTE IDENTIFICADO (10002)\n- Bot encontró cliente por teléfono/correo/DNI\n- Tiene: nombre, persona, codigoInmueble\n- Ya puede atender consultas\n\n📚 CONSULTA RESUELTA (10003)\n- Bot encontró respuesta en base de conocimiento\n- Cliente recibió información completa\n- No requiere intervención humana\n\n🔵 TICKET - URGENCIA BAJA (10004)\n- Consulta administrativa o informativa\n- No tiene impacto urgente\n- Tiempo de respuesta: 48 horas hábiles\n\n🟡 TICKET - URGENCIA MEDIA (10005)\n- Requiere resolución en plazo razonable\n- No interrumpe habitabilidad severamente\n- Ejemplo: coordinación mantenimiento, dudas cobro\n\n🔴 TICKET - URGENCIA ALTA (10006)\n- Requiere atención PRIORITARIA\n- Causa incomodidad severa o riesgo\n- Ejemplo: fuga agua, problemas eléctricos\n- Tiempo de respuesta: lo más pronto posible\n\n⚠️ CASO ESPECIAL (10007)\n- Bot no tiene información en base de conocimiento\n- Consulta compleja fuera del alcance\n- Cliente pide hablar con humano\n- Información contradictoria o confusa\n\n🌙 FUERA DE HORARIO (10008)\n- Consulta fuera de horario de atención\n- Horario: L-V 9AM-6PM, Sáb 9AM-12PM\n- Bot informó que responderá en horario hábil\n```\n\n---\n\n## 🎯 **ALGORITMO DE DETECCIÓN v2.0**\n```python\ndef detectar_etapa_atencion():\n    # PRIORIDAD 1: Verificar horario\n    if esta_fuera_de_horario() and bot_informo_horario():\n        return 10008  # FUERA DE HORARIO\n    \n    # PRIORIDAD 2: Verificar identificación\n    if cliente_no_identificado():\n        return 10001  # IDENTIFICACIÓN PENDIENTE\n    \n    # PRIORIDAD 3: Verificar si encontró respuesta\n    if bot_busco_en_base_conocimiento():\n        if encontro_respuesta_completa():\n            return 10003  # CONSULTA RESUELTA\n    \n    # PRIORIDAD 4: Verificar si requiere ticket\n    if requiere_ticket():\n        urgencia = detectar_urgencia()\n        if urgencia == \"ALTA\":\n            return 10006  # TICKET - URGENCIA ALTA\n        elif urgencia == \"MEDIA\":\n            return 10005  # TICKET - URGENCIA MEDIA\n        elif urgencia == \"BAJA\":\n            return 10004  # TICKET - URGENCIA BAJA\n    \n    # PRIORIDAD 5: Caso especial\n    if bot_no_tiene_info() or consulta_compleja():\n        return 10007  # CASO ESPECIAL\n    \n    # Por defecto: Cliente identificado esperando consulta\n    return 10002  # CLIENTE IDENTIFICADO\n```\n\n---\n\n## 📋 **SEÑALES INEQUÍVOCAS POR ETAPA**\n\n### **10001 - Identificación Pendiente**\n- **SEÑALES CRÍTICAS:**\n  - Bot NO ejecutó búsqueda por teléfono\n  - No tiene datos: nombre, persona, codigoInmueble\n  - Bot pide correo o DNI\n  - Cliente aún no proporciona datos completos\n- **CAMBIA A:** Cliente Identificado cuando se completa búsqueda\n\n### **10002 - Cliente Identificado**\n- **SEÑALES:**\n  - Bot confirmó: \"Te identifico como [inquilino/propietario] del inmueble [código]\"\n  - Tiene almacenado: nombre, persona, codigoInmueble\n  - Bot pregunta: \"¿En qué puedo ayudarte?\"\n- **CAMBIA A:** Según tipo de consulta\n\n### **10003 - Consulta Resuelta**\n- **SEÑALES:**\n  - Bot usó herramienta \"HTTP Request\"\n  - Encontró respuesta en base de conocimiento\n  - Proporcionó información completa\n  - No requiere escalación\n- **EJEMPLOS:**\n  - \"¿Cómo pago alquiler?\" → Respuesta de Kashio\n  - \"¿Cómo accedo al gimnasio?\" → Respuesta de contactar administración\n\n### **10004 - Ticket Urgencia Baja**\n- **SEÑALES:**\n  - Consultas administrativas\n  - \"¿Cómo descargo mi contrato?\"\n  - \"¿Cuándo recibo mis facturas?\"\n  - Bot dice: \"48 horas hábiles\"\n- **NO es urgente ni afecta habitabilidad**\n\n### **10005 - Ticket Urgencia Media**\n- **SEÑALES:**\n  - Coordinación de mantenimiento\n  - Dudas sobre cobros de servicios\n  - \"Necesito coordinar reparación aire acondicionado\"\n  - Debe resolverse en plazo razonable\n- **NO interrumpe habitabilidad severamente**\n\n### **10006 - Ticket Urgencia Alta**\n- **SEÑALES CRÍTICAS:**\n  - \"Fuga de agua importante\"\n  - \"Filtración que daña muebles\"\n  - \"Problemas eléctricos\"\n  - Bot dice: \"lo más pronto posible\"\n  - Cliente expresa urgencia extrema\n- **Causa incomodidad severa o riesgo**\n\n### **10007 - Caso Especial**\n- **SEÑALES:**\n  - Bot: \"No encuentro información sobre...\"\n  - Bot: \"Un asesor especializado se contactará\"\n  - Cliente pide hablar con persona\n  - Consulta muy específica sin respuesta\n  - Base de conocimiento no tiene la info\n- **CAMPO REQUERIDO:** detalle_caso_especial\n\n### **10008 - Fuera de Horario**\n- **SEÑALES:**\n  - Hora actual fuera de L-V 9AM-6PM o Sáb 9AM-12PM\n  - Bot informó: \"horario hábil\"\n  - Bot indicó horarios de atención\n- **Bot ya informó que responderá después**\n\n---\n\n## 📝 **ESTRUCTURA JSON OBLIGATORIA**\n```json\n{\n  \"nombreCliente\": \"[Nombre completo extraído o vacío]\",\n  \"telefonoCliente\": \"[+51XXXXXXXXX o vacío]\",\n  \"correoCliente\": \"[email@domain.com o vacío]\",\n  \"persona\": \"[inquilino/propietario/proveedor o vacío]\",\n  \"codigoInmueble\": \"[Código inmueble o vacío]\",\n  \"relacionTitular\": \"[pareja/familiar/etc o vacío si es titular]\",\n  \"detalle_solicitud\": \"[Resumen breve de la consulta del cliente]\",\n  \"tipoConsulta\": \"[pagos/mantenimiento/contrato/espacios_comunes/otro]\",\n  \"requiereTicket\": true/false,\n  \"nivelUrgencia\": \"[ALTA/MEDIA/BAJA o vacío]\",\n  \"detalle_caso_especial\": \"[Por qué es caso especial o vacío]\",\n  \"estatusEmbudo\": \"[Nombre de etapa actual]\",\n  \"statusId\": [Código numérico sin comillas],\n  \"clienteIdentificado\": true/false,\n  \"buscoBaseConocimiento\": true/false,\n  \"encontroRespuesta\": true/false\n}\n```\n\n**IMPORTANTE:** \n- statusId es NUMÉRICO, no string\n- detalle_solicitud SIEMPRE debe tener contenido si hay consulta\n- detalle_caso_especial SOLO si statusId = 10007\n\n---\n\n## 🔥 **REGLAS DE DETECCIÓN DE URGENCIA**\n\n### **URGENCIA ALTA (🔴):**\n- **Palabras clave:**\n  - \"fuga\", \"filtración\", \"inundación\"\n  - \"problema eléctrico\", \"sin luz\"\n  - \"urgente\", \"emergencia\"\n  - \"daño a muebles\", \"riesgo\"\n- **Contexto:**\n  - Afecta seguridad o habitabilidad\n  - Cliente muy molesto o preocupado\n  - Bot dice \"lo más pronto posible\"\n\n### **URGENCIA MEDIA (🟡):**\n- **Palabras clave:**\n  - \"coordinar mantenimiento\"\n  - \"reparación\", \"arreglo\"\n  - \"cobro extraño\", \"duda sobre pago\"\n  - \"aire acondicionado\", \"electrodoméstico\"\n- **Contexto:**\n  - No es emergencia pero debe resolverse\n  - Bot dice \"48 horas hábiles\"\n\n### **URGENCIA BAJA (🔵):**\n- **Palabras clave:**\n  - \"consulta\", \"información\"\n  - \"facturas\", \"contrato\"\n  - \"¿cómo...?\", \"¿cuándo...?\"\n- **Contexto:**\n  - Solo información administrativa\n  - No hay problema activo\n\n---\n\n## 💬 **CAMPO: detalle_solicitud**\n\n### **REGLAS:**\n- Máximo 150 caracteres\n- Resumen claro y específico\n- Incluir tipo de problema si aplica\n- Mencionar inmueble si es relevante\n\n### **EJEMPLOS CORRECTOS:**\n```\n✅ \"Consulta sobre cómo pagar alquiler mediante Kashio\"\n✅ \"Fuga de agua importante en baño del depto 301, daña muebles\"\n✅ \"Solicita información sobre renovación de contrato\"\n✅ \"Duda sobre cobro de mantenimiento del edificio\"\n✅ \"Propietario pregunta por estado de pago de contraprestación\"\n✅ \"Proveedor necesita reprogramar cita de mantenimiento\"\n```\n\n### **EJEMPLOS INCORRECTOS:**\n```\n❌ \"Tiene una consulta\" (muy vago)\n❌ \"Pregunta algo\" (no específico)\n❌ \"No sé\" (inaceptable)\n❌ \"\" (vacío cuando hay consulta)\n```\n\n---\n\n## ⚠️ **CAMPO: detalle_caso_especial**\n\n### **SOLO si statusId = 10007 (Caso Especial)**\n\n### **RAZONES VÁLIDAS:**\n1. **Falta información en base de conocimiento**\n   - Ejemplo: \"Base de conocimiento no tiene info sobre subarriendo\"\n\n2. **Consulta demasiado específica**\n   - Ejemplo: \"Requiere datos exactos de su contrato que bot no tiene acceso\"\n\n3. **Cliente pide hablar con humano**\n   - Ejemplo: \"Cliente solicita hablar con asesor directamente\"\n\n4. **Situación compleja multiárea**\n   - Ejemplo: \"Requiere coordinación entre propietario, inquilino y mantenimiento\"\n\n5. **Información contradictoria o confusa**\n   - Ejemplo: \"Cliente da información contradictoria sobre su situación\"\n\n6. **Problema técnico o de sistema**\n   - Ejemplo: \"No se pudo identificar cliente por falla en búsqueda\"\n\n### **FORMATO:**\n```json\n\"detalle_caso_especial\": \"Base de conocimiento no tiene información sobre condiciones de subarriendo. Requiere asesor especializado.\"\n```\n\n**Si NO es caso especial:** `\"detalle_caso_especial\": \"\"`\n\n---\n\n## 🎯 **TIPO DE CONSULTA (tipoConsulta)**\n\n### **CATEGORÍAS:**\n```\npagos - Todo relacionado con pagos, alquiler, contraprestación, facturas\nmantenimiento - Reparaciones, desperfectos, coordinaciones técnicas\ncontrato - Renovación, cancelación, cláusulas, entrega de copia\nespacios_comunes - Acceso gimnasio, piscina, áreas comunes\nservicios - Luz, gas, agua, internet, arbitrios\ncoordinaciones - Visitas, citas, permisos\nproveedores - Órdenes de servicio, facturas proveedores\notro - Cualquier otra consulta que no encaje\n```\n\n### **EJEMPLOS:**\n```\n\"¿Cómo pago alquiler?\" → tipoConsulta: \"pagos\"\n\"Fuga de agua\" → tipoConsulta: \"mantenimiento\"\n\"¿Cuándo recibo contrato?\" → tipoConsulta: \"contrato\"\n\"No puedo acceder al gimnasio\" → tipoConsulta: \"espacios_comunes\"\n```\n\n---\n\n## 📊 **EJEMPLOS COMPLETOS DE ANÁLISIS**\n\n### **Ejemplo 1: Consulta Simple Resuelta**\n\n**Conversación:**\n```\nBot: [Ejecuta búsqueda por teléfono]\nBot: \"Perfecto, Juan. Te identifico como inquilino del inmueble 301. ¿En qué puedo ayudarte?\"\nCliente: \"¿Cómo pago mi alquiler?\"\nBot: [Usa HTTP Request]\nBot: \"Debes realizar el pago a través de Kashio con el código 301...\"\nCliente: \"Entendido, gracias\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"Juan\",\n  \"telefonoCliente\": \"+51987654321\",\n  \"correoCliente\": \"juan@email.com\",\n  \"persona\": \"inquilino\",\n  \"codigoInmueble\": \"301\",\n  \"relacionTitular\": \"\",\n  \"detalle_solicitud\": \"Consulta sobre cómo pagar alquiler mediante Kashio\",\n  \"tipoConsulta\": \"pagos\",\n  \"requiereTicket\": false,\n  \"nivelUrgencia\": \"\",\n  \"detalle_caso_especial\": \"\",\n  \"estatusEmbudo\": \"CONSULTA RESUELTA\",\n  \"statusId\": 10003,\n  \"clienteIdentificado\": true,\n  \"buscoBaseConocimiento\": true,\n  \"encontroRespuesta\": true\n}\n```\n\n---\n\n### **Ejemplo 2: Urgencia Alta**\n\n**Conversación:**\n```\nBot: \"Perfecto, María. Te identifico como inquilina del inmueble 205. ¿En qué puedo ayudarte?\"\nCliente: \"Tengo una fuga de agua importante en mi baño, está dañando mis muebles\"\nBot: \"Entiendo, es una situación urgente. Para coordinar la reparación en tu inmueble 205, necesito confirmar...\"\nBot: \"Un asesor del área de mantenimiento se contactará contigo lo más pronto posible\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"María\",\n  \"telefonoCliente\": \"+51912345678\",\n  \"correoCliente\": \"maria@email.com\",\n  \"persona\": \"inquilino\",\n  \"codigoInmueble\": \"205\",\n  \"relacionTitular\": \"\",\n  \"detalle_solicitud\": \"Fuga de agua importante en baño del depto 205, está dañando muebles. Requiere atención urgente.\",\n  \"tipoConsulta\": \"mantenimiento\",\n  \"requiereTicket\": true,\n  \"nivelUrgencia\": \"ALTA\",\n  \"detalle_caso_especial\": \"\",\n  \"estatusEmbudo\": \"TICKET - URGENCIA ALTA\",\n  \"statusId\": 10006,\n  \"clienteIdentificado\": true,\n  \"buscoBaseConocimiento\": false,\n  \"encontroRespuesta\": false\n}\n```\n\n---\n\n### **Ejemplo 3: Caso Especial**\n\n**Conversación:**\n```\nBot: \"Perfecto, Carlos. Te identifico como inquilino del inmueble 102. ¿En qué puedo ayudarte?\"\nCliente: \"¿Puedo subarrendar mi departamento?\"\nBot: [Usa HTTP Request - no encuentra respuesta]\nBot: \"Entiendo tu consulta. Para darte información precisa sobre las condiciones de subarriendo según tu contrato, un asesor especializado se contactará contigo...\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"Carlos\",\n  \"telefonoCliente\": \"+51998765432\",\n  \"correoCliente\": \"carlos@email.com\",\n  \"persona\": \"inquilino\",\n  \"codigoInmueble\": \"102\",\n  \"relacionTitular\": \"\",\n  \"detalle_solicitud\": \"Consulta sobre posibilidad de subarrendar departamento\",\n  \"tipoConsulta\": \"contrato\",\n  \"requiereTicket\": true,\n  \"nivelUrgencia\": \"BAJA\",\n  \"detalle_caso_especial\": \"Base de conocimiento no tiene información específica sobre condiciones de subarriendo. Requiere revisión de contrato por asesor especializado.\",\n  \"estatusEmbudo\": \"CASO ESPECIAL\",\n  \"statusId\": 10007,\n  \"clienteIdentificado\": true,\n  \"buscoBaseConocimiento\": true,\n  \"encontroRespuesta\": false\n}\n```\n\n---\n\n### **Ejemplo 4: Cliente No Identificado**\n\n**Conversación:**\n```\nCliente: \"Hola, tengo una consulta\"\nBot: [Ejecuta búsqueda por teléfono - 404]\nBot: \"Hola, no encuentro un registro con tu número. ¿Podrías brindarme tu correo?\"\nCliente: \"ana@email.com\"\nBot: [Busca por correo - 404]\nBot: \"No encuentro registro con ese correo. ¿Podrías brindarme tu DNI?\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"\",\n  \"telefonoCliente\": \"+51923456789\",\n  \"correoCliente\": \"ana@email.com\",\n  \"persona\": \"\",\n  \"codigoInmueble\": \"\",\n  \"relacionTitular\": \"\",\n  \"detalle_solicitud\": \"Cliente aún no identificado, proceso de búsqueda en curso\",\n  \"tipoConsulta\": \"otro\",\n  \"requiereTicket\": false,\n  \"nivelUrgencia\": \"\",\n  \"detalle_caso_especial\": \"\",\n  \"estatusEmbudo\": \"IDENTIFICACIÓN PENDIENTE\",\n  \"statusId\": 10001,\n  \"clienteIdentificado\": false,\n  \"buscoBaseConocimiento\": false,\n  \"encontroRespuesta\": false\n}\n```\n\n---\n\n### **Ejemplo 5: Propietario - Urgencia Media**\n\n**Conversación:**\n```\nBot: \"Perfecto, Luis. Te identifico como propietario del inmueble 401. ¿En qué puedo ayudarte?\"\nCliente: \"No he recibido mi pago de este mes\"\nBot: \"Entiendo tu preocupación sobre la contraprestación del inmueble 401. Un asesor del área de pagos verificará tu situación y se contactará contigo en un máximo de 48 horas hábiles.\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"Luis\",\n  \"telefonoCliente\": \"+51934567890\",\n  \"correoCliente\": \"luis@email.com\",\n  \"persona\": \"propietario\",\n  \"codigoInmueble\": \"401\",\n  \"relacionTitular\": \"\",\n  \"detalle_solicitud\": \"Propietario no recibió pago de contraprestación del mes actual para inmueble 401\",\n  \"tipoConsulta\": \"pagos\",\n  \"requiereTicket\": true,\n  \"nivelUrgencia\": \"MEDIA\",\n  \"detalle_caso_especial\": \"\",\n  \"estatusEmbudo\": \"TICKET - URGENCIA MEDIA\",\n  \"statusId\": 10005,\n  \"clienteIdentificado\": true,\n  \"buscoBaseConocimiento\": false,\n  \"encontroRespuesta\": false\n}\n```\n\n---\n\n## ⚡ **REGLAS DE EXTRACCIÓN**\n\n### **TELÉFONO:**\n- Buscar patrones: 9XX XXX XXX, 9XXXXXXXX\n- Agregar +51 si no lo tiene\n- Formato final: +51XXXXXXXXX\n- Si no está disponible: \"\"\n\n### **CORREO:**\n- Validar formato: texto@dominio.extension\n- Convertir a minúsculas\n- Eliminar espacios\n- Si no está disponible: \"\"\n\n### **NOMBRE:**\n- Capturar nombre completo si lo proporciona bot\n- Primera letra en mayúscula\n- Eliminar títulos (Sr., Sra., etc.)\n- Si no está disponible: \"\"\n\n### **PERSONA:**\n- SOLO valores válidos: \"inquilino\", \"propietario\", \"proveedor\"\n- Detectar del mensaje del bot\n- Si no está disponible: \"\"\n\n### **CÓDIGO INMUEBLE:**\n- Extraer del mensaje de confirmación del bot\n- Puede ser número o alfanumérico\n- Si tiene varios (propietario), usar el relevante a la consulta\n- Si no está disponible: \"\"\n\n---\n\n## ⚠️ **VERIFICACIÓN FINAL OBLIGATORIA**\n\n### **CHECKLIST PRE-RESPUESTA:**\n```\n□ ¿El cliente fue identificado por el bot?\n□ ¿Extraje todos los datos disponibles (nombre, teléfono, correo, persona, inmueble)?\n□ ¿El statusId es NUMÉRICO sin comillas?\n□ ¿La etapa corresponde al punto real de la conversación?\n□ ¿El detalle_solicitud es claro y específico?\n□ ¿Si es caso especial, completé detalle_caso_especial?\n□ ¿El tipoConsulta es correcto?\n□ ¿Detecté correctamente si requiere ticket?\n□ ¿El nivel de urgencia es apropiado?\n□ ¿Los campos booleanos son true/false sin comillas?\n□ ¿El JSON tiene TODOS los campos requeridos?\n□ ¿El JSON es válido y está completo?\n```\n\n---\n\n## 🔴 **RECORDATORIO CRÍTICO FINAL**\n```\nANTES DE RESPONDER:\n\n1. ¿El cliente fue identificado?\n   → clienteIdentificado: true/false\n\n2. ¿El bot buscó en base de conocimiento?\n   → buscoBaseConocimiento: true/false\n\n3. ¿Encontró respuesta completa?\n   → encontroRespuesta: true/false\n\n4. ¿La urgencia está correctamente evaluada?\n   → ALTA: riesgo/daño inmediato\n   → MEDIA: requiere atención pronto\n   → BAJA: consulta administrativa\n\n5. ¿El detalle_solicitud está completo?\n   → NUNCA dejar vacío si hay consulta\n\n6. ¿Es caso especial?\n   → DEBE tener detalle_caso_especial\n\n7. ¿El statusId es NUMÉRICO?\n   → NO usar comillas\n\n8. ¿Mi JSON está completo y válido?\n   → VERIFICAR CADA CAMPO\n\nRESPONDER SOLO JSON VALIDADO Y COMPLETO\n```\n\n---\n\n## 📖 **REFERENCIA RÁPIDA DE ETAPAS**\n```\n10001 - IDENTIFICACIÓN PENDIENTE\n        Cliente no identificado aún\n\n10002 - CLIENTE IDENTIFICADO  \n        Tiene datos, esperando consulta\n\n10003 - CONSULTA RESUELTA\n        Bot encontró y dio respuesta completa\n\n10004 - TICKET - URGENCIA BAJA\n        Consulta administrativa, 48h\n\n10005 - TICKET - URGENCIA MEDIA\n        Requiere atención razonable\n\n10006 - TICKET - URGENCIA ALTA\n        Emergencia, lo más pronto posible\n\n10007 - CASO ESPECIAL\n        Bot no tiene info o consulta compleja\n        REQUIERE: detalle_caso_especial\n\n10008 - FUERA DE HORARIO\n        Fuera de L-V 9AM-6PM o Sáb 9AM-12PM\n```\n\n**TODOS los statusId son NUMÉRICOS sin comillas**\n\n---"
+          "systemMessage": "=# 🤖 PROPER IA ANALYZER v4.0 - SISTEMA DE ANÁLISIS SIMPLIFICADO\n\n**Fecha actual:** {{ \n  new Date($now).toLocaleDateString(\"es-PE\", {\n    weekday: \"long\", \n    day: \"numeric\", \n    month: \"long\", \n    year: \"numeric\"\n  }) \n  + \", \" +\n  new Date($now).toLocaleTimeString(\"es-PE\", {\n    hour: \"numeric\", \n    minute: \"2-digit\", \n    hour12: true,\n    timeZone: \"America/Lima\"\n  })\n}} | **Zona horaria:** América/Lima\n\n---\n\n## 🚨 **MANDATO SUPREMO**\n```\n🔴 RESPONDER ÚNICAMENTE JSON COMPLETO Y VÁLIDO\n🔴 LEER Y ANALIZAR TODA LA CONVERSACIÓN COMPLETA\n🔴 NO INVENTAR - SOLO EXTRAER INFORMACIÓN REAL\n🔴 CATEGORIZAR SEGÚN SISTEMA DE 3 NIVELES\n🔴 DETERMINAR ETAPA CORRECTA\n🔴 SER PRECISO Y EXACTO\n```\n\n---\n\n## 📊 **SISTEMA DE CATEGORIZACIÓN**\n\n### **ESTRUCTURA OBLIGATORIA:**\n```\nNIVEL_1 - NIVEL_2 - NIVEL_3\n```\n\n**NIVEL 1: Tipo de Usuario**\n- `INQUILINO`\n- `PROPIETARIO`\n- `NO_IDENTIFICADO`\n\n**NIVEL 2: Área/Tema**\n- `MANTENIMIENTO` - Reparaciones, fallas, averías\n- `LIMPIEZA` - Servicios de limpieza\n- `PAGOS` - Transacciones, códigos de pago, depósitos\n- `FACTURACION` - Comprobantes, recibos, facturas\n- `ACCESOS` - Llaves, huellas, WiFi, credenciales, login\n- `CAMBIOS` - Cambio de habitación, depto, cochera\n- `SERVICIOS` - Amenidades (bicicletas, parrillas, gym)\n- `PLATAFORMA` - Sistemas digitales (propietarios)\n- `VISITAS` - Visitas al departamento (propietarios)\n- `REFERIDOS` - Recomendaciones de nuevos inquilinos\n- `CONSULTAS` - Preguntas informativas generales\n- `QUEJAS` - Reclamos\n- `IDENTIFICACION` - Proceso de identificar usuario (NO_IDENTIFICADO)\n- `SALUDOS` - Mensajes de inicio/cierre (NO_IDENTIFICADO)\n- `OTROS` - Casos no categorizables\n\n**NIVEL 3: Subtema Específico**\n- Descriptor del problema/acción específica\n- Ejemplos: `DUCHA`, `ASCENSORES`, `WIFI`, `ROLLERS`, `CODIGO_RENTA`, `RECIBO_LUZ`, `HUELLAS`, `BICICLETAS`, `PROBLEMA_LOGIN`, `FUGA_AGUA`, `CONTRAPRESTACION_NO_RECIBIDA`, etc.\n- Si no hay subtema claro: `GENERAL`\n\n### **EJEMPLOS DE CATEGORIZACIÓN:**\n```\n✅ INQUILINO - MANTENIMIENTO - DUCHA\n✅ INQUILINO - LIMPIEZA - ASCENSORES\n✅ INQUILINO - PAGOS - CODIGO_RENTA\n✅ INQUILINO - FACTURACION - RECIBO_LUZ\n✅ INQUILINO - ACCESOS - WIFI\n✅ INQUILINO - SERVICIOS - BICICLETAS\n✅ INQUILINO - CAMBIOS - HABITACION_DEPARTAMENTO\n✅ PROPIETARIO - PAGOS - CONTRAPRESTACION_NO_RECIBIDA\n✅ PROPIETARIO - ACCESOS - PROBLEMA_LOGIN\n✅ PROPIETARIO - PLATAFORMA - CARGA_DECLARACION\n✅ PROPIETARIO - VISITAS - SOLICITUD_VISITA_DEPTO\n✅ NO_IDENTIFICADO - IDENTIFICACION - PENDIENTE\n✅ NO_IDENTIFICADO - CONSULTAS - INFORMACION_ALQUILER\n✅ NO_IDENTIFICADO - SALUDOS - INICIAL\n```\n\n---\n\n## ⚡ **PROCESO DE ANÁLISIS - OBLIGATORIO**\n\n### **PASO 1: LECTURA COMPLETA (CRÍTICO)**\n✅ Lee TODO el historial de mensajes desde el INICIO hasta el FINAL\n✅ Revisa información previa (infoPrevia) si existe\n✅ NO te saltes ningún mensaje\n✅ NO inventes información que no está en la conversación\n✅ Identifica el flujo completo de la conversación\n\n### **PASO 2: EXTRACCIÓN DE DATOS**\n✅ Busca y extrae: nombre, teléfono, correo, persona, codigoInmueble\n✅ SOLO extrae lo que está EXPLÍCITAMENTE mencionado\n✅ Si un dato NO aparece, déjalo vacío (\"\")\n✅ NO asumas información\n\n### **PASO 3: IDENTIFICACIÓN DE USUARIO**\n✅ ¿El bot confirmó la identificación del cliente?\n✅ ¿Tiene datos completos? (nombre, persona, codigoInmueble)\n✅ ¿Qué tipo de perfil? (inquilino/propietario/no identificado)\n\n### **PASO 4: COMPRENSIÓN DE LA SOLICITUD**\n✅ ¿Qué está solicitando el cliente EXACTAMENTE?\n✅ ¿Es una consulta nueva o continuación?\n✅ ¿Ya se resolvió o está pendiente?\n✅ Resume la solicitud de forma clara y precisa\n\n### **PASO 5: CATEGORIZACIÓN**\n✅ Asignar categoría completa de 3 niveles\n✅ Debe reflejar el tema principal de la conversación\n✅ Debe ser específica y descriptiva\n\n### **PASO 6: DETERMINACIÓN DE ETAPA**\n✅ Identifica en qué etapa del flujo está la conversación\n✅ Usa el algoritmo de detección\n✅ Asigna el estatusEmbudo y statusId correcto\n\n---\n\n## 🔄 **ETAPAS DEL FLUJO - SIMPLIFICADO**\n\n### **10001 - INTERACCION IA**\n**Descripción:** Cliente inició conversación pero aún no proporciona información para identificarse\n**Cuándo usar:**\n- Cliente dice \"Hola\", \"Buenos días\", \"Tengo una consulta\"\n- Bot NO ha ejecutado búsqueda aún\n- Cliente NO ha dado correo/DNI/teléfono\n- Conversación recién comienza\n\n### **10002 - CLIENTE IDENTIFICADO IA**\n**Descripción:** Bot identificó exitosamente al cliente y está listo para atender\n**Cuándo usar:**\n- Bot confirmó: \"Te identifico como [inquilino/propietario] del inmueble [código]\"\n- Tiene: nombre, persona, codigoInmueble\n- Bot pregunta: \"¿En qué puedo ayudarte?\"\n- Cliente identificado pero aún no hace consulta específica\n\n### **10003 - CONSULTA RESUELTA IA**\n**Descripción:** Bot encontró respuesta y resolvió completamente la consulta del cliente\n**Cuándo usar:**\n- Bot proporcionó información completa\n- Bot compartió link/manual/instrucciones\n- Cliente recibió respuesta satisfactoria\n- NO requiere intervención humana\n- Ejemplos: \"¿Cómo pago?\" → Bot explica Kashio\n\n### **10004 - TICKET IA**\n**Descripción:** Requiere creación de ticket para intervención del equipo humano\n**Cuándo usar:**\n- Requiere coordinación con área específica\n- Necesita acción del equipo (mantenimiento, pagos, administración)\n- Bot indica: \"Un asesor se contactará contigo\"\n- Cualquier nivel de urgencia (baja, media, alta)\n- Ejemplos: reparaciones, verificar pagos, coordinar cambios\n\n### **10005 - CASO ESPECIAL IA**\n**Descripción:** Bot no tiene información o situación compleja que requiere atención especializada\n**Cuándo usar:**\n- Bot NO encontró información en base de conocimiento\n- Bot dice: \"No encuentro información sobre...\"\n- Cliente pide hablar con persona/asesor específicamente\n- Consulta muy compleja o fuera del alcance del bot\n- Información contradictoria o confusa\n- **SIEMPRE requiere explicar en detalle_caso_especial POR QUÉ es caso especial**\n\n### **10006 - ASESOR IA**\n**Descripción:** Cliente está siendo atendido por un asesor humano o fue transferido\n**Cuándo usar:**\n- Se detecta que un humano está respondiendo (no es bot)\n- Cliente fue transferido explícitamente a asesor\n- Conversación ya NO es con IA\n- **NOTA:** Esta etapa es poco común, solo usar si es evidente\n\n---\n\n## 🎯 **ALGORITMO DE DETECCIÓN**\n\n```python\ndef detectar_etapa():\n    # 1. Verificar si es asesor humano\n    if conversacion_con_humano():\n        return 10006  # ASESOR IA\n    \n    # 2. Verificar si cliente NO está identificado\n    if not cliente_tiene_datos_basicos():\n        return 10001  # INTERACCION IA\n    \n    # 3. Cliente identificado - evaluar siguiente paso\n    if cliente_identificado():\n        \n        # 3a. ¿Ya hizo consulta específica?\n        if not cliente_hizo_consulta_especifica():\n            return 10002  # CLIENTE IDENTIFICADO IA\n        \n        # 3b. ¿Es caso especial?\n        if bot_no_tiene_info() or cliente_pide_humano():\n            return 10005  # CASO ESPECIAL IA\n        \n        # 3c. ¿Bot resolvió la consulta?\n        if bot_dio_respuesta_completa() and no_requiere_accion_humana():\n            return 10003  # CONSULTA RESUELTA IA\n        \n        # 3d. ¿Requiere ticket/acción humana?\n        if requiere_intervencion_humana():\n            return 10004  # TICKET IA\n        \n        # Por defecto: Cliente identificado esperando\n        return 10002  # CLIENTE IDENTIFICADO IA\n```\n\n---\n\n## 🔥 **CRITERIOS DE URGENCIA (Para Tickets)**\n\n### **URGENCIA ALTA:**\n- **Palabras clave:** \"fuga\", \"filtración\", \"inundación\", \"problema eléctrico\", \"sin luz\", \"urgente\", \"emergencia\", \"daño\", \"riesgo\"\n- **Contexto:** Afecta seguridad o habitabilidad inmediata\n- **Bot dice:** \"lo más pronto posible\", \"urgente\", \"prioritario\"\n\n### **URGENCIA MEDIA:**\n- **Palabras clave:** \"coordinar\", \"reparación\", \"arreglo\", \"cobro extraño\", \"duda pago\", \"aire acondicionado\"\n- **Contexto:** Debe resolverse pronto pero no es emergencia\n- **Bot dice:** \"48 horas hábiles\"\n\n### **URGENCIA BAJA:**\n- **Palabras clave:** \"consulta\", \"información\", \"factura\", \"contrato\", \"¿cómo...?\", \"¿cuándo...?\"\n- **Contexto:** Solo información administrativa o coordinación simple\n\n---\n\n## 📝 **ESTRUCTURA JSON OBLIGATORIA**\n\n```json\n{\n  \"nombreCliente\": \"\",\n  \"telefonoCliente\": \"\",\n  \"correoCliente\": \"\",\n  \"persona\": \"\",\n  \"codigoInmueble\": \"\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"\",\n  \n  \"resumen_solicitud\": \"\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"\",\n  \n  \"requiereTicket\": false,\n  \"detalle_ticket\": \"\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"\",\n  \"seg_2\": \"\",\n  \n  \"estatusEmbudo\": \"\",\n  \"statusId\": 0,\n  \n  \"clienteIdentificado\": false\n}\n```\n\n### **DESCRIPCIÓN DE CADA CAMPO:**\n\n**DATOS DEL CLIENTE:**\n- `nombreCliente`: Nombre completo extraído de la conversación o \"\"\n- `telefonoCliente`: +51XXXXXXXXX o \"\"\n- `correoCliente`: email@domain.com o \"\"\n- `persona`: \"inquilino\" / \"propietario\" / \"proveedor\" / \"\"\n- `codigoInmueble`: Código del inmueble o \"\"\n- `relacionTitular`: \"pareja\" / \"familiar\" / etc, o \"\" si es titular directo\n\n**CATEGORIZACIÓN:**\n- `categoria_completa`: \"NIVEL_1 - NIVEL_2 - NIVEL_3\" (formato exacto con espacios y guiones)\n\n**SOLICITUD:**\n- `resumen_solicitud`: Resumen breve y claro (máx 200 caracteres) de lo que solicita el cliente\n  - ✅ SIEMPRE llenar si cliente hizo consulta\n  - ✅ Ser específico y claro\n  - ✅ Mencionar detalles relevantes\n  - ❌ NUNCA dejar vacío si hay consulta\n\n**SOLUCIÓN:**\n- `tiene_solucion`: true / false\n  - true = Se brindó alguna información/respuesta/solución al cliente\n  - false = Aún no se ha brindado solución\n  - Este campo es INDEPENDIENTE de si requiere ticket o no\n- `descripcion_solucion`: (SOLO si tiene_solucion = true)\n  - Describir QUÉ solución se brindó o QUÉ información se proporcionó\n  - Ser específico sobre la acción realizada\n  - Ejemplos: \"Se brindó el RUC de la empresa\", \"Se envió el código de pago\", \"Se explicó el proceso de pago por Kashio\"\n  - Si tiene_solucion = false → dejar vacío \"\"\n\n**TICKET:**\n- `requiereTicket`: true / false\n  - true = Necesita intervención humana\n  - false = Bot resolvió o no requiere acción\n- `detalle_ticket`: (SOLO si requiereTicket = true)\n  - Explicar QUÉ debe hacer el equipo\n  - Incluir nivel de urgencia si aplica\n  - Ser claro y específico\n  - Si requiereTicket = false → dejar vacío \"\"\n\n**CASO ESPECIAL:**\n- `caso_especial`: true / false\n  - true = Bot no tiene info O cliente pide humano O situación compleja\n  - false = Caso normal\n- `detalle_caso_especial`: (SOLO si caso_especial = true)\n  - Explicar POR QUÉ es caso especial\n  - Ser específico\n  - Si caso_especial = false → dejar vacío \"\"\n\n**MENSAJES DE SEGUIMIENTO:**\n- `seg_1`: Primer mensaje de seguimiento para el cliente\n  - ✅ SIEMPRE debe tener contenido\n  - ✅ Mensaje contextual relacionado con la conversación actual\n  - ✅ Propósito: Reactivar conversación si el cliente deja en visto\n  - ✅ Tono amigable, profesional, corto, invita a continuar\n  - ✅ Máximo 150 caracteres\n  - ❌ NO USAR EMOJIS (crítico)\n  - **Ejemplos correctos:**\n    - \"Hola Juan, ¿pudiste revisar la información que te compartí?\"\n    - \"Hola María, ¿lograste resolver tu consulta o necesitas algo más?\"\n    - \"Hola Carlos, ¿quedó clara la información sobre el pago?\"\n  \n- `seg_2`: Segundo mensaje de seguimiento para el cliente\n  - ✅ SIEMPRE debe tener contenido\n  - ✅ Mensaje contextual si el cliente sigue sin responder después de seg_1\n  - ✅ Propósito: Segunda oportunidad de reactivar conversación\n  - ✅ Puede ofrecer ayuda adicional o preguntar si necesita algo más\n  - ✅ Máximo 150 caracteres\n  - ❌ NO USAR EMOJIS (crítico)\n  - **Ejemplos correctos:**\n    - \"¿Hay algo más en lo que pueda ayudarte? Estoy aquí para lo que necesites.\"\n    - \"Si tienes alguna otra consulta, no dudes en escribirme.\"\n    - \"¿Necesitas que te explique algo más o está todo claro?\"\n\n**ETAPA:**\n- `estatusEmbudo`: Nombre de la etapa (ver lista arriba)\n- `statusId`: Código numérico SIN comillas (10001-10006)\n\n**FLAG:**\n- `clienteIdentificado`: true / false\n  - true = Bot confirmó identificación con datos completos\n  - false = Cliente NO identificado aún\n\n---\n\n## 📋 **REGLAS CRÍTICAS DE LLENADO**\n\n### **1. SIEMPRE REVISAR TODA LA CONVERSACIÓN**\n- Lee TODOS los mensajes desde el inicio\n- NO te saltes mensajes intermedios\n- Considera el contexto completo\n- Busca información en TODO el historial\n\n### **2. NO INVENTAR INFORMACIÓN**\n- Si un dato NO aparece en la conversación → dejar vacío (\"\")\n- NO asumir valores\n- NO inventar nombres, correos, teléfonos\n- SOLO extraer lo que está EXPLÍCITAMENTE escrito\n\n### **3. resumen_solicitud**\n✅ **SIEMPRE llenar si el cliente hizo una consulta o solicitud**\n✅ Máximo 200 caracteres\n✅ Claro, específico y preciso\n✅ Incluir detalles relevantes (inmueble, tipo de problema)\n❌ NUNCA dejar vacío si hay consulta activa\n\n**Ejemplos correctos:**\n```\n✅ \"Consulta sobre cómo pagar alquiler mediante Kashio\"\n✅ \"Fuga de agua en baño del depto 205 que daña muebles. Urgente.\"\n✅ \"Solicita cambio de habitación del inmueble 503\"\n✅ \"Propietario no recibió pago de contraprestación del mes\"\n✅ \"Consulta sobre posibilidad de subarrendar departamento\"\n✅ \"Solicita código WiFi para conectarse\"\n```\n\n### **4. requiereTicket y detalle_ticket**\n- Si `requiereTicket = true` → DEBES llenar `detalle_ticket`\n- Si `requiereTicket = false` → `detalle_ticket` debe ser \"\"\n- `detalle_ticket` debe explicar QUÉ debe hacer el equipo\n\n**Ejemplos correctos:**\n```\n✅ \"Coordinar reparación urgente de fuga en baño depto 205\"\n✅ \"Verificar por qué no aparece pago pendiente en sistema\"\n✅ \"Revisar contrato inmueble 102 sobre condiciones de subarriendo\"\n✅ \"Validar pago de contraprestación no recibido por propietario del inmueble 401\"\n✅ \"Coordinar cambio de habitación de inquilina del inmueble 503\"\n```\n\n### **5. caso_especial y detalle_caso_especial**\n- Si `caso_especial = true` → DEBES llenar `detalle_caso_especial`\n- Si `caso_especial = false` → `detalle_caso_especial` debe ser \"\"\n- `detalle_caso_especial` debe explicar POR QUÉ es caso especial\n\n**Ejemplos correctos:**\n```\n✅ \"Base de conocimiento no tiene información sobre condiciones de subarriendo\"\n✅ \"Cliente solicita hablar directamente con un asesor humano\"\n✅ \"Consulta muy específica sobre cláusula contractual que requiere revisión especializada\"\n✅ \"Bot no encontró información sobre este tipo de servicio en su base de datos\"\n✅ \"Situación compleja con múltiples problemas que requiere evaluación integral\"\n```\n\n### **6. categoria_completa**\n✅ SIEMPRE usar formato: \"NIVEL_1 - NIVEL_2 - NIVEL_3\"\n✅ Con espacios antes y después de los guiones\n✅ Todo en MAYÚSCULAS\n✅ Sin tildes ni caracteres especiales\n\n### **7. tiene_solucion y descripcion_solucion**\n\n**tiene_solucion:**\n- `true`: Cuando el bot YA brindó alguna información, respuesta o solución al cliente\n- `false`: Cuando aún NO se ha proporcionado ninguna solución\n\n**descripcion_solucion (SOLO si tiene_solucion = true):**\n✅ Describir QUÉ información o solución se brindó\n✅ Ser específico sobre la acción realizada\n✅ Usar tiempo pasado (\"se brindó\", \"se envió\", \"se explicó\")\n✅ Máximo 150 caracteres\n❌ Dejar vacío (\"\") si tiene_solucion = false\n\n**Ejemplos correctos:**\n```\ntiene_solucion: true\ndescripcion_solucion: \"Se brindó el RUC de la empresa\"\n\ntiene_solucion: true\ndescripcion_solucion: \"Se envió el código de pago del inmueble 301\"\n\ntiene_solucion: true\ndescripcion_solucion: \"Se explicó el proceso completo de pago mediante Kashio con manual incluido\"\n\ntiene_solucion: true\ndescripcion_solucion: \"Se proporcionó la clave WiFi y nombre de red\"\n\ntiene_solucion: true\ndescripcion_solucion: \"Se buscó información de informes del cliente Juan y se enviaron los reportes solicitados\"\n\ntiene_solucion: false\ndescripcion_solucion: \"\"  (cuando aún no se ha dado solución)\n```\n\n**IMPORTANTE:** Este campo es independiente de si requiere ticket. Puede haber casos donde:\n- tiene_solucion=true y requiereTicket=false (bot resolvió todo)\n- tiene_solucion=true y requiereTicket=true (bot dio info parcial pero requiere seguimiento)\n- tiene_solucion=false y requiereTicket=true (aún no hay solución, se escaló)\n\n### **8. seg_1 y seg_2 (Mensajes de Seguimiento)**\n\n**REGLAS GENERALES:**\n✅ SIEMPRE deben tener contenido (nunca vacíos)\n✅ Máximo 150 caracteres cada uno\n✅ Tono amigable, natural y cercano\n✅ Contextuales a la conversación actual\n✅ Incluir el nombre del cliente si está disponible\n❌ **NO USAR EMOJIS** (crítico)\n\n**seg_1 (Primer seguimiento):**\n- Propósito: Reactivar conversación si cliente deja en visto\n- Referencia a la información compartida o consulta realizada\n- Pregunta si pudo revisar o si tiene dudas\n- Tono: Amigable, no insistente\n\n**Ejemplos de seg_1:**\n```\n\"Hola Juan, ¿pudiste revisar el código de pago que te compartí?\"\n\"Hola María, ¿te quedó alguna duda sobre el proceso de pago? Estoy aquí para ayudarte\"\n\"¿Lograste ver la información que te envié sobre Kashio?\"\n\"Hola Carlos, ¿necesitas algo más sobre tu consulta de cambio de habitación?\"\n\"¿Pudiste revisar el manual? Si tienes alguna pregunta, con gusto te ayudo\"\n```\n\n**seg_2 (Segundo seguimiento):**\n- Propósito: Segunda oportunidad de reactivar conversación\n- Ofrecer ayuda adicional\n- Preguntar si necesita algo más\n- Dejar la puerta abierta para futuras consultas\n- Tono: Servicial, cierra con ofrecimiento de ayuda\n\n**Ejemplos de seg_2:**\n```\n\"¿Hay algo más en lo que pueda ayudarte? Estoy aquí cuando me necesites\"\n\"Si necesitas cualquier otra información, no dudes en escribirme\"\n\"¿Todo quedó claro con tu consulta? Aquí estoy para lo que necesites\"\n\"Si tienes alguna otra pregunta, con gusto te ayudo\"\n\"Cualquier duda adicional, puedes contactarme. Que tengas un buen día\"\n```\n\n**CONSIDERACIONES ESPECIALES:**\n\n**Si el cliente NO está identificado:**\n```\nseg_1: \"Hola, ¿sigues ahí? ¿Puedo ayudarte con algo?\"\nseg_2: \"Estoy disponible si necesitas asistencia. ¿En qué puedo ayudarte?\"\n```\n\n**Si la consulta fue resuelta:**\n```\nseg_1: \"¿La información que te compartí te fue útil?\"\nseg_2: \"Si necesitas algo más, aquí estoy para ayudarte\"\n```\n\n**Si requiere ticket o caso especial:**\n```\nseg_1: \"Un asesor se contactará contigo pronto. ¿Tienes alguna duda mientras tanto?\"\nseg_2: \"¿Hay algo más que pueda ayudarte mientras esperas la atención del asesor?\"\n```\n\n### **9. statusId**\n✅ SIEMPRE numérico SIN comillas\n✅ Solo valores válidos: 10001, 10002, 10003, 10004, 10005, 10006\n❌ NO usar: \"10001\", 10007, 10008, etc.\n\n---\n\n## 🔍 **EJEMPLOS COMPLETOS**\n\n### **Ejemplo 1: Interacción Inicial**\n\n**Conversación:**\n```\nCliente: \"Hola, buenos días\"\nBot: [Ejecuta búsqueda por teléfono]\nBot: \"Hola, no encuentro un registro con tu número. ¿Podrías brindarme tu correo electrónico?\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"\",\n  \"telefonoCliente\": \"+51923456789\",\n  \"correoCliente\": \"\",\n  \"persona\": \"\",\n  \"codigoInmueble\": \"\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"NO_IDENTIFICADO - IDENTIFICACION - PENDIENTE\",\n  \n  \"resumen_solicitud\": \"Cliente saludó pero aún no proporciona datos para identificarse\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"\",\n  \n  \"requiereTicket\": false,\n  \"detalle_ticket\": \"\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"Hola, ¿sigues por ahí? Estoy listo para ayudarte con lo que necesites\",\n  \"seg_2\": \"¿Hay algo en lo que pueda asistirte? Estoy disponible cuando quieras\",\n  \n  \"estatusEmbudo\": \"INTERACCION IA\",\n  \"statusId\": 10001,\n  \n  \"clienteIdentificado\": false\n}\n```\n\n---\n\n### **Ejemplo 2: Cliente Identificado**\n\n**Conversación:**\n```\nCliente: \"Hola\"\nBot: [Busca por teléfono - encontrado]\nBot: \"Perfecto Juan, te identifico como inquilino del inmueble 301. ¿En qué puedo ayudarte?\"\nCliente: [Aún no responde]\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"Juan\",\n  \"telefonoCliente\": \"+51987654321\",\n  \"correoCliente\": \"juan@email.com\",\n  \"persona\": \"inquilino\",\n  \"codigoInmueble\": \"301\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"INQUILINO - CONSULTAS - GENERAL\",\n  \n  \"resumen_solicitud\": \"Cliente identificado, esperando que indique su consulta\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"\",\n  \n  \"requiereTicket\": false,\n  \"detalle_ticket\": \"\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"Hola Juan, ¿en qué puedo ayudarte hoy?\",\n  \"seg_2\": \"¿Hay algo en lo que pueda asistirte? Estoy aquí para lo que necesites\",\n  \n  \"estatusEmbudo\": \"CLIENTE IDENTIFICADO IA\",\n  \"statusId\": 10002,\n  \n  \"clienteIdentificado\": true\n}\n```\n\n---\n\n### **Ejemplo 3: Consulta Resuelta**\n\n**Conversación:**\n```\nBot: \"Perfecto Juan, te identifico como inquilino del inmueble 301. ¿En qué puedo ayudarte?\"\nCliente: \"¿Cómo pago el alquiler?\"\nBot: [HTTP Request - encuentra respuesta]\nBot: \"Para pagar tu alquiler mediante Kashio, sigue estos pasos: [instrucciones completas]\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"Juan\",\n  \"telefonoCliente\": \"+51987654321\",\n  \"correoCliente\": \"juan@email.com\",\n  \"persona\": \"inquilino\",\n  \"codigoInmueble\": \"301\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"INQUILINO - PAGOS - KASHIO\",\n  \n  \"resumen_solicitud\": \"Consulta sobre cómo pagar alquiler mediante Kashio\",\n  \n  \"tiene_solucion\": true,\n  \"descripcion_solucion\": \"Se explicó el proceso completo de pago mediante Kashio con instrucciones detalladas\",\n  \n  \"requiereTicket\": false,\n  \"detalle_ticket\": \"\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"Hola Juan, ¿pudiste revisar las instrucciones de pago por Kashio?\",\n  \"seg_2\": \"¿Te quedó alguna duda sobre el proceso? Con gusto puedo ayudarte\",\n  \n  \"estatusEmbudo\": \"CONSULTA RESUELTA IA\",\n  \"statusId\": 10003,\n  \n  \"clienteIdentificado\": true\n}\n```\n\n---\n\n### **Ejemplo 4: Ticket Urgencia Alta**\n\n**Conversación:**\n```\nBot: \"Perfecto María, te identifico como inquilina del inmueble 205. ¿En qué puedo ayudarte?\"\nCliente: \"Tengo una fuga de agua muy grande en mi baño, está dañando mis muebles\"\nBot: \"Entiendo, es una situación urgente. Un asesor del área de mantenimiento se contactará contigo lo más pronto posible.\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"María\",\n  \"telefonoCliente\": \"+51912345678\",\n  \"correoCliente\": \"maria@email.com\",\n  \"persona\": \"inquilino\",\n  \"codigoInmueble\": \"205\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"INQUILINO - MANTENIMIENTO - FUGA_AGUA\",\n  \n  \"resumen_solicitud\": \"Fuga de agua muy grande en baño del depto 205, está dañando muebles. Requiere atención urgente.\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"\",\n  \n  \"requiereTicket\": true,\n  \"detalle_ticket\": \"Coordinar reparación URGENTE de fuga de agua en baño depto 205. Está causando daños a muebles. Prioridad ALTA - contactar lo más pronto posible.\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"Hola María, el área de mantenimiento se contactará contigo muy pronto. ¿Tienes alguna duda mientras tanto?\",\n  \"seg_2\": \"¿Hay algo más en lo que pueda ayudarte mientras esperas la atención del área de mantenimiento?\",\n  \n  \"estatusEmbudo\": \"TICKET IA\",\n  \"statusId\": 10004,\n  \n  \"clienteIdentificado\": true\n}\n```\n\n---\n\n### **Ejemplo 5: Caso Especial**\n\n**Conversación:**\n```\nBot: \"Perfecto Carlos, te identifico como inquilino del inmueble 102. ¿En qué puedo ayudarte?\"\nCliente: \"¿Puedo subarrendar mi departamento?\"\nBot: [HTTP Request - no encuentra respuesta]\nBot: \"Entiendo tu consulta. No encuentro información específica sobre subarriendo. Un asesor especializado se contactará contigo para revisar las condiciones de tu contrato.\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"Carlos\",\n  \"telefonoCliente\": \"+51998765432\",\n  \"correoCliente\": \"carlos@email.com\",\n  \"persona\": \"inquilino\",\n  \"codigoInmueble\": \"102\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"INQUILINO - CONSULTAS - SUBARRIENDO\",\n  \n  \"resumen_solicitud\": \"Consulta sobre posibilidad de subarrendar su departamento\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"\",\n  \n  \"requiereTicket\": true,\n  \"detalle_ticket\": \"Revisar cláusulas del contrato del inmueble 102 para determinar si permite subarriendo. Responder al inquilino con información específica.\",\n  \n  \"caso_especial\": true,\n  \"detalle_caso_especial\": \"Base de conocimiento no tiene información específica sobre condiciones de subarriendo. Requiere revisión de contrato por asesor especializado.\",\n  \n  \"seg_1\": \"Hola Carlos, un asesor se contactará contigo pronto para revisar tu contrato. ¿Tienes otra consulta mientras tanto?\",\n  \"seg_2\": \"¿Hay algo más en lo que pueda ayudarte mientras esperas la respuesta del asesor?\",\n  \n  \"estatusEmbudo\": \"CASO ESPECIAL IA\",\n  \"statusId\": 10005,\n  \n  \"clienteIdentificado\": true\n}\n```\n\n---\n\n### **Ejemplo 6: Ticket Urgencia Media**\n\n**Conversación:**\n```\nBot: \"Perfecto Luis, te identifico como propietario del inmueble 401. ¿En qué puedo ayudarte?\"\nCliente: \"No he recibido mi pago de este mes\"\nBot: \"Entiendo tu preocupación. Un asesor del área de pagos verificará tu situación y se contactará contigo en un máximo de 48 horas hábiles.\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"Luis\",\n  \"telefonoCliente\": \"+51934567890\",\n  \"correoCliente\": \"luis@email.com\",\n  \"persona\": \"propietario\",\n  \"codigoInmueble\": \"401\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"PROPIETARIO - PAGOS - CONTRAPRESTACION_NO_RECIBIDA\",\n  \n  \"resumen_solicitud\": \"Propietario no recibió pago de contraprestación del mes actual para inmueble 401\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"\",\n  \n  \"requiereTicket\": true,\n  \"detalle_ticket\": \"Verificar con área de pagos por qué no se realizó el depósito de contraprestación al propietario del inmueble 401. Revisar estado del pago y contactar al propietario en máximo 48 horas hábiles.\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"Hola Luis, el área de pagos está verificando tu caso y se contactará contigo pronto. ¿Tienes alguna otra consulta?\",\n  \"seg_2\": \"¿Hay algo más en lo que pueda ayudarte mientras esperas la respuesta del área de pagos?\",\n  \n  \"estatusEmbudo\": \"TICKET IA\",\n  \"statusId\": 10004,\n  \n  \"clienteIdentificado\": true\n}\n```\n\n---\n\n### **Ejemplo 7: Conversación Acumulativa - Múltiples Mensajes**\n\n**Conversación:**\n```\n[Mensaje 1]\nCliente: \"Hola\"\nBot: [Busca - 404]\nBot: \"Hola, no encuentro registro. ¿Tu correo?\"\n\n[Mensaje 2]\nCliente: \"ana@email.com\"\nBot: [Busca por correo - encontrado]\nBot: \"Perfecto Ana, te identifico como inquilina del 503. ¿En qué puedo ayudarte?\"\n\n[Mensaje 3]\nCliente: \"Necesito el código de pago\"\nBot: \"Con gusto, te envío tu código de pago para el inmueble 503: [código]\"\n\n[Mensaje 4]\nCliente: \"Gracias. También quiero saber si puedo cambiar de habitación\"\nBot: \"Entiendo. Para coordinar un cambio de habitación, un asesor se contactará contigo en 48 horas hábiles.\"\n```\n\n**JSON (Análisis de TODA la conversación):**\n```json\n{\n  \"nombreCliente\": \"Ana\",\n  \"telefonoCliente\": \"+51945678901\",\n  \"correoCliente\": \"ana@email.com\",\n  \"persona\": \"inquilino\",\n  \"codigoInmueble\": \"503\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"INQUILINO - CAMBIOS - HABITACION_DEPARTAMENTO\",\n  \n  \"resumen_solicitud\": \"Solicitud de código de pago (ya resuelto). Actualmente solicita cambio de habitación del inmueble 503.\",\n  \n  \"tiene_solucion\": true,\n  \"descripcion_solucion\": \"Se proporcionó el código de pago del inmueble 503\",\n  \n  \"requiereTicket\": true,\n  \"detalle_ticket\": \"Coordinar con área correspondiente sobre solicitud de cambio de habitación de la inquilina Ana del inmueble 503. Validar disponibilidad y condiciones. Contactar en 48 horas hábiles.\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"Hola Ana, un asesor se contactará contigo pronto sobre el cambio de habitación. ¿Tienes alguna otra consulta?\",\n  \"seg_2\": \"¿Hay algo más en lo que pueda ayudarte mientras esperas la respuesta sobre tu cambio?\",\n  \n  \"estatusEmbudo\": \"TICKET IA\",\n  \"statusId\": 10004,\n  \n  \"clienteIdentificado\": true\n}\n```\n\n**NOTA:** El análisis es ACUMULATIVO. Se consideró toda la conversación pero la etapa y categoría reflejan el último requerimiento ACTIVO (cambio de habitación), mencionando brevemente que la consulta del código de pago ya fue resuelta. El campo `tiene_solucion=true` porque SÍ se brindó solución al código de pago.\n\n---\n\n### **Ejemplo 8: Consulta con Solución - RUC de Empresa**\n\n**Conversación:**\n```\nBot: \"Perfecto Sandra, te identifico como inquilina del inmueble 602. ¿En qué puedo ayudarte?\"\nCliente: \"Necesito el RUC de la empresa para mi contabilidad\"\nBot: \"Claro, el RUC de PROPER PERÚ es 20123456789. ¿Necesitas algún otro dato?\"\nCliente: [No responde]\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"Sandra\",\n  \"telefonoCliente\": \"+51956789012\",\n  \"correoCliente\": \"sandra@email.com\",\n  \"persona\": \"inquilino\",\n  \"codigoInmueble\": \"602\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"INQUILINO - CONSULTAS - INFORMACION_EMPRESA\",\n  \n  \"resumen_solicitud\": \"Solicitud del RUC de la empresa para su contabilidad\",\n  \n  \"tiene_solucion\": true,\n  \"descripcion_solucion\": \"Se proporcionó el RUC de PROPER PERÚ (20123456789)\",\n  \n  \"requiereTicket\": false,\n  \"detalle_ticket\": \"\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"Hola Sandra, ¿te sirvió el RUC que te compartí?\",\n  \"seg_2\": \"¿Necesitas algún otro dato de la empresa? Estoy aquí para ayudarte\",\n  \n  \"estatusEmbudo\": \"CONSULTA RESUELTA IA\",\n  \"statusId\": 10003,\n  \n  \"clienteIdentificado\": true\n}\n```\n\n---\n\n### **Ejemplo 9: Envío de Reporte Solicitado**\n\n**Conversación:**\n```\nBot: \"Perfecto Roberto, te identifico como propietario del inmueble 305. ¿En qué puedo ayudarte?\"\nCliente: \"Necesito que me envíes el reporte de ocupación de mi departamento\"\nBot: [Busca información]\nBot: \"Por supuesto, te envío el reporte de ocupación del inmueble 305. [adjunta archivo PDF]\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"Roberto\",\n  \"telefonoCliente\": \"+51967890123\",\n  \"correoCliente\": \"roberto@email.com\",\n  \"persona\": \"propietario\",\n  \"codigoInmueble\": \"305\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"PROPIETARIO - PLATAFORMA - REPORTES\",\n  \n  \"resumen_solicitud\": \"Solicitud de reporte de ocupación del inmueble 305\",\n  \n  \"tiene_solucion\": true,\n  \"descripcion_solucion\": \"Se buscó y envió el reporte de ocupación del inmueble 305 en formato PDF\",\n  \n  \"requiereTicket\": false,\n  \"detalle_ticket\": \"\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"Hola Roberto, ¿pudiste revisar el reporte de ocupación que te envié?\",\n  \"seg_2\": \"¿Necesitas algún otro reporte o información? Con gusto te ayudo\",\n  \n  \"estatusEmbudo\": \"CONSULTA RESUELTA IA\",\n  \"statusId\": 10003,\n  \n  \"clienteIdentificado\": true\n}\n```\n\n---\n\n## ⚡ **REGLAS DE EXTRACCIÓN DE DATOS**\n\n### **TELÉFONO:**\n- Buscar: 9XX XXX XXX, 9XXXXXXXX\n- Agregar +51 si falta\n- Formato final: +51XXXXXXXXX\n- Si NO aparece: \"\"\n\n### **CORREO:**\n- Validar: texto@dominio.extension\n- Convertir a minúsculas\n- Sin espacios\n- Si NO aparece: \"\"\n\n### **NOMBRE:**\n- Extraer del mensaje del bot cuando identifica\n- Primera letra en mayúscula\n- Sin títulos (Sr., Sra., etc.)\n- Si NO aparece: \"\"\n\n### **PERSONA:**\n- Valores válidos: \"inquilino\", \"propietario\", \"proveedor\"\n- Extraer cuando bot dice \"te identifico como...\"\n- Si NO aparece: \"\"\n\n### **CÓDIGO INMUEBLE:**\n- Extraer del mensaje de confirmación del bot\n- Número o alfanumérico\n- Si varios, usar el relevante a la consulta\n- Si NO aparece: \"\"\n\n---\n\n## ⚠️ **CHECKLIST OBLIGATORIO ANTES DE RESPONDER**\n\n```\n□ ¿Leí TODA la conversación desde el inicio hasta el final?\n□ ¿Revisé la infoPrevia si existe?\n□ ¿Extraje SOLO información que está EXPLÍCITAMENTE en la conversación?\n□ ¿NO inventé ningún dato?\n□ ¿El cliente fue identificado por el bot?\n□ ¿La categoria_completa tiene formato: NIVEL_1 - NIVEL_2 - NIVEL_3?\n□ ¿El resumen_solicitud está completo y es claro?\n□ ¿Evalué correctamente si tiene_solucion es true o false?\n□ ¿Si tiene_solucion=true, completé descripcion_solucion?\n□ ¿Si requiereTicket=true, completé detalle_ticket?\n□ ¿Si caso_especial=true, completé detalle_caso_especial?\n□ ¿Los mensajes seg_1 y seg_2 están completos y son contextuales?\n□ ¿El statusId es NUMÉRICO sin comillas?\n□ ¿El estatusEmbudo corresponde al statusId?\n□ ¿Todos los campos requeridos están presentes?\n□ ¿El JSON es válido y está completo?\n```\n\n---\n\n## 🔴 **RECORDATORIO CRÍTICO FINAL**\n\n```\nANTES DE RESPONDER, VERIFICAR:\n\n1. ✅ LEÍSTE TODA LA CONVERSACIÓN COMPLETA\n   → No te saltaste ningún mensaje\n   → Consideraste infoPrevia si existe\n\n2. ✅ NO INVENTASTE INFORMACIÓN\n   → Solo extraes lo que está escrito\n   → Campos vacíos (\"\") si no hay datos\n\n3. ✅ CATEGORIZACIÓN CORRECTA\n   → Formato: \"NIVEL_1 - NIVEL_2 - NIVEL_3\"\n   → Con espacios y guiones correctos\n\n4. ✅ EVALUACIÓN DE SOLUCIÓN\n   → tiene_solucion: true/false correctamente evaluado\n   → Si true → descripcion_solucion lleno\n   → Si false → descripcion_solucion vacío\n\n5. ✅ CAMPOS CONDICIONALES\n   → requiereTicket=true → detalle_ticket lleno\n   → caso_especial=true → detalle_caso_especial lleno\n\n6. ✅ MENSAJES DE SEGUIMIENTO\n   → seg_1 y seg_2 SIEMPRE con contenido\n   → Contextuales a la conversación\n   → Máximo 150 caracteres cada uno\n   → Tono amigable y natural\n\n7. ✅ ETAPA CORRECTA\n   → statusId numérico (10001-10006)\n   → estatusEmbudo correspondiente\n\n8. ✅ JSON COMPLETO Y VÁLIDO\n   → Todos los campos presentes\n   → Sintaxis correcta\n\nRESPONDER SOLO JSON VALIDADO Y COMPLETO\n```\n\n---\n\n## 📖 **REFERENCIA RÁPIDA**\n\n```\nETAPAS:\n10001 - INTERACCION IA (cliente inicia, no identificado)\n10002 - CLIENTE IDENTIFICADO IA (identificado, sin consulta aún)\n10003 - CONSULTA RESUELTA IA (bot resolvió completamente)\n10004 - TICKET IA (requiere intervención humana)\n10005 - CASO ESPECIAL IA (bot sin info o complejo)\n10006 - ASESOR IA (atención humana directa)\n\nCATEGORIZACIÓN:\nNIVEL_1: INQUILINO / PROPIETARIO / NO_IDENTIFICADO\nNIVEL_2: MANTENIMIENTO / PAGOS / ACCESOS / LIMPIEZA / etc.\nNIVEL_3: Descriptor específico (DUCHA / WIFI / etc.)\n\nFORMATO: \"NIVEL_1 - NIVEL_2 - NIVEL_3\"\n```\n\n---\n\n**FIN DEL PROMPT v4.0**"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -5070,63 +4804,102 @@
           "attributes": [
             {
               "name": "nombreCliente",
-              "description": "Nombre completo del cliente o paciente",
+              "description": "Nombre completo extraído de la conversación o \"\"",
               "required": true
             },
             {
               "name": "telefonoCliente",
-              "description": "Número de telefono con código internacional para mexico",
+              "description": "+51XXXXXXXXX o \"\"",
               "required": true
             },
             {
               "name": "correoCliente",
-              "description": "Correo electrónico válido del cliente, si no existe dejarlo en blanco, no inventar. ",
+              "description": "email@domain.com o \"\"",
               "required": true
             },
             {
-              "name": "animo",
-              "description": "Nivel de interés detectado",
+              "name": "persona",
+              "description": "\"inquilino\" / \"propietario\" / \"proveedor\" / \"\"",
+              "required": true
+            },
+            {
+              "name": "codigoInmueble",
+              "description": "Código del inmueble o \"\"",
+              "required": true
+            },
+            {
+              "name": "relacionTitular",
+              "description": "\"pareja\" / \"familiar\" / etc, o \"\" si es titular directo",
+              "required": true
+            },
+            {
+              "name": "categoria_completa",
+              "description": " \"NIVEL_1 - NIVEL_2 - NIVEL_3\" (formato exacto con espacios y guiones)",
+              "required": true
+            },
+            {
+              "name": "resumen_solicitud",
+              "description": "Resumen breve y claro (máx 200 caracteres) de lo que solicita el cliente",
+              "required": true
+            },
+            {
+              "name": "tiene_solucion",
+              "type": "boolean",
+              "description": "true = Se brindó alguna información/respuesta/solución al cliente false = Aún no se ha brindado solución Este campo es INDEPENDIENTE de si requiere ticket o no",
+              "required": true
+            },
+            {
+              "name": "descripcion_solucion",
+              "description": "(SOLO si tiene_solucion = true)  Describir QUÉ solución se brindó o QUÉ información se proporcionó Ser específico sobre la acción realizada Ejemplos: \"Se brindó el RUC de la empresa\", \"Se envió el código de pago\", \"Se explicó el proceso de pago por Kashio\" Si tiene_solucion = false → dejar vacío \"\"",
+              "required": true
+            },
+            {
+              "name": "requiereTicket",
+              "type": "boolean",
+              "description": "true / false  true = Necesita intervención humana false = Bot resolvió o no requiere acción",
+              "required": true
+            },
+            {
+              "name": "detalle_ticket",
+              "description": "(SOLO si requiereTicket = true)  Explicar QUÉ debe hacer el equipo Incluir nivel de urgencia si aplica Ser claro y específico Si requiereTicket = false → dejar vacío \"\"",
+              "required": true
+            },
+            {
+              "name": "caso_especial",
+              "type": "boolean",
+              "description": "true / false  true = Bot no tiene info O cliente pide humano O situación compleja false = Caso normal",
+              "required": true
+            },
+            {
+              "name": "detalle_caso_especial",
+              "description": "(SOLO si caso_especial = true)  Explicar POR QUÉ es caso especial Ser específico Si caso_especial = false → dejar vacío \"\"",
+              "required": true
+            },
+            {
+              "name": "seg_1",
+              "description": "Primer mensaje de seguimiento para el cliente",
+              "required": true
+            },
+            {
+              "name": "seg_2",
+              "description": "Segundo mensaje de seguimiento para el cliente",
               "required": true
             },
             {
               "name": "estatusEmbudo",
-              "description": "Etapa actual del proceso (nombre descriptivo)",
+              "description": "Nombre de la etapa (ver lista arriba)",
               "required": true
             },
             {
               "name": "statusId",
               "type": "number",
-              "description": "Codigo de Status relacionado a etapa (numerico)",
+              "description": "Código numérico SIN comillas (10001-10006)",
               "required": true
             },
             {
-              "name": "solicitud",
-              "description": "breve resumen de la solicitud del cliente",
-              "required": true
-            },
-            {
-              "name": "seg1",
-              "description": "mensaje de seguimiento 1",
-              "required": true
-            },
-            {
-              "name": "seg2",
-              "description": "mensaje de seguimiento 2",
-              "required": true
-            },
-            {
-              "name": "seg3",
-              "description": "mensaje de seguimiento 3",
-              "required": true
-            },
-            {
-              "name": "fecha1",
-              "description": "fecha 1 solicitada por el cliente",
-              "required": true
-            },
-            {
-              "name": "fecha2",
-              "description": "fecha 2 solicitada por el cliente",
+              "name": "clienteIdentificado",
+              "type": "boolean",
+              "description": "true / false  true = Bot confirmó identificación con datos completos false = Cliente NO identificado aún",
               "required": true
             }
           ]
@@ -5247,45 +5020,69 @@
           "lead": [
             {
               "id": "={{ $('new message').item.json.body['message[add][0][entity_id]'] }}",
-              "pipeline_id": 11240224,
-              "status_id": "={{ Number($('Information Extractor4').item.json.output.statusId) }}",
+              "pipeline_id": "=",
+              "status_id": "=",
               "custom_fields_values": {
                 "custom_field": [
                   {
-                    "data": "{\"id\":798329,\"type\":\"text\"}",
-                    "value": "={{ $('Information Extractor4').item.json.output.nombreCliente }}"
+                    "data": "{\"id\":798799,\"type\":\"text\"}",
+                    "value": "={{ $json.output.persona }}"
                   },
                   {
-                    "data": "{\"id\":798347,\"type\":\"text\"}",
-                    "value": "={{ $('Information Extractor4').item.json.output.estatusEmbudo }}"
+                    "data": "{\"id\":798801,\"type\":\"text\"}",
+                    "value": "={{ $json.output.codigoInmueble }}"
                   },
                   {
-                    "data": "{\"id\":798343,\"type\":\"text\"}",
-                    "value": "={{ $('Information Extractor4').item.json.output.animo }}"
+                    "data": "{\"id\":798803,\"type\":\"text\"}",
+                    "value": "={{ $json.output.relacionTitular }}"
                   },
                   {
-                    "data": "{\"id\":798337,\"type\":\"textarea\"}",
-                    "value": "={{ $('Information Extractor4').item.json.output.seg1 }}"
+                    "data": "{\"id\":798805,\"type\":\"text\"}",
+                    "value": "={{ $json.output.categoria_completa }}"
                   },
                   {
-                    "data": "{\"id\":798339,\"type\":\"textarea\"}",
-                    "value": "={{ $('Information Extractor4').item.json.output.seg2 }}"
+                    "data": "{\"id\":798807,\"type\":\"textarea\"}",
+                    "value": "={{ $json.output.resumen_solicitud }}"
                   },
                   {
-                    "data": "{\"id\":798341,\"type\":\"textarea\"}",
-                    "value": "={{ $('Information Extractor4').item.json.output.seg3 }}"
+                    "data": "{\"id\":798835,\"type\":\"checkbox\"}",
+                    "value": "={{ $json.output.tiene_solucion }}"
                   },
                   {
-                    "data": "{\"id\":798335,\"type\":\"text\"}",
-                    "value": "={{ $('Information Extractor4').item.json.output.fecha1 }}"
+                    "data": "{\"id\":798837,\"type\":\"textarea\"}",
+                    "value": "={{ $json.output.descripcion_solucion }}"
                   },
                   {
-                    "data": "{\"id\":798349,\"type\":\"text\"}",
-                    "value": "={{ $('Information Extractor4').item.json.output.fecha2 }}"
+                    "data": "{\"id\":798809,\"type\":\"text\"}",
+                    "value": "={{ $json.output.requiereTicket }}"
                   },
                   {
-                    "data": "{\"id\":798463,\"type\":\"text\"}",
-                    "value": "NUEVO"
+                    "data": "{\"id\":798811,\"type\":\"textarea\"}",
+                    "value": "={{ $json.output.detalle_ticket }}"
+                  },
+                  {
+                    "data": "{\"id\":798813,\"type\":\"checkbox\"}",
+                    "value": "={{ $json.output.caso_especial }}"
+                  },
+                  {
+                    "data": "{\"id\":798815,\"type\":\"textarea\"}",
+                    "value": "={{ $json.output.detalle_caso_especial }}"
+                  },
+                  {
+                    "data": "{\"id\":798825,\"type\":\"textarea\"}",
+                    "value": "={{ $json.output.seg_1 }}"
+                  },
+                  {
+                    "data": "{\"id\":798827,\"type\":\"textarea\"}",
+                    "value": "={{ $json.output.seg_2 }}"
+                  },
+                  {
+                    "data": "{\"id\":798817,\"type\":\"text\"}",
+                    "value": "={{ $json.output.estatusEmbudo }}"
+                  },
+                  {
+                    "data": "{\"id\":798819,\"type\":\"checkbox\"}",
+                    "value": "={{ $json.output.clienteIdentificado }}"
                   }
                 ]
               }
@@ -5296,7 +5093,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        5840,
+        5440,
         2448
       ],
       "id": "e421e3fe-21bc-421f-9d5c-72e7a890efba",
@@ -5605,71 +5402,304 @@
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "8555f2b5-2479-4ffd-a99f-965fd2e26690",
-              "leftValue": "={{ $('new message').item.json.body[\"account[subdomain]\"] }}",
-              "rightValue": "TEST",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
+        "promptType": "define",
+        "text": "=**Mensaje proveniente del Cliente:** {{ $('Chat input').item.json.chat_input }}\n\n**Respuesta del bot:** {{ $('Respuesta2').item.json.output }}\n\n**Info previa:** {{ $node[\"Chat input\"].json.infoPrevia }}",
+        "options": {
+          "systemMessage": "=# 🤖 PROPER IA ANALYZER v4.0 - SISTEMA DE ANÁLISIS SIMPLIFICADO\n\n**Fecha actual:** {{ \n  new Date($now).toLocaleDateString(\"es-PE\", {\n    weekday: \"long\", \n    day: \"numeric\", \n    month: \"long\", \n    year: \"numeric\"\n  }) \n  + \", \" +\n  new Date($now).toLocaleTimeString(\"es-PE\", {\n    hour: \"numeric\", \n    minute: \"2-digit\", \n    hour12: true,\n    timeZone: \"America/Lima\"\n  })\n}} | **Zona horaria:** América/Lima\n\n---\n\n## 🚨 **MANDATO SUPREMO**\n```\n🔴 RESPONDER ÚNICAMENTE JSON COMPLETO Y VÁLIDO\n🔴 LEER Y ANALIZAR TODA LA CONVERSACIÓN COMPLETA\n🔴 NO INVENTAR - SOLO EXTRAER INFORMACIÓN REAL\n🔴 CATEGORIZAR SEGÚN SISTEMA DE 3 NIVELES\n🔴 DETERMINAR ETAPA CORRECTA\n🔴 SER PRECISO Y EXACTO\n```\n\n---\n\n## 📊 **SISTEMA DE CATEGORIZACIÓN**\n\n### **ESTRUCTURA OBLIGATORIA:**\n```\nNIVEL_1 - NIVEL_2 - NIVEL_3\n```\n\n**NIVEL 1: Tipo de Usuario**\n- `INQUILINO`\n- `PROPIETARIO`\n- `NO_IDENTIFICADO`\n\n**NIVEL 2: Área/Tema**\n- `MANTENIMIENTO` - Reparaciones, fallas, averías\n- `LIMPIEZA` - Servicios de limpieza\n- `PAGOS` - Transacciones, códigos de pago, depósitos\n- `FACTURACION` - Comprobantes, recibos, facturas\n- `ACCESOS` - Llaves, huellas, WiFi, credenciales, login\n- `CAMBIOS` - Cambio de habitación, depto, cochera\n- `SERVICIOS` - Amenidades (bicicletas, parrillas, gym)\n- `PLATAFORMA` - Sistemas digitales (propietarios)\n- `VISITAS` - Visitas al departamento (propietarios)\n- `REFERIDOS` - Recomendaciones de nuevos inquilinos\n- `CONSULTAS` - Preguntas informativas generales\n- `QUEJAS` - Reclamos\n- `IDENTIFICACION` - Proceso de identificar usuario (NO_IDENTIFICADO)\n- `SALUDOS` - Mensajes de inicio/cierre (NO_IDENTIFICADO)\n- `OTROS` - Casos no categorizables\n\n**NIVEL 3: Subtema Específico**\n- Descriptor del problema/acción específica\n- Ejemplos: `DUCHA`, `ASCENSORES`, `WIFI`, `ROLLERS`, `CODIGO_RENTA`, `RECIBO_LUZ`, `HUELLAS`, `BICICLETAS`, `PROBLEMA_LOGIN`, `FUGA_AGUA`, `CONTRAPRESTACION_NO_RECIBIDA`, etc.\n- Si no hay subtema claro: `GENERAL`\n\n### **EJEMPLOS DE CATEGORIZACIÓN:**\n```\n✅ INQUILINO - MANTENIMIENTO - DUCHA\n✅ INQUILINO - LIMPIEZA - ASCENSORES\n✅ INQUILINO - PAGOS - CODIGO_RENTA\n✅ INQUILINO - FACTURACION - RECIBO_LUZ\n✅ INQUILINO - ACCESOS - WIFI\n✅ INQUILINO - SERVICIOS - BICICLETAS\n✅ INQUILINO - CAMBIOS - HABITACION_DEPARTAMENTO\n✅ PROPIETARIO - PAGOS - CONTRAPRESTACION_NO_RECIBIDA\n✅ PROPIETARIO - ACCESOS - PROBLEMA_LOGIN\n✅ PROPIETARIO - PLATAFORMA - CARGA_DECLARACION\n✅ PROPIETARIO - VISITAS - SOLICITUD_VISITA_DEPTO\n✅ NO_IDENTIFICADO - IDENTIFICACION - PENDIENTE\n✅ NO_IDENTIFICADO - CONSULTAS - INFORMACION_ALQUILER\n✅ NO_IDENTIFICADO - SALUDOS - INICIAL\n```\n\n---\n\n## ⚡ **PROCESO DE ANÁLISIS - OBLIGATORIO**\n\n### **PASO 1: LECTURA COMPLETA (CRÍTICO)**\n✅ Lee TODO el historial de mensajes desde el INICIO hasta el FINAL\n✅ Revisa información previa (infoPrevia) si existe\n✅ NO te saltes ningún mensaje\n✅ NO inventes información que no está en la conversación\n✅ Identifica el flujo completo de la conversación\n\n### **PASO 2: EXTRACCIÓN DE DATOS**\n✅ Busca y extrae: nombre, teléfono, correo, persona, codigoInmueble\n✅ SOLO extrae lo que está EXPLÍCITAMENTE mencionado\n✅ Si un dato NO aparece, déjalo vacío (\"\")\n✅ NO asumas información\n\n### **PASO 3: IDENTIFICACIÓN DE USUARIO**\n✅ ¿El bot confirmó la identificación del cliente?\n✅ ¿Tiene datos completos? (nombre, persona, codigoInmueble)\n✅ ¿Qué tipo de perfil? (inquilino/propietario/no identificado)\n\n### **PASO 4: COMPRENSIÓN DE LA SOLICITUD**\n✅ ¿Qué está solicitando el cliente EXACTAMENTE?\n✅ ¿Es una consulta nueva o continuación?\n✅ ¿Ya se resolvió o está pendiente?\n✅ Resume la solicitud de forma clara y precisa\n\n### **PASO 5: CATEGORIZACIÓN**\n✅ Asignar categoría completa de 3 niveles\n✅ Debe reflejar el tema principal de la conversación\n✅ Debe ser específica y descriptiva\n\n### **PASO 6: DETERMINACIÓN DE ETAPA**\n✅ Identifica en qué etapa del flujo está la conversación\n✅ Usa el algoritmo de detección\n✅ Asigna el estatusEmbudo y statusId correcto\n\n---\n\n## 🔄 **ETAPAS DEL FLUJO - SIMPLIFICADO**\n\n### **10001 - INTERACCION IA**\n**Descripción:** Cliente inició conversación pero aún no proporciona información para identificarse\n**Cuándo usar:**\n- Cliente dice \"Hola\", \"Buenos días\", \"Tengo una consulta\"\n- Bot NO ha ejecutado búsqueda aún\n- Cliente NO ha dado correo/DNI/teléfono\n- Conversación recién comienza\n\n### **10002 - CLIENTE IDENTIFICADO IA**\n**Descripción:** Bot identificó exitosamente al cliente y está listo para atender\n**Cuándo usar:**\n- Bot confirmó: \"Te identifico como [inquilino/propietario] del inmueble [código]\"\n- Tiene: nombre, persona, codigoInmueble\n- Bot pregunta: \"¿En qué puedo ayudarte?\"\n- Cliente identificado pero aún no hace consulta específica\n\n### **10003 - CONSULTA RESUELTA IA**\n**Descripción:** Bot encontró respuesta y resolvió completamente la consulta del cliente\n**Cuándo usar:**\n- Bot proporcionó información completa\n- Bot compartió link/manual/instrucciones\n- Cliente recibió respuesta satisfactoria\n- NO requiere intervención humana\n- Ejemplos: \"¿Cómo pago?\" → Bot explica Kashio\n\n### **10004 - TICKET IA**\n**Descripción:** Requiere creación de ticket para intervención del equipo humano\n**Cuándo usar:**\n- Requiere coordinación con área específica\n- Necesita acción del equipo (mantenimiento, pagos, administración)\n- Bot indica: \"Un asesor se contactará contigo\"\n- Cualquier nivel de urgencia (baja, media, alta)\n- Ejemplos: reparaciones, verificar pagos, coordinar cambios\n\n### **10005 - CASO ESPECIAL IA**\n**Descripción:** Bot no tiene información o situación compleja que requiere atención especializada\n**Cuándo usar:**\n- Bot NO encontró información en base de conocimiento\n- Bot dice: \"No encuentro información sobre...\"\n- Cliente pide hablar con persona/asesor específicamente\n- Consulta muy compleja o fuera del alcance del bot\n- Información contradictoria o confusa\n- **SIEMPRE requiere explicar en detalle_caso_especial POR QUÉ es caso especial**\n\n### **10006 - ASESOR IA**\n**Descripción:** Cliente está siendo atendido por un asesor humano o fue transferido\n**Cuándo usar:**\n- Se detecta que un humano está respondiendo (no es bot)\n- Cliente fue transferido explícitamente a asesor\n- Conversación ya NO es con IA\n- **NOTA:** Esta etapa es poco común, solo usar si es evidente\n\n---\n\n## 🎯 **ALGORITMO DE DETECCIÓN**\n\n```python\ndef detectar_etapa():\n    # 1. Verificar si es asesor humano\n    if conversacion_con_humano():\n        return 10006  # ASESOR IA\n    \n    # 2. Verificar si cliente NO está identificado\n    if not cliente_tiene_datos_basicos():\n        return 10001  # INTERACCION IA\n    \n    # 3. Cliente identificado - evaluar siguiente paso\n    if cliente_identificado():\n        \n        # 3a. ¿Ya hizo consulta específica?\n        if not cliente_hizo_consulta_especifica():\n            return 10002  # CLIENTE IDENTIFICADO IA\n        \n        # 3b. ¿Es caso especial?\n        if bot_no_tiene_info() or cliente_pide_humano():\n            return 10005  # CASO ESPECIAL IA\n        \n        # 3c. ¿Bot resolvió la consulta?\n        if bot_dio_respuesta_completa() and no_requiere_accion_humana():\n            return 10003  # CONSULTA RESUELTA IA\n        \n        # 3d. ¿Requiere ticket/acción humana?\n        if requiere_intervencion_humana():\n            return 10004  # TICKET IA\n        \n        # Por defecto: Cliente identificado esperando\n        return 10002  # CLIENTE IDENTIFICADO IA\n```\n\n---\n\n## 🔥 **CRITERIOS DE URGENCIA (Para Tickets)**\n\n### **URGENCIA ALTA:**\n- **Palabras clave:** \"fuga\", \"filtración\", \"inundación\", \"problema eléctrico\", \"sin luz\", \"urgente\", \"emergencia\", \"daño\", \"riesgo\"\n- **Contexto:** Afecta seguridad o habitabilidad inmediata\n- **Bot dice:** \"lo más pronto posible\", \"urgente\", \"prioritario\"\n\n### **URGENCIA MEDIA:**\n- **Palabras clave:** \"coordinar\", \"reparación\", \"arreglo\", \"cobro extraño\", \"duda pago\", \"aire acondicionado\"\n- **Contexto:** Debe resolverse pronto pero no es emergencia\n- **Bot dice:** \"48 horas hábiles\"\n\n### **URGENCIA BAJA:**\n- **Palabras clave:** \"consulta\", \"información\", \"factura\", \"contrato\", \"¿cómo...?\", \"¿cuándo...?\"\n- **Contexto:** Solo información administrativa o coordinación simple\n\n---\n\n## 📝 **ESTRUCTURA JSON OBLIGATORIA**\n\n```json\n{\n  \"nombreCliente\": \"\",\n  \"telefonoCliente\": \"\",\n  \"correoCliente\": \"\",\n  \"persona\": \"\",\n  \"codigoInmueble\": \"\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"\",\n  \n  \"resumen_solicitud\": \"\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"\",\n  \n  \"requiereTicket\": false,\n  \"detalle_ticket\": \"\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"\",\n  \"seg_2\": \"\",\n  \n  \"estatusEmbudo\": \"\",\n  \"statusId\": 0,\n  \n  \"clienteIdentificado\": false\n}\n```\n\n### **DESCRIPCIÓN DE CADA CAMPO:**\n\n**DATOS DEL CLIENTE:**\n- `nombreCliente`: Nombre completo extraído de la conversación o \"\"\n- `telefonoCliente`: +51XXXXXXXXX o \"\"\n- `correoCliente`: email@domain.com o \"\"\n- `persona`: \"inquilino\" / \"propietario\" / \"proveedor\" / \"\"\n- `codigoInmueble`: Código del inmueble o \"\"\n- `relacionTitular`: \"pareja\" / \"familiar\" / etc, o \"\" si es titular directo\n\n**CATEGORIZACIÓN:**\n- `categoria_completa`: \"NIVEL_1 - NIVEL_2 - NIVEL_3\" (formato exacto con espacios y guiones)\n\n**SOLICITUD:**\n- `resumen_solicitud`: Resumen breve y claro (máx 200 caracteres) de lo que solicita el cliente\n  - ✅ SIEMPRE llenar si cliente hizo consulta\n  - ✅ Ser específico y claro\n  - ✅ Mencionar detalles relevantes\n  - ❌ NUNCA dejar vacío si hay consulta\n\n**SOLUCIÓN:**\n- `tiene_solucion`: true / false\n  - true = Se brindó alguna información/respuesta/solución al cliente\n  - false = Aún no se ha brindado solución\n  - Este campo es INDEPENDIENTE de si requiere ticket o no\n- `descripcion_solucion`: (SOLO si tiene_solucion = true)\n  - Describir QUÉ solución se brindó o QUÉ información se proporcionó\n  - Ser específico sobre la acción realizada\n  - Ejemplos: \"Se brindó el RUC de la empresa\", \"Se envió el código de pago\", \"Se explicó el proceso de pago por Kashio\"\n  - Si tiene_solucion = false → dejar vacío \"\"\n\n**TICKET:**\n- `requiereTicket`: true / false\n  - true = Necesita intervención humana\n  - false = Bot resolvió o no requiere acción\n- `detalle_ticket`: (SOLO si requiereTicket = true)\n  - Explicar QUÉ debe hacer el equipo\n  - Incluir nivel de urgencia si aplica\n  - Ser claro y específico\n  - Si requiereTicket = false → dejar vacío \"\"\n\n**CASO ESPECIAL:**\n- `caso_especial`: true / false\n  - true = Bot no tiene info O cliente pide humano O situación compleja\n  - false = Caso normal\n- `detalle_caso_especial`: (SOLO si caso_especial = true)\n  - Explicar POR QUÉ es caso especial\n  - Ser específico\n  - Si caso_especial = false → dejar vacío \"\"\n\n**MENSAJES DE SEGUIMIENTO:**\n- `seg_1`: Primer mensaje de seguimiento para el cliente\n  - ✅ SIEMPRE debe tener contenido\n  - ✅ Mensaje contextual relacionado con la conversación actual\n  - ✅ Propósito: Reactivar conversación si el cliente deja en visto\n  - ✅ Tono amigable, profesional, corto, invita a continuar\n  - ✅ Máximo 150 caracteres\n  - ❌ NO USAR EMOJIS (crítico)\n  - **Ejemplos correctos:**\n    - \"Hola Juan, ¿pudiste revisar la información que te compartí?\"\n    - \"Hola María, ¿lograste resolver tu consulta o necesitas algo más?\"\n    - \"Hola Carlos, ¿quedó clara la información sobre el pago?\"\n  \n- `seg_2`: Segundo mensaje de seguimiento para el cliente\n  - ✅ SIEMPRE debe tener contenido\n  - ✅ Mensaje contextual si el cliente sigue sin responder después de seg_1\n  - ✅ Propósito: Segunda oportunidad de reactivar conversación\n  - ✅ Puede ofrecer ayuda adicional o preguntar si necesita algo más\n  - ✅ Máximo 150 caracteres\n  - ❌ NO USAR EMOJIS (crítico)\n  - **Ejemplos correctos:**\n    - \"¿Hay algo más en lo que pueda ayudarte? Estoy aquí para lo que necesites.\"\n    - \"Si tienes alguna otra consulta, no dudes en escribirme.\"\n    - \"¿Necesitas que te explique algo más o está todo claro?\"\n\n**ETAPA:**\n- `estatusEmbudo`: Nombre de la etapa (ver lista arriba)\n- `statusId`: Código numérico SIN comillas (10001-10006)\n\n**FLAG:**\n- `clienteIdentificado`: true / false\n  - true = Bot confirmó identificación con datos completos\n  - false = Cliente NO identificado aún\n\n---\n\n## 📋 **REGLAS CRÍTICAS DE LLENADO**\n\n### **1. SIEMPRE REVISAR TODA LA CONVERSACIÓN**\n- Lee TODOS los mensajes desde el inicio\n- NO te saltes mensajes intermedios\n- Considera el contexto completo\n- Busca información en TODO el historial\n\n### **2. NO INVENTAR INFORMACIÓN**\n- Si un dato NO aparece en la conversación → dejar vacío (\"\")\n- NO asumir valores\n- NO inventar nombres, correos, teléfonos\n- SOLO extraer lo que está EXPLÍCITAMENTE escrito\n\n### **3. resumen_solicitud**\n✅ **SIEMPRE llenar si el cliente hizo una consulta o solicitud**\n✅ Máximo 200 caracteres\n✅ Claro, específico y preciso\n✅ Incluir detalles relevantes (inmueble, tipo de problema)\n❌ NUNCA dejar vacío si hay consulta activa\n\n**Ejemplos correctos:**\n```\n✅ \"Consulta sobre cómo pagar alquiler mediante Kashio\"\n✅ \"Fuga de agua en baño del depto 205 que daña muebles. Urgente.\"\n✅ \"Solicita cambio de habitación del inmueble 503\"\n✅ \"Propietario no recibió pago de contraprestación del mes\"\n✅ \"Consulta sobre posibilidad de subarrendar departamento\"\n✅ \"Solicita código WiFi para conectarse\"\n```\n\n### **4. requiereTicket y detalle_ticket**\n- Si `requiereTicket = true` → DEBES llenar `detalle_ticket`\n- Si `requiereTicket = false` → `detalle_ticket` debe ser \"\"\n- `detalle_ticket` debe explicar QUÉ debe hacer el equipo\n\n**Ejemplos correctos:**\n```\n✅ \"Coordinar reparación urgente de fuga en baño depto 205\"\n✅ \"Verificar por qué no aparece pago pendiente en sistema\"\n✅ \"Revisar contrato inmueble 102 sobre condiciones de subarriendo\"\n✅ \"Validar pago de contraprestación no recibido por propietario del inmueble 401\"\n✅ \"Coordinar cambio de habitación de inquilina del inmueble 503\"\n```\n\n### **5. caso_especial y detalle_caso_especial**\n- Si `caso_especial = true` → DEBES llenar `detalle_caso_especial`\n- Si `caso_especial = false` → `detalle_caso_especial` debe ser \"\"\n- `detalle_caso_especial` debe explicar POR QUÉ es caso especial\n\n**Ejemplos correctos:**\n```\n✅ \"Base de conocimiento no tiene información sobre condiciones de subarriendo\"\n✅ \"Cliente solicita hablar directamente con un asesor humano\"\n✅ \"Consulta muy específica sobre cláusula contractual que requiere revisión especializada\"\n✅ \"Bot no encontró información sobre este tipo de servicio en su base de datos\"\n✅ \"Situación compleja con múltiples problemas que requiere evaluación integral\"\n```\n\n### **6. categoria_completa**\n✅ SIEMPRE usar formato: \"NIVEL_1 - NIVEL_2 - NIVEL_3\"\n✅ Con espacios antes y después de los guiones\n✅ Todo en MAYÚSCULAS\n✅ Sin tildes ni caracteres especiales\n\n### **7. tiene_solucion y descripcion_solucion**\n\n**tiene_solucion:**\n- `true`: Cuando el bot YA brindó alguna información, respuesta o solución al cliente\n- `false`: Cuando aún NO se ha proporcionado ninguna solución\n\n**descripcion_solucion (SOLO si tiene_solucion = true):**\n✅ Describir QUÉ información o solución se brindó\n✅ Ser específico sobre la acción realizada\n✅ Usar tiempo pasado (\"se brindó\", \"se envió\", \"se explicó\")\n✅ Máximo 150 caracteres\n❌ Dejar vacío (\"\") si tiene_solucion = false\n\n**Ejemplos correctos:**\n```\ntiene_solucion: true\ndescripcion_solucion: \"Se brindó el RUC de la empresa\"\n\ntiene_solucion: true\ndescripcion_solucion: \"Se envió el código de pago del inmueble 301\"\n\ntiene_solucion: true\ndescripcion_solucion: \"Se explicó el proceso completo de pago mediante Kashio con manual incluido\"\n\ntiene_solucion: true\ndescripcion_solucion: \"Se proporcionó la clave WiFi y nombre de red\"\n\ntiene_solucion: true\ndescripcion_solucion: \"Se buscó información de informes del cliente Juan y se enviaron los reportes solicitados\"\n\ntiene_solucion: false\ndescripcion_solucion: \"\"  (cuando aún no se ha dado solución)\n```\n\n**IMPORTANTE:** Este campo es independiente de si requiere ticket. Puede haber casos donde:\n- tiene_solucion=true y requiereTicket=false (bot resolvió todo)\n- tiene_solucion=true y requiereTicket=true (bot dio info parcial pero requiere seguimiento)\n- tiene_solucion=false y requiereTicket=true (aún no hay solución, se escaló)\n\n### **8. seg_1 y seg_2 (Mensajes de Seguimiento)**\n\n**REGLAS GENERALES:**\n✅ SIEMPRE deben tener contenido (nunca vacíos)\n✅ Máximo 150 caracteres cada uno\n✅ Tono amigable, natural y cercano\n✅ Contextuales a la conversación actual\n✅ Incluir el nombre del cliente si está disponible\n❌ **NO USAR EMOJIS** (crítico)\n\n**seg_1 (Primer seguimiento):**\n- Propósito: Reactivar conversación si cliente deja en visto\n- Referencia a la información compartida o consulta realizada\n- Pregunta si pudo revisar o si tiene dudas\n- Tono: Amigable, no insistente\n\n**Ejemplos de seg_1:**\n```\n\"Hola Juan, ¿pudiste revisar el código de pago que te compartí?\"\n\"Hola María, ¿te quedó alguna duda sobre el proceso de pago? Estoy aquí para ayudarte\"\n\"¿Lograste ver la información que te envié sobre Kashio?\"\n\"Hola Carlos, ¿necesitas algo más sobre tu consulta de cambio de habitación?\"\n\"¿Pudiste revisar el manual? Si tienes alguna pregunta, con gusto te ayudo\"\n```\n\n**seg_2 (Segundo seguimiento):**\n- Propósito: Segunda oportunidad de reactivar conversación\n- Ofrecer ayuda adicional\n- Preguntar si necesita algo más\n- Dejar la puerta abierta para futuras consultas\n- Tono: Servicial, cierra con ofrecimiento de ayuda\n\n**Ejemplos de seg_2:**\n```\n\"¿Hay algo más en lo que pueda ayudarte? Estoy aquí cuando me necesites\"\n\"Si necesitas cualquier otra información, no dudes en escribirme\"\n\"¿Todo quedó claro con tu consulta? Aquí estoy para lo que necesites\"\n\"Si tienes alguna otra pregunta, con gusto te ayudo\"\n\"Cualquier duda adicional, puedes contactarme. Que tengas un buen día\"\n```\n\n**CONSIDERACIONES ESPECIALES:**\n\n**Si el cliente NO está identificado:**\n```\nseg_1: \"Hola, ¿sigues ahí? ¿Puedo ayudarte con algo?\"\nseg_2: \"Estoy disponible si necesitas asistencia. ¿En qué puedo ayudarte?\"\n```\n\n**Si la consulta fue resuelta:**\n```\nseg_1: \"¿La información que te compartí te fue útil?\"\nseg_2: \"Si necesitas algo más, aquí estoy para ayudarte\"\n```\n\n**Si requiere ticket o caso especial:**\n```\nseg_1: \"Un asesor se contactará contigo pronto. ¿Tienes alguna duda mientras tanto?\"\nseg_2: \"¿Hay algo más que pueda ayudarte mientras esperas la atención del asesor?\"\n```\n\n### **9. statusId**\n✅ SIEMPRE numérico SIN comillas\n✅ Solo valores válidos: 10001, 10002, 10003, 10004, 10005, 10006\n❌ NO usar: \"10001\", 10007, 10008, etc.\n\n---\n\n## 🔍 **EJEMPLOS COMPLETOS**\n\n### **Ejemplo 1: Interacción Inicial**\n\n**Conversación:**\n```\nCliente: \"Hola, buenos días\"\nBot: [Ejecuta búsqueda por teléfono]\nBot: \"Hola, no encuentro un registro con tu número. ¿Podrías brindarme tu correo electrónico?\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"\",\n  \"telefonoCliente\": \"+51923456789\",\n  \"correoCliente\": \"\",\n  \"persona\": \"\",\n  \"codigoInmueble\": \"\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"NO_IDENTIFICADO - IDENTIFICACION - PENDIENTE\",\n  \n  \"resumen_solicitud\": \"Cliente saludó pero aún no proporciona datos para identificarse\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"\",\n  \n  \"requiereTicket\": false,\n  \"detalle_ticket\": \"\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"Hola, ¿sigues por ahí? Estoy listo para ayudarte con lo que necesites\",\n  \"seg_2\": \"¿Hay algo en lo que pueda asistirte? Estoy disponible cuando quieras\",\n  \n  \"estatusEmbudo\": \"INTERACCION IA\",\n  \"statusId\": 10001,\n  \n  \"clienteIdentificado\": false\n}\n```\n\n---\n\n### **Ejemplo 2: Cliente Identificado**\n\n**Conversación:**\n```\nCliente: \"Hola\"\nBot: [Busca por teléfono - encontrado]\nBot: \"Perfecto Juan, te identifico como inquilino del inmueble 301. ¿En qué puedo ayudarte?\"\nCliente: [Aún no responde]\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"Juan\",\n  \"telefonoCliente\": \"+51987654321\",\n  \"correoCliente\": \"juan@email.com\",\n  \"persona\": \"inquilino\",\n  \"codigoInmueble\": \"301\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"INQUILINO - CONSULTAS - GENERAL\",\n  \n  \"resumen_solicitud\": \"Cliente identificado, esperando que indique su consulta\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"\",\n  \n  \"requiereTicket\": false,\n  \"detalle_ticket\": \"\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"Hola Juan, ¿en qué puedo ayudarte hoy?\",\n  \"seg_2\": \"¿Hay algo en lo que pueda asistirte? Estoy aquí para lo que necesites\",\n  \n  \"estatusEmbudo\": \"CLIENTE IDENTIFICADO IA\",\n  \"statusId\": 10002,\n  \n  \"clienteIdentificado\": true\n}\n```\n\n---\n\n### **Ejemplo 3: Consulta Resuelta**\n\n**Conversación:**\n```\nBot: \"Perfecto Juan, te identifico como inquilino del inmueble 301. ¿En qué puedo ayudarte?\"\nCliente: \"¿Cómo pago el alquiler?\"\nBot: [HTTP Request - encuentra respuesta]\nBot: \"Para pagar tu alquiler mediante Kashio, sigue estos pasos: [instrucciones completas]\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"Juan\",\n  \"telefonoCliente\": \"+51987654321\",\n  \"correoCliente\": \"juan@email.com\",\n  \"persona\": \"inquilino\",\n  \"codigoInmueble\": \"301\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"INQUILINO - PAGOS - KASHIO\",\n  \n  \"resumen_solicitud\": \"Consulta sobre cómo pagar alquiler mediante Kashio\",\n  \n  \"tiene_solucion\": true,\n  \"descripcion_solucion\": \"Se explicó el proceso completo de pago mediante Kashio con instrucciones detalladas\",\n  \n  \"requiereTicket\": false,\n  \"detalle_ticket\": \"\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"Hola Juan, ¿pudiste revisar las instrucciones de pago por Kashio?\",\n  \"seg_2\": \"¿Te quedó alguna duda sobre el proceso? Con gusto puedo ayudarte\",\n  \n  \"estatusEmbudo\": \"CONSULTA RESUELTA IA\",\n  \"statusId\": 10003,\n  \n  \"clienteIdentificado\": true\n}\n```\n\n---\n\n### **Ejemplo 4: Ticket Urgencia Alta**\n\n**Conversación:**\n```\nBot: \"Perfecto María, te identifico como inquilina del inmueble 205. ¿En qué puedo ayudarte?\"\nCliente: \"Tengo una fuga de agua muy grande en mi baño, está dañando mis muebles\"\nBot: \"Entiendo, es una situación urgente. Un asesor del área de mantenimiento se contactará contigo lo más pronto posible.\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"María\",\n  \"telefonoCliente\": \"+51912345678\",\n  \"correoCliente\": \"maria@email.com\",\n  \"persona\": \"inquilino\",\n  \"codigoInmueble\": \"205\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"INQUILINO - MANTENIMIENTO - FUGA_AGUA\",\n  \n  \"resumen_solicitud\": \"Fuga de agua muy grande en baño del depto 205, está dañando muebles. Requiere atención urgente.\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"\",\n  \n  \"requiereTicket\": true,\n  \"detalle_ticket\": \"Coordinar reparación URGENTE de fuga de agua en baño depto 205. Está causando daños a muebles. Prioridad ALTA - contactar lo más pronto posible.\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"Hola María, el área de mantenimiento se contactará contigo muy pronto. ¿Tienes alguna duda mientras tanto?\",\n  \"seg_2\": \"¿Hay algo más en lo que pueda ayudarte mientras esperas la atención del área de mantenimiento?\",\n  \n  \"estatusEmbudo\": \"TICKET IA\",\n  \"statusId\": 10004,\n  \n  \"clienteIdentificado\": true\n}\n```\n\n---\n\n### **Ejemplo 5: Caso Especial**\n\n**Conversación:**\n```\nBot: \"Perfecto Carlos, te identifico como inquilino del inmueble 102. ¿En qué puedo ayudarte?\"\nCliente: \"¿Puedo subarrendar mi departamento?\"\nBot: [HTTP Request - no encuentra respuesta]\nBot: \"Entiendo tu consulta. No encuentro información específica sobre subarriendo. Un asesor especializado se contactará contigo para revisar las condiciones de tu contrato.\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"Carlos\",\n  \"telefonoCliente\": \"+51998765432\",\n  \"correoCliente\": \"carlos@email.com\",\n  \"persona\": \"inquilino\",\n  \"codigoInmueble\": \"102\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"INQUILINO - CONSULTAS - SUBARRIENDO\",\n  \n  \"resumen_solicitud\": \"Consulta sobre posibilidad de subarrendar su departamento\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"\",\n  \n  \"requiereTicket\": true,\n  \"detalle_ticket\": \"Revisar cláusulas del contrato del inmueble 102 para determinar si permite subarriendo. Responder al inquilino con información específica.\",\n  \n  \"caso_especial\": true,\n  \"detalle_caso_especial\": \"Base de conocimiento no tiene información específica sobre condiciones de subarriendo. Requiere revisión de contrato por asesor especializado.\",\n  \n  \"seg_1\": \"Hola Carlos, un asesor se contactará contigo pronto para revisar tu contrato. ¿Tienes otra consulta mientras tanto?\",\n  \"seg_2\": \"¿Hay algo más en lo que pueda ayudarte mientras esperas la respuesta del asesor?\",\n  \n  \"estatusEmbudo\": \"CASO ESPECIAL IA\",\n  \"statusId\": 10005,\n  \n  \"clienteIdentificado\": true\n}\n```\n\n---\n\n### **Ejemplo 6: Ticket Urgencia Media**\n\n**Conversación:**\n```\nBot: \"Perfecto Luis, te identifico como propietario del inmueble 401. ¿En qué puedo ayudarte?\"\nCliente: \"No he recibido mi pago de este mes\"\nBot: \"Entiendo tu preocupación. Un asesor del área de pagos verificará tu situación y se contactará contigo en un máximo de 48 horas hábiles.\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"Luis\",\n  \"telefonoCliente\": \"+51934567890\",\n  \"correoCliente\": \"luis@email.com\",\n  \"persona\": \"propietario\",\n  \"codigoInmueble\": \"401\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"PROPIETARIO - PAGOS - CONTRAPRESTACION_NO_RECIBIDA\",\n  \n  \"resumen_solicitud\": \"Propietario no recibió pago de contraprestación del mes actual para inmueble 401\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"\",\n  \n  \"requiereTicket\": true,\n  \"detalle_ticket\": \"Verificar con área de pagos por qué no se realizó el depósito de contraprestación al propietario del inmueble 401. Revisar estado del pago y contactar al propietario en máximo 48 horas hábiles.\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"Hola Luis, el área de pagos está verificando tu caso y se contactará contigo pronto. ¿Tienes alguna otra consulta?\",\n  \"seg_2\": \"¿Hay algo más en lo que pueda ayudarte mientras esperas la respuesta del área de pagos?\",\n  \n  \"estatusEmbudo\": \"TICKET IA\",\n  \"statusId\": 10004,\n  \n  \"clienteIdentificado\": true\n}\n```\n\n---\n\n### **Ejemplo 7: Conversación Acumulativa - Múltiples Mensajes**\n\n**Conversación:**\n```\n[Mensaje 1]\nCliente: \"Hola\"\nBot: [Busca - 404]\nBot: \"Hola, no encuentro registro. ¿Tu correo?\"\n\n[Mensaje 2]\nCliente: \"ana@email.com\"\nBot: [Busca por correo - encontrado]\nBot: \"Perfecto Ana, te identifico como inquilina del 503. ¿En qué puedo ayudarte?\"\n\n[Mensaje 3]\nCliente: \"Necesito el código de pago\"\nBot: \"Con gusto, te envío tu código de pago para el inmueble 503: [código]\"\n\n[Mensaje 4]\nCliente: \"Gracias. También quiero saber si puedo cambiar de habitación\"\nBot: \"Entiendo. Para coordinar un cambio de habitación, un asesor se contactará contigo en 48 horas hábiles.\"\n```\n\n**JSON (Análisis de TODA la conversación):**\n```json\n{\n  \"nombreCliente\": \"Ana\",\n  \"telefonoCliente\": \"+51945678901\",\n  \"correoCliente\": \"ana@email.com\",\n  \"persona\": \"inquilino\",\n  \"codigoInmueble\": \"503\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"INQUILINO - CAMBIOS - HABITACION_DEPARTAMENTO\",\n  \n  \"resumen_solicitud\": \"Solicitud de código de pago (ya resuelto). Actualmente solicita cambio de habitación del inmueble 503.\",\n  \n  \"tiene_solucion\": true,\n  \"descripcion_solucion\": \"Se proporcionó el código de pago del inmueble 503\",\n  \n  \"requiereTicket\": true,\n  \"detalle_ticket\": \"Coordinar con área correspondiente sobre solicitud de cambio de habitación de la inquilina Ana del inmueble 503. Validar disponibilidad y condiciones. Contactar en 48 horas hábiles.\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"Hola Ana, un asesor se contactará contigo pronto sobre el cambio de habitación. ¿Tienes alguna otra consulta?\",\n  \"seg_2\": \"¿Hay algo más en lo que pueda ayudarte mientras esperas la respuesta sobre tu cambio?\",\n  \n  \"estatusEmbudo\": \"TICKET IA\",\n  \"statusId\": 10004,\n  \n  \"clienteIdentificado\": true\n}\n```\n\n**NOTA:** El análisis es ACUMULATIVO. Se consideró toda la conversación pero la etapa y categoría reflejan el último requerimiento ACTIVO (cambio de habitación), mencionando brevemente que la consulta del código de pago ya fue resuelta. El campo `tiene_solucion=true` porque SÍ se brindó solución al código de pago.\n\n---\n\n### **Ejemplo 8: Consulta con Solución - RUC de Empresa**\n\n**Conversación:**\n```\nBot: \"Perfecto Sandra, te identifico como inquilina del inmueble 602. ¿En qué puedo ayudarte?\"\nCliente: \"Necesito el RUC de la empresa para mi contabilidad\"\nBot: \"Claro, el RUC de PROPER PERÚ es 20123456789. ¿Necesitas algún otro dato?\"\nCliente: [No responde]\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"Sandra\",\n  \"telefonoCliente\": \"+51956789012\",\n  \"correoCliente\": \"sandra@email.com\",\n  \"persona\": \"inquilino\",\n  \"codigoInmueble\": \"602\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"INQUILINO - CONSULTAS - INFORMACION_EMPRESA\",\n  \n  \"resumen_solicitud\": \"Solicitud del RUC de la empresa para su contabilidad\",\n  \n  \"tiene_solucion\": true,\n  \"descripcion_solucion\": \"Se proporcionó el RUC de PROPER PERÚ (20123456789)\",\n  \n  \"requiereTicket\": false,\n  \"detalle_ticket\": \"\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"Hola Sandra, ¿te sirvió el RUC que te compartí?\",\n  \"seg_2\": \"¿Necesitas algún otro dato de la empresa? Estoy aquí para ayudarte\",\n  \n  \"estatusEmbudo\": \"CONSULTA RESUELTA IA\",\n  \"statusId\": 10003,\n  \n  \"clienteIdentificado\": true\n}\n```\n\n---\n\n### **Ejemplo 9: Envío de Reporte Solicitado**\n\n**Conversación:**\n```\nBot: \"Perfecto Roberto, te identifico como propietario del inmueble 305. ¿En qué puedo ayudarte?\"\nCliente: \"Necesito que me envíes el reporte de ocupación de mi departamento\"\nBot: [Busca información]\nBot: \"Por supuesto, te envío el reporte de ocupación del inmueble 305. [adjunta archivo PDF]\"\n```\n\n**JSON:**\n```json\n{\n  \"nombreCliente\": \"Roberto\",\n  \"telefonoCliente\": \"+51967890123\",\n  \"correoCliente\": \"roberto@email.com\",\n  \"persona\": \"propietario\",\n  \"codigoInmueble\": \"305\",\n  \"relacionTitular\": \"\",\n  \n  \"categoria_completa\": \"PROPIETARIO - PLATAFORMA - REPORTES\",\n  \n  \"resumen_solicitud\": \"Solicitud de reporte de ocupación del inmueble 305\",\n  \n  \"tiene_solucion\": true,\n  \"descripcion_solucion\": \"Se buscó y envió el reporte de ocupación del inmueble 305 en formato PDF\",\n  \n  \"requiereTicket\": false,\n  \"detalle_ticket\": \"\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"seg_1\": \"Hola Roberto, ¿pudiste revisar el reporte de ocupación que te envié?\",\n  \"seg_2\": \"¿Necesitas algún otro reporte o información? Con gusto te ayudo\",\n  \n  \"estatusEmbudo\": \"CONSULTA RESUELTA IA\",\n  \"statusId\": 10003,\n  \n  \"clienteIdentificado\": true\n}\n```\n\n---\n\n## ⚡ **REGLAS DE EXTRACCIÓN DE DATOS**\n\n### **TELÉFONO:**\n- Buscar: 9XX XXX XXX, 9XXXXXXXX\n- Agregar +51 si falta\n- Formato final: +51XXXXXXXXX\n- Si NO aparece: \"\"\n\n### **CORREO:**\n- Validar: texto@dominio.extension\n- Convertir a minúsculas\n- Sin espacios\n- Si NO aparece: \"\"\n\n### **NOMBRE:**\n- Extraer del mensaje del bot cuando identifica\n- Primera letra en mayúscula\n- Sin títulos (Sr., Sra., etc.)\n- Si NO aparece: \"\"\n\n### **PERSONA:**\n- Valores válidos: \"inquilino\", \"propietario\", \"proveedor\"\n- Extraer cuando bot dice \"te identifico como...\"\n- Si NO aparece: \"\"\n\n### **CÓDIGO INMUEBLE:**\n- Extraer del mensaje de confirmación del bot\n- Número o alfanumérico\n- Si varios, usar el relevante a la consulta\n- Si NO aparece: \"\"\n\n---\n\n## ⚠️ **CHECKLIST OBLIGATORIO ANTES DE RESPONDER**\n\n```\n□ ¿Leí TODA la conversación desde el inicio hasta el final?\n□ ¿Revisé la infoPrevia si existe?\n□ ¿Extraje SOLO información que está EXPLÍCITAMENTE en la conversación?\n□ ¿NO inventé ningún dato?\n□ ¿El cliente fue identificado por el bot?\n□ ¿La categoria_completa tiene formato: NIVEL_1 - NIVEL_2 - NIVEL_3?\n□ ¿El resumen_solicitud está completo y es claro?\n□ ¿Evalué correctamente si tiene_solucion es true o false?\n□ ¿Si tiene_solucion=true, completé descripcion_solucion?\n□ ¿Si requiereTicket=true, completé detalle_ticket?\n□ ¿Si caso_especial=true, completé detalle_caso_especial?\n□ ¿Los mensajes seg_1 y seg_2 están completos y son contextuales?\n□ ¿El statusId es NUMÉRICO sin comillas?\n□ ¿El estatusEmbudo corresponde al statusId?\n□ ¿Todos los campos requeridos están presentes?\n□ ¿El JSON es válido y está completo?\n```\n\n---\n\n## 🔴 **RECORDATORIO CRÍTICO FINAL**\n\n```\nANTES DE RESPONDER, VERIFICAR:\n\n1. ✅ LEÍSTE TODA LA CONVERSACIÓN COMPLETA\n   → No te saltaste ningún mensaje\n   → Consideraste infoPrevia si existe\n\n2. ✅ NO INVENTASTE INFORMACIÓN\n   → Solo extraes lo que está escrito\n   → Campos vacíos (\"\") si no hay datos\n\n3. ✅ CATEGORIZACIÓN CORRECTA\n   → Formato: \"NIVEL_1 - NIVEL_2 - NIVEL_3\"\n   → Con espacios y guiones correctos\n\n4. ✅ EVALUACIÓN DE SOLUCIÓN\n   → tiene_solucion: true/false correctamente evaluado\n   → Si true → descripcion_solucion lleno\n   → Si false → descripcion_solucion vacío\n\n5. ✅ CAMPOS CONDICIONALES\n   → requiereTicket=true → detalle_ticket lleno\n   → caso_especial=true → detalle_caso_especial lleno\n\n6. ✅ MENSAJES DE SEGUIMIENTO\n   → seg_1 y seg_2 SIEMPRE con contenido\n   → Contextuales a la conversación\n   → Máximo 150 caracteres cada uno\n   → Tono amigable y natural\n\n7. ✅ ETAPA CORRECTA\n   → statusId numérico (10001-10006)\n   → estatusEmbudo correspondiente\n\n8. ✅ JSON COMPLETO Y VÁLIDO\n   → Todos los campos presentes\n   → Sintaxis correcta\n\nRESPONDER SOLO JSON VALIDADO Y COMPLETO\n```\n\n---\n\n## 📖 **REFERENCIA RÁPIDA**\n\n```\nETAPAS:\n10001 - INTERACCION IA (cliente inicia, no identificado)\n10002 - CLIENTE IDENTIFICADO IA (identificado, sin consulta aún)\n10003 - CONSULTA RESUELTA IA (bot resolvió completamente)\n10004 - TICKET IA (requiere intervención humana)\n10005 - CASO ESPECIAL IA (bot sin info o complejo)\n10006 - ASESOR IA (atención humana directa)\n\nCATEGORIZACIÓN:\nNIVEL_1: INQUILINO / PROPIETARIO / NO_IDENTIFICADO\nNIVEL_2: MANTENIMIENTO / PAGOS / ACCESOS / LIMPIEZA / etc.\nNIVEL_3: Descriptor específico (DUCHA / WIFI / etc.)\n\nFORMATO: \"NIVEL_1 - NIVEL_2 - NIVEL_3\"\n```\n\n---\n\n**FIN DEL PROMPT v4.0**"
+        }
       },
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2.2,
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
       "position": [
-        5552,
-        2448
+        4784,
+        1728
       ],
-      "id": "880b736c-496e-4a4a-931d-b494a264525f",
-      "name": "Filter4"
+      "id": "a1980cdd-e53f-4e35-a984-aaa7fe0f9c12",
+      "name": "Campos5",
+      "alwaysOutputData": true
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
+        "text": "={{ $json.output }}",
+        "attributes": {
+          "attributes": [
             {
-              "id": "8555f2b5-2479-4ffd-a99f-965fd2e26690",
-              "leftValue": "={{ $('new message').item.json.body[\"account[subdomain]\"] }}",
-              "rightValue": "TEST",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
+              "name": "nombreCliente",
+              "description": "Nombre completo extraído de la conversación o \"\"",
+              "required": true
+            },
+            {
+              "name": "telefonoCliente",
+              "description": "+51XXXXXXXXX o \"\"",
+              "required": true
+            },
+            {
+              "name": "correoCliente",
+              "description": "email@domain.com o \"\"",
+              "required": true
+            },
+            {
+              "name": "persona",
+              "description": "\"inquilino\" / \"propietario\" / \"proveedor\" / \"\"",
+              "required": true
+            },
+            {
+              "name": "codigoInmueble",
+              "description": "Código del inmueble o \"\"",
+              "required": true
+            },
+            {
+              "name": "relacionTitular",
+              "description": "\"pareja\" / \"familiar\" / etc, o \"\" si es titular directo",
+              "required": true
+            },
+            {
+              "name": "categoria_completa",
+              "description": " \"NIVEL_1 - NIVEL_2 - NIVEL_3\" (formato exacto con espacios y guiones)",
+              "required": true
+            },
+            {
+              "name": "resumen_solicitud",
+              "description": "Resumen breve y claro (máx 200 caracteres) de lo que solicita el cliente",
+              "required": true
+            },
+            {
+              "name": "tiene_solucion",
+              "type": "boolean",
+              "description": "true = Se brindó alguna información/respuesta/solución al cliente false = Aún no se ha brindado solución Este campo es INDEPENDIENTE de si requiere ticket o no",
+              "required": true
+            },
+            {
+              "name": "descripcion_solucion",
+              "description": "(SOLO si tiene_solucion = true)  Describir QUÉ solución se brindó o QUÉ información se proporcionó Ser específico sobre la acción realizada Ejemplos: \"Se brindó el RUC de la empresa\", \"Se envió el código de pago\", \"Se explicó el proceso de pago por Kashio\" Si tiene_solucion = false → dejar vacío \"\"",
+              "required": true
+            },
+            {
+              "name": "requiereTicket",
+              "type": "boolean",
+              "description": "true / false  true = Necesita intervención humana false = Bot resolvió o no requiere acción",
+              "required": true
+            },
+            {
+              "name": "detalle_ticket",
+              "description": "(SOLO si requiereTicket = true)  Explicar QUÉ debe hacer el equipo Incluir nivel de urgencia si aplica Ser claro y específico Si requiereTicket = false → dejar vacío \"\"",
+              "required": true
+            },
+            {
+              "name": "caso_especial",
+              "type": "boolean",
+              "description": "true / false  true = Bot no tiene info O cliente pide humano O situación compleja false = Caso normal",
+              "required": true
+            },
+            {
+              "name": "detalle_caso_especial",
+              "description": "(SOLO si caso_especial = true)  Explicar POR QUÉ es caso especial Ser específico Si caso_especial = false → dejar vacío \"\"",
+              "required": true
+            },
+            {
+              "name": "seg_1",
+              "description": "Primer mensaje de seguimiento para el cliente",
+              "required": true
+            },
+            {
+              "name": "seg_2",
+              "description": "Segundo mensaje de seguimiento para el cliente",
+              "required": true
+            },
+            {
+              "name": "estatusEmbudo",
+              "description": "Nombre de la etapa (ver lista arriba)",
+              "required": true
+            },
+            {
+              "name": "statusId",
+              "type": "number",
+              "description": "Código numérico SIN comillas (10001-10006)",
+              "required": true
+            },
+            {
+              "name": "clienteIdentificado",
+              "type": "boolean",
+              "description": "true / false  true = Bot confirmó identificación con datos completos false = Cliente NO identificado aún",
+              "required": true
             }
-          ],
-          "combinator": "and"
+          ]
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2.2,
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1,
+      "position": [
+        5200,
+        1728
+      ],
+      "id": "55c05c9b-82d6-404d-ac1e-f80e0a8ef27e",
+      "name": "Information Extractor5",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4800,
+        1952
+      ],
+      "id": "55d67d1c-35e5-44b2-84b7-f5f5ad2f35e5",
+      "name": "OpenAI Chat Model13",
+      "credentials": {
+        "openAiApi": {
+          "id": "LZHR7cL6uCBXIyJd",
+          "name": "Proper - Oct 2025"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        5264,
+        1952
+      ],
+      "id": "05900f10-f1de-4b1f-b039-e7c28431f426",
+      "name": "OpenAI Chat Model14",
+      "credentials": {
+        "openAiApi": {
+          "id": "LZHR7cL6uCBXIyJd",
+          "name": "Proper - Oct 2025"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('new message').item.json.body['message[add][0][entity_id]'] }}",
+              "pipeline_id": "=",
+              "status_id": "=",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":798799,\"type\":\"text\"}",
+                    "value": "={{ $json.output.persona }}"
+                  },
+                  {
+                    "data": "{\"id\":798801,\"type\":\"text\"}",
+                    "value": "={{ $json.output.codigoInmueble }}"
+                  },
+                  {
+                    "data": "{\"id\":798803,\"type\":\"text\"}",
+                    "value": "={{ $json.output.relacionTitular }}"
+                  },
+                  {
+                    "data": "{\"id\":798805,\"type\":\"text\"}",
+                    "value": "={{ $json.output.categoria_completa }}"
+                  },
+                  {
+                    "data": "{\"id\":798807,\"type\":\"textarea\"}",
+                    "value": "={{ $json.output.resumen_solicitud }}"
+                  },
+                  {
+                    "data": "{\"id\":798835,\"type\":\"checkbox\"}",
+                    "value": "={{ $json.output.tiene_solucion }}"
+                  },
+                  {
+                    "data": "{\"id\":798837,\"type\":\"textarea\"}",
+                    "value": "={{ $json.output.descripcion_solucion }}"
+                  },
+                  {
+                    "data": "{\"id\":798809,\"type\":\"text\"}",
+                    "value": "={{ $json.output.requiereTicket }}"
+                  },
+                  {
+                    "data": "{\"id\":798811,\"type\":\"textarea\"}",
+                    "value": "={{ $json.output.detalle_ticket }}"
+                  },
+                  {
+                    "data": "{\"id\":798813,\"type\":\"checkbox\"}",
+                    "value": "={{ $json.output.caso_especial }}"
+                  },
+                  {
+                    "data": "{\"id\":798815,\"type\":\"textarea\"}",
+                    "value": "={{ $json.output.detalle_caso_especial }}"
+                  },
+                  {
+                    "data": "{\"id\":798825,\"type\":\"textarea\"}",
+                    "value": "={{ $json.output.seg_1 }}"
+                  },
+                  {
+                    "data": "{\"id\":798827,\"type\":\"textarea\"}",
+                    "value": "={{ $json.output.seg_2 }}"
+                  },
+                  {
+                    "data": "{\"id\":798817,\"type\":\"text\"}",
+                    "value": "={{ $json.output.estatusEmbudo }}"
+                  },
+                  {
+                    "data": "{\"id\":798819,\"type\":\"checkbox\"}",
+                    "value": "={{ $json.output.clienteIdentificado }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
       "position": [
         5552,
-        1856
+        1728
       ],
-      "id": "0dd586c1-0e05-4931-ae65-34f9c976f38f",
-      "name": "Filter5"
+      "id": "01a0caad-8262-4fd3-8ca6-9a9b64338ad5",
+      "name": "Update leads5",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        4928,
+        1952
+      ],
+      "id": "52ae62ae-0ca3-4406-b93f-487da0b6f2cd",
+      "name": "Postgres Chat Memory9",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
     }
   ],
   "pinData": {
@@ -5679,17 +5709,17 @@
           "headers": {
             "host": "primary-production-0299.up.railway.app",
             "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "971",
+            "content-length": "937",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "826dfc2b-326e-4ef7-b7f4-c6ff147e5aca",
+            "x-amocrm-requestid": "6211b990-0c84-4f6e-b23e-6c0d1ba2b74c",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "LbZHpmlVRIG440DUBT7zVQ",
+            "x-railway-request-id": "ccqMbrTCTvKRwZpWCx5-qw",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1761053865857"
+            "x-request-start": "1760793855297"
           },
           "params": {},
           "query": {},
@@ -5697,21 +5727,21 @@
             "account[subdomain]": "propertamibotcom",
             "account[id]": "30050693",
             "account[_links][self]": "https://propertamibotcom.amocrm.com",
-            "message[add][0][id]": "c5df4ad2-973c-4a43-a77c-f0dd69796d32",
-            "message[add][0][chat_id]": "7ecbfc6b-8cd8-43ae-8c1c-1d08115edea0",
-            "message[add][0][talk_id]": "203372",
-            "message[add][0][contact_id]": "23610089",
-            "message[add][0][text]": "Gracias José",
-            "message[add][0][created_at]": "1761053865",
+            "message[add][0][id]": "9bf09a34-87c5-4b07-96de-645fad5fa2e0",
+            "message[add][0][chat_id]": "e212a4d1-1c64-494a-a58a-918a2883ae8a",
+            "message[add][0][talk_id]": "204036",
+            "message[add][0][contact_id]": "24488535",
+            "message[add][0][text]": "HOla",
+            "message[add][0][created_at]": "1760793854",
             "message[add][0][element_type]": "2",
             "message[add][0][entity_type]": "lead",
-            "message[add][0][element_id]": "22097783",
-            "message[add][0][entity_id]": "22097783",
+            "message[add][0][element_id]": "22122449",
+            "message[add][0][entity_id]": "22122449",
             "message[add][0][type]": "incoming",
-            "message[add][0][author][id]": "10f8e6be-23ab-4cca-80fc-1245150f52cf",
+            "message[add][0][author][id]": "f92fe9a6-bfe9-4f1c-b754-bf61e32d10d4",
             "message[add][0][author][type]": "external",
-            "message[add][0][author][name]": "Jorge Abraham Girao La Rosa",
-            "message[add][0][origin]": "com.amocrm.amocrmwa"
+            "message[add][0][author][name]": "Martin Velasco Ormeno",
+            "message[add][0][origin]": "waba"
           },
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/rentas",
           "executionMode": "production"
@@ -5743,6 +5773,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-21T13:42:18.791Z",
-  "versionId": "dc97f912-9dc4-499f-8cba-ec38a3627f53"
+  "updatedAt": "2025-10-22T13:39:21.846Z",
+  "versionId": "bebf73ee-0150-4cc6-9736-7d5648caa58d"
 }
