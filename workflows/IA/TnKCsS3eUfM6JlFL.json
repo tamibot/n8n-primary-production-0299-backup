@@ -164,6 +164,24 @@
               "name": "id_adondevivir",
               "value": "={{ $json[\"Link Adondevivir\"] ? $json[\"Link Adondevivir\"].split('-').pop().replace('.html','').split('?')[0].trim() : '' }}",
               "type": "string"
+            },
+            {
+              "id": "b00f9449-f3f3-482f-901b-95c366db9507",
+              "name": "Distrito",
+              "value": "={{ $json.Distrito }}",
+              "type": "string"
+            },
+            {
+              "id": "a86738e3-092b-4e1f-9cca-e2bd27e66171",
+              "name": "Direccion",
+              "value": "={{ $json.Direccion }}",
+              "type": "string"
+            },
+            {
+              "id": "60953a81-2f68-4e23-94fd-62f83bd34bbd",
+              "name": "Precio",
+              "value": "={{ $json.Precio }}",
+              "type": "string"
             }
           ]
         },
@@ -242,7 +260,10 @@
             "link_urbania": "={{ $('Filter1').item.json.linkUrbania }}",
             "link_adondevivir": "={{ $('Filter1').item.json.linkAdondevivir }}",
             "id_urbania": "={{ $json.id_urbania }}",
-            "id_adondevivir": "={{ $json.id_adondevivir }}"
+            "id_adondevivir": "={{ $json.id_adondevivir }}",
+            "precio": "={{ Number($json.Precio) }}",
+            "distrito": "={{ $json.Distrito }}",
+            "direccion": "={{ $json.Direccion }}"
           },
           "matchingColumns": [
             "id"
@@ -275,7 +296,7 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": true
+              "removed": false
             },
             {
               "id": "direccion",
@@ -285,7 +306,7 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": true
+              "removed": false
             },
             {
               "id": "precio",
@@ -295,7 +316,7 @@
               "display": true,
               "type": "number",
               "canBeUsedToMatch": true,
-              "removed": true
+              "removed": false
             },
             {
               "id": "mantenimiento",
@@ -505,6 +526,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-22T21:16:48.710Z",
-  "versionId": "140d1258-9caa-4d83-b7c7-aa3e0a443efa"
+  "updatedAt": "2025-10-25T16:15:16.133Z",
+  "versionId": "42279587-f08c-44ec-84d2-cfc756011722"
 }
