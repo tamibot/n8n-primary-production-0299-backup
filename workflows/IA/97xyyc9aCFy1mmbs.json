@@ -571,13 +571,7 @@
     },
     "Switch1": {
       "main": [
-        [
-          {
-            "node": "Respuesta",
-            "type": "main",
-            "index": 0
-          }
-        ],
+        [],
         [
           {
             "node": "Respuesta1",
@@ -5839,6 +5833,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-27T02:59:21.771Z",
-  "versionId": "fac41c77-978c-4364-b0e7-b49284a041cb"
+  "updatedAt": "2025-10-28T14:40:09.403Z",
+  "versionId": "9592a85d-7e5d-4403-8b34-0f56dfea0d53"
 }
