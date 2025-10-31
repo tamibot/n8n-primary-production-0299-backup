@@ -109,7 +109,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        440,
+        448,
         0
       ],
       "id": "cf7c6b70-d033-4819-aa4e-bcacf4d08a56",
@@ -156,7 +156,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        880,
+        896,
         0
       ],
       "id": "a6360aa9-7d1f-4a58-b6c9-91da54fb702e",
@@ -175,7 +175,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        660,
+        672,
         0
       ],
       "id": "39027daf-fd18-4ceb-8987-d1882482c47b",
@@ -199,7 +199,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1320,
+        1344,
         0
       ],
       "id": "19effe34-86aa-455f-9ead-3356df0136a1",
@@ -234,7 +234,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1100,
+        1120,
         0
       ],
       "id": "db5a60dc-0aff-496b-99a5-ef86ef40e39d",
@@ -247,7 +247,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        220,
+        224,
         0
       ],
       "id": "a173abd8-826e-44ff-b37f-2dc69839f826",
@@ -265,19 +265,19 @@
             "content-length": "314",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "48cee5d4-b7e9-4576-9d19-32fadc1987df",
+            "x-amocrm-requestid": "99a391b9-4c00-406d-bfc7-3f32e4785ff3",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "pdqXdzysTgOhSJvqozsQ6Q",
+            "x-railway-request-id": "R3m-xbd7Qi-wpa6_PvyhXg",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1756140031787"
+            "x-request-start": "1761858799027"
           },
           "params": {},
           "query": {},
           "body": {
-            "leads[status][0][id]": "21760229",
+            "leads[status][0][id]": "22307145",
             "leads[status][0][status_id]": "90801096",
             "leads[status][0][pipeline_id]": "11240224",
             "leads[status][0][old_status_id]": "90801080",
@@ -313,6 +313,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-09-03T16:21:41.810Z",
-  "versionId": "968e2838-aea8-4642-afb8-c31d75cd4653"
+  "updatedAt": "2025-10-30T21:51:01.332Z",
+  "versionId": "df11c0b8-d218-4f95-879c-99f0c649c9f5"
 }
