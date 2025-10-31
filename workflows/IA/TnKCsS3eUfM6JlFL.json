@@ -71,6 +71,28 @@
           }
         ]
       ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Postgres1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-08-20T16:40:21.555Z",
@@ -156,14 +178,14 @@
             {
               "id": "0af9c324-8ea0-42cb-997b-9a6b8fb511ab",
               "name": "id_urbania",
-              "value": "={{ $json[\"Link Urbania\"] ? $json[\"Link Urbania\"].split('-').pop().replace('.html','').split('?')[0].trim() : '' }}",
-              "type": "string"
+              "value": "={{ $json[\"Link Urbania\"] ? $json[\"Link Urbania\"].trim().match(/(\\d{5,12})(?=(?:\\.html)?(?:$|\\?|#))/)?.[1] : '' }}",
+              "type": "number"
             },
             {
               "id": "15ccdd67-e8c2-4f66-9bf0-68cb7d165c65",
               "name": "id_adondevivir",
-              "value": "={{ $json[\"Link Adondevivir\"] ? $json[\"Link Adondevivir\"].split('-').pop().replace('.html','').split('?')[0].trim() : '' }}",
-              "type": "string"
+              "value": "={{ $json[\"Link Adondevivir\"] ? $json[\"Link Adondevivir\"].trim().match(/(\\d{5,12})(?=(?:\\.html)?(?:$|\\?|#))/)?.[1] : '' }}",
+              "type": "number"
             },
             {
               "id": "b00f9449-f3f3-482f-901b-95c366db9507",
@@ -208,24 +230,24 @@
           "conditions": [
             {
               "id": "7e33eae3-d24b-48ae-94ef-f1c918005512",
-              "leftValue": "={{ $json.linkUrbania }}",
-              "rightValue": "sin link urbania",
+              "leftValue": "={{ $('Google Sheets1').item.json['Link Urbania'] }}",
+              "rightValue": "urbania",
               "operator": {
                 "type": "string",
-                "operation": "notEquals"
+                "operation": "contains"
               }
             },
             {
               "id": "3d808da4-8b98-49d7-a9da-50cdb7f00b60",
-              "leftValue": "={{ $json.linkAdondevivir }}",
-              "rightValue": "sin link adondevivir",
+              "leftValue": "={{ $('Google Sheets1').item.json['Link Adondevivir'] }}",
+              "rightValue": "adondevivir",
               "operator": {
                 "type": "string",
-                "operation": "notEquals"
+                "operation": "contains"
               }
             }
           ],
-          "combinator": "and"
+          "combinator": "or"
         },
         "options": {}
       },
@@ -497,6 +519,175 @@
       ],
       "id": "586f1c9a-cf17-479f-a33f-02842bda88d5",
       "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "html",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "descripcion",
+              "cssSelector": "meta[name=\"description\"]",
+              "returnValue": "attribute",
+              "attribute": "content"
+            },
+            {
+              "key": "precio",
+              "cssSelector": "meta[name='precioAlquiler']",
+              "returnValue": "attribute",
+              "attribute": "content"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        1696,
+        736
+      ],
+      "id": "c48a1825-2c0b-4baf-bfd9-55addc0444c4",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "jsCode": "const descripcion = $json[\"descripcion\"] || '';\nconst match = descripcion.match(/\\{\\[(.*?)\\]\\}/);\nconst codigo = match ? match[1] : null;\n\nreturn [{\n  codigo,\n  ...$json\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1920,
+        736
+      ],
+      "id": "f083a1e4-3070-439e-825a-a830b6739a13",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "crm",
+          "mode": "list",
+          "cachedResultName": "crm"
+        },
+        "table": {
+          "__rl": true,
+          "value": "datos_urbania",
+          "mode": "list",
+          "cachedResultName": "datos_urbania"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "codigo": "={{ $json.codigo }}",
+            "telefono": "={{ $('Code1').item.json.phone }}",
+            "correo": "={{ $('Code1').item.json.email }}",
+            "fecha": "={{ $('Correo').item.json.body.date }}",
+            "link_urbania": "={{ $('HTTP Request2').item.json.headers.location }}",
+            "nombre_pre_inquilino": "={{ $('Code1').item.json.name }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "codigo",
+              "displayName": "codigo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "correo",
+              "displayName": "correo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fecha",
+              "displayName": "fecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "precio",
+              "displayName": "precio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "link_urbania",
+              "displayName": "link_urbania",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nombre_pre_inquilino",
+              "displayName": "nombre_pre_inquilino",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2144,
+        736
+      ],
+      "id": "d64bc3bb-d499-40a8-892c-6166d6f66dd4",
+      "name": "Postgres1",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -526,6 +717,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-25T16:15:16.133Z",
-  "versionId": "42279587-f08c-44ec-84d2-cfc756011722"
+  "updatedAt": "2025-10-30T23:12:51.223Z",
+  "versionId": "7906e2bd-163b-4ae4-9213-f1b122d9fc1d"
 }
