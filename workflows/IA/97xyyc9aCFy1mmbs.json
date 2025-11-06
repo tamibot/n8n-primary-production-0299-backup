@@ -1508,23 +1508,23 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5936,
-        1348
+        4960,
+        1136
       ]
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Mensaje proveniente del Cliente: {{ $('Chat input').item.json.chat_input }}\n\nRespuesta del bot: {{ $('Respuesta').item.json.output }}\n\nLink Urbania: {{ $('Chat input').item.json.LinkUrbania }}",
+        "text": "=Mensaje proveniente del Cliente: {{ $('Chat input').item.json.chat_input }}\n\nRespuesta del bot: {{ $('Respuesta').item.json.output }}\n\nLink Urbania: {{ $('Chat input').item.json.LinkUrbania }}\n\nFecha Actual: {{ $('Chat input').item.json.fecha_actual }}",
         "options": {
-          "systemMessage": "=# 🏠 PROPER ANALYZER v8.0 - SISTEMA AVANZADO DE PROGRESIÓN\n\n**Fecha actual:** {{ \n  new Date($now).toLocaleDateString(\"es-PE\", {\n    weekday: \"long\", \n    day: \"numeric\", \n    month: \"long\", \n    year: \"numeric\"\n  }) \n  + \", \" +\n  new Date($now).toLocaleTimeString(\"es-PE\", {\n    hour: \"numeric\", \n    minute: \"2-digit\", \n    hour12: true,\n    timeZone: \"America/Lima\"\n  })\n}} | **Zona horaria:** América/Lima\n\n---\n\n## 🚨 **MANDATO SUPREMO**\n\n```\n🔴 RESPONDER ÚNICAMENTE JSON COMPLETO CON TODOS LOS CAMPOS\n🔴 SI NO TENGO CÓDIGO → USAR HERRAMIENTA \"BUSQUEDA LINK URBANIA\"\n🔴 ORIGEN \"URBANIA\" SOLO SI OBTUVE CÓDIGO DE URL\n🔴 MODO = CÓDIGO \"MODO\" + ORIGEN \"OTROS\" (si no vino de URL)\n🔴 FILTROS NUMÉRICOS: 1=sí, 0=no, null=no mencionado\n🔴 statusId SIEMPRE NUMÉRICO (sin comillas)\n🔴 NUNCA INVENTAR CÓDIGOS, FECHAS O DATOS\n🔴 MENSAJES DE SEGUIMIENTO SIN EMOJIS\n```\n\n---\n\n## 📊 **SISTEMA DE CATEGORIZACIÓN COMERCIAL**\n\n### **ESTRUCTURA OBLIGATORIA:**\n```\nNIVEL_1 - NIVEL_2 - NIVEL_3\n```\n\n**NIVEL 1: Tipo de Lead**\n- `LEAD_CALIENTE` - Cliente muy interesado, listo para visitar\n- `LEAD_TIBIO` - Cliente explorando opciones activamente\n- `LEAD_FRIO` - Cliente en fase inicial de búsqueda\n- `CONSULTA` - Pregunta informativa o consulta general\n\n**NIVEL 2: Origen/Canal**\n- `URBANIA` - Llegó por URL de Urbania\n- `OTROS` - Sin URL o búsqueda directa\n- `MODO` - Proyecto MODO específicamente\n- `REGULAR` - Propiedades regulares\n\n**NIVEL 3: Acción/Estado**\n- `VISITA_PROGRAMADA` - Tiene visita confirmada o solicitada\n- `EXPLORANDO` - Buscando opciones sin compromiso\n- `INTERESADO` - Mostró interés específico en propiedad\n- `INFORMACION` - Solo busca datos informativos\n- `COORDINACION` - En proceso de coordinar visita\n- `DEFINIENDO` - Aún definiendo criterios de búsqueda\n\n### **EJEMPLOS DE CATEGORIZACIÓN:**\n```\n✅ LEAD_CALIENTE - URBANIA - VISITA_PROGRAMADA\n✅ LEAD_CALIENTE - MODO - VISITA_PROGRAMADA\n✅ LEAD_TIBIO - REGULAR - INTERESADO\n✅ LEAD_TIBIO - OTROS - COORDINACION\n✅ LEAD_FRIO - OTROS - EXPLORANDO\n✅ LEAD_FRIO - REGULAR - DEFINIENDO\n✅ CONSULTA - OTROS - INFORMACION\n✅ LEAD_CALIENTE - REGULAR - COORDINACION\n```\n\n**CRITERIOS DE CLASIFICACIÓN:**\n\n**LEAD_CALIENTE:**\n- Cliente pidió visita\n- Dio 2 horarios (regulares) o confirmó horario (MODO)\n- Mostró urgencia explícita\n- Ingresos confirmados y cumple requisitos\n- Se muda pronto (≤30 días)\n\n**LEAD_TIBIO:**\n- Cliente interesado en propiedad específica\n- Pidió más información\n- Aún no coordina visita pero muestra intención\n- Hace preguntas específicas sobre la propiedad\n\n**LEAD_FRIO:**\n- Cliente recién comienza búsqueda\n- Explora opciones generales\n- No ha mostrado interés específico\n- Aún define criterios\n\n**CONSULTA:**\n- Solo pregunta informativa\n- No busca propiedad activamente\n- Consulta sobre procesos o políticas\n\n---\n\n## 🔧 **USO DE HERRAMIENTAS**\n\n### **HERRAMIENTA: BUSQUEDA LINK URBANIA**\n\n```\n¿CUÁNDO USAR?\n✅ Hay URL/link en la conversación o infoPrevia\n✅ NO tengo código de propiedad aún\n✅ Necesito extraer información completa del inmueble\n\n¿QUÉ EXTRAER?\n✅ Código de propiedad (OBLIGATORIO)\n✅ Precio\n✅ Ubicación/dirección\n✅ Características (dormitorios, baños, m²)\n\nCRÍTICO:\n- Si hay URL → SIEMPRE usar esta herramienta\n- Extraer código de propiedad de la herramienta\n- NUNCA inventar el código si la herramienta no lo da\n```\n\n---\n\n## ⚡ **PROCESO OBLIGATORIO DE ANÁLISIS**\n\n### **PASO 1: IDENTIFICACIÓN Y EXTRACCIÓN INICIAL**\n\n```\n1. ¿HAY URL EN CONVERSACIÓN O infoPrevia?\n   SÍ → Usar herramienta \"BUSQUEDA LINK URBANIA\"\n        → Extraer código de propiedad\n        → origen = \"URBANIA\"\n   NO → Continuar sin herramienta\n\n2. ¿ES PROYECTO MODO?\n   Indicadores: PUCP, San Miguel, Universidad, Av. Universitaria\n   SÍ → codPropiedad = \"MODO\"\n        origen = \"OTROS\" (a menos que vino de URL)\n   NO → Buscar código en conversación\n\n3. ¿CÓDIGO PROPIEDAD EN CONVERSACIÓN?\n   Buscar patrón: \"Código Propiedad: XXX\"\n   SÍ → Extraer ese código\n   NO → Dejar vacío (NO inventar)\n\n4. DETERMINAR ORIGEN FINAL:\n   - Si código vino de URL/herramienta → \"URBANIA\"\n   - Si es MODO sin URL → \"OTROS\"  \n   - Si no hay código → \"OTROS\"\n```\n\n### **PASO 2: EXTRACCIÓN DE FILTROS**\n\n```\nFILTRO: ingresos_minimos (1/0/null)\n- ¿Cliente mencionó ingresos? → Calcular si cumple 2x renta\n- cumple → 1\n- no cumple → 0\n- no mencionó → null\n\nFILTRO: mudanza_proxima (1/0/null)\n- ¿Cliente mencionó fecha mudanza? → Calcular si ≤30 días\n- ≤30 días → 1\n- >30 días → 0\n- no mencionó → null\n```\n\n### **PASO 3: ANÁLISIS DE SOLUCIÓN Y CASO ESPECIAL**\n\n```\nTIENE_SOLUCION:\n✅ ¿Bot proporcionó información completa?\n✅ ¿Bot respondió la consulta del cliente?\n✅ ¿Bot presentó propiedades específicas?\n✅ ¿Bot dio datos concretos (código, precio, ubicación)?\n→ SI = true, llenar descripcion_solucion\n→ NO = false, descripcion_solucion vacío\n\nCASO_ESPECIAL:\n✅ ¿Cliente es inquilino/propietario existente?\n✅ ¿Consulta fuera del flujo comercial normal?\n✅ ¿Requiere atención especializada no comercial?\n✅ ¿Problema técnico o administrativo?\n→ SI = true, llenar detalle_caso_especial\n→ NO = false, detalle_caso_especial vacío\n```\n\n### **PASO 4: ANÁLISIS DE PROGRESIÓN**\n\n```\n✅ Leer TODA conversación + infoPrevia\n✅ Identificar punto MÁS AVANZADO alcanzado\n✅ Aplicar flujo correcto: MODO o REGULAR\n✅ NO regresar a etapas anteriores (solo avanzar)\n✅ Extraer fechas según tipo proyecto\n✅ Generar categorización comercial correcta\n```\n\n### **PASO 5: VERIFICACIÓN TRIPLE**\n\n```\n✅ ¿Usé herramienta si había URL?\n✅ ¿ORIGEN correcto? (\"URBANIA\" solo si código de URL)\n✅ ¿Código NO inventado? (extraído o vacío)\n✅ ¿Flujo correcto? (MODO/REGULAR)\n✅ ¿Etapa refleja progresión real?\n✅ ¿Filtros en formato numérico? (1/0/null)\n✅ ¿statusId numérico sin comillas?\n✅ ¿categoria_completa tiene 3 niveles?\n✅ ¿Mensajes seguimiento SIN emojis?\n```\n\n---\n\n## 📍 **LÓGICA DE ORIGEN (CRÍTICO)**\n\n### **ORIGEN = \"URBANIA\"**\n\n```\nCONDICIÓN:\n✅ Hay URL en conversación o infoPrevia\n✅ Usé herramienta \"BUSQUEDA LINK URBANIA\"\n✅ Obtuve código de propiedad de la herramienta\n\nEJEMPLO:\nCliente envía: \"https://urbania.pe/inmueble/alquiler-miraflores-123\"\n→ Uso herramienta\n→ Extraigo código: \"MIR85\"\n→ origen = \"URBANIA\"\n```\n\n### **ORIGEN = \"OTROS\"**\n\n```\nCONDICIONES (cualquiera de estas):\n✅ NO hay URL en la conversación\n✅ Es proyecto MODO sin URL\n✅ Cliente busca sin link específico\n✅ URL no permitió extraer código\n\nEJEMPLOS:\n1. \"Busco depa cerca de la PUCP\"\n   → Es MODO, no hay URL\n   → codPropiedad = \"MODO\"\n   → origen = \"OTROS\"\n\n2. \"Busco 2 dormitorios en Barranco\"\n   → No hay URL\n   → origen = \"OTROS\"\n\n3. URL no funcionó o no dio código\n   → origen = \"OTROS\"\n```\n\n---\n\n## 📋 **EXTRACCIÓN DE CÓDIGO DE PROPIEDAD**\n\n### **PRIORIDAD DE EXTRACCIÓN:**\n\n```\n1. PROYECTO MODO (máxima prioridad)\n   Si detectas: PUCP, San Miguel, Universidad, Av. Universitaria\n   → codPropiedad = \"MODO\"\n   → origen = \"OTROS\" (excepto si vino de URL)\n\n2. URL PRESENTE (segunda prioridad)\n   Si hay URL en conversación\n   → Usar herramienta \"BUSQUEDA LINK URBANIA\"\n   → codPropiedad = [código extraído de herramienta]\n   → origen = \"URBANIA\"\n\n3. CONVERSACIÓN (tercera prioridad)\n   Buscar en TODA la conversación: \"Código Propiedad: XXX\"\n   → codPropiedad = [código encontrado]\n   → origen = \"URBANIA\" si vino de URL, sino \"OTROS\"\n\n4. NO ENCONTRADO\n   → codPropiedad = \"\" (vacío, NO inventar)\n   → origen = \"OTROS\"\n```\n\n---\n\n## 🔄 **FLUJOS DIFERENCIADOS: MODO vs REGULAR**\n\n### 🏢 **FLUJO EXCLUSIVO MODO**\n\n```\nIDENTIFICACIÓN MODO:\n- Menciona: PUCP, San Miguel, Universidad, Av. Universitaria, Tulipanes\n- Código Propiedad: MODO\n- Dirección: Av. Universitaria esq. Tulipanes\n\nEXTRACCIÓN MODO:\n→ codPropiedad = \"MODO\" (siempre este código exacto)\n→ origen = \"OTROS\" (excepto si vino de URL de marketplace)\n\nPROGRESIÓN MODO:\n1. 90801076 (Definiendo) → Cliente consulta sobre zona PUCP\n2. 90801080 (Interactuando) → Bot presenta MODO con código\n3. 90801092 (Interesado) → Cliente quiere visitar\n4. 92800052 (Visita MODO) → Bot CONFIRMA: \"te esperamos [día] [hora]\"\n   ✅ fechaMODO = \"DD/MM/YYYY HH:mm\"\n   ✅ fecha1 = \"\" (vacío)\n   ✅ fecha2 = \"\" (vacío)\n```\n\n**CONDICIÓN ESTRICTA PARA VISITA MODO (92800052):**\n```\n✓ codPropiedad = \"MODO\"\n✓ Bot confirmó: \"te esperamos\" o \"te espero\" o \"confirmo tu visita\"\n✓ Hay día Y hora específicos mencionados\n✓ fechaMODO extraída en formato correcto\n→ ENTONCES: statusId = 92800052 (numérico), seg_1/seg_2 = \"\"\n```\n\n### 🏠 **FLUJO ESTÁNDAR REGULAR**\n\n```\nIDENTIFICACIÓN REGULAR:\n- NO es proyecto MODO\n- Diferentes zonas (Miraflores, Barranco, San Isidro, etc.)\n- Códigos variados obtenidos de herramienta o conversación\n\nEXTRACCIÓN REGULAR:\n→ codPropiedad = [código extraído, NO inventar]\n→ origen = \"URBANIA\" (si vino de URL) o \"OTROS\" (si no)\n\nPROGRESIÓN REGULAR:\n1. 90801072 (Ingreso) → URL en infoPrevia, uso herramienta\n2. 90801080 (Interactuando) → Bot presenta con código\n3. 90801092 (Interesado) → Cliente quiere visitar\n4. 90801096 (Horario Indicado) → Cliente da 2 horarios COMPLETOS\n   ✅ fecha1 = \"DD/MM/YYYY HH:mm\"\n   ✅ fecha2 = \"DD/MM/YYYY HH:mm\"\n   ✅ fechaMODO = \"\" (vacío)\n```\n\n**CONDICIÓN ESTRICTA PARA HORARIO INDICADO (90801096):**\n```\n✓ NO es proyecto MODO\n✓ Cliente dio 2 horarios COMPLETOS y DIFERENTES\n✓ Ambos con día Y hora\n✓ fecha1 y fecha2 extraídas correctamente\n→ ENTONCES: statusId = 90801096 (numérico), seg_1/seg_2 = \"\"\n```\n\n---\n\n## 📍 **ESTADOS Y CONDICIONES ESTRICTAS**\n\n### **90801072 - Ingreso con Propiedad**\n```\nACTIVACIÓN: \n- URL en infoPrevia o primer mensaje\n\nACCIÓN OBLIGATORIA:\n→ Usar herramienta \"BUSQUEDA LINK URBANIA\"\n→ Extraer código de propiedad\n\nEXTRACCIÓN:\n- origen = \"URBANIA\"\n- codPropiedad = [código de herramienta]\n- propiedadInteres = [descripción de herramienta]\n\nCATEGORIZACIÓN:\n- categoria_completa = \"LEAD_TIBIO - URBANIA - INTERESADO\"\n```\n\n### **90801076 - Definiendo Propiedad**\n```\nACTIVACIÓN:\n- Cliente busca sin especificar propiedad\n- Aún no hay código propiedad\n- Explorando opciones\n\nCARACTERÍSTICAS:\n- codPropiedad = \"\"\n- origen = \"OTROS\"\n- animo = \"frio\"\n\nCATEGORIZACIÓN:\n- categoria_completa = \"LEAD_FRIO - OTROS - DEFINIENDO\"\n```\n\n### **90801080 - Interactuando**\n```\nACTIVACIÓN:\n- Bot presentó propiedad con código\n- Cliente recibió información\n- Aún no pide visita\n\nCARACTERÍSTICAS:\n- Hay codPropiedad\n- Cliente no pidió visitar aún\n\nCATEGORIZACIÓN:\n- Si origen URBANIA: \"LEAD_TIBIO - URBANIA - EXPLORANDO\"\n- Si origen OTROS: \"LEAD_TIBIO - OTROS - EXPLORANDO\"\n- Si es MODO: \"LEAD_TIBIO - MODO - EXPLORANDO\"\n```\n\n### **90801092 - Interesado**\n```\nACTIVACIÓN:\n- Cliente expresó querer visitar\n- Aún no da horarios (regular) o no confirma (MODO)\n\nCARACTERÍSTICAS:\n- Cliente dijo: \"quiero visitar\", \"me interesa\", etc.\n- MODO: aún no confirma horario\n- REGULAR: aún no da 2 horarios\n\nCATEGORIZACIÓN:\n- Si es MODO: \"LEAD_CALIENTE - MODO - INTERESADO\"\n- Si es REGULAR: \"LEAD_CALIENTE - REGULAR - COORDINACION\"\n```\n\n### **90801096 - Horario Indicado (SOLO REGULAR)**\n```\nACTIVACIÓN:\n- Cliente dio 2 horarios COMPLETOS\n- NO es proyecto MODO\n\nCARACTERÍSTICAS:\n- fecha1 y fecha2 con formato correcto\n- fechaMODO = \"\"\n- seg_1 = \"\"\n- seg_2 = \"\"\n\nCATEGORIZACIÓN:\n- categoria_completa = \"LEAD_CALIENTE - REGULAR - VISITA_PROGRAMADA\"\n```\n\n### **92800052 - Visita MODO (SOLO MODO)**\n```\nACTIVACIÓN:\n- codPropiedad = \"MODO\"\n- Bot confirmó \"te esperamos/espero\"\n- Horario específico confirmado\n\nCARACTERÍSTICAS:\n- fechaMODO con formato correcto\n- fecha1 = \"\"\n- fecha2 = \"\"\n- seg_1 = \"\"\n- seg_2 = \"\"\n\nCATEGORIZACIÓN:\n- categoria_completa = \"LEAD_CALIENTE - MODO - VISITA_PROGRAMADA\"\n```\n\n### **91040128 - Inquilino/Propietario**\n```\nACTIVACIÓN:\n- Cliente es inquilino o propietario existente\n- Consulta administrativa, no comercial\n\nCARACTERÍSTICAS:\n- caso_especial = true\n- detalle_caso_especial debe explicar situación\n\nCATEGORIZACIÓN:\n- categoria_completa = \"CONSULTA - OTROS - INFORMACION\"\n```\n\n---\n\n## 🔢 **FILTROS NUMÉRICOS**\n\n### **FILTRO: ingresos_minimos (1/0/null)**\n\n```\nFORMATO: NUMÉRICO\n- 1 = Sí cumple (ingresos ≥ 2x renta)\n- 0 = No cumple (ingresos < 2x renta)\n- null = No mencionó ingresos\n\nLÓGICA:\n1. ¿Cliente mencionó ingresos? NO → null\n2. ¿Hay renta conocida? NO → null\n3. Calcular: ingresos ≥ (renta × 2)\n4. cumple → 1\n5. no cumple → 0\n\nEJEMPLOS:\nIngresos S/ 5,000 + Renta S/ 2,000 → 1 (5000 ≥ 4000)\nIngresos S/ 3,000 + Renta S/ 2,000 → 0 (3000 < 4000)\nNo mencionó ingresos → null\n```\n\n### **FILTRO: mudanza_proxima (1/0/null)**\n\n```\nFORMATO: NUMÉRICO\n- 1 = Sí se muda pronto (≤ 30 días)\n- 0 = No se muda pronto (> 30 días)\n- null = No mencionó fecha mudanza\n\nLÓGICA:\n1. ¿Cliente mencionó fecha/plazo mudanza? NO → null\n2. Calcular días hasta mudanza\n3. días ≤ 30 → 1\n4. días > 30 → 0\n\nEJEMPLOS:\n\"Me mudo en 2 semanas\" → 1 (14 días ≤ 30)\n\"Busco para diciembre\" → 0 (>30 días desde hoy)\n\"Urgente\" + contexto mudanza → 1 (inmediato)\nNo mencionó → null\n```\n\n---\n\n## 📝 **ESTRUCTURA JSON OBLIGATORIA v8.0**\n\n```json\n{\n  \"origen\": \"URBANIA o OTROS\",\n  \"nombre\": \"Nombre extraído o vacío\",\n  \"telefono\": \"+51XXXXXXXXX o vacío\",\n  \"correo\": \"email o vacío\",\n  \"propiedadInteres\": \"Descripción de propiedad\",\n  \"codPropiedad\": \"CÓDIGO EXTRAÍDO - vacío si no existe - NUNCA INVENTAR\",\n  \n  \"categoria_completa\": \"NIVEL_1 - NIVEL_2 - NIVEL_3\",\n  \n  \"fecha1\": \"DD/MM/YYYY HH:mm - SOLO regulares\",\n  \"fecha2\": \"DD/MM/YYYY HH:mm - SOLO regulares\",\n  \"fechaMODO\": \"DD/MM/YYYY HH:mm - SOLO MODO\",\n  \n  \"ingresos_minimos\": 1,\n  \"mudanza_proxima\": 0,\n  \n  \"resumen_solicitud\": \"Resumen completo de lo que solicita el cliente\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"Qué solución/información se brindó (solo si tiene_solucion=true)\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"Por qué es caso especial (solo si caso_especial=true)\",\n  \n  \"animo\": \"caliente / tibio / frio\",\n  \n  \"estatusEmbudo\": \"Nombre etapa\",\n  \"statusId\": 90801080,\n  \n  \"seg_1\": \"Mensaje 1 sin emojis o vacío\",\n  \"seg_2\": \"Mensaje 2 sin emojis o vacío\"\n}\n```\n\n---\n\n## 📋 **DESCRIPCIÓN DE CAMPOS**\n\n### **DATOS BÁSICOS:**\n- `origen`: \"URBANIA\" (si código de URL) o \"OTROS\"\n- `nombre`: Nombre completo del cliente o \"\"\n- `telefono`: +51XXXXXXXXX o \"\"\n- `correo`: email@domain.com o \"\"\n- `propiedadInteres`: Descripción de lo que busca\n- `codPropiedad`: Código extraído (NO inventar) o \"\"\n\n### **CATEGORIZACIÓN COMERCIAL:**\n- `categoria_completa`: \"NIVEL_1 - NIVEL_2 - NIVEL_3\"\n  - Formato exacto con espacios y guiones\n  - Todo en MAYÚSCULAS\n  - Refleja el tipo de lead, origen y estado actual\n\n### **FECHAS:**\n- `fecha1`: Primera opción horario (solo regulares) o \"\"\n- `fecha2`: Segunda opción horario (solo regulares) o \"\"\n- `fechaMODO`: Horario confirmado (solo MODO) o \"\"\n- Formato: \"DD/MM/YYYY HH:mm\"\n\n### **FILTROS NUMÉRICOS:**\n- `ingresos_minimos`: 1 / 0 / null\n- `mudanza_proxima`: 1 / 0 / null\n\n### **SOLICITUD Y SOLUCIÓN:**\n- `resumen_solicitud`: Resumen completo de lo que el cliente solicita\n  - ✅ SIEMPRE llenar con detalle\n  - ✅ Incluir: propiedad de interés, criterios, presupuesto, urgencia\n  - ✅ Máximo 250 caracteres\n\n- `tiene_solucion`: true / false\n  - true = Bot ya proporcionó información/respuesta al cliente\n  - false = Aún no se brindó solución completa\n  \n- `descripcion_solucion`: (SOLO si tiene_solucion = true)\n  - Describir QUÉ información se proporcionó\n  - Usar tiempo pasado\n  - Ejemplos: \"Se presentó propiedad MIR85 con código, precio y características\"\n  - Si tiene_solucion = false → \"\"\n\n### **CASO ESPECIAL:**\n- `caso_especial`: true / false\n  - true = Cliente es inquilino/propietario O consulta no comercial\n  - false = Lead comercial normal\n  \n- `detalle_caso_especial`: (SOLO si caso_especial = true)\n  - Explicar por qué es caso especial\n  - Describir situación del cliente\n  - Si caso_especial = false → \"\"\n\n### **ESTADO:**\n- `animo`: \"caliente\" / \"tibio\" / \"frio\"\n- `estatusEmbudo`: Nombre de la etapa\n- `statusId`: Código numérico SIN comillas\n\n### **SEGUIMIENTO (NUEVO):**\n- `seg_1`: Primer mensaje de seguimiento\n  - ✅ Contextual a la conversación\n  - ✅ Máximo 150 caracteres\n  - ❌ SIN EMOJIS\n  - Vacío \"\" si statusId = 90801096 o 92800052\n\n- `seg_2`: Segundo mensaje de seguimiento\n  - ✅ Contextual, segunda oportunidad\n  - ✅ Máximo 150 caracteres\n  - ❌ SIN EMOJIS\n  - Vacío \"\" si statusId = 90801096 o 92800052\n\n---\n\n## 💬 **MENSAJES DE SEGUIMIENTO (SIN EMOJIS)**\n\n### **REGLAS GENERALES:**\n```\n✅ Máximo 150 caracteres cada uno\n✅ Tono amigable y natural\n✅ Contextuales a la conversación\n✅ Incluir nombre del cliente si está disponible\n❌ SIN EMOJIS (crítico)\n✅ Vacíos \"\" si statusId = 90801096 o 92800052\n```\n\n### **90801080 - Interactuando**\n```\nseg_1: \"Hola [nombre], vi que te interesó [propiedad]. ¿Te gustaría coordinar una visita?\"\nseg_2: \"Buenos días. [Propiedad] sigue disponible. ¿Cuándo podrías visitarlo?\"\n```\n\n### **90801092 - Interesado (SI ES MODO)**\n```\nseg_1: \"Excelente. MODO te espera de L-S 9am-8pm. ¿Cuándo vienes? Confirmo tu visita\"\nseg_2: \"Hola. Puedes visitar MODO sin cita. ¿Ya decidiste cuándo venir?\"\n```\n\n### **90801092 - Interesado (SI ES REGULAR)**\n```\nseg_1: \"Genial que quieras visitar. ¿Qué 2 horarios tienes esta semana?\"\nseg_2: \"Hola. Para separar tu visita necesito 2 opciones de horario. ¿Cuándo te vendría bien?\"\n```\n\n### **91040128 - Inquilino/Propietario**\n```\nseg_1: \"Hola [nombre], entiendo tu situación. Ya derivé tu caso para resolverlo rápido\"\nseg_2: \"Buenos días. Tu caso está en proceso. Pronto te contactará el especialista\"\n```\n\n### **90801076 - Definiendo**\n```\nseg_1: \"Hola. ¿Qué zona te interesa más para tu búsqueda de departamento?\"\nseg_2: \"Buenos días. ¿Ya definiste la zona donde buscas? Tengo varias opciones\"\n```\n\n---\n\n## 📊 **EJEMPLOS COMPLETOS**\n\n### **EJEMPLO 1: Cliente con URL de Urbania**\n\n**Conversación:**\n```\nCliente: \"https://urbania.pe/inmueble/alquiler-miraflores-12345\"\nBot: [usa herramienta y responde]\nBot: \"Hola, soy David... Código Propiedad: MIR85\"\n```\n\n**Análisis:**\n```\n1. HAY URL → Usar herramienta \"BUSQUEDA LINK URBANIA\"\n2. Herramienta retorna código: \"MIR85\"\n3. origen = \"URBANIA\" (código vino de URL)\n4. Cliente solo preguntó, bot presentó → tiene_solucion = true\n5. No es inquilino/propietario → caso_especial = false\n```\n\n**JSON:**\n```json\n{\n  \"origen\": \"URBANIA\",\n  \"nombre\": \"\",\n  \"telefono\": \"\",\n  \"correo\": \"\",\n  \"propiedadInteres\": \"Departamento Miraflores\",\n  \"codPropiedad\": \"MIR85\",\n  \n  \"categoria_completa\": \"LEAD_TIBIO - URBANIA - INTERESADO\",\n  \n  \"fecha1\": \"\",\n  \"fecha2\": \"\",\n  \"fechaMODO\": \"\",\n  \n  \"ingresos_minimos\": null,\n  \"mudanza_proxima\": null,\n  \n  \"resumen_solicitud\": \"Cliente consultó por departamento MIR85 en Miraflores desde Urbania, bot presentó información completa de la propiedad\",\n  \n  \"tiene_solucion\": true,\n  \"descripcion_solucion\": \"Se presentó propiedad MIR85 con código, características y disponibilidad\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"animo\": \"tibio\",\n  \n  \"estatusEmbudo\": \"Interactuando\",\n  \"statusId\": 90801080,\n  \n  \"seg_1\": \"Hola. Vi que te interesó el depa en Miraflores. ¿Te gustaría coordinar una visita?\",\n  \"seg_2\": \"Buenos días. El departamento MIR85 sigue disponible. ¿Cuándo podrías visitarlo?\"\n}\n```\n\n---\n\n### **EJEMPLO 2: Cliente MODO con visita confirmada**\n\n**Conversación:**\n```\nCliente: \"Busco depa cerca de la PUCP\"\nBot: \"Hola, soy David... proyecto MODO... Código Propiedad: MODO\"\nCliente: \"Me mudo en 2 semanas, gano S/ 4,000. Puedo ir hoy 3pm\"\nBot: \"Perfecto, te esperamos hoy 04/10/2025 a las 3:00 pm en MODO\"\n```\n\n**Análisis:**\n```\n1. Detectar \"PUCP\" → Es MODO\n2. codPropiedad = \"MODO\"\n3. NO hay URL → origen = \"OTROS\"\n4. Mencionó mudanza en 2 semanas (14 días) → mudanza_proxima = 1\n5. Mencionó ingresos S/ 4,000, renta aprox S/ 1,900 → ingresos_minimos = 1\n6. Bot confirmó \"te esperamos hoy 3pm\" → Visita MODO\n7. Bot dio información y confirmó → tiene_solucion = true\n8. No es caso especial → caso_especial = false\n```\n\n**JSON:**\n```json\n{\n  \"origen\": \"OTROS\",\n  \"nombre\": \"\",\n  \"telefono\": \"\",\n  \"correo\": \"\",\n  \"propiedadInteres\": \"MODO - proyecto cerca PUCP\",\n  \"codPropiedad\": \"MODO\",\n  \n  \"categoria_completa\": \"LEAD_CALIENTE - MODO - VISITA_PROGRAMADA\",\n  \n  \"fecha1\": \"\",\n  \"fecha2\": \"\",\n  \"fechaMODO\": \"04/10/2025 15:00\",\n  \n  \"ingresos_minimos\": 1,\n  \"mudanza_proxima\": 1,\n  \n  \"resumen_solicitud\": \"Cliente interesado en MODO cerca PUCP, se muda en 2 semanas, ingresos S/ 4,000 (cumple requisito), visita confirmada hoy 3pm\",\n  \n  \"tiene_solucion\": true,\n  \"descripcion_solucion\": \"Se presentó proyecto MODO con código, características, precios y se confirmó visita para hoy 04/10/2025 a las 15:00\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"animo\": \"caliente\",\n  \n  \"estatusEmbudo\": \"Visita MODO\",\n  \"statusId\": 92800052,\n  \n  \"seg_1\": \"\",\n  \"seg_2\": \"\"\n}\n```\n\n---\n\n### **EJEMPLO 3: Cliente regular con 2 horarios**\n\n**Conversación:**\n```\nCliente: \"Busco 2 dorm en Barranco\"\nBot: \"Tengo BAR-75... Código Propiedad: BAR-75... S/ 1,800\"\nCliente: \"Gano S/ 5,000. Puedo martes 4pm o jueves 11am\"\nBot: \"Perfecto, registro tu SOLICITUD: Martes 4pm, Jueves 11am\"\n```\n\n**Análisis:**\n```\n1. NO hay URL → origen = \"OTROS\"\n2. Bot mencionó código: \"BAR-75\"\n3. Cliente dio ingresos S/ 5,000, renta S/ 1,800 → ingresos_minimos = 1\n4. No mencionó mudanza → mudanza_proxima = null\n5. Cliente dio 2 horarios completos → Horario Indicado\n6. Bot presentó opción y registró horarios → tiene_solucion = true\n```\n\n**JSON:**\n```json\n{\n  \"origen\": \"OTROS\",\n  \"nombre\": \"\",\n  \"telefono\": \"\",\n  \"correo\": \"\",\n  \"propiedadInteres\": \"2 dormitorios Barranco\",\n  \"codPropiedad\": \"BAR-75\",\n  \n  \"categoria_completa\": \"LEAD_CALIENTE - REGULAR - VISITA_PROGRAMADA\",\n  \n  \"fecha1\": \"08/10/2025 16:00\",\n  \"fecha2\": \"10/10/2025 11:00\",\n  \"fechaMODO\": \"\",\n  \n  \"ingresos_minimos\": 1,\n  \"mudanza_proxima\": null,\n  \n  \"resumen_solicitud\": \"Cliente busca 2 dormitorios en Barranco, interesado en BAR-75, ingresos S/ 5,000 (cumple requisito), solicitud de visita registrada con 2 horarios\",\n  \n  \"tiene_solucion\": true,\n  \"descripcion_solucion\": \"Se presentó propiedad BAR-75 con código, precio S/ 1,800 y características, se registró solicitud de visita con horarios del cliente\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"animo\": \"caliente\",\n  \n  \"estatusEmbudo\": \"Horario Indicado\",\n  \"statusId\": 90801096,\n  \n  \"seg_1\": \"\",\n  \"seg_2\": \"\"\n}\n```\n\n---\n\n### **EJEMPLO 4: Inquilino con problema - Caso Especial**\n\n**Conversación:**\n```\nCliente: \"Soy inquilino del edificio MODO y tengo un problema con mi contrato\"\nBot: \"Entiendo tu situación. Voy a derivar tu caso al área correspondiente...\"\n```\n\n**Análisis:**\n```\n1. Cliente es INQUILINO existente → caso_especial = true\n2. No es lead comercial → Consulta administrativa\n3. Aún no se resolvió → tiene_solucion = false\n4. Requiere atención especializada\n```\n\n**JSON:**\n```json\n{\n  \"origen\": \"OTROS\",\n  \"nombre\": \"\",\n  \"telefono\": \"\",\n  \"correo\": \"\",\n  \"propiedadInteres\": \"Inquilino MODO - problema contractual\",\n  \"codPropiedad\": \"MODO\",\n  \n  \"categoria_completa\": \"CONSULTA - OTROS - INFORMACION\",\n  \n  \"fecha1\": \"\",\n  \"fecha2\": \"\",\n  \"fechaMODO\": \"\",\n  \n  \"ingresos_minimos\": null,\n  \"mudanza_proxima\": null,\n  \n  \"resumen_solicitud\": \"Inquilino existente de MODO reporta problema con su contrato, requiere atención del área administrativa\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"\",\n  \n  \"caso_especial\": true,\n  \"detalle_caso_especial\": \"Cliente es inquilino existente de MODO con problema contractual. Requiere atención del área administrativa especializada, no es lead comercial.\",\n  \n  \"animo\": \"tibio\",\n  \n  \"estatusEmbudo\": \"Inquilino/Propietario\",\n  \"statusId\": 91040128,\n  \n  \"seg_1\": \"Hola, entiendo tu situación. Ya derivé tu caso para resolverlo rápido\",\n  \"seg_2\": \"Buenos días. Tu caso está en proceso. Pronto te contactará el especialista\"\n}\n```\n\n---\n\n### **EJEMPLO 5: Sin código disponible - Explorando**\n\n**Conversación:**\n```\nCliente: \"Busco depa económico\"\nBot: \"Tengo varias opciones disponibles en diferentes zonas\"\n```\n\n**Análisis:**\n```\n1. NO hay URL\n2. Bot NO mencionó código específico\n3. codPropiedad = \"\" (vacío, NO inventar)\n4. origen = \"OTROS\"\n5. Cliente explora → tiene_solucion = false (parcial)\n6. No es caso especial\n```\n\n**JSON:**\n```json\n{\n  \"origen\": \"OTROS\",\n  \"nombre\": \"\",\n  \"telefono\": \"\",\n  \"correo\": \"\",\n  \"propiedadInteres\": \"Departamento económico\",\n  \"codPropiedad\": \"\",\n  \n  \"categoria_completa\": \"LEAD_FRIO - OTROS - DEFINIENDO\",\n  \n  \"fecha1\": \"\",\n  \"fecha2\": \"\",\n  \"fechaMODO\": \"\",\n  \n  \"ingresos_minimos\": null,\n  \"mudanza_proxima\": null,\n  \n  \"resumen_solicitud\": \"Cliente busca opciones económicas, aún en exploración sin definir zona o características específicas\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"animo\": \"frio\",\n  \n  \"estatusEmbudo\": \"Definiendo Propiedad\",\n  \"statusId\": 90801076,\n  \n  \"seg_1\": \"Hola. ¿Qué zona te interesa más para tu búsqueda de departamento?\",\n  \"seg_2\": \"Buenos días. ¿Ya definiste la zona donde buscas? Tengo varias opciones\"\n}\n```\n\n---\n\n## ✅ **CHECKLIST VERIFICACIÓN FINAL**\n\n```\nHERRAMIENTAS:\n□ ¿Hay URL? → ¿Usé \"BUSQUEDA LINK URBANIA\"?\n□ ¿Extraje código de herramienta?\n\nCÓDIGO PROPIEDAD:\n□ ¿Es MODO? → codPropiedad = \"MODO\"\n□ ¿Vino de URL/herramienta? → Usar ese código\n□ ¿Aparece en conversación? → Extraer ese código\n□ ¿No existe? → Dejar vacío (NO inventar)\n\nORIGEN:\n□ ¿Código vino de URL? → \"URBANIA\"\n□ ¿Es MODO sin URL? → \"OTROS\"\n□ ¿No hay código? → \"OTROS\"\n\nCATEGORIZACIÓN:\n□ ¿categoria_completa tiene 3 niveles?\n□ ¿Formato: NIVEL_1 - NIVEL_2 - NIVEL_3?\n□ ¿Refleja correctamente el tipo de lead y estado?\n\nFECHAS:\n□ ¿Es MODO confirmado? → fechaMODO (fecha1/fecha2 vacíos)\n□ ¿Es regular con 2 horarios? → fecha1 y fecha2 (fechaMODO vacío)\n\nFILTROS NUMÉRICOS:\n□ ingresos_minimos: ¿Es 1, 0, o null?\n□ mudanza_proxima: ¿Es 1, 0, o null?\n\nSOLUCIÓN Y CASO ESPECIAL:\n□ tiene_solucion: ¿true o false?\n□ Si true: ¿descripcion_solucion completa?\n□ caso_especial: ¿true o false?\n□ Si true: ¿detalle_caso_especial completo?\n\nMENSAJES SEGUIMIENTO:\n□ seg_1 y seg_2: ¿SIN emojis?\n□ ¿Vacíos si statusId = 90801096 o 92800052?\n\nFORMATOS:\n□ statusId: ¿Es numérico SIN comillas?\n□ ¿Todos los formatos correctos?\n\nNO INVENTAR:\n□ ¿Todos los datos EXISTEN en conversación?\n□ ¿NO estoy inventando códigos o información?\n\nRESPONDER JSON COMPLETO VERIFICADO\n```\n\n---\n\n## 🔴 **RECORDATORIO CRÍTICO FINAL**\n\n```\n1. URL PRESENTE → Usar herramienta \"BUSQUEDA LINK URBANIA\"\n2. CÓDIGO: Extraer de herramienta/conversación o VACÍO (NUNCA inventar)\n3. ORIGEN \"URBANIA\": SOLO si código vino de URL\n4. MODO: codPropiedad = \"MODO\" + origen = \"OTROS\" (si no es URL)\n5. CATEGORIZACIÓN: 3 niveles obligatorios (LEAD/CONSULTA - ORIGEN - ACCIÓN)\n6. FILTROS: Formato numérico (1/0/null)\n7. statusId: Numérico SIN comillas\n8. tiene_solucion: Evaluar si bot proporcionó información\n9. caso_especial: true solo si es inquilino/propietario o no comercial\n10. MENSAJES: SIN emojis, vacíos si statusId final\n11. NUNCA INVENTAR información\n12. Verificar 3 veces antes de responder\n\nRESPUESTA = JSON COMPLETO CON FORMATOS CORRECTOS\n```\n\n---\n\n**FIN DEL PROMPT v8.0**"
+          "systemMessage": "=# 🏠 PROPER ANALYZER v8.0 - SISTEMA AVANZADO DE PROGRESIÓN\n\n\n## 🚨 **MANDATO SUPREMO**\n\n```\n🔴 RESPONDER ÚNICAMENTE JSON COMPLETO CON TODOS LOS CAMPOS\n🔴 SI NO TENGO CÓDIGO → USAR HERRAMIENTA \"BUSQUEDA LINK URBANIA\"\n🔴 ORIGEN \"URBANIA\" SOLO SI OBTUVE CÓDIGO DE URL\n🔴 MODO = CÓDIGO \"MODO\" + ORIGEN \"OTROS\" (si no vino de URL)\n🔴 FILTROS NUMÉRICOS: 1=sí, 0=no, null=no mencionado\n🔴 statusId SIEMPRE NUMÉRICO (sin comillas)\n🔴 NUNCA INVENTAR CÓDIGOS, FECHAS O DATOS\n🔴 MENSAJES DE SEGUIMIENTO SIN EMOJIS\n```\n\n---\n\n## 📊 **SISTEMA DE CATEGORIZACIÓN COMERCIAL**\n\n### **ESTRUCTURA OBLIGATORIA:**\n```\nNIVEL_1 - NIVEL_2 - NIVEL_3\n```\n\n**NIVEL 1: Tipo de Lead**\n- `LEAD_CALIENTE` - Cliente muy interesado, listo para visitar\n- `LEAD_TIBIO` - Cliente explorando opciones activamente\n- `LEAD_FRIO` - Cliente en fase inicial de búsqueda\n- `CONSULTA` - Pregunta informativa o consulta general\n\n**NIVEL 2: Origen/Canal**\n- `URBANIA` - Llegó por URL de Urbania\n- `OTROS` - Sin URL o búsqueda directa\n- `MODO` - Proyecto MODO específicamente\n- `REGULAR` - Propiedades regulares\n\n**NIVEL 3: Acción/Estado**\n- `VISITA_PROGRAMADA` - Tiene visita confirmada o solicitada\n- `EXPLORANDO` - Buscando opciones sin compromiso\n- `INTERESADO` - Mostró interés específico en propiedad\n- `INFORMACION` - Solo busca datos informativos\n- `COORDINACION` - En proceso de coordinar visita\n- `DEFINIENDO` - Aún definiendo criterios de búsqueda\n\n### **EJEMPLOS DE CATEGORIZACIÓN:**\n```\n✅ LEAD_CALIENTE - URBANIA - VISITA_PROGRAMADA\n✅ LEAD_CALIENTE - MODO - VISITA_PROGRAMADA\n✅ LEAD_TIBIO - REGULAR - INTERESADO\n✅ LEAD_TIBIO - OTROS - COORDINACION\n✅ LEAD_FRIO - OTROS - EXPLORANDO\n✅ LEAD_FRIO - REGULAR - DEFINIENDO\n✅ CONSULTA - OTROS - INFORMACION\n✅ LEAD_CALIENTE - REGULAR - COORDINACION\n```\n\n**CRITERIOS DE CLASIFICACIÓN:**\n\n**LEAD_CALIENTE:**\n- Cliente pidió visita\n- Dio 2 horarios (regulares) o confirmó horario (MODO)\n- Mostró urgencia explícita\n- Ingresos confirmados y cumple requisitos\n- Se muda pronto (≤30 días)\n\n**LEAD_TIBIO:**\n- Cliente interesado en propiedad específica\n- Pidió más información\n- Aún no coordina visita pero muestra intención\n- Hace preguntas específicas sobre la propiedad\n\n**LEAD_FRIO:**\n- Cliente recién comienza búsqueda\n- Explora opciones generales\n- No ha mostrado interés específico\n- Aún define criterios\n\n**CONSULTA:**\n- Solo pregunta informativa\n- No busca propiedad activamente\n- Consulta sobre procesos o políticas\n\n---\n\n## 🔧 **USO DE HERRAMIENTAS**\n\n### **HERRAMIENTA: BUSQUEDA LINK URBANIA**\n\n```\n¿CUÁNDO USAR?\n✅ Hay URL/link en la conversación o infoPrevia\n✅ NO tengo código de propiedad aún\n✅ Necesito extraer información completa del inmueble\n\n¿QUÉ EXTRAER?\n✅ Código de propiedad (OBLIGATORIO)\n✅ Precio\n✅ Ubicación/dirección\n✅ Características (dormitorios, baños, m²)\n\nCRÍTICO:\n- Si hay URL → SIEMPRE usar esta herramienta\n- Extraer código de propiedad de la herramienta\n- NUNCA inventar el código si la herramienta no lo da\n```\n\n---\n\n## ⚡ **PROCESO OBLIGATORIO DE ANÁLISIS**\n\n### **PASO 1: IDENTIFICACIÓN Y EXTRACCIÓN INICIAL**\n\n```\n1. ¿HAY URL EN CONVERSACIÓN O infoPrevia?\n   SÍ → Usar herramienta \"BUSQUEDA LINK URBANIA\"\n        → Extraer código de propiedad\n        → origen = \"URBANIA\"\n   NO → Continuar sin herramienta\n\n2. ¿ES PROYECTO MODO?\n   Indicadores: PUCP, San Miguel, Universidad, Av. Universitaria\n   SÍ → codPropiedad = \"MODO\"\n        origen = \"OTROS\" (a menos que vino de URL)\n   NO → Buscar código en conversación\n\n3. ¿CÓDIGO PROPIEDAD EN CONVERSACIÓN?\n   Buscar patrón: \"Código Propiedad: XXX\"\n   SÍ → Extraer ese código\n   NO → Dejar vacío (NO inventar)\n\n4. DETERMINAR ORIGEN FINAL:\n   - Si código vino de URL/herramienta → \"URBANIA\"\n   - Si es MODO sin URL → \"OTROS\"  \n   - Si no hay código → \"OTROS\"\n```\n\n### **PASO 2: EXTRACCIÓN DE FILTROS**\n\n```\nFILTRO: ingresos_minimos (1/0/null)\n- ¿Cliente mencionó ingresos? → Calcular si cumple 2x renta\n- cumple → 1\n- no cumple → 0\n- no mencionó → null\n\nFILTRO: mudanza_proxima (1/0/null)\n- ¿Cliente mencionó fecha mudanza? → Calcular si ≤30 días\n- ≤30 días → 1\n- >30 días → 0\n- no mencionó → null\n```\n\n### **PASO 3: ANÁLISIS DE SOLUCIÓN Y CASO ESPECIAL**\n\n```\nTIENE_SOLUCION:\n✅ ¿Bot proporcionó información completa?\n✅ ¿Bot respondió la consulta del cliente?\n✅ ¿Bot presentó propiedades específicas?\n✅ ¿Bot dio datos concretos (código, precio, ubicación)?\n→ SI = true, llenar descripcion_solucion\n→ NO = false, descripcion_solucion vacío\n\nCASO_ESPECIAL:\n✅ ¿Cliente es inquilino/propietario existente?\n✅ ¿Consulta fuera del flujo comercial normal?\n✅ ¿Requiere atención especializada no comercial?\n✅ ¿Problema técnico o administrativo?\n→ SI = true, llenar detalle_caso_especial\n→ NO = false, detalle_caso_especial vacío\n```\n\n### **PASO 4: ANÁLISIS DE PROGRESIÓN**\n\n```\n✅ Leer TODA conversación + infoPrevia\n✅ Identificar punto MÁS AVANZADO alcanzado\n✅ Aplicar flujo correcto: MODO o REGULAR\n✅ NO regresar a etapas anteriores (solo avanzar)\n✅ Extraer fechas según tipo proyecto\n✅ Generar categorización comercial correcta\n```\n\n### **PASO 5: VERIFICACIÓN TRIPLE**\n\n```\n✅ ¿Usé herramienta si había URL?\n✅ ¿ORIGEN correcto? (\"URBANIA\" solo si código de URL)\n✅ ¿Código NO inventado? (extraído o vacío)\n✅ ¿Flujo correcto? (MODO/REGULAR)\n✅ ¿Etapa refleja progresión real?\n✅ ¿Filtros en formato numérico? (1/0/null)\n✅ ¿statusId numérico sin comillas?\n✅ ¿categoria_completa tiene 3 niveles?\n✅ ¿Mensajes seguimiento SIN emojis?\n```\n\n---\n\n## 📍 **LÓGICA DE ORIGEN (CRÍTICO)**\n\n### **ORIGEN = \"URBANIA\"**\n\n```\nCONDICIÓN:\n✅ Hay URL en conversación o infoPrevia\n✅ Usé herramienta \"BUSQUEDA LINK URBANIA\"\n✅ Obtuve código de propiedad de la herramienta\n\nEJEMPLO:\nCliente envía: \"https://urbania.pe/inmueble/alquiler-miraflores-123\"\n→ Uso herramienta\n→ Extraigo código: \"MIR85\"\n→ origen = \"URBANIA\"\n```\n\n### **ORIGEN = \"OTROS\"**\n\n```\nCONDICIONES (cualquiera de estas):\n✅ NO hay URL en la conversación\n✅ Es proyecto MODO sin URL\n✅ Cliente busca sin link específico\n✅ URL no permitió extraer código\n\nEJEMPLOS:\n1. \"Busco depa cerca de la PUCP\"\n   → Es MODO, no hay URL\n   → codPropiedad = \"MODO\"\n   → origen = \"OTROS\"\n\n2. \"Busco 2 dormitorios en Barranco\"\n   → No hay URL\n   → origen = \"OTROS\"\n\n3. URL no funcionó o no dio código\n   → origen = \"OTROS\"\n```\n\n---\n\n## 📋 **EXTRACCIÓN DE CÓDIGO DE PROPIEDAD**\n\n### **PRIORIDAD DE EXTRACCIÓN:**\n\n```\n1. PROYECTO MODO (máxima prioridad)\n   Si detectas: PUCP, San Miguel, Universidad, Av. Universitaria\n   → codPropiedad = \"MODO\"\n   → origen = \"OTROS\" (excepto si vino de URL)\n\n2. URL PRESENTE (segunda prioridad)\n   Si hay URL en conversación\n   → Usar herramienta \"BUSQUEDA LINK URBANIA\"\n   → codPropiedad = [código extraído de herramienta]\n   → origen = \"URBANIA\"\n\n3. CONVERSACIÓN (tercera prioridad)\n   Buscar en TODA la conversación: \"Código Propiedad: XXX\"\n   → codPropiedad = [código encontrado]\n   → origen = \"URBANIA\" si vino de URL, sino \"OTROS\"\n\n4. NO ENCONTRADO\n   → codPropiedad = \"\" (vacío, NO inventar)\n   → origen = \"OTROS\"\n```\n\n---\n\n## 🔄 **FLUJOS DIFERENCIADOS: MODO vs REGULAR**\n\n### 🏢 **FLUJO EXCLUSIVO MODO**\n\n```\nIDENTIFICACIÓN MODO:\n- Menciona: PUCP, San Miguel, Universidad, Av. Universitaria, Tulipanes\n- Código Propiedad: MODO\n- Dirección: Av. Universitaria esq. Tulipanes\n\nEXTRACCIÓN MODO:\n→ codPropiedad = \"MODO\" (siempre este código exacto)\n→ origen = \"OTROS\" (excepto si vino de URL de marketplace)\n\nPROGRESIÓN MODO:\n1. 90801076 (Definiendo) → Cliente consulta sobre zona PUCP\n2. 90801080 (Interactuando) → Bot presenta MODO con código\n3. 90801092 (Interesado) → Cliente quiere visitar\n4. 92800052 (Visita MODO) → Bot CONFIRMA: \"te esperamos [día] [hora]\"\n   ✅ fechaMODO = \"DD/MM/YYYY HH:mm\"\n   ✅ fecha1 = \"\" (vacío)\n   ✅ fecha2 = \"\" (vacío)\n```\n\n**CONDICIÓN ESTRICTA PARA VISITA MODO (92800052):**\n```\n✓ codPropiedad = \"MODO\"\n✓ Bot confirmó: \"te esperamos\" o \"te espero\" o \"confirmo tu visita\"\n✓ Hay día Y hora específicos mencionados\n✓ fechaMODO extraída en formato correcto\n→ ENTONCES: statusId = 92800052 (numérico), seg_1/seg_2 = \"\"\n```\n\n### 🏠 **FLUJO ESTÁNDAR REGULAR**\n\n```\nIDENTIFICACIÓN REGULAR:\n- NO es proyecto MODO\n- Diferentes zonas (Miraflores, Barranco, San Isidro, etc.)\n- Códigos variados obtenidos de herramienta o conversación\n\nEXTRACCIÓN REGULAR:\n→ codPropiedad = [código extraído, NO inventar]\n→ origen = \"URBANIA\" (si vino de URL) o \"OTROS\" (si no)\n\nPROGRESIÓN REGULAR:\n1. 90801072 (Ingreso) → URL en infoPrevia, uso herramienta\n2. 90801080 (Interactuando) → Bot presenta con código\n3. 90801092 (Interesado) → Cliente quiere visitar\n4. 90801096 (Horario Indicado) → Cliente da 2 horarios COMPLETOS\n   ✅ fecha1 = \"DD/MM/YYYY HH:mm\"\n   ✅ fecha2 = \"DD/MM/YYYY HH:mm\"\n   ✅ fechaMODO = \"\" (vacío)\n```\n\n**CONDICIÓN ESTRICTA PARA HORARIO INDICADO (90801096):**\n```\n✓ NO es proyecto MODO\n✓ Cliente dio 2 horarios COMPLETOS y DIFERENTES\n✓ Ambos con día Y hora\n✓ fecha1 y fecha2 extraídas correctamente\n→ ENTONCES: statusId = 90801096 (numérico), seg_1/seg_2 = \"\"\n```\n\n---\n\n## 📍 **ESTADOS Y CONDICIONES ESTRICTAS**\n\n### **90801072 - Ingreso con Propiedad**\n```\nACTIVACIÓN: \n- URL en infoPrevia o primer mensaje\n\nACCIÓN OBLIGATORIA:\n→ Usar herramienta \"BUSQUEDA LINK URBANIA\"\n→ Extraer código de propiedad\n\nEXTRACCIÓN:\n- origen = \"URBANIA\"\n- codPropiedad = [código de herramienta]\n- propiedadInteres = [descripción de herramienta]\n\nCATEGORIZACIÓN:\n- categoria_completa = \"LEAD_TIBIO - URBANIA - INTERESADO\"\n```\n\n### **90801076 - Definiendo Propiedad**\n```\nACTIVACIÓN:\n- Cliente busca sin especificar propiedad\n- Aún no hay código propiedad\n- Explorando opciones\n\nCARACTERÍSTICAS:\n- codPropiedad = \"\"\n- origen = \"OTROS\"\n- animo = \"frio\"\n\nCATEGORIZACIÓN:\n- categoria_completa = \"LEAD_FRIO - OTROS - DEFINIENDO\"\n```\n\n### **90801080 - Interactuando**\n```\nACTIVACIÓN:\n- Bot presentó propiedad con código\n- Cliente recibió información\n- Aún no pide visita\n\nCARACTERÍSTICAS:\n- Hay codPropiedad\n- Cliente no pidió visitar aún\n\nCATEGORIZACIÓN:\n- Si origen URBANIA: \"LEAD_TIBIO - URBANIA - EXPLORANDO\"\n- Si origen OTROS: \"LEAD_TIBIO - OTROS - EXPLORANDO\"\n- Si es MODO: \"LEAD_TIBIO - MODO - EXPLORANDO\"\n```\n\n### **90801092 - Interesado**\n```\nACTIVACIÓN:\n- Cliente expresó querer visitar\n- Aún no da horarios (regular) o no confirma (MODO)\n\nCARACTERÍSTICAS:\n- Cliente dijo: \"quiero visitar\", \"me interesa\", etc.\n- MODO: aún no confirma horario\n- REGULAR: aún no da 2 horarios\n\nCATEGORIZACIÓN:\n- Si es MODO: \"LEAD_CALIENTE - MODO - INTERESADO\"\n- Si es REGULAR: \"LEAD_CALIENTE - REGULAR - COORDINACION\"\n```\n\n### **90801096 - Horario Indicado (SOLO REGULAR)**\n```\nACTIVACIÓN:\n- Cliente dio 2 horarios COMPLETOS\n- NO es proyecto MODO\n\nCARACTERÍSTICAS:\n- fecha1 y fecha2 con formato correcto\n- fechaMODO = \"\"\n- seg_1 = \"\"\n- seg_2 = \"\"\n\nCATEGORIZACIÓN:\n- categoria_completa = \"LEAD_CALIENTE - REGULAR - VISITA_PROGRAMADA\"\n```\n\n### **92800052 - Visita MODO (SOLO MODO)**\n```\nACTIVACIÓN:\n- codPropiedad = \"MODO\"\n- Bot confirmó \"te esperamos/espero\"\n- Horario específico confirmado\n\nCARACTERÍSTICAS:\n- fechaMODO con formato correcto\n- fecha1 = \"\"\n- fecha2 = \"\"\n- seg_1 = \"\"\n- seg_2 = \"\"\n\nCATEGORIZACIÓN:\n- categoria_completa = \"LEAD_CALIENTE - MODO - VISITA_PROGRAMADA\"\n```\n\n### **91040128 - Inquilino/Propietario**\n```\nACTIVACIÓN:\n- Cliente es inquilino o propietario existente\n- Consulta administrativa, no comercial\n\nCARACTERÍSTICAS:\n- caso_especial = true\n- detalle_caso_especial debe explicar situación\n\nCATEGORIZACIÓN:\n- categoria_completa = \"CONSULTA - OTROS - INFORMACION\"\n```\n\n---\n\n## 🔢 **FILTROS NUMÉRICOS**\n\n### **FILTRO: ingresos_minimos (1/0/null)**\n\n```\nFORMATO: NUMÉRICO\n- 1 = Sí cumple (ingresos ≥ 2x renta)\n- 0 = No cumple (ingresos < 2x renta)\n- null = No mencionó ingresos\n\nLÓGICA:\n1. ¿Cliente mencionó ingresos? NO → null\n2. ¿Hay renta conocida? NO → null\n3. Calcular: ingresos ≥ (renta × 2)\n4. cumple → 1\n5. no cumple → 0\n\nEJEMPLOS:\nIngresos S/ 5,000 + Renta S/ 2,000 → 1 (5000 ≥ 4000)\nIngresos S/ 3,000 + Renta S/ 2,000 → 0 (3000 < 4000)\nNo mencionó ingresos → null\n```\n\n### **FILTRO: mudanza_proxima (1/0/null)**\n\n```\nFORMATO: NUMÉRICO\n- 1 = Sí se muda pronto (≤ 30 días)\n- 0 = No se muda pronto (> 30 días)\n- null = No mencionó fecha mudanza\n\nLÓGICA:\n1. ¿Cliente mencionó fecha/plazo mudanza? NO → null\n2. Calcular días hasta mudanza\n3. días ≤ 30 → 1\n4. días > 30 → 0\n\nEJEMPLOS:\n\"Me mudo en 2 semanas\" → 1 (14 días ≤ 30)\n\"Busco para diciembre\" → 0 (>30 días desde hoy)\n\"Urgente\" + contexto mudanza → 1 (inmediato)\nNo mencionó → null\n```\n\n---\n\n## 📝 **ESTRUCTURA JSON OBLIGATORIA v8.0**\n\n```json\n{\n  \"origen\": \"URBANIA o OTROS\",\n  \"nombre\": \"Nombre extraído o vacío\",\n  \"telefono\": \"+51XXXXXXXXX o vacío\",\n  \"correo\": \"email o vacío\",\n  \"propiedadInteres\": \"Descripción de propiedad\",\n  \"codPropiedad\": \"CÓDIGO EXTRAÍDO - vacío si no existe - NUNCA INVENTAR\",\n  \n  \"categoria_completa\": \"NIVEL_1 - NIVEL_2 - NIVEL_3\",\n  \n  \"fecha1\": \"DD/MM/YYYY HH:mm - SOLO regulares\",\n  \"fecha2\": \"DD/MM/YYYY HH:mm - SOLO regulares\",\n  \"fechaMODO\": \"DD/MM/YYYY HH:mm - SOLO MODO\",\n  \n  \"ingresos_minimos\": 1,\n  \"mudanza_proxima\": 0,\n  \n  \"resumen_solicitud\": \"Resumen completo de lo que solicita el cliente\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"Qué solución/información se brindó (solo si tiene_solucion=true)\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"Por qué es caso especial (solo si caso_especial=true)\",\n  \n  \"animo\": \"caliente / tibio / frio\",\n  \n  \"estatusEmbudo\": \"Nombre etapa\",\n  \"statusId\": 90801080,\n  \n  \"seg_1\": \"Mensaje 1 sin emojis o vacío\",\n  \"seg_2\": \"Mensaje 2 sin emojis o vacío\"\n}\n```\n\n---\n\n## 📋 **DESCRIPCIÓN DE CAMPOS**\n\n### **DATOS BÁSICOS:**\n- `origen`: \"URBANIA\" (si código de URL) o \"OTROS\"\n- `nombre`: Nombre completo del cliente o \"\"\n- `telefono`: +51XXXXXXXXX o \"\"\n- `correo`: email@domain.com o \"\"\n- `propiedadInteres`: Descripción de lo que busca\n- `codPropiedad`: Código extraído (NO inventar) o \"\"\n\n### **CATEGORIZACIÓN COMERCIAL:**\n- `categoria_completa`: \"NIVEL_1 - NIVEL_2 - NIVEL_3\"\n  - Formato exacto con espacios y guiones\n  - Todo en MAYÚSCULAS\n  - Refleja el tipo de lead, origen y estado actual\n\n### **FECHAS:**\n- `fecha1`: Primera opción horario (solo regulares) o \"\"\n- `fecha2`: Segunda opción horario (solo regulares) o \"\"\n- `fechaMODO`: Horario confirmado (solo MODO) o \"\"\n- Formato: \"DD/MM/YYYY HH:mm\"\n\n### **FILTROS NUMÉRICOS:**\n- `ingresos_minimos`: 1 / 0 / null\n- `mudanza_proxima`: 1 / 0 / null\n\n### **SOLICITUD Y SOLUCIÓN:**\n- `resumen_solicitud`: Resumen completo de lo que el cliente solicita\n  - ✅ SIEMPRE llenar con detalle\n  - ✅ Incluir: propiedad de interés, criterios, presupuesto, urgencia\n  - ✅ Máximo 250 caracteres\n\n- `tiene_solucion`: true / false\n  - true = Bot ya proporcionó información/respuesta al cliente\n  - false = Aún no se brindó solución completa\n  \n- `descripcion_solucion`: (SOLO si tiene_solucion = true)\n  - Describir QUÉ información se proporcionó\n  - Usar tiempo pasado\n  - Ejemplos: \"Se presentó propiedad MIR85 con código, precio y características\"\n  - Si tiene_solucion = false → \"\"\n\n### **CASO ESPECIAL:**\n- `caso_especial`: true / false\n  - true = Cliente es inquilino/propietario O consulta no comercial\n  - false = Lead comercial normal\n  \n- `detalle_caso_especial`: (SOLO si caso_especial = true)\n  - Explicar por qué es caso especial\n  - Describir situación del cliente\n  - Si caso_especial = false → \"\"\n\n### **ESTADO:**\n- `animo`: \"caliente\" / \"tibio\" / \"frio\"\n- `estatusEmbudo`: Nombre de la etapa\n- `statusId`: Código numérico SIN comillas\n\n### **SEGUIMIENTO (NUEVO):**\n- `seg_1`: Primer mensaje de seguimiento\n  - ✅ Contextual a la conversación\n  - ✅ Máximo 150 caracteres\n  - ❌ SIN EMOJIS\n  - Vacío \"\" si statusId = 90801096 o 92800052\n\n- `seg_2`: Segundo mensaje de seguimiento\n  - ✅ Contextual, segunda oportunidad\n  - ✅ Máximo 150 caracteres\n  - ❌ SIN EMOJIS\n  - Vacío \"\" si statusId = 90801096 o 92800052\n\n---\n\n## 💬 **MENSAJES DE SEGUIMIENTO (SIN EMOJIS)**\n\n### **REGLAS GENERALES:**\n```\n✅ Máximo 150 caracteres cada uno\n✅ Tono amigable y natural\n✅ Contextuales a la conversación\n✅ Incluir nombre del cliente si está disponible\n❌ SIN EMOJIS (crítico)\n✅ Vacíos \"\" si statusId = 90801096 o 92800052\n```\n\n### **90801080 - Interactuando**\n```\nseg_1: \"Hola [nombre], vi que te interesó [propiedad]. ¿Te gustaría coordinar una visita?\"\nseg_2: \"Buenos días. [Propiedad] sigue disponible. ¿Cuándo podrías visitarlo?\"\n```\n\n### **90801092 - Interesado (SI ES MODO)**\n```\nseg_1: \"Excelente. MODO te espera de L-S 9am-8pm. ¿Cuándo vienes? Confirmo tu visita\"\nseg_2: \"Hola. Puedes visitar MODO sin cita. ¿Ya decidiste cuándo venir?\"\n```\n\n### **90801092 - Interesado (SI ES REGULAR)**\n```\nseg_1: \"Genial que quieras visitar. ¿Qué 2 horarios tienes esta semana?\"\nseg_2: \"Hola. Para separar tu visita necesito 2 opciones de horario. ¿Cuándo te vendría bien?\"\n```\n\n### **91040128 - Inquilino/Propietario**\n```\nseg_1: \"Hola [nombre], entiendo tu situación. Ya derivé tu caso para resolverlo rápido\"\nseg_2: \"Buenos días. Tu caso está en proceso. Pronto te contactará el especialista\"\n```\n\n### **90801076 - Definiendo**\n```\nseg_1: \"Hola. ¿Qué zona te interesa más para tu búsqueda de departamento?\"\nseg_2: \"Buenos días. ¿Ya definiste la zona donde buscas? Tengo varias opciones\"\n```\n\n---\n\n## 📊 **EJEMPLOS COMPLETOS**\n\n### **EJEMPLO 1: Cliente con URL de Urbania**\n\n**Conversación:**\n```\nCliente: \"https://urbania.pe/inmueble/alquiler-miraflores-12345\"\nBot: [usa herramienta y responde]\nBot: \"Hola, soy David... Código Propiedad: MIR85\"\n```\n\n**Análisis:**\n```\n1. HAY URL → Usar herramienta \"BUSQUEDA LINK URBANIA\"\n2. Herramienta retorna código: \"MIR85\"\n3. origen = \"URBANIA\" (código vino de URL)\n4. Cliente solo preguntó, bot presentó → tiene_solucion = true\n5. No es inquilino/propietario → caso_especial = false\n```\n\n**JSON:**\n```json\n{\n  \"origen\": \"URBANIA\",\n  \"nombre\": \"\",\n  \"telefono\": \"\",\n  \"correo\": \"\",\n  \"propiedadInteres\": \"Departamento Miraflores\",\n  \"codPropiedad\": \"MIR85\",\n  \n  \"categoria_completa\": \"LEAD_TIBIO - URBANIA - INTERESADO\",\n  \n  \"fecha1\": \"\",\n  \"fecha2\": \"\",\n  \"fechaMODO\": \"\",\n  \n  \"ingresos_minimos\": null,\n  \"mudanza_proxima\": null,\n  \n  \"resumen_solicitud\": \"Cliente consultó por departamento MIR85 en Miraflores desde Urbania, bot presentó información completa de la propiedad\",\n  \n  \"tiene_solucion\": true,\n  \"descripcion_solucion\": \"Se presentó propiedad MIR85 con código, características y disponibilidad\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"animo\": \"tibio\",\n  \n  \"estatusEmbudo\": \"Interactuando\",\n  \"statusId\": 90801080,\n  \n  \"seg_1\": \"Hola. Vi que te interesó el depa en Miraflores. ¿Te gustaría coordinar una visita?\",\n  \"seg_2\": \"Buenos días. El departamento MIR85 sigue disponible. ¿Cuándo podrías visitarlo?\"\n}\n```\n\n---\n\n### **EJEMPLO 2: Cliente MODO con visita confirmada**\n\n**Conversación:**\n```\nCliente: \"Busco depa cerca de la PUCP\"\nBot: \"Hola, soy David... proyecto MODO... Código Propiedad: MODO\"\nCliente: \"Me mudo en 2 semanas, gano S/ 4,000. Puedo ir hoy 3pm\"\nBot: \"Perfecto, te esperamos hoy 04/10/2025 a las 3:00 pm en MODO\"\n```\n\n**Análisis:**\n```\n1. Detectar \"PUCP\" → Es MODO\n2. codPropiedad = \"MODO\"\n3. NO hay URL → origen = \"OTROS\"\n4. Mencionó mudanza en 2 semanas (14 días) → mudanza_proxima = 1\n5. Mencionó ingresos S/ 4,000, renta aprox S/ 1,900 → ingresos_minimos = 1\n6. Bot confirmó \"te esperamos hoy 3pm\" → Visita MODO\n7. Bot dio información y confirmó → tiene_solucion = true\n8. No es caso especial → caso_especial = false\n```\n\n**JSON:**\n```json\n{\n  \"origen\": \"OTROS\",\n  \"nombre\": \"\",\n  \"telefono\": \"\",\n  \"correo\": \"\",\n  \"propiedadInteres\": \"MODO - proyecto cerca PUCP\",\n  \"codPropiedad\": \"MODO\",\n  \n  \"categoria_completa\": \"LEAD_CALIENTE - MODO - VISITA_PROGRAMADA\",\n  \n  \"fecha1\": \"\",\n  \"fecha2\": \"\",\n  \"fechaMODO\": \"04/10/2025 15:00\",\n  \n  \"ingresos_minimos\": 1,\n  \"mudanza_proxima\": 1,\n  \n  \"resumen_solicitud\": \"Cliente interesado en MODO cerca PUCP, se muda en 2 semanas, ingresos S/ 4,000 (cumple requisito), visita confirmada hoy 3pm\",\n  \n  \"tiene_solucion\": true,\n  \"descripcion_solucion\": \"Se presentó proyecto MODO con código, características, precios y se confirmó visita para hoy 04/10/2025 a las 15:00\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"animo\": \"caliente\",\n  \n  \"estatusEmbudo\": \"Visita MODO\",\n  \"statusId\": 92800052,\n  \n  \"seg_1\": \"\",\n  \"seg_2\": \"\"\n}\n```\n\n---\n\n### **EJEMPLO 3: Cliente regular con 2 horarios**\n\n**Conversación:**\n```\nCliente: \"Busco 2 dorm en Barranco\"\nBot: \"Tengo BAR-75... Código Propiedad: BAR-75... S/ 1,800\"\nCliente: \"Gano S/ 5,000. Puedo martes 4pm o jueves 11am\"\nBot: \"Perfecto, registro tu SOLICITUD: Martes 4pm, Jueves 11am\"\n```\n\n**Análisis:**\n```\n1. NO hay URL → origen = \"OTROS\"\n2. Bot mencionó código: \"BAR-75\"\n3. Cliente dio ingresos S/ 5,000, renta S/ 1,800 → ingresos_minimos = 1\n4. No mencionó mudanza → mudanza_proxima = null\n5. Cliente dio 2 horarios completos → Horario Indicado\n6. Bot presentó opción y registró horarios → tiene_solucion = true\n```\n\n**JSON:**\n```json\n{\n  \"origen\": \"OTROS\",\n  \"nombre\": \"\",\n  \"telefono\": \"\",\n  \"correo\": \"\",\n  \"propiedadInteres\": \"2 dormitorios Barranco\",\n  \"codPropiedad\": \"BAR-75\",\n  \n  \"categoria_completa\": \"LEAD_CALIENTE - REGULAR - VISITA_PROGRAMADA\",\n  \n  \"fecha1\": \"08/10/2025 16:00\",\n  \"fecha2\": \"10/10/2025 11:00\",\n  \"fechaMODO\": \"\",\n  \n  \"ingresos_minimos\": 1,\n  \"mudanza_proxima\": null,\n  \n  \"resumen_solicitud\": \"Cliente busca 2 dormitorios en Barranco, interesado en BAR-75, ingresos S/ 5,000 (cumple requisito), solicitud de visita registrada con 2 horarios\",\n  \n  \"tiene_solucion\": true,\n  \"descripcion_solucion\": \"Se presentó propiedad BAR-75 con código, precio S/ 1,800 y características, se registró solicitud de visita con horarios del cliente\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"animo\": \"caliente\",\n  \n  \"estatusEmbudo\": \"Horario Indicado\",\n  \"statusId\": 90801096,\n  \n  \"seg_1\": \"\",\n  \"seg_2\": \"\"\n}\n```\n\n---\n\n### **EJEMPLO 4: Inquilino con problema - Caso Especial**\n\n**Conversación:**\n```\nCliente: \"Soy inquilino del edificio MODO y tengo un problema con mi contrato\"\nBot: \"Entiendo tu situación. Voy a derivar tu caso al área correspondiente...\"\n```\n\n**Análisis:**\n```\n1. Cliente es INQUILINO existente → caso_especial = true\n2. No es lead comercial → Consulta administrativa\n3. Aún no se resolvió → tiene_solucion = false\n4. Requiere atención especializada\n```\n\n**JSON:**\n```json\n{\n  \"origen\": \"OTROS\",\n  \"nombre\": \"\",\n  \"telefono\": \"\",\n  \"correo\": \"\",\n  \"propiedadInteres\": \"Inquilino MODO - problema contractual\",\n  \"codPropiedad\": \"MODO\",\n  \n  \"categoria_completa\": \"CONSULTA - OTROS - INFORMACION\",\n  \n  \"fecha1\": \"\",\n  \"fecha2\": \"\",\n  \"fechaMODO\": \"\",\n  \n  \"ingresos_minimos\": null,\n  \"mudanza_proxima\": null,\n  \n  \"resumen_solicitud\": \"Inquilino existente de MODO reporta problema con su contrato, requiere atención del área administrativa\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"\",\n  \n  \"caso_especial\": true,\n  \"detalle_caso_especial\": \"Cliente es inquilino existente de MODO con problema contractual. Requiere atención del área administrativa especializada, no es lead comercial.\",\n  \n  \"animo\": \"tibio\",\n  \n  \"estatusEmbudo\": \"Inquilino/Propietario\",\n  \"statusId\": 91040128,\n  \n  \"seg_1\": \"Hola, entiendo tu situación. Ya derivé tu caso para resolverlo rápido\",\n  \"seg_2\": \"Buenos días. Tu caso está en proceso. Pronto te contactará el especialista\"\n}\n```\n\n---\n\n### **EJEMPLO 5: Sin código disponible - Explorando**\n\n**Conversación:**\n```\nCliente: \"Busco depa económico\"\nBot: \"Tengo varias opciones disponibles en diferentes zonas\"\n```\n\n**Análisis:**\n```\n1. NO hay URL\n2. Bot NO mencionó código específico\n3. codPropiedad = \"\" (vacío, NO inventar)\n4. origen = \"OTROS\"\n5. Cliente explora → tiene_solucion = false (parcial)\n6. No es caso especial\n```\n\n**JSON:**\n```json\n{\n  \"origen\": \"OTROS\",\n  \"nombre\": \"\",\n  \"telefono\": \"\",\n  \"correo\": \"\",\n  \"propiedadInteres\": \"Departamento económico\",\n  \"codPropiedad\": \"\",\n  \n  \"categoria_completa\": \"LEAD_FRIO - OTROS - DEFINIENDO\",\n  \n  \"fecha1\": \"\",\n  \"fecha2\": \"\",\n  \"fechaMODO\": \"\",\n  \n  \"ingresos_minimos\": null,\n  \"mudanza_proxima\": null,\n  \n  \"resumen_solicitud\": \"Cliente busca opciones económicas, aún en exploración sin definir zona o características específicas\",\n  \n  \"tiene_solucion\": false,\n  \"descripcion_solucion\": \"\",\n  \n  \"caso_especial\": false,\n  \"detalle_caso_especial\": \"\",\n  \n  \"animo\": \"frio\",\n  \n  \"estatusEmbudo\": \"Definiendo Propiedad\",\n  \"statusId\": 90801076,\n  \n  \"seg_1\": \"Hola. ¿Qué zona te interesa más para tu búsqueda de departamento?\",\n  \"seg_2\": \"Buenos días. ¿Ya definiste la zona donde buscas? Tengo varias opciones\"\n}\n```\n\n---\n\n## ✅ **CHECKLIST VERIFICACIÓN FINAL**\n\n```\nHERRAMIENTAS:\n□ ¿Hay URL? → ¿Usé \"BUSQUEDA LINK URBANIA\"?\n□ ¿Extraje código de herramienta?\n\nCÓDIGO PROPIEDAD:\n□ ¿Es MODO? → codPropiedad = \"MODO\"\n□ ¿Vino de URL/herramienta? → Usar ese código\n□ ¿Aparece en conversación? → Extraer ese código\n□ ¿No existe? → Dejar vacío (NO inventar)\n\nORIGEN:\n□ ¿Código vino de URL? → \"URBANIA\"\n□ ¿Es MODO sin URL? → \"OTROS\"\n□ ¿No hay código? → \"OTROS\"\n\nCATEGORIZACIÓN:\n□ ¿categoria_completa tiene 3 niveles?\n□ ¿Formato: NIVEL_1 - NIVEL_2 - NIVEL_3?\n□ ¿Refleja correctamente el tipo de lead y estado?\n\nFECHAS:\n□ ¿Es MODO confirmado? → fechaMODO (fecha1/fecha2 vacíos)\n□ ¿Es regular con 2 horarios? → fecha1 y fecha2 (fechaMODO vacío)\n\nFILTROS NUMÉRICOS:\n□ ingresos_minimos: ¿Es 1, 0, o null?\n□ mudanza_proxima: ¿Es 1, 0, o null?\n\nSOLUCIÓN Y CASO ESPECIAL:\n□ tiene_solucion: ¿true o false?\n□ Si true: ¿descripcion_solucion completa?\n□ caso_especial: ¿true o false?\n□ Si true: ¿detalle_caso_especial completo?\n\nMENSAJES SEGUIMIENTO:\n□ seg_1 y seg_2: ¿SIN emojis?\n□ ¿Vacíos si statusId = 90801096 o 92800052?\n\nFORMATOS:\n□ statusId: ¿Es numérico SIN comillas?\n□ ¿Todos los formatos correctos?\n\nNO INVENTAR:\n□ ¿Todos los datos EXISTEN en conversación?\n□ ¿NO estoy inventando códigos o información?\n\nRESPONDER JSON COMPLETO VERIFICADO\n```\n\n---\n\n## 🔴 **RECORDATORIO CRÍTICO FINAL**\n\n```\n1. URL PRESENTE → Usar herramienta \"BUSQUEDA LINK URBANIA\"\n2. CÓDIGO: Extraer de herramienta/conversación o VACÍO (NUNCA inventar)\n3. ORIGEN \"URBANIA\": SOLO si código vino de URL\n4. MODO: codPropiedad = \"MODO\" + origen = \"OTROS\" (si no es URL)\n5. CATEGORIZACIÓN: 3 niveles obligatorios (LEAD/CONSULTA - ORIGEN - ACCIÓN)\n6. FILTROS: Formato numérico (1/0/null)\n7. statusId: Numérico SIN comillas\n8. tiene_solucion: Evaluar si bot proporcionó información\n9. caso_especial: true solo si es inquilino/propietario o no comercial\n10. MENSAJES: SIN emojis, vacíos si statusId final\n11. NUNCA INVENTAR información\n12. Verificar 3 veces antes de responder\n\nRESPUESTA = JSON COMPLETO CON FORMATOS CORRECTOS\n```\n\n---\n\n**FIN DEL PROMPT v8.0**"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        6280,
-        1244
+        5304,
+        1032
       ],
       "id": "2a6e3e65-5548-4e7d-989a-b45e5fc702b7",
       "name": "Campos",
@@ -1592,8 +1592,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        5296,
-        1332
+        4448,
+        1120
       ],
       "id": "53c6beb6-7d84-4901-a595-dc61fb6bcd48",
       "name": "SwitchBot",
@@ -1678,7 +1678,7 @@
       "typeVersion": 3.4,
       "position": [
         -2448,
-        2784
+        2660
       ],
       "id": "93971de1-1355-4181-89b2-3fbb7e83e06e",
       "name": "Set Fields",
@@ -1809,8 +1809,8 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        6688,
-        1348
+        5712,
+        1032
       ],
       "id": "d5aff622-8e8e-4baa-a01e-5c6156837be6",
       "name": "Information Extractor",
@@ -1851,8 +1851,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5584,
-        1348
+        4672,
+        1136
       ],
       "id": "92a9f874-fd66-4acb-bf1b-6a6c3921ed41",
       "name": "Validacion",
@@ -1873,7 +1873,7 @@
       "typeVersion": 1.3,
       "position": [
         -3176,
-        3304
+        3180
       ],
       "id": "d8f4b9f3-15b9-404d-9baa-b3f21a15a1f9",
       "name": "Simple Memory2"
@@ -1935,7 +1935,7 @@
       "typeVersion": 3.2,
       "position": [
         -3472,
-        2932
+        2808
       ],
       "id": "0406e78a-3876-46c2-bf6c-bbb0c9acb3c1",
       "name": "Switch"
@@ -1949,7 +1949,7 @@
       "typeVersion": 1.1,
       "position": [
         -3248,
-        3080
+        2956
       ],
       "id": "bc5a0bc8-edef-4244-8430-792343cec249",
       "name": "Chat Memory Manager1"
@@ -1963,7 +1963,7 @@
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         -3992,
-        2732
+        2608
       ],
       "typeVersion": 1,
       "id": "6a8dc48d-aa92-4606-a230-073db3daf74f",
@@ -2032,7 +2032,7 @@
       "typeVersion": 3.2,
       "position": [
         688,
-        1520
+        1620
       ],
       "id": "1fcc15f7-9d7c-4110-bb57-d0b308bc8d4e",
       "name": "SwitchBuffer"
@@ -2063,7 +2063,7 @@
       "typeVersion": 3.4,
       "position": [
         2256,
-        1968
+        1800
       ]
     },
     {
@@ -2092,7 +2092,7 @@
       "typeVersion": 3.4,
       "position": [
         2256,
-        1776
+        1608
       ]
     },
     {
@@ -2121,7 +2121,7 @@
       "typeVersion": 3.4,
       "position": [
         2256,
-        1584
+        1416
       ]
     },
     {
@@ -2150,7 +2150,7 @@
       "typeVersion": 3.4,
       "position": [
         2256,
-        1392
+        1224
       ]
     },
     {
@@ -2170,7 +2170,7 @@
       "typeVersion": 1,
       "position": [
         2928,
-        1584
+        1588
       ],
       "id": "44febada-8fe6-499e-9eac-0f7a57718a49",
       "name": "Aggregate"
@@ -2190,7 +2190,7 @@
       "typeVersion": 1,
       "position": [
         2704,
-        1584
+        1588
       ],
       "id": "31c1f935-7028-43b1-92d7-bed8813ae169",
       "name": "Sort"
@@ -2203,7 +2203,7 @@
       "typeVersion": 3.1,
       "position": [
         2480,
-        1536
+        1540
       ],
       "id": "20384c1a-7f9b-46b5-a909-a2d0a156136a",
       "name": "Merge"
@@ -2229,6 +2229,12 @@
               "name": "LinkUrbania",
               "value": "={{ $('Set Fields').item.json.user.LinkUrbania }}",
               "type": "string"
+            },
+            {
+              "id": "db0d8576-4782-46f5-91c4-9317cc419ede",
+              "name": "fecha_actual",
+              "value": "={{    new Date($now).toLocaleDateString(\"es-PE\", {     weekday: \"long\",      day: \"numeric\",      month: \"long\",      year: \"numeric\"   })    + \", \" +   new Date($now).toLocaleTimeString(\"es-PE\", {     hour: \"numeric\",      minute: \"2-digit\",      hour12: true,     timeZone: \"America/Lima\"   }) }}",
+              "type": "string"
             }
           ]
         },
@@ -2240,7 +2246,7 @@
       "typeVersion": 3.4,
       "position": [
         3152,
-        1584
+        1588
       ]
     },
     {
@@ -2269,7 +2275,7 @@
       "typeVersion": 3.4,
       "position": [
         2256,
-        1200
+        1032
       ]
     },
     {
@@ -2282,7 +2288,7 @@
       "typeVersion": 3.4,
       "position": [
         1360,
-        1584
+        1588
       ],
       "id": "d33e86c3-93c7-45b6-b244-8a0574812853",
       "name": "JSON parse"
@@ -2296,7 +2302,7 @@
       "typeVersion": 1,
       "position": [
         1136,
-        1584
+        1588
       ],
       "id": "4f54baf2-e4a4-4d25-a3fb-fdb1bd9bfc86",
       "name": "Split Out"
@@ -2310,7 +2316,7 @@
       "typeVersion": 1,
       "position": [
         912,
-        1584
+        1588
       ],
       "id": "840a696c-69d0-454b-ae7d-2dd5acbc4162",
       "name": "Delete message buffer",
@@ -2327,7 +2333,7 @@
       "typeVersion": 1,
       "position": [
         912,
-        1392
+        1396
       ],
       "id": "3c22ddd7-b7ee-47e9-b644-493a9f8c76d8",
       "name": "No Operation, do nothing"
@@ -2338,7 +2344,7 @@
       "typeVersion": 1.1,
       "position": [
         912,
-        2484
+        2360
       ],
       "id": "0eb230b4-0110-4a11-9a75-22afd04aeaa0",
       "name": "Wait2",
@@ -2355,7 +2361,7 @@
       "typeVersion": 1,
       "position": [
         464,
-        2484
+        2360
       ],
       "id": "2d04d9d4-19a3-42c3-9a17-238cf1726a45",
       "name": "Redis",
@@ -2377,7 +2383,7 @@
       "typeVersion": 1,
       "position": [
         240,
-        2484
+        2360
       ],
       "id": "936d4611-eabf-4777-abc4-48e30c55b6db",
       "name": "Push Buffer",
@@ -2397,7 +2403,7 @@
       "typeVersion": 4.2,
       "position": [
         1808,
-        1968
+        1800
       ],
       "id": "62c24a61-9ab5-4c19-a74e-105a7da8d840",
       "name": "get PDF"
@@ -2411,7 +2417,7 @@
       "typeVersion": 4.2,
       "position": [
         1808,
-        1776
+        1608
       ],
       "id": "94429558-1aba-4a37-aec0-2483cf045b18",
       "name": "get video"
@@ -2425,7 +2431,7 @@
       "typeVersion": 4.2,
       "position": [
         1808,
-        1584
+        1416
       ],
       "id": "d8dd626d-ffdb-4d92-8318-463e0e41348e",
       "name": "get image"
@@ -2448,7 +2454,7 @@
       "typeVersion": 1.8,
       "position": [
         2032,
-        1584
+        1416
       ],
       "id": "16f7e2af-5e2d-49bd-a800-3308c8a8a85a",
       "name": "recognize image",
@@ -2591,7 +2597,7 @@
       "typeVersion": 3.2,
       "position": [
         1584,
-        1536
+        1540
       ],
       "id": "4003969f-6b19-4d22-8953-42a563090cfd",
       "name": "checkType"
@@ -2608,7 +2614,7 @@
       "typeVersion": 1.8,
       "position": [
         2032,
-        1392
+        1224
       ],
       "credentials": {
         "openAiApi": {
@@ -2628,7 +2634,7 @@
       "typeVersion": 4.2,
       "position": [
         1808,
-        1392
+        1224
       ]
     },
     {
@@ -2643,8 +2649,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6224,
-        1468
+        5248,
+        1256
       ],
       "id": "5bf87c99-2cd5-4be6-bb4c-c7418f578e2c",
       "name": "OpenAI Chat Model",
@@ -2667,8 +2673,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6760,
-        1572
+        5784,
+        1256
       ],
       "id": "ff62467a-3c67-4ac3-a62b-bcbeef7b1f68",
       "name": "OpenAI Chat Model1",
@@ -2717,10 +2723,6 @@
                     "value": "={{ $('Information Extractor').item.json.output.seg2 }}"
                   },
                   {
-                    "data": "{\"id\":797921,\"type\":\"textarea\"}",
-                    "value": "={{ $('Information Extractor').item.json.output.seg3 }}"
-                  },
-                  {
                     "data": "{\"id\":798001,\"type\":\"text\"}",
                     "value": "={{ $('Information Extractor').item.json.output.fecha1 }}"
                   },
@@ -2753,8 +2755,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        7040,
-        1348
+        6064,
+        1136
       ],
       "id": "982f6c94-e31b-44d7-a10b-e9415ac86cdd",
       "name": "Update leads",
@@ -2775,7 +2777,7 @@
       "typeVersion": 2,
       "position": [
         -3920,
-        2932
+        2808
       ],
       "id": "2ff831a7-d662-44db-863f-528f3178fb0a",
       "name": "new message",
@@ -2792,8 +2794,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        4696,
-        1024
+        3848,
+        384
       ],
       "id": "9e2466a1-6a29-4303-8cd4-68385cba7849",
       "name": "Respuesta",
@@ -2807,8 +2809,8 @@
       "type": "n8n-nodes-base.dateTimeTool",
       "typeVersion": 2,
       "position": [
-        4704,
-        1248
+        3856,
+        608
       ],
       "id": "5b5f484a-ccb1-43ce-ab61-256c0af134d7",
       "name": "Date & Time"
@@ -2849,8 +2851,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        4832,
-        1248
+        3984,
+        608
       ],
       "id": "933c94c0-f172-475b-9475-da92a0f234c6",
       "name": "BUSQUEDA LINK URBANIA"
@@ -2897,8 +2899,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        4960,
-        1248
+        4112,
+        608
       ],
       "id": "200bf275-c257-410d-b125-0c305b2487e1",
       "name": "PROPERTIES - SQL"
@@ -2929,7 +2931,7 @@
       "typeVersion": 4.2,
       "position": [
         -3184,
-        2784
+        2660
       ],
       "id": "d5793e5e-7a56-4830-913e-f258f79ba03c",
       "name": "GET Lead",
@@ -2953,8 +2955,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        4448,
-        1248
+        3600,
+        608
       ],
       "id": "a5f89af4-aac6-4573-b240-13abe9677c86",
       "name": "OpenAI Chat Model2",
@@ -2974,8 +2976,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        4576,
-        1248
+        3728,
+        608
       ],
       "id": "449c80cb-916d-47d7-9b1d-b6d6f0bcb463",
       "name": "Postgres Chat Memory",
@@ -2995,8 +2997,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        6352,
-        1468
+        5376,
+        1256
       ],
       "id": "e3637405-e799-4c31-8b79-c55e5736713b",
       "name": "Postgres Chat Memory1",
@@ -3037,7 +3039,7 @@
       "typeVersion": 2.6,
       "position": [
         -2896,
-        3080
+        2956
       ],
       "id": "a6f2f3a4-d8d5-49a4-8c2b-4b5a05a71076",
       "name": "Postgres",
@@ -3056,7 +3058,7 @@
       "typeVersion": 1.1,
       "position": [
         -3696,
-        2932
+        2808
       ],
       "id": "6c34ba59-0fc9-468d-bda3-83789d44ce16",
       "name": "Wait3",
@@ -3091,23 +3093,10 @@
       "typeVersion": 2.2,
       "position": [
         -2896,
-        2784
+        2660
       ],
       "id": "0c4c446d-a782-4376-b930-fe9a00b82532",
       "name": "Filter1"
-    },
-    {
-      "parameters": {
-        "content": "## Formato de falla\nHacer que entregue un JSON con mensaje, motivo y si es certero o no"
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        1760,
-        0
-      ],
-      "typeVersion": 1,
-      "id": "fd9d373d-f5b4-437a-8bf3-01d8737fcfba",
-      "name": "Sticky Note"
     },
     {
       "parameters": {
@@ -3218,7 +3207,7 @@
       "typeVersion": 3.2,
       "position": [
         3376,
-        1272
+        1104
       ],
       "id": "f56a31b6-db96-483c-886b-c6577041e13b",
       "name": "Switch1"
@@ -3235,7 +3224,7 @@
       "typeVersion": 1.9,
       "position": [
         3848,
-        0
+        -16
       ],
       "id": "56e6f9c7-bfa7-4847-a2de-921e39c65faf",
       "name": "Respuesta1",
@@ -3335,8 +3324,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5584,
-        772
+        4960,
+        736
       ]
     },
     {
@@ -3350,8 +3339,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5872,
-        772
+        5304,
+        632
       ],
       "id": "e41007e2-2276-40ec-8070-712f59096c51",
       "name": "Campos2",
@@ -3419,8 +3408,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        4760,
-        756
+        4448,
+        720
       ],
       "id": "202fe868-cfe4-49fb-b98a-764af4f7dc04",
       "name": "SwitchBot2",
@@ -3523,8 +3512,8 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        6280,
-        772
+        5712,
+        632
       ],
       "id": "bcfd8645-0b0c-436d-ad7b-36b15867a159",
       "name": "Information Extractor2",
@@ -3565,8 +3554,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5296,
-        772
+        4672,
+        736
       ],
       "id": "398e1836-4db6-46a2-b1f6-3d1ec41dd4c0",
       "name": "Validacion2",
@@ -3589,8 +3578,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5880,
-        996
+        5312,
+        856
       ],
       "id": "995b3816-0bb1-4c6c-ac89-f7dd74f4a98a",
       "name": "OpenAI Chat Model5",
@@ -3613,8 +3602,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6352,
-        996
+        5784,
+        856
       ],
       "id": "57a7a0e3-9943-4fc5-ae89-1496e3e460c5",
       "name": "OpenAI Chat Model6",
@@ -3683,8 +3672,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        6752,
-        772
+        6064,
+        736
       ],
       "id": "ad1c8a3e-7aa5-4c6e-8027-32437d271239",
       "name": "Update leads2",
@@ -3704,8 +3693,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        6008,
-        996
+        5440,
+        856
       ],
       "id": "41851f6b-2f0d-431b-a2a2-51d9ae93e74d",
       "name": "Postgres Chat Memory3",
@@ -3730,7 +3719,7 @@
       "typeVersion": 1.2,
       "position": [
         3792,
-        224
+        208
       ],
       "id": "60c553ae-b1f0-46f8-bf40-efd8ec4746d1",
       "name": "OpenAI Chat Model3",
@@ -3751,7 +3740,7 @@
       "typeVersion": 1.3,
       "position": [
         3920,
-        224
+        208
       ],
       "id": "731800b1-9b7e-4ec0-b273-47b12585bd5a",
       "name": "Postgres Chat Memory2",
@@ -3770,7 +3759,7 @@
       "typeVersion": 2,
       "position": [
         4048,
-        224
+        208
       ],
       "id": "e8290e6a-3686-453b-8949-d67278eaaef5",
       "name": "Date & Time1"
@@ -3836,7 +3825,7 @@
       "typeVersion": 3.2,
       "position": [
         -432,
-        2676
+        2552
       ],
       "id": "19c70351-80de-4a0f-8bb3-ca72b5c9c0d2",
       "name": "Switch2"
@@ -3855,7 +3844,7 @@
       "typeVersion": 1,
       "position": [
         -2000,
-        2868
+        2744
       ],
       "id": "966c0f2e-59b2-4450-b47a-1eeed276080b",
       "name": "Get list of contacts",
@@ -3884,7 +3873,7 @@
       "typeVersion": 3.4,
       "position": [
         -1552,
-        2868
+        2744
       ],
       "id": "845f92c3-6af0-4681-8b00-1181f299511e",
       "name": "Edit Fields"
@@ -3918,7 +3907,7 @@
       "typeVersion": 2.2,
       "position": [
         -1776,
-        2868
+        2744
       ],
       "id": "eba39861-24ca-43d0-a04e-51e3cef421c2",
       "name": "Filter3"
@@ -3935,7 +3924,7 @@
       "typeVersion": 2.6,
       "position": [
         -1104,
-        2868
+        2744
       ],
       "id": "086031ee-4f29-44f7-8278-42538d33cfe0",
       "name": "VALIDACION NUMERO",
@@ -4008,7 +3997,7 @@
       "typeVersion": 3.2,
       "position": [
         -656,
-        2868
+        2744
       ],
       "id": "2f1c7909-1a24-4460-ae93-b1c72b211610",
       "name": "Switch3"
@@ -4048,7 +4037,7 @@
       "typeVersion": 1,
       "position": [
         -432,
-        2868
+        2744
       ],
       "id": "6421b2d6-ccd2-4427-9bb0-d586cb85359e",
       "name": "Update leads1",
@@ -4065,7 +4054,7 @@
       "typeVersion": 1,
       "position": [
         -208,
-        2868
+        2744
       ],
       "id": "173f097d-84d4-4f37-a699-140729e96794",
       "name": "No Operation, do nothing1"
@@ -4082,7 +4071,7 @@
       "typeVersion": 2.6,
       "position": [
         -208,
-        2676
+        2552
       ],
       "id": "b8075935-c11d-423e-bad5-9207510db5e6",
       "name": "Execute a SQL query",
@@ -4155,7 +4144,7 @@
       "typeVersion": 3.2,
       "position": [
         16,
-        2676
+        2552
       ],
       "id": "1cd19574-4764-4d70-b4d1-34db29c33c69",
       "name": "Switch4"
@@ -4166,7 +4155,7 @@
       "typeVersion": 1,
       "position": [
         240,
-        2676
+        2552
       ],
       "id": "da585d20-21b8-4c92-90cb-c17cee000d8b",
       "name": "No Operation, do nothing2"
@@ -4190,7 +4179,7 @@
       "typeVersion": 1.1,
       "position": [
         -1328,
-        2868
+        2744
       ],
       "id": "32bef536-c131-4cb4-85a7-b715089a9662",
       "name": "Execution Data"
@@ -4304,7 +4293,7 @@
       "typeVersion": 3.2,
       "position": [
         -880,
-        2836
+        2712
       ],
       "id": "4b035bdd-23eb-4bf3-8de1-72ff783a9c16",
       "name": "Switch5"
@@ -4321,7 +4310,7 @@
       "typeVersion": 1.9,
       "position": [
         3848,
-        704
+        784
       ],
       "id": "9f16a7a9-6326-4cfd-af9c-25ac411ececb",
       "name": "Respuesta2",
@@ -4421,8 +4410,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        6344,
-        1660
+        5776,
+        1536
       ]
     },
     {
@@ -4487,8 +4476,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        4760,
-        1424
+        4448,
+        1520
       ],
       "id": "3791f4d4-c143-483c-ac67-13f735248567",
       "name": "SwitchBot3",
@@ -4529,8 +4518,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5936,
-        1660
+        5368,
+        1536
       ],
       "id": "c8b2c910-2cd3-44e3-9c1e-7d071955aa1c",
       "name": "Validacion3",
@@ -4555,7 +4544,7 @@
       "typeVersion": 1.2,
       "position": [
         3728,
-        928
+        1008
       ],
       "id": "0753d401-ab1d-4ede-85a0-bffdd5d435a6",
       "name": "OpenAI Chat Model4",
@@ -4576,7 +4565,7 @@
       "typeVersion": 1.3,
       "position": [
         3856,
-        928
+        1008
       ],
       "id": "b4cd6035-3a25-49fc-b0a3-746a36e00a24",
       "name": "Postgres Chat Memory5",
@@ -4595,7 +4584,7 @@
       "typeVersion": 2,
       "position": [
         3984,
-        928
+        1008
       ],
       "id": "76d09e24-f9b2-48c9-9ee3-91f35b82650e",
       "name": "Date & Time2"
@@ -4616,8 +4605,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        5296,
-        1660
+        4672,
+        1536
       ],
       "id": "d8db5a5d-8bb9-4d93-bc86-41f76b432b07",
       "name": "Create new notes",
@@ -4633,8 +4622,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolCalculator",
       "typeVersion": 1,
       "position": [
-        5088,
-        1248
+        4240,
+        608
       ],
       "id": "f69d7541-59b4-4add-8f01-70ee06ef16a7",
       "name": "Calculator"
@@ -4644,8 +4633,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolCalculator",
       "typeVersion": 1,
       "position": [
-        6480,
-        1468
+        5504,
+        1256
       ],
       "id": "49ce004b-5792-4173-9a8f-103ff5123748",
       "name": "Calculator1"
@@ -4710,7 +4699,7 @@
       "typeVersion": 3.2,
       "position": [
         -2672,
-        2784
+        2660
       ],
       "id": "a464dc5d-0092-4ed0-80ac-a0ad721e1173",
       "name": "Switch6"
@@ -4727,7 +4716,7 @@
       "typeVersion": 1.9,
       "position": [
         3848,
-        1304
+        1384
       ],
       "id": "109089fd-e523-480d-8339-4fffe41312db",
       "name": "Respuesta3",
@@ -4827,8 +4816,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        6344,
-        2252
+        5776,
+        2128
       ]
     },
     {
@@ -4842,8 +4831,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5520,
-        2548
+        4896,
+        2424
       ],
       "id": "e4a35716-8332-4fd5-8bfd-3b00dfc4fd3a",
       "name": "Campos4",
@@ -4911,8 +4900,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        4760,
-        1832
+        4448,
+        2112
       ],
       "id": "3378c696-dcde-4b13-a478-aec5076685cb",
       "name": "SwitchBot4",
@@ -5031,8 +5020,8 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        5872,
-        2548
+        5304,
+        2424
       ],
       "id": "86c75218-4e42-47e6-ab49-3d40ec3fba5f",
       "name": "Information Extractor4",
@@ -5073,8 +5062,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5936,
-        2252
+        5368,
+        2128
       ],
       "id": "cfc1be97-1944-4f08-9bf9-2923f76dda4f",
       "name": "Validacion4",
@@ -5097,8 +5086,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5528,
-        2772
+        4904,
+        2648
       ],
       "id": "944e5c0a-9069-4967-9578-ddf4531a7a62",
       "name": "OpenAI Chat Model11",
@@ -5121,8 +5110,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5944,
-        2772
+        5376,
+        2648
       ],
       "id": "2398ccb2-02ec-466a-8c6d-45899441f1ae",
       "name": "OpenAI Chat Model12",
@@ -5215,8 +5204,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        6344,
-        2548
+        5776,
+        2424
       ],
       "id": "e421e3fe-21bc-421f-9d5c-72e7a890efba",
       "name": "Update leads4",
@@ -5236,8 +5225,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5656,
-        2772
+        5032,
+        2648
       ],
       "id": "a6080011-9fa0-46e6-b9e8-b63163feebc7",
       "name": "Postgres Chat Memory7",
@@ -5258,7 +5247,7 @@
       "typeVersion": 1.3,
       "position": [
         3728,
-        1528
+        1608
       ],
       "id": "5aa2dce0-3125-4e9d-bda2-f7f1dbbb515a",
       "name": "Postgres Chat Memory8",
@@ -5277,7 +5266,7 @@
       "typeVersion": 2,
       "position": [
         3856,
-        1528
+        1608
       ],
       "id": "34f4ff25-fb60-455a-aa89-69ead3adc242",
       "name": "Date & Time3"
@@ -5298,8 +5287,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        5296,
-        2252
+        4672,
+        2128
       ],
       "id": "b2c30cd3-4334-4bfe-a889-aabbc1f88562",
       "name": "Create new notes1",
@@ -5327,7 +5316,7 @@
       "typeVersion": 1,
       "position": [
         2032,
-        1776
+        1608
       ],
       "id": "e3638074-ef71-471f-9e47-263e5f90ac81",
       "name": "Analyze video",
@@ -5354,7 +5343,7 @@
       "typeVersion": 1,
       "position": [
         2032,
-        1968
+        1800
       ],
       "id": "2f74691a-ca1f-4f61-81b6-c93a3dd2cea3",
       "name": "Analyze document",
@@ -5393,8 +5382,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        5584,
-        1660
+        4960,
+        1536
       ],
       "id": "d446f587-2e38-49dc-a47e-a7b8a5624521",
       "name": "Filter"
@@ -5427,8 +5416,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        5584,
-        2252
+        4960,
+        2128
       ],
       "id": "e21aa2c5-394b-4f5a-adaf-0cd1554ce212",
       "name": "Filter2"
@@ -5445,7 +5434,7 @@
       "typeVersion": 4.2,
       "position": [
         3984,
-        1528
+        1608
       ],
       "id": "27635156-c728-493f-b2a5-e46a46631e8f",
       "name": "Base de conocimiento"
@@ -5462,7 +5451,7 @@
       "typeVersion": 4.2,
       "position": [
         4112,
-        928
+        1008
       ],
       "id": "7ad2d6fb-8243-4ecf-864f-0a81c68b8ec3",
       "name": "Base de conocimiento1"
@@ -5477,7 +5466,7 @@
       "typeVersion": 4.2,
       "position": [
         4112,
-        1528
+        1608
       ],
       "id": "e86340b3-eb15-4630-8669-77eb825e3b6b",
       "name": "Busca por correo o dni"
@@ -5496,7 +5485,7 @@
       "typeVersion": 1.2,
       "position": [
         3600,
-        1528
+        1608
       ],
       "id": "6003ce6f-c1ea-4f2b-b0c6-0d6fce3b2845",
       "name": "OpenAI Chat Model9",
@@ -5517,7 +5506,7 @@
       "typeVersion": 4.2,
       "position": [
         4240,
-        1528
+        1608
       ],
       "id": "add13d13-806e-4bd1-8f83-47898f3aee84",
       "name": "Busca por telefono"
@@ -5533,8 +5522,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5520,
-        1852
+        4896,
+        1728
       ],
       "id": "a1980cdd-e53f-4e35-a984-aaa7fe0f9c12",
       "name": "Campos5",
@@ -5652,8 +5641,8 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        5872,
-        1852
+        5304,
+        1728
       ],
       "id": "55c05c9b-82d6-404d-ac1e-f80e0a8ef27e",
       "name": "Information Extractor5",
@@ -5672,8 +5661,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5528,
-        2076
+        4904,
+        1952
       ],
       "id": "55d67d1c-35e5-44b2-84b7-f5f5ad2f35e5",
       "name": "OpenAI Chat Model13",
@@ -5696,8 +5685,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5944,
-        2076
+        5376,
+        1952
       ],
       "id": "05900f10-f1de-4b1f-b039-e7c28431f426",
       "name": "OpenAI Chat Model14",
@@ -5790,8 +5779,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        6344,
-        1956
+        5776,
+        1832
       ],
       "id": "01a0caad-8262-4fd3-8ca6-9a9b64338ad5",
       "name": "Update leads5",
@@ -5811,8 +5800,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5656,
-        2076
+        5032,
+        1952
       ],
       "id": "52ae62ae-0ca3-4406-b93f-487da0b6f2cd",
       "name": "Postgres Chat Memory9",
@@ -5852,7 +5841,7 @@
       "typeVersion": 2.2,
       "position": [
         -2224,
-        2784
+        2660
       ],
       "id": "5a1ba984-d0cf-4afa-991a-e035bf2ae0e8",
       "name": "TEST"
@@ -5870,8 +5859,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        -2688,
-        3056
+        -2672,
+        2956
       ],
       "id": "16054c19-1a90-476f-8ce4-6ddc774f4dbc",
       "name": "Get list of leads",
@@ -5898,8 +5887,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -2272,
-        3056
+        -2224,
+        2956
       ],
       "id": "ffb977f6-f85b-4671-8dcf-9650c815a587",
       "name": "HTTP Request",
@@ -5933,8 +5922,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2480,
-        3056
+        -2448,
+        2956
       ],
       "id": "2f71e481-6be9-4d1b-9dbc-6a65f6c69cd7",
       "name": "Edit Fields1"
@@ -6011,6 +6000,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-30T19:56:26.852Z",
-  "versionId": "33c25884-bcd1-4964-8570-df64c5e49bb1"
+  "updatedAt": "2025-11-05T16:52:33.202Z",
+  "versionId": "0a2d7e7b-8f95-4ab0-8679-c066a759f102"
 }
