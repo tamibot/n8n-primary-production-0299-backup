@@ -72,28 +72,6 @@
         ]
       ]
     },
-    "HTML": {
-      "main": [
-        [
-          {
-            "node": "Code",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code": {
-      "main": [
-        [
-          {
-            "node": "Postgres1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Filter": {
       "main": [
         [
@@ -517,7 +495,8 @@
         "rule": {
           "interval": [
             {
-              "triggerAtHour": 23
+              "field": "hours",
+              "hoursInterval": 2
             }
           ]
         }
@@ -530,175 +509,6 @@
       ],
       "id": "586f1c9a-cf17-479f-a33f-02842bda88d5",
       "name": "Schedule Trigger"
-    },
-    {
-      "parameters": {
-        "operation": "extractHtmlContent",
-        "dataPropertyName": "html",
-        "extractionValues": {
-          "values": [
-            {
-              "key": "descripcion",
-              "cssSelector": "meta[name=\"description\"]",
-              "returnValue": "attribute",
-              "attribute": "content"
-            },
-            {
-              "key": "precio",
-              "cssSelector": "meta[name='precioAlquiler']",
-              "returnValue": "attribute",
-              "attribute": "content"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.html",
-      "typeVersion": 1.2,
-      "position": [
-        1696,
-        736
-      ],
-      "id": "c48a1825-2c0b-4baf-bfd9-55addc0444c4",
-      "name": "HTML"
-    },
-    {
-      "parameters": {
-        "jsCode": "const descripcion = $json[\"descripcion\"] || '';\nconst match = descripcion.match(/\\{\\[(.*?)\\]\\}/);\nconst codigo = match ? match[1] : null;\n\nreturn [{\n  codigo,\n  ...$json\n}];\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        1920,
-        736
-      ],
-      "id": "f083a1e4-3070-439e-825a-a830b6739a13",
-      "name": "Code"
-    },
-    {
-      "parameters": {
-        "schema": {
-          "__rl": true,
-          "value": "crm",
-          "mode": "list",
-          "cachedResultName": "crm"
-        },
-        "table": {
-          "__rl": true,
-          "value": "datos_urbania",
-          "mode": "list",
-          "cachedResultName": "datos_urbania"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "codigo": "={{ $json.codigo }}",
-            "telefono": "={{ $('Code1').item.json.phone }}",
-            "correo": "={{ $('Code1').item.json.email }}",
-            "fecha": "={{ $('Correo').item.json.body.date }}",
-            "link_urbania": "={{ $('HTTP Request2').item.json.headers.location }}",
-            "nombre_pre_inquilino": "={{ $('Code1').item.json.name }}"
-          },
-          "matchingColumns": [
-            "id"
-          ],
-          "schema": [
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "codigo",
-              "displayName": "codigo",
-              "required": true,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "telefono",
-              "displayName": "telefono",
-              "required": true,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "correo",
-              "displayName": "correo",
-              "required": true,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "fecha",
-              "displayName": "fecha",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "precio",
-              "displayName": "precio",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "link_urbania",
-              "displayName": "link_urbania",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "nombre_pre_inquilino",
-              "displayName": "nombre_pre_inquilino",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        2144,
-        736
-      ],
-      "id": "d64bc3bb-d499-40a8-892c-6166d6f66dd4",
-      "name": "Postgres1",
-      "credentials": {
-        "postgres": {
-          "id": "fuKiWlAN9ojbRM9W",
-          "name": "Postgres account"
-        }
-      }
     },
     {
       "parameters": {
@@ -750,7 +560,9 @@
   ],
   "staticData": {
     "node:Schedule Trigger": {
-      "recurrenceRules": []
+      "recurrenceRules": [
+        22
+      ]
     }
   },
   "tags": [
@@ -762,6 +574,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-07T18:19:06.231Z",
-  "versionId": "169c4c69-ee13-4531-8e1a-517513372f63"
+  "updatedAt": "2025-11-08T14:18:33.362Z",
+  "versionId": "e5812024-ef41-493e-a5a6-7e15dd77a099"
 }
