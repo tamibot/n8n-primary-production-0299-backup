@@ -148,6 +148,18 @@
               "name": "utm_source",
               "value": "BOT IA",
               "type": "string"
+            },
+            {
+              "id": "95ca3575-16ff-4f0f-aaed-fc5dfaf2f610",
+              "name": "=n8n - CODPROPIEDAD",
+              "value": "={{    ($('Kommo API Node').item.json._embedded.leads[0].custom_fields_values || [])     .find(f => (f.field_name || '').trim() === 'n8n - CODPROPIEDAD')     ?.values?.[0]?.value || ''  }}",
+              "type": "string"
+            },
+            {
+              "id": "8df4fa99-b80f-4730-9f08-4c74363ee87a",
+              "name": "codigoInmueble",
+              "value": "={{    ($('Kommo API Node').item.json._embedded.leads[0].custom_fields_values || [])     .find(f => (f.field_name || '').trim() === 'codigoInmueble')     ?.values?.[0]?.value || ''  }}",
+              "type": "string"
             }
           ]
         },
@@ -193,7 +205,7 @@
         "url": "https://bf2c1lell1.execute-api.us-east-2.amazonaws.com/production/disponibilidad/registrar-disponibilidad/",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n\"telefono\":\"{{ $json.telefono_formateado }}\",\n\"horarios\":[\"{{ $json.fecha1_formateada }}\",\"{{ $json.fecha2_formateada }}\"],\n\"utm_source\":\"BOT IA\"\n} ",
+        "jsonBody": "={\n  \"telefono\": \"{{ $json.telefono_formateado }}\",\n  \"horarios\": [\n    \"{{ $json.fecha1_formateada }}\",\n    \"{{ $json.fecha2_formateada }}\"\n  ],\n  \"utm_source\": \"BOT IA\",\n  \"cod_inmueble\": \"{{ $json.cod_inmueble }}\"\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -225,6 +237,12 @@
               "id": "dcbfb20d-6144-43fd-ba15-b3ae6d3a51c7",
               "name": "telefono_formateado",
               "value": "={{ String($json.telefono).replace(/^\\+?51/, '') }}",
+              "type": "string"
+            },
+            {
+              "id": "ee37e207-4dfe-4ba0-a965-e289d11a4270",
+              "name": "cod_inmueble",
+              "value": "={{ $json.codigoInmueble ? $json.codigoInmueble : $json['n8n - CODPROPIEDAD'] }}",
               "type": "string"
             }
           ]
@@ -265,22 +283,22 @@
             "content-length": "314",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "99a391b9-4c00-406d-bfc7-3f32e4785ff3",
+            "x-amocrm-requestid": "c162bec3-2730-48c8-afed-8609894f69ed",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "R3m-xbd7Qi-wpa6_PvyhXg",
+            "x-railway-request-id": "HGeotXfGRP-OQA_2ezItjw",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1761858799027"
+            "x-request-start": "1762879193585"
           },
           "params": {},
           "query": {},
           "body": {
-            "leads[status][0][id]": "22307145",
+            "leads[status][0][id]": "22361283",
             "leads[status][0][status_id]": "90801096",
             "leads[status][0][pipeline_id]": "11240224",
-            "leads[status][0][old_status_id]": "90801080",
+            "leads[status][0][old_status_id]": "86277776",
             "leads[status][0][old_pipeline_id]": "11240224",
             "account[id]": "30050693",
             "account[subdomain]": "propertamibotcom"
@@ -313,6 +331,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-30T21:51:01.332Z",
-  "versionId": "df11c0b8-d218-4f95-879c-99f0c649c9f5"
+  "updatedAt": "2025-11-11T21:25:49.626Z",
+  "versionId": "d22706d3-4728-42c6-8aa4-90ad50da73e9"
 }
