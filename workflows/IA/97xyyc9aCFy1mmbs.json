@@ -1364,35 +1364,7 @@
     },
     "Postgres": {
       "main": [
-        [
-          {
-            "node": "Get list of leads",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get list of leads": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields1": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Think": {
@@ -1531,7 +1503,7 @@
       "typeVersion": 4.2,
       "position": [
         5216,
-        2276
+        2288
       ]
     },
     {
@@ -1545,8 +1517,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5560,
-        2276
+        5568,
+        2288
       ],
       "id": "2a6e3e65-5548-4e7d-989a-b45e5fc702b7",
       "name": "Campos",
@@ -1615,7 +1587,7 @@
       "typeVersion": 3.2,
       "position": [
         4704,
-        2260
+        2272
       ],
       "id": "53c6beb6-7d84-4901-a595-dc61fb6bcd48",
       "name": "SwitchBot",
@@ -1700,7 +1672,7 @@
       "typeVersion": 3.4,
       "position": [
         -2448,
-        2808
+        2816
       ],
       "id": "93971de1-1355-4181-89b2-3fbb7e83e06e",
       "name": "Set Fields",
@@ -1832,7 +1804,7 @@
       "typeVersion": 1,
       "position": [
         5968,
-        2276
+        2288
       ],
       "id": "d5aff622-8e8e-4baa-a01e-5c6156837be6",
       "name": "Information Extractor",
@@ -1874,7 +1846,7 @@
       "typeVersion": 4.2,
       "position": [
         4928,
-        2276
+        2288
       ],
       "id": "92a9f874-fd66-4acb-bf1b-6a6c3921ed41",
       "name": "Validacion",
@@ -1894,7 +1866,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -3176,
+        -3184,
         3328
       ],
       "id": "d8f4b9f3-15b9-404d-9baa-b3f21a15a1f9",
@@ -1957,7 +1929,7 @@
       "typeVersion": 3.2,
       "position": [
         -3472,
-        2956
+        2960
       ],
       "id": "0406e78a-3876-46c2-bf6c-bbb0c9acb3c1",
       "name": "Switch"
@@ -1984,8 +1956,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -3992,
-        2756
+        -4000,
+        2768
       ],
       "typeVersion": 1,
       "id": "6a8dc48d-aa92-4606-a230-073db3daf74f",
@@ -2054,7 +2026,7 @@
       "typeVersion": 3.2,
       "position": [
         688,
-        1768
+        1776
       ],
       "id": "1fcc15f7-9d7c-4110-bb57-d0b308bc8d4e",
       "name": "SwitchBuffer"
@@ -2085,7 +2057,7 @@
       "typeVersion": 3.4,
       "position": [
         2256,
-        1928
+        1936
       ]
     },
     {
@@ -2114,7 +2086,7 @@
       "typeVersion": 3.4,
       "position": [
         2256,
-        1736
+        1744
       ]
     },
     {
@@ -2143,7 +2115,7 @@
       "typeVersion": 3.4,
       "position": [
         2256,
-        1544
+        1552
       ]
     },
     {
@@ -2172,7 +2144,7 @@
       "typeVersion": 3.4,
       "position": [
         2256,
-        1352
+        1360
       ]
     },
     {
@@ -2192,7 +2164,7 @@
       "typeVersion": 1,
       "position": [
         2928,
-        1736
+        1744
       ],
       "id": "44febada-8fe6-499e-9eac-0f7a57718a49",
       "name": "Aggregate"
@@ -2212,7 +2184,7 @@
       "typeVersion": 1,
       "position": [
         2704,
-        1736
+        1744
       ],
       "id": "31c1f935-7028-43b1-92d7-bed8813ae169",
       "name": "Sort"
@@ -2225,7 +2197,7 @@
       "typeVersion": 3.1,
       "position": [
         2480,
-        1688
+        1696
       ],
       "id": "20384c1a-7f9b-46b5-a909-a2d0a156136a",
       "name": "Merge"
@@ -2268,7 +2240,7 @@
       "typeVersion": 3.4,
       "position": [
         3152,
-        1736
+        1744
       ]
     },
     {
@@ -2297,7 +2269,7 @@
       "typeVersion": 3.4,
       "position": [
         2256,
-        1160
+        1168
       ]
     },
     {
@@ -2310,7 +2282,7 @@
       "typeVersion": 3.4,
       "position": [
         1360,
-        1736
+        1744
       ],
       "id": "d33e86c3-93c7-45b6-b244-8a0574812853",
       "name": "JSON parse"
@@ -2324,7 +2296,7 @@
       "typeVersion": 1,
       "position": [
         1136,
-        1736
+        1744
       ],
       "id": "4f54baf2-e4a4-4d25-a3fb-fdb1bd9bfc86",
       "name": "Split Out"
@@ -2338,7 +2310,7 @@
       "typeVersion": 1,
       "position": [
         912,
-        1736
+        1744
       ],
       "id": "840a696c-69d0-454b-ae7d-2dd5acbc4162",
       "name": "Delete message buffer",
@@ -2355,7 +2327,7 @@
       "typeVersion": 1,
       "position": [
         912,
-        1544
+        1552
       ],
       "id": "3c22ddd7-b7ee-47e9-b644-493a9f8c76d8",
       "name": "No Operation, do nothing"
@@ -2366,7 +2338,7 @@
       "typeVersion": 1.1,
       "position": [
         912,
-        2508
+        2512
       ],
       "id": "0eb230b4-0110-4a11-9a75-22afd04aeaa0",
       "name": "Wait2",
@@ -2383,7 +2355,7 @@
       "typeVersion": 1,
       "position": [
         464,
-        2508
+        2512
       ],
       "id": "2d04d9d4-19a3-42c3-9a17-238cf1726a45",
       "name": "Redis",
@@ -2405,7 +2377,7 @@
       "typeVersion": 1,
       "position": [
         240,
-        2508
+        2512
       ],
       "id": "936d4611-eabf-4777-abc4-48e30c55b6db",
       "name": "Push Buffer",
@@ -2425,7 +2397,7 @@
       "typeVersion": 4.2,
       "position": [
         1808,
-        1928
+        1936
       ],
       "id": "62c24a61-9ab5-4c19-a74e-105a7da8d840",
       "name": "get PDF"
@@ -2439,7 +2411,7 @@
       "typeVersion": 4.2,
       "position": [
         1808,
-        1736
+        1744
       ],
       "id": "94429558-1aba-4a37-aec0-2483cf045b18",
       "name": "get video"
@@ -2453,7 +2425,7 @@
       "typeVersion": 4.2,
       "position": [
         1808,
-        1544
+        1552
       ],
       "id": "d8dd626d-ffdb-4d92-8318-463e0e41348e",
       "name": "get image"
@@ -2476,7 +2448,7 @@
       "typeVersion": 1.8,
       "position": [
         2032,
-        1544
+        1552
       ],
       "id": "16f7e2af-5e2d-49bd-a800-3308c8a8a85a",
       "name": "recognize image",
@@ -2619,7 +2591,7 @@
       "typeVersion": 3.2,
       "position": [
         1584,
-        1688
+        1696
       ],
       "id": "4003969f-6b19-4d22-8953-42a563090cfd",
       "name": "checkType"
@@ -2636,7 +2608,7 @@
       "typeVersion": 1.8,
       "position": [
         2032,
-        1352
+        1360
       ],
       "credentials": {
         "openAiApi": {
@@ -2656,7 +2628,7 @@
       "typeVersion": 4.2,
       "position": [
         1808,
-        1352
+        1360
       ]
     },
     {
@@ -2672,7 +2644,7 @@
       "typeVersion": 1.2,
       "position": [
         5504,
-        2500
+        2512
       ],
       "id": "5bf87c99-2cd5-4be6-bb4c-c7418f578e2c",
       "name": "OpenAI Chat Model",
@@ -2695,8 +2667,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6040,
-        2500
+        6048,
+        2512
       ],
       "id": "ff62467a-3c67-4ac3-a62b-bcbeef7b1f68",
       "name": "OpenAI Chat Model1",
@@ -2778,7 +2750,7 @@
       "typeVersion": 1,
       "position": [
         6320,
-        2276
+        2288
       ],
       "id": "982f6c94-e31b-44d7-a10b-e9415ac86cdd",
       "name": "Update leads",
@@ -2799,7 +2771,7 @@
       "typeVersion": 2,
       "position": [
         -3920,
-        2956
+        2960
       ],
       "id": "2ff831a7-d662-44db-863f-528f3178fb0a",
       "name": "new message",
@@ -2816,8 +2788,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        3976,
-        1532
+        3984,
+        1536
       ],
       "id": "9e2466a1-6a29-4303-8cd4-68385cba7849",
       "name": "Respuesta",
@@ -2832,7 +2804,7 @@
       "typeVersion": 2,
       "position": [
         3856,
-        1756
+        1760
       ],
       "id": "5b5f484a-ccb1-43ce-ab61-256c0af134d7",
       "name": "Date & Time"
@@ -2874,7 +2846,7 @@
       "typeVersion": 2.2,
       "position": [
         3984,
-        1756
+        1760
       ],
       "id": "933c94c0-f172-475b-9475-da92a0f234c6",
       "name": "BUSQUEDA LINK URBANIA"
@@ -2922,7 +2894,7 @@
       "typeVersion": 2.2,
       "position": [
         4112,
-        1756
+        1760
       ],
       "id": "200bf275-c257-410d-b125-0c305b2487e1",
       "name": "PROPERTIES - SQL"
@@ -2953,7 +2925,7 @@
       "typeVersion": 4.2,
       "position": [
         -3184,
-        2808
+        2816
       ],
       "id": "d5793e5e-7a56-4830-913e-f258f79ba03c",
       "name": "GET Lead",
@@ -2980,7 +2952,7 @@
       "typeVersion": 1.2,
       "position": [
         3600,
-        1756
+        1760
       ],
       "id": "a5f89af4-aac6-4573-b240-13abe9677c86",
       "name": "OpenAI Chat Model2",
@@ -3001,7 +2973,7 @@
       "typeVersion": 1.3,
       "position": [
         3728,
-        1756
+        1760
       ],
       "id": "449c80cb-916d-47d7-9b1d-b6d6f0bcb463",
       "name": "Postgres Chat Memory",
@@ -3022,7 +2994,7 @@
       "typeVersion": 1.3,
       "position": [
         5632,
-        2500
+        2512
       ],
       "id": "e3637405-e799-4c31-8b79-c55e5736713b",
       "name": "Postgres Chat Memory1",
@@ -3082,7 +3054,7 @@
       "typeVersion": 1.1,
       "position": [
         -3696,
-        2956
+        2960
       ],
       "id": "6c34ba59-0fc9-468d-bda3-83789d44ce16",
       "name": "Wait3",
@@ -3117,7 +3089,7 @@
       "typeVersion": 2.2,
       "position": [
         -2896,
-        2808
+        2816
       ],
       "id": "0c4c446d-a782-4376-b930-fe9a00b82532",
       "name": "Filter1"
@@ -3247,7 +3219,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        3976,
+        3984,
         -16
       ],
       "id": "56e6f9c7-bfa7-4847-a2de-921e39c65faf",
@@ -3349,7 +3321,7 @@
       "typeVersion": 4.2,
       "position": [
         5216,
-        588
+        592
       ]
     },
     {
@@ -3363,8 +3335,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5560,
-        484
+        5568,
+        496
       ],
       "id": "e41007e2-2276-40ec-8070-712f59096c51",
       "name": "Campos2",
@@ -3433,7 +3405,7 @@
       "typeVersion": 3.2,
       "position": [
         4704,
-        572
+        576
       ],
       "id": "202fe868-cfe4-49fb-b98a-764af4f7dc04",
       "name": "SwitchBot2",
@@ -3537,7 +3509,7 @@
       "typeVersion": 1,
       "position": [
         5968,
-        484
+        496
       ],
       "id": "bcfd8645-0b0c-436d-ad7b-36b15867a159",
       "name": "Information Extractor2",
@@ -3579,7 +3551,7 @@
       "typeVersion": 4.2,
       "position": [
         4928,
-        588
+        592
       ],
       "id": "398e1836-4db6-46a2-b1f6-3d1ec41dd4c0",
       "name": "Validacion2",
@@ -3603,7 +3575,7 @@
       "typeVersion": 1.2,
       "position": [
         5568,
-        708
+        720
       ],
       "id": "995b3816-0bb1-4c6c-ac89-f7dd74f4a98a",
       "name": "OpenAI Chat Model5",
@@ -3626,8 +3598,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6040,
-        708
+        6048,
+        720
       ],
       "id": "57a7a0e3-9943-4fc5-ae89-1496e3e460c5",
       "name": "OpenAI Chat Model6",
@@ -3697,7 +3669,7 @@
       "typeVersion": 1,
       "position": [
         6320,
-        588
+        592
       ],
       "id": "ad1c8a3e-7aa5-4c6e-8027-32437d271239",
       "name": "Update leads2",
@@ -3718,7 +3690,7 @@
       "typeVersion": 1.3,
       "position": [
         5696,
-        708
+        720
       ],
       "id": "41851f6b-2f0d-431b-a2a2-51d9ae93e74d",
       "name": "Postgres Chat Memory3",
@@ -3849,7 +3821,7 @@
       "typeVersion": 3.2,
       "position": [
         -432,
-        2700
+        2704
       ],
       "id": "19c70351-80de-4a0f-8bb3-ca72b5c9c0d2",
       "name": "Switch2"
@@ -3868,7 +3840,7 @@
       "typeVersion": 1,
       "position": [
         -2000,
-        2892
+        2896
       ],
       "id": "966c0f2e-59b2-4450-b47a-1eeed276080b",
       "name": "Get list of contacts",
@@ -3897,7 +3869,7 @@
       "typeVersion": 3.4,
       "position": [
         -1552,
-        2892
+        2896
       ],
       "id": "845f92c3-6af0-4681-8b00-1181f299511e",
       "name": "Edit Fields"
@@ -3931,7 +3903,7 @@
       "typeVersion": 2.2,
       "position": [
         -1776,
-        2892
+        2896
       ],
       "id": "eba39861-24ca-43d0-a04e-51e3cef421c2",
       "name": "Filter3"
@@ -3948,7 +3920,7 @@
       "typeVersion": 2.6,
       "position": [
         -1104,
-        2892
+        2896
       ],
       "id": "086031ee-4f29-44f7-8278-42538d33cfe0",
       "name": "VALIDACION NUMERO",
@@ -4021,7 +3993,7 @@
       "typeVersion": 3.2,
       "position": [
         -656,
-        2892
+        2992
       ],
       "id": "2f1c7909-1a24-4460-ae93-b1c72b211610",
       "name": "Switch3"
@@ -4061,7 +4033,7 @@
       "typeVersion": 1,
       "position": [
         -432,
-        2892
+        2896
       ],
       "id": "6421b2d6-ccd2-4427-9bb0-d586cb85359e",
       "name": "Update leads1",
@@ -4078,7 +4050,7 @@
       "typeVersion": 1,
       "position": [
         -208,
-        2892
+        2896
       ],
       "id": "173f097d-84d4-4f37-a699-140729e96794",
       "name": "No Operation, do nothing1"
@@ -4095,7 +4067,7 @@
       "typeVersion": 2.6,
       "position": [
         -208,
-        2700
+        2704
       ],
       "id": "b8075935-c11d-423e-bad5-9207510db5e6",
       "name": "Execute a SQL query",
@@ -4168,7 +4140,7 @@
       "typeVersion": 3.2,
       "position": [
         16,
-        2700
+        2704
       ],
       "id": "1cd19574-4764-4d70-b4d1-34db29c33c69",
       "name": "Switch4"
@@ -4179,7 +4151,7 @@
       "typeVersion": 1,
       "position": [
         240,
-        2700
+        2704
       ],
       "id": "da585d20-21b8-4c92-90cb-c17cee000d8b",
       "name": "No Operation, do nothing2"
@@ -4203,7 +4175,7 @@
       "typeVersion": 1.1,
       "position": [
         -1328,
-        2892
+        2896
       ],
       "id": "32bef536-c131-4cb4-85a7-b715089a9662",
       "name": "Execution Data"
@@ -4317,7 +4289,7 @@
       "typeVersion": 3.2,
       "position": [
         -880,
-        2860
+        2864
       ],
       "id": "4b035bdd-23eb-4bf3-8de1-72ff783a9c16",
       "name": "Switch5"
@@ -4333,7 +4305,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        3976,
+        3984,
         384
       ],
       "id": "9f16a7a9-6326-4cfd-af9c-25ac411ececb",
@@ -4435,7 +4407,7 @@
       "typeVersion": 4.2,
       "position": [
         6032,
-        988
+        992
       ]
     },
     {
@@ -4542,8 +4514,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5624,
-        988
+        5632,
+        992
       ],
       "id": "c8b2c910-2cd3-44e3-9c1e-7d071955aa1c",
       "name": "Validacion3",
@@ -4647,7 +4619,7 @@
       "typeVersion": 1,
       "position": [
         4240,
-        1756
+        1760
       ],
       "id": "f69d7541-59b4-4add-8f01-70ee06ef16a7",
       "name": "Calculator"
@@ -4658,7 +4630,7 @@
       "typeVersion": 1,
       "position": [
         5760,
-        2500
+        2512
       ],
       "id": "49ce004b-5792-4173-9a8f-103ff5123748",
       "name": "Calculator1"
@@ -4723,7 +4695,7 @@
       "typeVersion": 3.2,
       "position": [
         -2672,
-        2808
+        2816
       ],
       "id": "a464dc5d-0092-4ed0-80ac-a0ad721e1173",
       "name": "Switch6"
@@ -4739,8 +4711,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        3976,
-        984
+        3984,
+        992
       ],
       "id": "109089fd-e523-480d-8339-4fffe41312db",
       "name": "Respuesta3",
@@ -4841,7 +4813,7 @@
       "typeVersion": 4.2,
       "position": [
         6032,
-        1580
+        1584
       ]
     },
     {
@@ -4856,7 +4828,7 @@
       "typeVersion": 1.9,
       "position": [
         5152,
-        1772
+        1776
       ],
       "id": "e4a35716-8332-4fd5-8bfd-3b00dfc4fd3a",
       "name": "Campos4",
@@ -5044,8 +5016,8 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        5560,
-        1772
+        5568,
+        1776
       ],
       "id": "86c75218-4e42-47e6-ab49-3d40ec3fba5f",
       "name": "Information Extractor4",
@@ -5086,8 +5058,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5624,
-        1580
+        5632,
+        1584
       ],
       "id": "cfc1be97-1944-4f08-9bf9-2923f76dda4f",
       "name": "Validacion4",
@@ -5110,8 +5082,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5160,
-        1996
+        5168,
+        2000
       ],
       "id": "944e5c0a-9069-4967-9578-ddf4531a7a62",
       "name": "OpenAI Chat Model11",
@@ -5135,7 +5107,7 @@
       "typeVersion": 1.2,
       "position": [
         5632,
-        1996
+        2000
       ],
       "id": "2398ccb2-02ec-466a-8c6d-45899441f1ae",
       "name": "OpenAI Chat Model12",
@@ -5229,7 +5201,7 @@
       "typeVersion": 1,
       "position": [
         6032,
-        1876
+        1888
       ],
       "id": "e421e3fe-21bc-421f-9d5c-72e7a890efba",
       "name": "Update leads4",
@@ -5249,8 +5221,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5288,
-        1996
+        5296,
+        2000
       ],
       "id": "a6080011-9fa0-46e6-b9e8-b63163feebc7",
       "name": "Postgres Chat Memory7",
@@ -5271,7 +5243,7 @@
       "typeVersion": 1.3,
       "position": [
         3856,
-        1208
+        1216
       ],
       "id": "5aa2dce0-3125-4e9d-bda2-f7f1dbbb515a",
       "name": "Postgres Chat Memory8",
@@ -5290,7 +5262,7 @@
       "typeVersion": 2,
       "position": [
         3984,
-        1208
+        1216
       ],
       "id": "34f4ff25-fb60-455a-aa89-69ead3adc242",
       "name": "Date & Time3"
@@ -5340,7 +5312,7 @@
       "typeVersion": 1,
       "position": [
         2032,
-        1736
+        1744
       ],
       "id": "e3638074-ef71-471f-9e47-263e5f90ac81",
       "name": "Analyze video",
@@ -5367,7 +5339,7 @@
       "typeVersion": 1,
       "position": [
         2032,
-        1928
+        1936
       ],
       "id": "2f74691a-ca1f-4f61-81b6-c93a3dd2cea3",
       "name": "Analyze document",
@@ -5407,7 +5379,7 @@
       "typeVersion": 2.2,
       "position": [
         5216,
-        1580
+        1584
       ],
       "id": "e21aa2c5-394b-4f5a-adaf-0cd1554ce212",
       "name": "Filter2"
@@ -5424,7 +5396,7 @@
       "typeVersion": 4.2,
       "position": [
         4112,
-        1208
+        1216
       ],
       "id": "27635156-c728-493f-b2a5-e46a46631e8f",
       "name": "Base de conocimiento"
@@ -5456,7 +5428,7 @@
       "typeVersion": 4.2,
       "position": [
         4240,
-        1208
+        1216
       ],
       "id": "e86340b3-eb15-4630-8669-77eb825e3b6b",
       "name": "Busca por correo o dni"
@@ -5475,7 +5447,7 @@
       "typeVersion": 1.2,
       "position": [
         3728,
-        1208
+        1216
       ],
       "id": "6003ce6f-c1ea-4f2b-b0c6-0d6fce3b2845",
       "name": "OpenAI Chat Model9",
@@ -5496,7 +5468,7 @@
       "typeVersion": 4.2,
       "position": [
         4368,
-        1208
+        1216
       ],
       "id": "add13d13-806e-4bd1-8f83-47898f3aee84",
       "name": "Busca por telefono"
@@ -5513,7 +5485,7 @@
       "typeVersion": 1.9,
       "position": [
         5152,
-        1180
+        1184
       ],
       "id": "a1980cdd-e53f-4e35-a984-aaa7fe0f9c12",
       "name": "Campos5",
@@ -5631,8 +5603,8 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        5560,
-        1180
+        5568,
+        1184
       ],
       "id": "55c05c9b-82d6-404d-ac1e-f80e0a8ef27e",
       "name": "Information Extractor5",
@@ -5651,8 +5623,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5160,
-        1404
+        5168,
+        1408
       ],
       "id": "55d67d1c-35e5-44b2-84b7-f5f5ad2f35e5",
       "name": "OpenAI Chat Model13",
@@ -5676,7 +5648,7 @@
       "typeVersion": 1.2,
       "position": [
         5632,
-        1404
+        1408
       ],
       "id": "05900f10-f1de-4b1f-b039-e7c28431f426",
       "name": "OpenAI Chat Model14",
@@ -5770,7 +5742,7 @@
       "typeVersion": 1,
       "position": [
         6032,
-        1284
+        1296
       ],
       "id": "01a0caad-8262-4fd3-8ca6-9a9b64338ad5",
       "name": "Update leads5",
@@ -5790,8 +5762,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5288,
-        1404
+        5296,
+        1408
       ],
       "id": "52ae62ae-0ca3-4406-b93f-487da0b6f2cd",
       "name": "Postgres Chat Memory9",
@@ -5831,92 +5803,10 @@
       "typeVersion": 2.2,
       "position": [
         -2224,
-        2808
+        2816
       ],
       "id": "5a1ba984-d0cf-4afa-991a-e035bf2ae0e8",
       "name": "TEST"
-    },
-    {
-      "parameters": {
-        "authentication": "longLivedToken",
-        "resource": "leads",
-        "filter": {
-          "id": "={{ $('new message').item.json.body[\"message[add][0][element_id]\"] }}"
-        },
-        "options": {},
-        "limit": 1
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        -2672,
-        3104
-      ],
-      "id": "16054c19-1a90-476f-8ce4-6ddc774f4dbc",
-      "name": "Get list of leads",
-      "credentials": {
-        "kommoLongLivedApi": {
-          "id": "20bzHfzuZvuDPmtm",
-          "name": "Kommo Long Lived Token account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "url": "https://propertamibotcom.kommo.com/api/v4/leads/pipelines",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "oAuth2Api",
-        "options": {
-          "response": {
-            "response": {
-              "responseFormat": "json"
-            }
-          }
-        }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        -2224,
-        3104
-      ],
-      "id": "ffb977f6-f85b-4671-8dcf-9650c815a587",
-      "name": "HTTP Request",
-      "credentials": {
-        "oAuth2Api": {
-          "id": "CUkAxEZkWpxNLUY2",
-          "name": "Proper"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "b5252afe-445d-4ea4-b9d4-3ad875a14b55",
-              "name": "PIPELINE_ID",
-              "value": "={{ $json._embedded.leads[0].pipeline_id }}",
-              "type": "string"
-            },
-            {
-              "id": "332815db-41d6-48e9-b802-ae2109f5c60d",
-              "name": "STATUS_ID",
-              "value": "={{ $json._embedded.leads[0].status_id }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        -2448,
-        3104
-      ],
-      "id": "2f71e481-6be9-4d1b-9dbc-6a65f6c69cd7",
-      "name": "Edit Fields1"
     },
     {
       "parameters": {
@@ -5926,7 +5816,7 @@
       "typeVersion": 1.1,
       "position": [
         4368,
-        1756
+        1760
       ],
       "id": "5fdc8878-8d64-44bb-b449-26c2ecfe7171",
       "name": "Think"
@@ -5941,7 +5831,7 @@
       "typeVersion": 4.2,
       "position": [
         4496,
-        1756
+        1760
       ],
       "id": "3adea9bb-b9cf-4282-8cde-a46a8a83eb65",
       "name": "BASE DE CONOCIMIENTO - DAVID"
@@ -5975,7 +5865,7 @@
       "typeVersion": 2.2,
       "position": [
         5216,
-        988
+        992
       ],
       "id": "55cbf070-78b2-4954-8eac-3288396ce33d",
       "name": "Filter"
@@ -6052,6 +5942,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-10T22:12:44.542Z",
-  "versionId": "71ba0893-8702-4cb3-b77d-0ed47622780d"
+  "updatedAt": "2025-11-11T21:16:10.266Z",
+  "versionId": "16316ede-fbce-44b6-9077-1765923587f1"
 }
