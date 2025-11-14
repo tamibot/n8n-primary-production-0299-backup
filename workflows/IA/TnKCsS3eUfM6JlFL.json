@@ -193,6 +193,36 @@
               "name": "Precio",
               "value": "={{ $json.Precio }}",
               "type": "string"
+            },
+            {
+              "id": "e43e2c5e-d5d4-4a8c-b84e-750b05006529",
+              "name": "mantenimiento",
+              "value": "={{ Number($json.mantenimiento) }}",
+              "type": "string"
+            },
+            {
+              "id": "8e13260a-7c49-455c-bdb7-5a098f02b744",
+              "name": "acepta_mascota",
+              "value": "={{ $json.acepta_mascotas }}",
+              "type": "string"
+            },
+            {
+              "id": "bf263a2f-2dcc-4e71-a203-176b7d2de12f",
+              "name": "tiene_panel",
+              "value": "={{ $json.tiene_panel }}",
+              "type": "string"
+            },
+            {
+              "id": "07774076-b9fb-479c-a3ec-57821b7cde5a",
+              "name": "pisos",
+              "value": "={{ $json.pisos }}",
+              "type": "string"
+            },
+            {
+              "id": "97e2eb29-d070-4dcc-98c3-13d903d8b3c7",
+              "name": "dormitorios",
+              "value": "={{ $json.Dormitorios }}",
+              "type": "string"
             }
           ]
         },
@@ -274,7 +304,11 @@
             "id_adondevivir": "={{ $json.id_adondevivir }}",
             "precio": "={{ Number($json.Precio) }}",
             "distrito": "={{ $json.Distrito }}",
-            "direccion": "={{ $json.Direccion }}"
+            "direccion": "={{ $json.Direccion }}",
+            "mantenimiento": "={{ $json.mantenimiento }}",
+            "dormitorios": "={{ $json.dormitorios }}",
+            "acepta_mascota": "={{ $json.acepta_mascota }}",
+            "tiene_panel": "={{ $json.tiene_panel }}"
           },
           "matchingColumns": [
             "id"
@@ -330,16 +364,6 @@
               "removed": false
             },
             {
-              "id": "mantenimiento",
-              "displayName": "mantenimiento",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
               "id": "area",
               "displayName": "area",
               "required": false,
@@ -352,16 +376,6 @@
             {
               "id": "baños",
               "displayName": "baños",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "dormitorios",
-              "displayName": "dormitorios",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -436,12 +450,55 @@
               "type": "number",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "acepta_mascota",
+              "displayName": "acepta_mascota",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tiene_panel",
+              "displayName": "tiene_panel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "mantenimiento",
+              "displayName": "mantenimiento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "dormitorios",
+              "displayName": "dormitorios",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
           "convertFieldsToString": false
         },
-        "options": {}
+        "options": {
+          "skipOnConflict": true,
+          "replaceEmptyStrings": true
+        }
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
@@ -574,6 +631,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-08T14:18:33.362Z",
-  "versionId": "e5812024-ef41-493e-a5a6-7e15dd77a099"
+  "updatedAt": "2025-11-13T18:42:56.695Z",
+  "versionId": "c9dbcfc9-d341-4d50-91fa-5bf8c12c662c"
 }
