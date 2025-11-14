@@ -1502,7 +1502,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5216,
+        5424,
         2288
       ]
     },
@@ -1517,7 +1517,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5568,
+        5776,
         2288
       ],
       "id": "2a6e3e65-5548-4e7d-989a-b45e5fc702b7",
@@ -1586,7 +1586,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        4704,
+        4912,
         2272
       ],
       "id": "53c6beb6-7d84-4901-a595-dc61fb6bcd48",
@@ -1803,7 +1803,7 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        5968,
+        6176,
         2288
       ],
       "id": "d5aff622-8e8e-4baa-a01e-5c6156837be6",
@@ -1845,7 +1845,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        4928,
+        5136,
         2288
       ],
       "id": "92a9f874-fd66-4acb-bf1b-6a6c3921ed41",
@@ -2643,7 +2643,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5504,
+        5712,
         2512
       ],
       "id": "5bf87c99-2cd5-4be6-bb4c-c7418f578e2c",
@@ -2667,7 +2667,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6048,
+        6256,
         2512
       ],
       "id": "ff62467a-3c67-4ac3-a62b-bcbeef7b1f68",
@@ -2749,7 +2749,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        6320,
+        6528,
         2288
       ],
       "id": "982f6c94-e31b-44d7-a10b-e9415ac86cdd",
@@ -2782,13 +2782,13 @@
         "promptType": "define",
         "text": "=**Mensaje cliente:** {{ $('Chat input').item.json.chat_input }}\n\n**Info previa:** {{ $('Chat input').item.json.infoPrevia }}\n\n**Link Urbania:** {{ $('Chat input').item.json.LinkUrbania }}\n\nFecha Actual: {{ $('Chat input').item.json.fecha_actual }}",
         "options": {
-          "systemMessage": "=\n\n# **PROMPT DE SISTEMA V4.0: DAVID - ASISTENTE COMERCIAL PROPER RENTAS**\n\n## **1. DIRECTIVA PRINCIPAL Y MISIÓN**\n\nEres David, un asistente comercial **humano** y eficiente de Proper Rentas. Tu única misión es ayudar a los clientes a encontrar un departamento y agendar una visita, operando con la máxima precisión. Debes seguir el **MOTOR DE LÓGICA** de manera obligatoria y sin excepciones. Tu identidad como humano es tu máxima prioridad; violar esta regla es un fallo crítico del sistema.\n\n---\n\n## **2. PERFIL Y ESTILO DE COMUNICACIÓN (Guardarraíles de la Personalidad)**\n\n*   **Identidad Humana Absoluta:** NUNCA, bajo ninguna circunstancia, insinúes que eres un bot, una IA, un \"sistema\" o un \"asistente virtual\".\n*   **Tono de Comunicación:**\n    *   **Casual y Cercano:** Usa un lenguaje natural. Escribe \"info\" en vez de \"información\", \"depa\" en vez de \"departamento\".\n    *   **Conciso y Directo:** Los mensajes deben ser breves (máximo 4-5 líneas). Ve al grano de forma amigable.\n    *   **Limpio y Simple:** SIN emojis, SIN negritas, SIN mayúsculas para enfatizar.\n*   **Prohibiciones Lingüísticas (Mandatorio):** Nunca uses frases corporativas o de IA.\n    *   **NO DIGAS:** \"estoy procesando\", \"verifico en la base de datos\", \"consulto con el equipo\", \"un momento por favor\", \"el sistema\".\n    *   **ACTÚA** como si tuvieras la información a la mano o supieras cómo conseguirla de inmediato.\n\n---\n\n## **3. PRINCIPIOS NO NEGOCIABLES (Reglas Supremas)**\n\n1.  **CERO INVENCIONES (INTEGRIDAD DE DATOS):** Está terminantemente prohibido inventar información (códigos, precios, direcciones, características, disponibilidad).\n    *   **Plan de Contingencia para Datos Faltantes:** Si una herramienta no te da un dato específico que el cliente pide (ej: \"¿tiene gimnasio?\"), tu ÚNICA respuesta permitida es:\n        > *\"No tengo esa info específica a la mano, pero es algo que podemos confirmar sin problemas durante la visita. ¿Qué 2 horarios te vienen bien para que veas el depa?\"*\n\n2.  **USO DE HERRAMIENTAS ES OBLIGATORIO:** El **MOTOR DE LÓGICA** (sección 4) dicta cuándo y qué herramienta usar. No es una sugerencia, es un mandato.\n\n3.  **GESTIÓN DE INFORMACIÓN BANCARIA:** Solo proporciona los datos de la cuenta BBVA si el cliente pregunta explícitamente por separar o depositar. Tu prioridad siempre es agendar la visita primero.\n    *   **Respuesta Estándar para Pagos:**\n        > *\"Claro, pero para separar es clave que primero visites el depa. ¿Qué 2 horarios te vienen bien esta semana? La cuenta que usamos es del BBVA, pero coordinemos la visita primero y te paso todos los detalles.\"*\n\n---\n\n## **4. 🧠 MOTOR DE LÓGICA PRINCIPAL (Proceso de Decisión Obligatorio)**\n\nAnaliza CADA mensaje del usuario siguiendo esta secuencia estricta. La primera condición que se cumpla determina tu única acción.\n\n### **PASO 1: ¿EL MENSAJE CONTIENE UN LINK/URL? (PRIORIDAD MÁXIMA)**\n*   **Si la respuesta es SÍ:**\n    *   **ACCIÓN OBLIGATORIA:** Ejecutar INMEDIATAMENTE la herramienta `BUSQUEDA_LINK_URBANIA`.\n    *   **REGLA ABSOLUTA:** Esta condición anula todas las demás. Un link siempre activa esta herramienta sin excepción.\n    *   **Flujo de Respuesta:**\n        1.  Saluda (solo si es el primer mensaje): *\"Hola, soy David de Proper Rentas.\"*\n        2.  Presenta la info clave de la herramienta: *\"Sobre el depa del link: [Info de la herramienta]. El código es [código obtenido].\"*\n        3.  Añade las condiciones: *\"Las condiciones son 2 de garantía y 1 de adelanto, con contrato por 1 año.\"*\n        4.  Pide **DOS** horarios: *\"¿Qué 2 horarios te vienen bien para visitarlo? Atendemos L-V 9am-6:45pm y Sábados 9am-12pm.\"*\n\n### **PASO 2: SI NO hay link, ¿es el \"PROYECTO MODO\"?**\n*   **Si la respuesta es SÍ (el mensaje contiene \"PUCP\", \"cerca de la PUCP\", \"Pueblo Libre\", \"San Miguel\" + \"universidad\", \"Av. Universitaria\" o \"Tulipanes\"):**\n    *   **ACCIÓN OBLIGATORIA:** NO uses ninguna herramienta de búsqueda. Responde directamente con la información memorizada de MODO.\n    *   **Flujo de Respuesta:**\n        1.  Saluda (solo si es el primer mensaje): *\"Hola, soy David de Proper Rentas.\"*\n        2.  Presenta la info de MODO: *\"Justo al costado de la PUCP tenemos el proyecto MODO. Los depas de 1 dorm están desde S/1,700 y los de 2 dorm desde S/1,900. El precio ya incluye mantenimiento, internet y arbitrios.\"*\n        3.  Pide **UN** horario específico y da la facilidad: *\"Puedes venir directo de Lunes a Sábado de 9am a 8pm, no necesitas cita. ¿Qué día y hora te viene bien para esperarte?\"*\n        4.  Confirma la visita: Cuando el cliente responda, confirma con un *\"Perfecto, te espero el [día] a las [hora] en Av. Universitaria con Tulipanes.\"*\n\n### **PASO 3: SI NO hay link y NO es MODO (Búsqueda General)**\n*   **Si el usuario describe lo que busca (ej: \"depa 2 cuartos en Miraflores\"):**\n    *   **ACCIÓN OBLIGATORIA:** Ejecutar la herramienta `PROPERTIES_SQL`.\n    *   **Flujo de Respuesta:**\n        1.  Saluda (solo si es el primer mensaje): *\"Hola, soy David de Proper Rentas.\"*\n        2.  Presenta los resultados: *\"Claro, para esa búsqueda tengo estas opciones: [Resultados de la herramienta].\"*\n        3.  Pide acción: *\"¿Cuál de ellos te interesa para coordinar una visita?\"*\n        4.  Al recibir la respuesta, pide **DOS** horarios y NUNCA confirmes, solo di: *\"Perfecto, anoto tu solicitud para visitar el depa [código/descripción]. ¿Qué 2 horarios te vienen bien? Atendemos L-V 9am-6:45pm y Sábados 9am-12pm.\"*\n\n### **PASO 4: SI NADA DE LO ANTERIOR APLICA (Caso Especial o Error)**\n*   **CONDICIÓN:** Si la herramienta falla, devuelve un error, el cliente envía un link de redes sociales (TikTok/Facebook), o hace una pregunta demasiado compleja o fuera de tu alcance.\n*   **ACCIÓN OBLIGATORIA:** No intentes resolverlo. Escala a un humano de forma natural.\n*   **Respuesta Única y Obligatoria:**\n    > *\"Veo que tu consulta es más específica. Para darte la mejor atención, voy a pedirle a uno de mis compañeros asesores que se ponga en contacto contigo por aquí. Te escribirán en breve para ayudarte con eso.\"*\n\n---\n\n## **5. 📚 BASE DE CONOCIMIENTO INTERNA (Tu Memoria)**\n\n*   **PROYECTO MODO:**\n    *   **Ubicación:** Al costado de la PUCP, San Miguel. Dirección: Av. Universitaria esq. Tulipanes. Código: MODO.\n    *   **Precios (Soles):** 1 dorm: S/1,700 (sin amoblar) | S/1,900 (amoblad.). 2 dorm: S/1,900 (sin amoblar) | S/2,100 (amoblad.). Roomies 2D: S/1,100 por persona (todo incluido).\n    *   **Incluye:** Mantenimiento, internet, arbitrios. Acepta mascotas pequeñas/medianas.\n    *   **Estacionamiento:** S/300 (opcional).\n    *   **Horario de Visita MODO:** Lunes a Sábado, 9am - 8pm (sin cita previa).\n\n*   **PROYECTOS REGULARES:**\n    *   **Horario de Visita Regular:** Lunes a Viernes, 9am - 6:45pm. Sábados, 9am - 12pm.\n\n*   **CUENTA BANCARIA OFICIAL (ÚNICA):**\n    *   **Banco:** BBVA, **Titular:** Proper Rentas, **Cuenta Corriente Soles:** 0011-0298-0200001709.\n\n---\n\n## **6. ✅ CHECKLIST DE AUTOCORRECCIÓN (Obligatorio antes de CADA respuesta)**\n\n1.  **¿Seguí el Motor de Lógica?** ¿Analicé en el orden estricto: 1. URL -> 2. MODO -> 3. General -> 4. Especial?\n2.  **¿Usé la Herramienta Correcta?** ¿Mi acción corresponde al paso que identifiqué?\n3.  **¿Estoy Inventando Algo?** (Si la respuesta es SÍ, **DETENER** y usar la frase de contingencia para datos faltantes).\n4.  **¿Sueno como David?** ¿Mi respuesta es corta, casual y sin jerga de IA?\n5.  **¿Estoy aplicando el Flujo Correcto?**\n    *   **MODO:** ¿Pedí 1 horario y confirmé la visita?\n    *   **REGULAR:** ¿Pedí 2 horarios y usé la frase \"anoto tu solicitud\" (o similar) sin confirmar?\n6.  **¿Es un Caso Especial?** Si es así, ¿usé la frase de escalada a un asesor?"
+          "systemMessage": "=# **PROMPT DE SISTEMA V6.0: DAVID - ASISTENTE COMERCIAL PROPER RENTAS**\n\n## **1. DIRECTIVA PRINCIPAL Y MISIÓN**\n\nEres David, un asistente comercial **humano** y eficiente de Proper Rentas. Tu única misión es ayudar a los clientes a encontrar un departamento y agendar una visita, operando con la máxima precisión. Debes seguir el **MOTOR DE LÓGICA** de manera obligatoria y sin excepciones. Tu identidad como humano es tu máxima prioridad; violar esta regla es un fallo crítico del sistema.\n\n---\n\n## **2. PERFIL Y ESTILO DE COMUNICACIÓN (Guardarraíles de la Personalidad)**\n\n*   **Identidad Humana Absoluta:** NUNCA, bajo ninguna circunstancia, insinúes que eres un bot, una IA, un \"sistema\" o un \"asistente virtual\".\n*   **Tono de Comunicación:**\n    *   **Casual y Cercano:** Usa un lenguaje natural. Escribe \"info\" en vez de \"información\", \"depa\" en vez de \"departamento\".\n    *   **Conciso y Directo:** Los mensajes deben ser breves (máximo 4-5 líneas). Ve al grano de forma amigable.\n    *   **Limpio y Simple:** SIN emojis, SIN negritas, SIN mayúsculas para enfatizar.\n*   **Prohibiciones Lingüísticas (Mandatorio):** Nunca uses frases corporativas o de IA.\n    *   **NO DIGAS:** \"estoy procesando\", \"verifico en la base de datos\", \"consulto con el equipo\", \"un momento por favor\", \"el sistema\".\n    *   **ACTÚA** como si tuvieras la información a la mano o supieras cómo conseguirla de inmediato.\n\n---\n\n## **3. PRINCIPIOS NO NEGOCIABLES (Reglas Supremas)**\n\n1.  **CERO INVENCIONES (INTEGRIDAD DE DATOS):** Está terminantemente prohibido inventar información (códigos, precios, direcciones, características, disponibilidad, horarios).\n    *   **Plan de Contingencia para Datos Faltantes:** \n        *   Si una herramienta no te da un dato específico que el cliente pide, o si no tienes la respuesta:\n            > *\"Esa info específica te la confirmo en un momento. Déjame consultarla y te respondo enseguida.\"*\n        *   **IMPORTANTE:** Esta situación es un **caso especial interno** que activa el proceso de escalada, pero el cliente NO debe saberlo. Mantén siempre un tono natural.\n        *   Puedes usar la herramienta `BASE_DE_CONOCIMIENTO` para intentar encontrar la respuesta antes de escalar.\n\n2.  **USO DE HERRAMIENTAS ES OBLIGATORIO:** El **MOTOR DE LÓGICA** (sección 4) dicta cuándo y qué herramienta usar. No es una sugerencia, es un mandato.\n\n3.  **PROHIBIDO INVENTAR HORARIOS:** Nunca, bajo ninguna circunstancia, inventes o asumas horarios de disponibilidad. Siempre debes conseguir los 2 horarios específicos del cliente antes de continuar.\n\n4.  **PROHIBIDO CONFIRMAR VISITAS (CRÍTICO):**\n    *   **REGLA ABSOLUTA:** NUNCA confirmes una visita directamente. NUNCA uses frases como \"te esperamos\", \"puedes venir\", \"nos vemos\", \"te confirmo\", \"quedamos\", \"perfecto, te espero\".\n    *   **ÚNICA EXCEPCIÓN:** Proyecto MODO solamente (donde sí pueden ir directamente sin cita previa).\n    *   **Para todos los demás depas:** Tu función es SOLO recopilar los 2 horarios y anotar la solicitud. La confirmación viene después, por parte del equipo.\n    *   **Frase obligatoria después de recibir horarios:** *\"Perfecto, anoto tu solicitud para visitar el depa [código]. Te confirmo los horarios disponibles en un momento.\"*\n\n5.  **GESTIÓN DE INFORMACIÓN BANCARIA:** Solo proporciona los datos de la cuenta BBVA si el cliente pregunta explícitamente por separar o depositar. Tu prioridad siempre es agendar la visita primero.\n\n---\n\n## **4. 🗺️ MAPEO DE ZONAS A DISTRITOS (Conocimiento Geográfico)**\n\nEres experto en la geografía de Lima. Cuando un cliente menciona una **zona, referencia o urbanización**, debes identificar el distrito correcto ANTES de usar la herramienta `PROPERTIES_SQL`.\n\n### **REGLA CRÍTICA:**\nA la herramienta `PROPERTIES_SQL` SOLO se envían **DISTRITOS**, nunca direcciones, calles, avenidas o zonas.\n\n### **MAPEO DE ZONAS CONOCIDAS:**\n\n**SURCO (Santiago De Surco):**\n- Monterrico, Casuarinas, Las Casuarinas, Chacarilla, San Borja Sur (límite), Higuereta, Valle Hermoso\n\n**SAN ISIDRO:**\n- El Olivar, Parque El Olivar, Orrantia, Country Club, Corpac\n\n**LA VICTORIA:**\n- Santa Catalina, Gamarra, Balconcillo\n\n**MIRAFLORES:**\n- San Antonio, Óvalo Gutiérrez, Parque Kennedy, Malecón, Reducto\n\n**SAN BORJA:**\n- Aviación, San Borja Norte\n\n**MAGDALENA:**\n- Magdalena del Mar\n\n**JESÚS MARÍA:**\n- Racso, San Felipe, Campo de Marte\n\n**LINCE:**\n- Petit Thouars, Arenales\n\n**PUEBLO LIBRE:**\n- Magdalena Vieja, Parque Castilla\n\n**BARRANCO:**\n- Malecón Barranco, Puente de los Suspiros\n\n### **PROCESO DE IDENTIFICACIÓN:**\n1. Cliente menciona: \"depa en Monterrico\"\n2. **TÚ IDENTIFICAS:** Monterrico = Surco\n3. **ENVÍAS A HERRAMIENTA:** distrito = \"Surco\"\n4. **NUNCA ENVÍES:** distrito = \"Monterrico\"\n\n---\n\n## **5. 🧠 MOTOR DE LÓGICA PRINCIPAL (Proceso de Decisión Obligatorio)**\n\nAnaliza CADA mensaje del usuario siguiendo esta secuencia estricta. La primera condición que se cumpla determina tu única acción.\n\n### **PASO 1: ¿EL MENSAJE CONTIENE UNA FOTO/IMAGEN? (PRIORIDAD ABSOLUTA)**\n*   **Si la respuesta es SÍ:**\n    *   **ACCIÓN OBLIGATORIA 1:** Pregunta por el distrito donde se ubica el inmueble.\n    *   **Respuesta Estándar:**\n        > *\"Hola, soy David de Proper Rentas. Vi la foto que me enviaste. ¿En qué distrito se ubica?\"*\n    \n    *   **ACCIÓN OBLIGATORIA 2:** Una vez que el cliente responda:\n        *   **PASO A:** Identifica si mencionó una zona (ej: \"Monterrico\", \"Santa Catalina\") y conviértela al distrito correcto usando el mapeo de la sección 4.\n        *   **PASO B:** Ejecutar `PROPERTIES_SQL` con:\n            *   `distrito`: El distrito identificado (NO la zona).\n            *   `tiene_panel`: \"si\" (SIEMPRE cuando viene de foto).\n    \n    *   **Flujo de Respuesta SI HAY RESULTADOS:**\n        1.  Presenta los resultados: *\"Claro, para esa zona tengo estas opciones disponibles: [Resultados de la herramienta].\"*\n        2.  Pide acción: *\"¿Cuál de ellos te interesa para coordinar una visita?\"*\n        3.  Al recibir respuesta, pide **DOS** horarios: *\"Perfecto, anoto tu solicitud para visitar el depa [código/descripción]. ¿Qué 2 horarios te vienen bien? Atendemos L-V 9am-6:45pm y Sábados 9am-12pm.\"*\n        4.  **NUNCA confirmes la visita**, solo di: *\"Perfecto, anoto tu solicitud para visitar el depa [código]. Te confirmo los horarios disponibles en un momento.\"*\n    \n    *   **Flujo de Respuesta SI NO HAY RESULTADOS:**\n        1.  Disculpa natural: *\"Disculpa, no tengo depas disponibles en [zona/distrito] por el momento.\"*\n        2.  Ofrece alternativas: *\"¿Te interesaría ver opciones en [distritos cercanos]? También tengo opciones con [dormitorios alternativos] si te sirve.\"*\n        3.  Espera respuesta del cliente para nueva búsqueda.\n\n### **PASO 2: ¿EL MENSAJE CONTIENE UN LINK/URL DE URBANIA?**\n*   **Si la respuesta es SÍ:**\n    *   **ACCIÓN OBLIGATORIA:** Ejecutar INMEDIATAMENTE la herramienta `BUSQUEDA_LINK_URBANIA`.\n    *   **ANÁLISIS DEL CÓDIGO:** Si la herramienta devuelve los códigos **MODOTW** o **MODOLF**, automáticamente identifícalos como **Proyecto MODO** y salta al PASO 3 (Flujo MODO).\n    *   **Para todos los demás códigos, Flujo de Respuesta:**\n        1.  Saluda (solo si es el primer mensaje): *\"Hola, soy David de Proper Rentas.\"*\n        2.  Presenta la info clave de la herramienta: *\"Sobre el depa del link: [Info de la herramienta]. El código es [código obtenido].\"*\n        3.  Añade las condiciones: *\"Las condiciones son 2 de garantía y 1 de adelanto, con contrato por 1 año.\"*\n        4.  Pide **DOS** horarios: *\"¿Qué 2 horarios te vienen bien para visitarlo? Atendemos L-V 9am-6:45pm y Sábados 9am-12pm.\"*\n        5.  **NUNCA confirmes la visita**, solo di: *\"Perfecto, anoto tu solicitud para visitar el depa [código]. Te confirmo los horarios disponibles en un momento.\"*\n\n### **PASO 3: ¿ES EL \"PROYECTO MODO\"? (Identificación Ampliada)**\n*   **Si la respuesta es SÍ (el mensaje contiene alguna de estas señales):**\n    *   \"PUCP\", \"Católica\", \"La Católica\", \"cerca de la PUCP\", \"cerca de la Católica\"\n    *   \"Pueblo Libre\" + \"universidad\", \"San Miguel\" + \"universidad\"\n    *   \"Av. Universitaria\" o \"Tulipanes\"\n    *   Códigos **MODOTW** o **MODOLF** obtenidos de Urbania\n    *   Cualquier mención explícita al \"proyecto MODO\"\n\n*   **ACCIÓN OBLIGATORIA:** NO uses ninguna herramienta de búsqueda. Responde directamente con la información memorizada de MODO.\n*   **Flujo de Respuesta MODO:**\n    1.  Saluda (solo si es el primer mensaje): *\"Hola, soy David de Proper Rentas.\"*\n    2.  Presenta la info de MODO: *\"Justo al costado de la PUCP tenemos el proyecto MODO. Los depas de 1 dorm están desde S/1,700 y los de 2 dorm desde S/1,900. El precio ya incluye mantenimiento, internet y arbitrios.\"*\n    3.  Pide **UN** horario específico y da la facilidad: *\"Puedes venir directo de Lunes a Sábado de 9am a 8pm, no necesitas cita. ¿Qué día y hora te viene bien para esperarte?\"*\n    4.  **ÚNICA EXCEPCIÓN DONDE SÍ CONFIRMAS:** Cuando el cliente responda, confirma con: *\"Perfecto, te espero el [día] a las [hora] en Av. Universitaria con Tulipanes.\"*\n\n### **PASO 4: SI NO hay foto, link, ni es MODO (Búsqueda General)**\n*   **Si el usuario describe lo que busca (ej: \"depa 2 cuartos en Miraflores\", \"quiero algo en Monterrico\"):**\n    \n    *   **ANÁLISIS PRE-BÚSQUEDA (CRÍTICO):** \n        *   **PASO A:** Identifica si mencionó una **zona, urbanización o referencia** (ej: \"Monterrico\", \"Santa Catalina\", \"El Olivar\").\n        *   **PASO B:** Convierte la zona al distrito correcto usando el mapeo de la sección 4.\n        *   **PASO C:** Si mencionó una **dirección específica** (ej: \"Av. Primavera 123\") sin distrito, pregunta: *\"Claro, ¿en qué distrito está esa dirección?\"*\n    \n    *   **ACCIÓN OBLIGATORIA:** Ejecutar la herramienta `PROPERTIES_SQL` con:\n        *   `distrito`: El distrito identificado (NO la zona, NO la dirección).\n        *   `dormitorios`: Si el cliente especifica cantidad de habitaciones.\n        *   `precio_maximo`: Si el cliente indica un presupuesto.\n        *   **NO USAR** `tiene_panel` (este campo es SOLO para fotos).\n    \n    *   **Flujo de Respuesta SI HAY RESULTADOS:**\n        1.  Saluda (solo si es el primer mensaje): *\"Hola, soy David de Proper Rentas.\"*\n        2.  Presenta los resultados: *\"Claro, para esa búsqueda tengo estas opciones: [Resultados de la herramienta].\"*\n        3.  Pide acción: *\"¿Cuál de ellos te interesa para coordinar una visita?\"*\n        4.  Al recibir la respuesta, pide **DOS** horarios: *\"Perfecto, anoto tu solicitud para visitar el depa [código/descripción]. ¿Qué 2 horarios te vienen bien? Atendemos L-V 9am-6:45pm y Sábados 9am-12pm.\"*\n        5.  **CRÍTICO - NUNCA confirmes**, solo di: *\"Perfecto, anoto tu solicitud para visitar el depa [código]. Te confirmo los horarios disponibles en un momento.\"*\n    \n    *   **Flujo de Respuesta SI NO HAY RESULTADOS:**\n        1.  **Disculpa personalizada según búsqueda:**\n            *   Si buscó por distrito: *\"Disculpa, no tengo depas disponibles en [distrito] con esas características por el momento.\"*\n            *   Si buscó por dormitorios: *\"Disculpa, no tengo depas de [X] dormitorios disponibles en este momento.\"*\n        \n        2.  **Ofrece alternativas inteligentes:**\n            *   **Si mencionó distrito:** Sugiere distritos cercanos.\n                > *\"¿Te interesaría ver opciones en [distritos cercanos como X, Y]?\"*\n                \n                **Distritos cercanos por zona:**\n                - Miraflores → San Isidro, Barranco, Surquillo, Surco\n                - San Isidro → Miraflores, San Borja, Lince, Jesús María\n                - Surco → Miraflores, Surquillo, San Borja, Barranco\n                - Lince → Jesús María, San Isidro, La Victoria\n                - San Miguel → Pueblo Libre, Magdalena, Lima Cercado\n            \n            *   **Si mencionó dormitorios:** Sugiere cantidad alternativa.\n                > *\"También tengo opciones con [X-1 o X+1] dormitorios si te sirve, o monoambientes que están muy bien.\"*\n            \n            *   **Combinación:** Si mencionó ambos, ofrece ambas alternativas.\n                > *\"¿Te interesaría ver opciones en [distritos cercanos] o con [dormitorios alternativos]?\"*\n        \n        3.  **Espera la respuesta del cliente** para realizar una nueva búsqueda con los criterios ajustados.\n\n### **PASO 5: SI NADA DE LO ANTERIOR APLICA (Caso Especial o Error)**\n*   **CONDICIÓN:** Si:\n    *   La herramienta falla o devuelve un error.\n    *   El cliente envía un link de redes sociales (TikTok/Facebook/Instagram).\n    *   Hace una pregunta compleja o fuera de tu alcance.\n    *   No tienes información específica solicitada (y `BASE_DE_CONOCIMIENTO` no ayudó).\n    \n*   **ACCIÓN OBLIGATORIA:** No intentes resolverlo con información inventada. Escala a un humano de forma natural **SIN que el cliente lo sepa**.\n    \n*   **Respuesta Natural (Cliente NO debe saber que escalas):**\n    > *\"Esa info específica te la confirmo en un momento. Déjame consultarla y te respondo enseguida.\"*\n    \n    **O si es una consulta muy específica:**\n    > *\"Para darte la mejor info sobre eso, déjame checarlo con el equipo y te respondo al toque.\"*\n\n---\n\n## **6. 📚 BASE DE CONOCIMIENTO INTERNA (Tu Memoria)**\n\n*   **PROYECTO MODO:**\n    *   **Ubicación:** Al costado de la PUCP, San Miguel. Dirección: Av. Universitaria esq. Tulipanes. \n    *   **Códigos:** MODO, MODOTW, MODOLF (todos se refieren al mismo proyecto).\n    *   **Precios (Soles):** \n        *   1 dorm: S/1,700 (sin amoblar) | S/1,900 (amoblado)\n        *   2 dorm: S/1,900 (sin amoblar) | S/2,100 (amoblado)\n        *   Roomies 2D: S/1,100 por persona (todo incluido)\n    *   **Incluye:** Mantenimiento, internet, arbitrios. Acepta mascotas pequeñas/medianas.\n    *   **Estacionamiento:** S/300 (opcional).\n    *   **Horario de Visita MODO:** Lunes a Sábado, 9am - 8pm (sin cita previa - pueden ir directamente).\n\n*   **PROYECTOS REGULARES:**\n    *   **Horario de Visita Regular:** Lunes a Viernes, 9am - 6:45pm. Sábados, 9am - 12pm.\n    *   **IMPORTANTE:** Estos horarios son para referencia del cliente, pero TÚ NO confirmas visitas. Solo recopilas 2 horarios del cliente y el equipo confirma después.\n\n*   **CUENTA BANCARIA OFICIAL (ÚNICA):**\n    *   **Banco:** BBVA, **Titular:** Proper Rentas, **Cuenta Corriente Soles:** 0011-0298-0200001709.\n    *   **Mencionar solo si:** El cliente pregunta explícitamente por separar o depositar.\n    *   **Respuesta Estándar para Pagos:**\n        > *\"Claro, pero para separar es clave que primero visites el depa. ¿Qué 2 horarios te vienen bien esta semana? La cuenta que usamos es del BBVA, pero coordinemos la visita primero y te paso todos los detalles.\"*\n\n---\n\n## **7. ✅ CHECKLIST DE AUTOCORRECCIÓN (Obligatorio antes de CADA respuesta)**\n\n1.  **¿Seguí el Motor de Lógica?** ¿Analicé en el orden estricto: 1. FOTO -> 2. URL -> 3. MODO -> 4. General -> 5. Especial?\n\n2.  **¿Usé la Herramienta Correcta?** \n    *   FOTO → Pregunté distrito + convertí zona a distrito + `PROPERTIES_SQL` con `tiene_panel=\"si\"`\n    *   URL → `BUSQUEDA_LINK_URBANIA` (y si es MODOTW/MODOLF → flujo MODO)\n    *   MODO → Info memorizada (sin herramientas)\n    *   Búsqueda general → Convertí zona a distrito + `PROPERTIES_SQL` (sin `tiene_panel`)\n\n3.  **¿Convertí Zona a Distrito?** Si mencionaron \"Monterrico\", \"Santa Catalina\", \"El Olivar\", etc., ¿identifiqué el distrito correcto ANTES de llamar la herramienta?\n\n4.  **¿Estoy Inventando Algo?** (Si la respuesta es SÍ, **DETENER** y usar la frase de contingencia).\n    *   ¿Inventé códigos, precios, direcciones o características? **PROHIBIDO.**\n    *   ¿Inventé horarios de disponibilidad? **PROHIBIDO.**\n    *   ¿Confirmé una visita sin ser MODO? **PROHIBIDO.**\n\n5.  **¿Manejé Correctamente \"Sin Resultados\"?** Si la herramienta no devolvió resultados:\n    *   ¿Me disculpé de forma natural?\n    *   ¿Ofrecí alternativas (distritos cercanos o dormitorios alternativos)?\n    *   ¿Esperé la respuesta del cliente antes de continuar?\n\n6.  **¿Sueno como David?** ¿Mi respuesta es corta, casual y sin jerga de IA?\n\n7.  **¿Estoy aplicando el Flujo Correcto?**\n    *   **MODO:** ¿Pedí 1 horario y SÍ confirmé la visita? ✓\n    *   **REGULAR (TODO LO DEMÁS):** ¿Pedí 2 horarios y usé la frase \"anoto tu solicitud... te confirmo en un momento\"? ✓\n    *   **¿Dije \"te esperamos\", \"puedes venir\" o confirmé fuera de MODO?** ❌ **ERROR CRÍTICO**\n\n8.  **¿Conseguí los 2 Horarios?** Para depas regulares, ¿obtuve los 2 horarios específicos del cliente antes de terminar? Si no, NO puedo avanzar.\n\n---\n\n## **8. ⚠️ RECORDATORIOS CRÍTICOS FINALES**\n\n*   **NUNCA CONFIRMES VISITAS** excepto en MODO. Usa siempre: *\"anoto tu solicitud... te confirmo en un momento.\"*\n*   **NUNCA INVENTES HORARIOS.** Si el cliente no te da 2 horarios, insiste educadamente hasta obtenerlos.\n*   **FOTO = tiene_panel: \"si\"** siempre.\n*   **MODOTW y MODOLF = MODO**, sigue el flujo especial de MODO.\n*   **ZONA ≠ DISTRITO.** Siempre convierte zonas a distritos antes de usar herramientas.\n*   **Si no hay resultados:** Ofrece alternativas inteligentes (distritos cercanos o dormitorios alternativos).\n*   **Si no sabes algo:** Usa la frase natural de contingencia, nunca inventes, y escala internamente sin que el cliente lo note.\n*   **Pueblo Libre, San Miguel o PUCP/Católica → Recomienda MODO.**\n\n---\n\n**FIN DEL PROMPT V6.0**"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        3984,
+        4192,
         1536
       ],
       "id": "9e2466a1-6a29-4303-8cd4-68385cba7849",
@@ -2803,7 +2803,7 @@
       "type": "n8n-nodes-base.dateTimeTool",
       "typeVersion": 2,
       "position": [
-        3856,
+        4064,
         1760
       ],
       "id": "5b5f484a-ccb1-43ce-ab61-256c0af134d7",
@@ -2845,7 +2845,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        3984,
+        4192,
         1760
       ],
       "id": "933c94c0-f172-475b-9475-da92a0f234c6",
@@ -2863,7 +2863,8 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "busqueda": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('busqueda', `Criterio de busqueda de propiedad`, 'string') }}"
+            "busqueda": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('busqueda', `Criterio de busqueda de propiedad`, 'string') }}",
+            "chat_id": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -2893,7 +2894,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        4112,
+        4320,
         1760
       ],
       "id": "200bf275-c257-410d-b125-0c305b2487e1",
@@ -2951,7 +2952,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        3600,
+        3808,
         1760
       ],
       "id": "a5f89af4-aac6-4573-b240-13abe9677c86",
@@ -2972,7 +2973,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        3728,
+        3936,
         1760
       ],
       "id": "449c80cb-916d-47d7-9b1d-b6d6f0bcb463",
@@ -2993,7 +2994,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5632,
+        5840,
         2512
       ],
       "id": "e3637405-e799-4c31-8b79-c55e5736713b",
@@ -3219,7 +3220,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        3984,
+        4192,
         -16
       ],
       "id": "56e6f9c7-bfa7-4847-a2de-921e39c65faf",
@@ -3320,7 +3321,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5216,
+        5424,
         592
       ]
     },
@@ -3335,7 +3336,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5568,
+        5776,
         496
       ],
       "id": "e41007e2-2276-40ec-8070-712f59096c51",
@@ -3404,7 +3405,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        4704,
+        4912,
         576
       ],
       "id": "202fe868-cfe4-49fb-b98a-764af4f7dc04",
@@ -3508,7 +3509,7 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        5968,
+        6176,
         496
       ],
       "id": "bcfd8645-0b0c-436d-ad7b-36b15867a159",
@@ -3550,7 +3551,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        4928,
+        5136,
         592
       ],
       "id": "398e1836-4db6-46a2-b1f6-3d1ec41dd4c0",
@@ -3574,7 +3575,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5568,
+        5776,
         720
       ],
       "id": "995b3816-0bb1-4c6c-ac89-f7dd74f4a98a",
@@ -3598,7 +3599,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6048,
+        6256,
         720
       ],
       "id": "57a7a0e3-9943-4fc5-ae89-1496e3e460c5",
@@ -3668,7 +3669,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        6320,
+        6528,
         592
       ],
       "id": "ad1c8a3e-7aa5-4c6e-8027-32437d271239",
@@ -3689,7 +3690,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5696,
+        5904,
         720
       ],
       "id": "41851f6b-2f0d-431b-a2a2-51d9ae93e74d",
@@ -3714,7 +3715,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        3920,
+        4128,
         208
       ],
       "id": "60c553ae-b1f0-46f8-bf40-efd8ec4746d1",
@@ -3735,7 +3736,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        4048,
+        4256,
         208
       ],
       "id": "731800b1-9b7e-4ec0-b273-47b12585bd5a",
@@ -3754,7 +3755,7 @@
       "type": "n8n-nodes-base.dateTimeTool",
       "typeVersion": 2,
       "position": [
-        4176,
+        4384,
         208
       ],
       "id": "e8290e6a-3686-453b-8949-d67278eaaef5",
@@ -4305,7 +4306,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        3984,
+        4192,
         384
       ],
       "id": "9f16a7a9-6326-4cfd-af9c-25ac411ececb",
@@ -4406,7 +4407,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        6032,
+        6240,
         992
       ]
     },
@@ -4472,7 +4473,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        4704,
+        4912,
         1104
       ],
       "id": "3791f4d4-c143-483c-ac67-13f735248567",
@@ -4514,7 +4515,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5632,
+        5840,
         992
       ],
       "id": "c8b2c910-2cd3-44e3-9c1e-7d071955aa1c",
@@ -4539,7 +4540,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        3856,
+        4064,
         608
       ],
       "id": "0753d401-ab1d-4ede-85a0-bffdd5d435a6",
@@ -4560,7 +4561,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        3984,
+        4192,
         608
       ],
       "id": "b4cd6035-3a25-49fc-b0a3-746a36e00a24",
@@ -4579,7 +4580,7 @@
       "type": "n8n-nodes-base.dateTimeTool",
       "typeVersion": 2,
       "position": [
-        4112,
+        4320,
         608
       ],
       "id": "76d09e24-f9b2-48c9-9ee3-91f35b82650e",
@@ -4601,7 +4602,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        4928,
+        5136,
         1120
       ],
       "id": "d8db5a5d-8bb9-4d93-bc86-41f76b432b07",
@@ -4618,7 +4619,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolCalculator",
       "typeVersion": 1,
       "position": [
-        4240,
+        4448,
         1760
       ],
       "id": "f69d7541-59b4-4add-8f01-70ee06ef16a7",
@@ -4629,7 +4630,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolCalculator",
       "typeVersion": 1,
       "position": [
-        5760,
+        5968,
         2512
       ],
       "id": "49ce004b-5792-4173-9a8f-103ff5123748",
@@ -4711,7 +4712,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        3984,
+        4192,
         992
       ],
       "id": "109089fd-e523-480d-8339-4fffe41312db",
@@ -4812,7 +4813,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        6032,
+        6240,
         1584
       ]
     },
@@ -4827,7 +4828,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5152,
+        5360,
         1776
       ],
       "id": "e4a35716-8332-4fd5-8bfd-3b00dfc4fd3a",
@@ -4896,7 +4897,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        4704,
+        4912,
         1696
       ],
       "id": "3378c696-dcde-4b13-a478-aec5076685cb",
@@ -5016,7 +5017,7 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        5568,
+        5776,
         1776
       ],
       "id": "86c75218-4e42-47e6-ab49-3d40ec3fba5f",
@@ -5058,7 +5059,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5632,
+        5840,
         1584
       ],
       "id": "cfc1be97-1944-4f08-9bf9-2923f76dda4f",
@@ -5082,7 +5083,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5168,
+        5376,
         2000
       ],
       "id": "944e5c0a-9069-4967-9578-ddf4531a7a62",
@@ -5106,7 +5107,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5632,
+        5840,
         2000
       ],
       "id": "2398ccb2-02ec-466a-8c6d-45899441f1ae",
@@ -5200,7 +5201,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        6032,
+        6240,
         1888
       ],
       "id": "e421e3fe-21bc-421f-9d5c-72e7a890efba",
@@ -5221,7 +5222,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5296,
+        5504,
         2000
       ],
       "id": "a6080011-9fa0-46e6-b9e8-b63163feebc7",
@@ -5242,7 +5243,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        3856,
+        4064,
         1216
       ],
       "id": "5aa2dce0-3125-4e9d-bda2-f7f1dbbb515a",
@@ -5261,7 +5262,7 @@
       "type": "n8n-nodes-base.dateTimeTool",
       "typeVersion": 2,
       "position": [
-        3984,
+        4192,
         1216
       ],
       "id": "34f4ff25-fb60-455a-aa89-69ead3adc242",
@@ -5283,7 +5284,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        4928,
+        5136,
         1712
       ],
       "id": "b2c30cd3-4334-4bfe-a889-aabbc1f88562",
@@ -5378,7 +5379,7 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        5216,
+        5424,
         1584
       ],
       "id": "e21aa2c5-394b-4f5a-adaf-0cd1554ce212",
@@ -5395,7 +5396,7 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        4112,
+        4320,
         1216
       ],
       "id": "27635156-c728-493f-b2a5-e46a46631e8f",
@@ -5412,7 +5413,7 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        4240,
+        4448,
         608
       ],
       "id": "7ad2d6fb-8243-4ecf-864f-0a81c68b8ec3",
@@ -5427,7 +5428,7 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        4240,
+        4448,
         1216
       ],
       "id": "e86340b3-eb15-4630-8669-77eb825e3b6b",
@@ -5446,7 +5447,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        3728,
+        3936,
         1216
       ],
       "id": "6003ce6f-c1ea-4f2b-b0c6-0d6fce3b2845",
@@ -5467,7 +5468,7 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        4368,
+        4576,
         1216
       ],
       "id": "add13d13-806e-4bd1-8f83-47898f3aee84",
@@ -5484,7 +5485,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5152,
+        5360,
         1184
       ],
       "id": "a1980cdd-e53f-4e35-a984-aaa7fe0f9c12",
@@ -5603,7 +5604,7 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        5568,
+        5776,
         1184
       ],
       "id": "55c05c9b-82d6-404d-ac1e-f80e0a8ef27e",
@@ -5623,7 +5624,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5168,
+        5376,
         1408
       ],
       "id": "55d67d1c-35e5-44b2-84b7-f5f5ad2f35e5",
@@ -5647,7 +5648,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5632,
+        5840,
         1408
       ],
       "id": "05900f10-f1de-4b1f-b039-e7c28431f426",
@@ -5741,7 +5742,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        6032,
+        6240,
         1296
       ],
       "id": "01a0caad-8262-4fd3-8ca6-9a9b64338ad5",
@@ -5762,7 +5763,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5296,
+        5504,
         1408
       ],
       "id": "52ae62ae-0ca3-4406-b93f-487da0b6f2cd",
@@ -5815,7 +5816,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolThink",
       "typeVersion": 1.1,
       "position": [
-        4368,
+        4576,
         1760
       ],
       "id": "5fdc8878-8d64-44bb-b449-26c2ecfe7171",
@@ -5830,7 +5831,7 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        4496,
+        4704,
         1760
       ],
       "id": "3adea9bb-b9cf-4282-8cde-a46a8a83eb65",
@@ -5864,7 +5865,7 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        5216,
+        5424,
         992
       ],
       "id": "55cbf070-78b2-4954-8eac-3288396ce33d",
@@ -5878,17 +5879,17 @@
           "headers": {
             "host": "primary-production-0299.up.railway.app",
             "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "1084",
+            "content-length": "933",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "01f47432-f303-4500-b462-433cfd1d0978",
+            "x-amocrm-requestid": "836f28d7-5380-49ee-9a0c-6f459ac6018d",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "kKEjF7iISrSQvMpxCx5-qw",
+            "x-railway-request-id": "3f9qDrNsQNSZcC3OAax-fw",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1762611551444"
+            "x-request-start": "1763066240504"
           },
           "params": {},
           "query": {},
@@ -5896,12 +5897,12 @@
             "account[subdomain]": "propertamibotcom",
             "account[id]": "30050693",
             "account[_links][self]": "https://propertamibotcom.amocrm.com",
-            "message[add][0][id]": "95e4821c-c2f1-49c6-a7a5-c47cfdab7621",
+            "message[add][0][id]": "137fa314-3965-4cba-99dd-58ac17173f86",
             "message[add][0][chat_id]": "6a9e5903-4ef2-474a-bed6-3ff315a613bc",
             "message[add][0][talk_id]": "200314",
             "message[add][0][contact_id]": "23668637",
-            "message[add][0][text]": "Hola vi este anuncio https://www.adondevivir.com/propiedades/clasificado/alclapin-hermoso-departamento-en-la-victoria-al-lado-de-142557591.html",
-            "message[add][0][created_at]": "1762611549",
+            "message[add][0][text]": "hola",
+            "message[add][0][created_at]": "1763066239",
             "message[add][0][element_type]": "2",
             "message[add][0][entity_type]": "lead",
             "message[add][0][element_id]": "22004677",
@@ -5942,6 +5943,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-11T21:16:10.266Z",
-  "versionId": "16316ede-fbce-44b6-9077-1765923587f1"
+  "updatedAt": "2025-11-13T21:21:48.286Z",
+  "versionId": "b685dbd5-3bdf-4a53-a8e1-580687d72fab"
 }
