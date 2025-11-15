@@ -224,13 +224,13 @@
             {
               "id": "8645f397-dcc0-42c2-a93e-39ce5084ea6a",
               "name": "fecha1_formateada",
-              "value": "={{ DateTime\n    .fromFormat($json.fecha1, 'dd/LL/yyyy HH:mm', { zone: 'America/Lima' })\n    .toFormat('yyyy-LL-dd HH:mm') }}",
+              "value": "={{ DateTime.fromFormat($json.fecha1 ?? $json.fecha2, 'dd/LL/yyyy HH:mm', { zone: 'America/Lima' }).toFormat('yyyy-LL-dd HH:mm') }}",
               "type": "string"
             },
             {
               "id": "59748b5f-5848-4a10-a1a6-9ce892ff222f",
               "name": "fecha2_formateada",
-              "value": "={{ DateTime\n    .fromFormat($json.fecha2, 'dd/LL/yyyy HH:mm', { zone: 'America/Lima' })\n    .toFormat('yyyy-LL-dd HH:mm') }}",
+              "value": "={{ DateTime.fromFormat($json.fecha2 ?? $json.fecha1, 'dd/LL/yyyy HH:mm', { zone: 'America/Lima' }).toFormat('yyyy-LL-dd HH:mm') }}",
               "type": "string"
             },
             {
@@ -283,22 +283,22 @@
             "content-length": "314",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "c162bec3-2730-48c8-afed-8609894f69ed",
+            "x-amocrm-requestid": "f66b7a24-fa53-4bd6-88f4-f117316c53bc",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "HGeotXfGRP-OQA_2ezItjw",
+            "x-railway-request-id": "sgi7wokDSsCotlqWCx5-qw",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1762879193585"
+            "x-request-start": "1763117142610"
           },
           "params": {},
           "query": {},
           "body": {
-            "leads[status][0][id]": "22361283",
+            "leads[status][0][id]": "22397493",
             "leads[status][0][status_id]": "90801096",
             "leads[status][0][pipeline_id]": "11240224",
-            "leads[status][0][old_status_id]": "86277776",
+            "leads[status][0][old_status_id]": "90801092",
             "leads[status][0][old_pipeline_id]": "11240224",
             "account[id]": "30050693",
             "account[subdomain]": "propertamibotcom"
@@ -331,6 +331,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-11T21:25:49.626Z",
-  "versionId": "d22706d3-4728-42c6-8aa4-90ad50da73e9"
+  "updatedAt": "2025-11-14T17:31:18.665Z",
+  "versionId": "7b25f12b-7c23-48b2-b16d-6879d1c1c214"
 }
