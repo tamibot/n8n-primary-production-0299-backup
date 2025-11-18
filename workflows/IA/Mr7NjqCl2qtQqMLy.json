@@ -160,6 +160,12 @@
               "name": "codigoInmueble",
               "value": "={{    ($('Kommo API Node').item.json._embedded.leads[0].custom_fields_values || [])     .find(f => (f.field_name || '').trim() === 'codigoInmueble')     ?.values?.[0]?.value || ''  }}",
               "type": "string"
+            },
+            {
+              "id": "1d3624eb-5a05-4140-a729-42714ccc456c",
+              "name": "nombre",
+              "value": "={{ $json._embedded.contacts[0].name }}",
+              "type": "string"
             }
           ]
         },
@@ -205,7 +211,7 @@
         "url": "https://bf2c1lell1.execute-api.us-east-2.amazonaws.com/production/disponibilidad/registrar-disponibilidad/",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"telefono\": \"{{ $json.telefono_formateado }}\",\n  \"horarios\": [\n    \"{{ $json.fecha1_formateada }}\",\n    \"{{ $json.fecha2_formateada }}\"\n  ],\n  \"utm_source\": \"BOT IA\",\n  \"cod_inmueble\": \"{{ $json.cod_inmueble }}\"\n}",
+        "jsonBody": "={\n  \"telefono\": \"{{ $json.telefono_formateado }}\",\n  \"horarios\": [\n    \"{{ $json.fecha1_formateada }}\",\n    \"{{ $json.fecha2_formateada }}\"\n  ],\n  \"utm_source\": \"BOT IA\",\n  \"cod_inmueble\": \"{{ $json.cod_inmueble }}\",\n  \"nombre\": \"{{ $json.nombre }}\"\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -283,19 +289,19 @@
             "content-length": "314",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "f66b7a24-fa53-4bd6-88f4-f117316c53bc",
+            "x-amocrm-requestid": "3cacc6b3-4b51-4a90-afd7-1b2b2ad3b749",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "sgi7wokDSsCotlqWCx5-qw",
+            "x-railway-request-id": "1oG0pHPfRcuNHf9-BT7zVQ",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1763117142610"
+            "x-request-start": "1763381801697"
           },
           "params": {},
           "query": {},
           "body": {
-            "leads[status][0][id]": "22397493",
+            "leads[status][0][id]": "22412691",
             "leads[status][0][status_id]": "90801096",
             "leads[status][0][pipeline_id]": "11240224",
             "leads[status][0][old_status_id]": "90801092",
@@ -331,6 +337,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-14T17:31:18.665Z",
-  "versionId": "7b25f12b-7c23-48b2-b16d-6879d1c1c214"
+  "updatedAt": "2025-11-17T17:18:57.223Z",
+  "versionId": "03829cfa-67d1-474a-8732-414efd13e003"
 }
