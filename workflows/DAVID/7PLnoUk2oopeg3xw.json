@@ -71,7 +71,7 @@
       "main": [
         [
           {
-            "node": "Send email",
+            "node": "Send a message",
             "type": "main",
             "index": 0
           }
@@ -161,7 +161,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        880,
+        896,
         0
       ],
       "id": "3470bf23-060f-461f-85a6-cb122b2ba970",
@@ -215,7 +215,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1104,
+        1120,
         0
       ],
       "id": "fb08cd0a-5eec-4cda-bab2-2439c0dac642",
@@ -419,7 +419,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1312,
+        1344,
         0
       ],
       "id": "a69e0392-2a78-4e64-a689-701dd836c091",
@@ -433,28 +433,27 @@
     },
     {
       "parameters": {
-        "fromEmail": "TamiBot - MODO <tamibotperu@gmail.com>",
-        "toEmail": "mvelascoo@tamibot.com, soporte.corretaje@proper.com.pe, valeria.vega@proper.com.pe",
+        "sendTo": "mvelascoo@tamibot.com, soporte.corretaje@proper.com.pe, valeria.vega@proper.com.pe",
         "subject": "=TamiBot - MODO - Nueva Visita -  {{ $json.celular }} - {{ $('Edit Fields').item.json.fechaMODO }}",
-        "emailFormat": "text",
-        "text": "=Se registra nueva solicitud de visita del cliente:\n\nNombre: {{ $('Kommo API Node1').item.json._embedded.contacts[0].name }}\nTelefono: {{ $('Edit Fields').item.json.telefono }}\nFecha: {{ $('Edit Fields').item.json.fechaMODO }}\nURL Kommo: https://propertamibotcom.kommo.com/leads/detail/{{ $('Kommo API Node').item.json._embedded.leads[0].id }}\n\nFavor confirmar ",
+        "emailType": "text",
+        "message": "=Se registra nueva solicitud de visita del cliente:\n\nNombre: {{ $('Kommo API Node1').item.json._embedded.contacts[0].name }}\nTelefono: {{ $('Edit Fields').item.json.telefono }}\nFecha: {{ $('Edit Fields').item.json.fechaMODO }}\nURL Kommo: https://propertamibotcom.kommo.com/leads/detail/{{ $('Kommo API Node').item.json._embedded.leads[0].id }}\n\nFavor confirmar ",
         "options": {
-          "appendAttribution": true
+          "senderName": "TamiBot - MODO"
         }
       },
-      "type": "n8n-nodes-base.emailSend",
+      "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1520,
+        1568,
         0
       ],
-      "id": "e44a3f78-1cd7-4ab5-a3b8-58a4120a35d3",
-      "name": "Send email",
-      "webhookId": "67dc1ca1-49c8-4a1b-b450-d097e8bd1489",
+      "id": "791b0ff1-5f63-478c-8f89-4aff79c9a936",
+      "name": "Send a message",
+      "webhookId": "dac03163-3f0b-4ff1-8c0b-cac9db088af4",
       "credentials": {
-        "smtp": {
-          "id": "1VmOAxpSVwjt9JAy",
-          "name": "SMTP account 2"
+        "gmailOAuth2": {
+          "id": "SPurZ4Z9pGQy8MKJ",
+          "name": "Gmail account"
         }
       }
     }
@@ -469,22 +468,22 @@
             "content-length": "314",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "dcfe93ab-e748-46c9-9b41-b1f8b3b8f394",
+            "x-amocrm-requestid": "713ed8d9-2afd-4493-8291-e2cd313c49ab",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "kKsMY_OgQt2W2b1wPvyhXg",
+            "x-railway-request-id": "nAJSPLWFS-q8V_QTg4a9AQ",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1759851428971"
+            "x-request-start": "1763332837716"
           },
           "params": {},
           "query": {},
           "body": {
-            "leads[status][0][id]": "22137867",
+            "leads[status][0][id]": "22408561",
             "leads[status][0][status_id]": "92800052",
             "leads[status][0][pipeline_id]": "11240224",
-            "leads[status][0][old_status_id]": "90801080",
+            "leads[status][0][old_status_id]": "90801092",
             "leads[status][0][old_pipeline_id]": "11240224",
             "account[id]": "30050693",
             "account[subdomain]": "propertamibotcom"
@@ -523,6 +522,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-09T17:21:36.770Z",
-  "versionId": "2c7ead85-7c60-4b25-897a-c99db714fff3"
+  "updatedAt": "2025-11-18T14:01:45.583Z",
+  "versionId": "fbb9b87b-7e59-4fe7-89a7-bdbf731830fe"
 }
