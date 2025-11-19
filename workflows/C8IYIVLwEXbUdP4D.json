@@ -756,7 +756,12 @@
             {
               "id": "={{ Number($('Get a record').item.json.result.UF_CRM_1716382183688) }}",
               "pipeline_id": 8874156,
-              "status_id": "={{ Number($('Select rows from a table').item.json.Kommo) }}"
+              "status_id": "={{ Number($('Select rows from a table').item.json.Kommo) }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {}
+                ]
+              }
             }
           ]
         }
@@ -880,23 +885,23 @@
             "user-agent": "Make/production",
             "content-length": "0",
             "accept-encoding": "gzip, br, deflate",
-            "traceparent": "00-68bf11b800000000430b051773dc6945-430b051773dc6945-00",
-            "tracestate": "dd=t.tid:68bf11b800000000;t.dm:-1;s:0;p:430b051773dc6945",
-            "x-datadog-parent-id": "4830960623571200325",
+            "traceparent": "00-691c69980000000005179d0f2e679120-05179d0f2e679120-00",
+            "tracestate": "dd=t.tid:691c699800000000;t.dm:-1;s:0;p:05179d0f2e679120",
+            "x-datadog-parent-id": "366934583182594336",
             "x-datadog-sampling-priority": "0",
-            "x-datadog-tags": "_dd.p.tid=68bf11b800000000",
-            "x-datadog-trace-id": "4830960623571200325",
+            "x-datadog-tags": "_dd.p.tid=691c699800000000",
+            "x-datadog-trace-id": "366934583182594336",
             "x-forwarded-for": "54.161.178.114",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "jfxBkYhjQKagvfEmBT7zVQ",
+            "x-railway-request-id": "a4Y1WVQISM6P8cTqozsQ6Q",
             "x-real-ip": "54.161.178.114",
-            "x-request-start": "1757352376532"
+            "x-request-start": "1763469720238"
           },
           "params": {},
           "query": {
-            "content": "DEAL_29327"
+            "content": "DEAL_80919"
           },
           "body": {},
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/bitrix-kommo-produccion",
@@ -920,6 +925,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-08T17:33:12.303Z",
-  "versionId": "86121c40-defd-46b7-be69-beb7ca963b60"
+  "updatedAt": "2025-11-18T13:42:26.914Z",
+  "versionId": "4c7c9598-fb3c-4b8e-8d6e-76020cfde345"
 }
