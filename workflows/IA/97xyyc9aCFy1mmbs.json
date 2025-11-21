@@ -598,6 +598,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Respuesta4",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -767,6 +774,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Push Buffer",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -902,6 +916,13 @@
         [
           {
             "node": "Push Buffer",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch3",
             "type": "main",
             "index": 0
           }
@@ -1399,6 +1420,217 @@
           }
         ]
       ]
+    },
+    "enviar mensaje1": {
+      "main": [
+        [
+          {
+            "node": "Campos1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campos1": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Information Extractor1": {
+      "main": [
+        [
+          {
+            "node": "Update leads3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model7": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Campos1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model8": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respuesta4": {
+      "main": [
+        [
+          {
+            "node": "SwitchBot1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time4": {
+      "ai_tool": [
+        [
+          {
+            "node": "Respuesta4",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BUSQUEDA LINK URBANIA1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Respuesta4",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Campos1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PROPERTIES - SQL1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Respuesta4",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Campos1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model10": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Respuesta4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory4": {
+      "ai_memory": [
+        [
+          {
+            "node": "Respuesta4",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory6": {
+      "ai_memory": [
+        [
+          {
+            "node": "Campos1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator2": {
+      "ai_tool": [
+        [
+          {
+            "node": "Respuesta4",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator3": {
+      "ai_tool": [
+        [
+          {
+            "node": "Campos1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Respuesta4",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BASE DE CONOCIMIENTO - DAVID1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Respuesta4",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SwitchBot1": {
+      "main": [
+        [
+          {
+            "node": "enviar mensaje1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Chat input",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Chat input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-08-01T18:40:51.374Z",
@@ -1502,8 +1734,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5424,
-        2288
+        5392,
+        1536
       ]
     },
     {
@@ -1517,8 +1749,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5776,
-        2288
+        5744,
+        1536
       ],
       "id": "2a6e3e65-5548-4e7d-989a-b45e5fc702b7",
       "name": "Campos",
@@ -1586,8 +1818,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        4912,
-        2272
+        4880,
+        1520
       ],
       "id": "53c6beb6-7d84-4901-a595-dc61fb6bcd48",
       "name": "SwitchBot",
@@ -1803,8 +2035,8 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        6176,
-        2288
+        6144,
+        1536
       ],
       "id": "d5aff622-8e8e-4baa-a01e-5c6156837be6",
       "name": "Information Extractor",
@@ -1845,8 +2077,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5152,
-        2224
+        5120,
+        1472
       ],
       "id": "92a9f874-fd66-4acb-bf1b-6a6c3921ed41",
       "name": "Validacion",
@@ -2003,7 +2235,7 @@
                   {
                     "id": "74e8af3c-1784-4894-a07e-778136e794c0",
                     "leftValue": "={{ JSON.parse($json.message.last()).timestamp }}",
-                    "rightValue": "={{ $now.minus(10, \"seconds\") }}",
+                    "rightValue": "={{ $now.minus(5, \"seconds\") }}",
                     "operator": {
                       "type": "dateTime",
                       "operation": "before"
@@ -2643,8 +2875,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5712,
-        2512
+        5680,
+        1760
       ],
       "id": "5bf87c99-2cd5-4be6-bb4c-c7418f578e2c",
       "name": "OpenAI Chat Model",
@@ -2667,8 +2899,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6256,
-        2512
+        6224,
+        1760
       ],
       "id": "ff62467a-3c67-4ac3-a62b-bcbeef7b1f68",
       "name": "OpenAI Chat Model1",
@@ -2749,8 +2981,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        6528,
-        2288
+        6496,
+        1536
       ],
       "id": "982f6c94-e31b-44d7-a10b-e9415ac86cdd",
       "name": "Update leads",
@@ -2994,8 +3226,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5840,
-        2512
+        5808,
+        1760
       ],
       "id": "e3637405-e799-4c31-8b79-c55e5736713b",
       "name": "Postgres Chat Memory1",
@@ -3194,6 +3426,30 @@
               },
               "renameOutput": true,
               "outputKey": "RETAILSUPP"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e7e41517-3839-4ae7-88d7-98e1f2a6963f",
+                    "leftValue": "={{ $('GET Lead').item.json._embedded.tags }}",
+                    "rightValue": "INVERSIONES_IA",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "INVERSIONES_IA"
             }
           ]
         },
@@ -3203,8 +3459,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        3376,
-        1152
+        3424,
+        1680
       ],
       "id": "f56a31b6-db96-483c-886b-c6577041e13b",
       "name": "Switch1"
@@ -3321,8 +3577,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5424,
-        592
+        5376,
+        -256
       ]
     },
     {
@@ -3336,8 +3592,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5776,
-        496
+        5728,
+        -352
       ],
       "id": "e41007e2-2276-40ec-8070-712f59096c51",
       "name": "Campos2",
@@ -3405,8 +3661,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        4912,
-        576
+        4864,
+        -272
       ],
       "id": "202fe868-cfe4-49fb-b98a-764af4f7dc04",
       "name": "SwitchBot2",
@@ -3509,8 +3765,8 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        6176,
-        496
+        6128,
+        -352
       ],
       "id": "bcfd8645-0b0c-436d-ad7b-36b15867a159",
       "name": "Information Extractor2",
@@ -3551,8 +3807,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5136,
-        592
+        5088,
+        -256
       ],
       "id": "398e1836-4db6-46a2-b1f6-3d1ec41dd4c0",
       "name": "Validacion2",
@@ -3575,8 +3831,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5776,
-        720
+        5728,
+        -128
       ],
       "id": "995b3816-0bb1-4c6c-ac89-f7dd74f4a98a",
       "name": "OpenAI Chat Model5",
@@ -3599,8 +3855,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6256,
-        720
+        6208,
+        -128
       ],
       "id": "57a7a0e3-9943-4fc5-ae89-1496e3e460c5",
       "name": "OpenAI Chat Model6",
@@ -3669,8 +3925,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        6528,
-        592
+        6480,
+        -256
       ],
       "id": "ad1c8a3e-7aa5-4c6e-8027-32437d271239",
       "name": "Update leads2",
@@ -3690,8 +3946,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5904,
-        720
+        5856,
+        -128
       ],
       "id": "41851f6b-2f0d-431b-a2a2-51d9ae93e74d",
       "name": "Postgres Chat Memory3",
@@ -3812,6 +4068,30 @@
               },
               "renameOutput": true,
               "outputKey": "DIEGO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a197f94c-8dd4-4438-9113-d5cd1f5dcedb",
+                    "leftValue": "={{ $('GET Lead').item.json._embedded }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "INVERSIONES_IA"
             }
           ]
         },
@@ -4280,6 +4560,31 @@
               },
               "renameOutput": true,
               "outputKey": "DIEGO"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4427d16e-e952-4c0c-94a2-fe089bc7be8a",
+                    "leftValue": "={{ $('GET Lead').item.json._embedded }}",
+                    "rightValue": "INVERSIONES_IA",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "INVERSIONES_IA"
             }
           ]
         },
@@ -4407,8 +4712,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        6240,
-        992
+        6192,
+        144
       ]
     },
     {
@@ -4473,8 +4778,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        4912,
-        1104
+        4864,
+        256
       ],
       "id": "3791f4d4-c143-483c-ac67-13f735248567",
       "name": "SwitchBot3",
@@ -4515,8 +4820,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5840,
-        992
+        5792,
+        144
       ],
       "id": "c8b2c910-2cd3-44e3-9c1e-7d071955aa1c",
       "name": "Validacion3",
@@ -4602,8 +4907,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        5136,
-        1120
+        5088,
+        272
       ],
       "id": "d8db5a5d-8bb9-4d93-bc86-41f76b432b07",
       "name": "Create new notes",
@@ -4630,8 +4935,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolCalculator",
       "typeVersion": 1,
       "position": [
-        5968,
-        2512
+        5936,
+        1760
       ],
       "id": "49ce004b-5792-4173-9a8f-103ff5123748",
       "name": "Calculator1"
@@ -4813,8 +5118,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        6240,
-        1584
+        6192,
+        736
       ]
     },
     {
@@ -4828,8 +5133,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5360,
-        1776
+        5312,
+        928
       ],
       "id": "e4a35716-8332-4fd5-8bfd-3b00dfc4fd3a",
       "name": "Campos4",
@@ -4897,8 +5202,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        4912,
-        1696
+        4864,
+        848
       ],
       "id": "3378c696-dcde-4b13-a478-aec5076685cb",
       "name": "SwitchBot4",
@@ -5017,8 +5322,8 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        5776,
-        1776
+        5728,
+        928
       ],
       "id": "86c75218-4e42-47e6-ab49-3d40ec3fba5f",
       "name": "Information Extractor4",
@@ -5059,8 +5364,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5840,
-        1584
+        5792,
+        736
       ],
       "id": "cfc1be97-1944-4f08-9bf9-2923f76dda4f",
       "name": "Validacion4",
@@ -5083,8 +5388,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5376,
-        2000
+        5328,
+        1152
       ],
       "id": "944e5c0a-9069-4967-9578-ddf4531a7a62",
       "name": "OpenAI Chat Model11",
@@ -5107,8 +5412,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5840,
-        2000
+        5792,
+        1152
       ],
       "id": "2398ccb2-02ec-466a-8c6d-45899441f1ae",
       "name": "OpenAI Chat Model12",
@@ -5201,8 +5506,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        6240,
-        1888
+        6192,
+        1040
       ],
       "id": "e421e3fe-21bc-421f-9d5c-72e7a890efba",
       "name": "Update leads4",
@@ -5222,8 +5527,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5504,
-        2000
+        5456,
+        1152
       ],
       "id": "a6080011-9fa0-46e6-b9e8-b63163feebc7",
       "name": "Postgres Chat Memory7",
@@ -5284,8 +5589,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        5136,
-        1712
+        5088,
+        864
       ],
       "id": "b2c30cd3-4334-4bfe-a889-aabbc1f88562",
       "name": "Create new notes1",
@@ -5379,8 +5684,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        5424,
-        1584
+        5376,
+        736
       ],
       "id": "e21aa2c5-394b-4f5a-adaf-0cd1554ce212",
       "name": "Filter2"
@@ -5485,8 +5790,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5360,
-        1184
+        5312,
+        336
       ],
       "id": "a1980cdd-e53f-4e35-a984-aaa7fe0f9c12",
       "name": "Campos5",
@@ -5604,8 +5909,8 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        5776,
-        1184
+        5728,
+        336
       ],
       "id": "55c05c9b-82d6-404d-ac1e-f80e0a8ef27e",
       "name": "Information Extractor5",
@@ -5624,8 +5929,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5376,
-        1408
+        5328,
+        560
       ],
       "id": "55d67d1c-35e5-44b2-84b7-f5f5ad2f35e5",
       "name": "OpenAI Chat Model13",
@@ -5648,8 +5953,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5840,
-        1408
+        5792,
+        560
       ],
       "id": "05900f10-f1de-4b1f-b039-e7c28431f426",
       "name": "OpenAI Chat Model14",
@@ -5742,8 +6047,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        6240,
-        1296
+        6192,
+        448
       ],
       "id": "01a0caad-8262-4fd3-8ca6-9a9b64338ad5",
       "name": "Update leads5",
@@ -5763,8 +6068,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5504,
-        1408
+        5456,
+        560
       ],
       "id": "52ae62ae-0ca3-4406-b93f-487da0b6f2cd",
       "name": "Postgres Chat Memory9",
@@ -5816,8 +6121,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolThink",
       "typeVersion": 1.1,
       "position": [
-        4576,
-        1984
+        4592,
+        1760
       ],
       "id": "5fdc8878-8d64-44bb-b449-26c2ecfe7171",
       "name": "Think"
@@ -5865,11 +6170,701 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        5424,
-        992
+        5376,
+        144
       ],
       "id": "55cbf070-78b2-4954-8eac-3288396ce33d",
       "name": "Filter"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://amojo.kommo.com/v1/chats/{{ $('Validacion').item.json.response.chats.session.account.id }}/{{ $('new message').item.json.body['message[add][0][chat_id]'] }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Requested-With",
+              "value": "XMLHttpRequest"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/x-www-form-urlencoded"
+            },
+            {
+              "name": "X-Auth-Token",
+              "value": "={{ $('Validacion').item.json.response.chats.session.access_token }}"
+            },
+            {
+              "name": "chatId",
+              "value": "={{ $('new message').item.json.body['message[add][0][chat_id]'] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "silent",
+              "value": "false"
+            },
+            {
+              "name": "priority",
+              "value": "low"
+            },
+            {
+              "name": "crm_entity[id]",
+              "value": "={{ $('new message').item.json.body['message[add][0][entity_id]'] }}"
+            },
+            {
+              "name": "crm_entity[type]",
+              "value": "={{ $('new message').item.json.body['message[add][0][element_type]'] }}"
+            },
+            {
+              "name": "persona_name",
+              "value": "={{ $('Validacion').item.json.response.chats.session.user.name }}"
+            },
+            {
+              "name": "persona_avatar",
+              "value": "={{ $('Validacion').item.json.response.chats.session.user.avatar }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $('Respuesta4').item.json.output }}"
+            },
+            {
+              "name": "recipient_id",
+              "value": "={{ $('new message').item.json.body['message[add][0][author][id]'] }}"
+            },
+            {
+              "name": "group_id"
+            },
+            {
+              "name": "crm_dialog_id",
+              "value": "={{ $('new message').item.json.body['message[add][0][talk_id]'] }}"
+            },
+            {
+              "name": "crm_contact_id",
+              "value": "={{ $('new message').item.json.body['message[add][0][contact_id]'] }}"
+            },
+            {
+              "name": "crm_account_id",
+              "value": "={{ $('new message').item.json.body['account[id]'] }}"
+            },
+            {
+              "name": "skip_link_shortener",
+              "value": "false"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "6af2df1d-7af2-41bf-b1d1-4a877cea59cc",
+      "name": "enviar mensaje1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5376,
+        2128
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensaje proveniente del Cliente: {{ $('Chat input').item.json.chat_input }}\n\nRespuesta del bot: {{ $('Respuesta4').item.json.output }}\n\nLink Urbania: {{ $('Chat input').item.json.LinkUrbania }}\n\nFecha Actual: {{ $('Chat input').item.json.fecha_actual }}",
+        "options": {
+          "systemMessage": "=# 🏠 **PROPER ANALYZER V9.0 - SISTEMA INTELIGENTE DE EXTRACCIÓN**\n\n## 🚨 **MANDATO SUPREMO DE INTEGRIDAD**\n\n```\n🔴 RESPONDER ÚNICAMENTE JSON COMPLETO Y VÁLIDO\n🔴 VALORES: \"SI\" / \"NO\" / \"VACIO\" (NO booleanos)\n🔴 CASO ESPECIAL \"SI\" cuando: No puedo responder / Inventaría / Necesito apoyo\n🔴 ORIGEN \"URBANIA\" SOLO si código vino de herramienta URL\n🔴 MODO = CÓDIGO \"MODO\" + ORIGEN \"OTROS\" (excepto si vino de URL)\n🔴 FILTROS: \"CUMPLE\" / \"NO_CUMPLE\" / \"VACIO\"\n🔴 statusId SIEMPRE NUMÉRICO (sin comillas)\n🔴 NUNCA INVENTAR CÓDIGOS, FECHAS O DATOS\n🔴 MENSAJES SIN EMOJIS, máximo 150 caracteres\n```\n\n---\n\n## 📊 **SISTEMA DE CATEGORIZACIÓN COMERCIAL V9.0**\n\n### **ESTRUCTURA OBLIGATORIA: 3 NIVELES**\n```\nNIVEL_1 - NIVEL_2 - NIVEL_3\n```\n\n### **NIVEL 1: TEMPERATURA DEL LEAD**\n- `LEAD_CALIENTE` → Listo para visitar, urgente, con horarios\n- `LEAD_TIBIO` → Interesado, explorando activamente\n- `LEAD_FRIO` → Búsqueda inicial, sin urgencia\n- `CONSULTA` → Pregunta informativa, no comercial\n- `CASO_ESPECIAL` → Requiere intervención humana\n\n### **NIVEL 2: ORIGEN/PROYECTO**\n- `URBANIA` → Llegó con URL de Urbania\n- `MODO` → Proyecto MODO específicamente\n- `REGULAR` → Propiedades regulares con código\n- `OTROS` → Sin código o búsqueda general\n- `INTERNO` → Inquilino/propietario existente\n\n### **NIVEL 3: ESTADO ACTUAL**\n- `VISITA_CONFIRMADA` → Visita agendada/confirmada\n- `HORARIOS_DADOS` → Cliente dio horarios completos\n- `COORDINANDO` → En proceso de agendar\n- `INTERESADO` → Mostró interés específico\n- `EXPLORANDO` → Viendo opciones\n- `DEFINIENDO` → Estableciendo criterios\n- `INFORMACION` → Solo busca datos\n- `ESCALADO` → Requiere atención especial\n\n### **EJEMPLOS VÁLIDOS:**\n```\n✅ LEAD_CALIENTE - MODO - VISITA_CONFIRMADA\n✅ LEAD_CALIENTE - REGULAR - HORARIOS_DADOS\n✅ LEAD_TIBIO - URBANIA - INTERESADO\n✅ LEAD_FRIO - OTROS - EXPLORANDO\n✅ CONSULTA - INTERNO - INFORMACION\n✅ CASO_ESPECIAL - OTROS - ESCALADO\n```\n\n---\n\n## 🔧 **HERRAMIENTAS Y CASO ESPECIAL**\n\n### **HERRAMIENTA: BUSQUEDA_LINK_URBANIA**\n```\nUSAR CUANDO:\n✅ Hay URL/link en conversación o infoPrevia\n✅ NO tengo código de propiedad aún\n✅ Necesito extraer información del inmueble\n\nEXTRAER:\n✅ Código propiedad (CRÍTICO)\n✅ Precio, ubicación, características\n\nSI FALLA → caso_especial = \"SI\"\n```\n\n### **🚨 ACTIVACIÓN DE CASO ESPECIAL**\n\n**caso_especial = \"SI\" CUANDO:**\n\n1. **Bot inventó o podría inventar información:**\n   ```\n   - Bot mencionó código sin fuente verificable\n   - Bot dio precios/características sin herramienta\n   - Bot confirmó disponibilidad sin datos\n   → detalle: \"Bot inventó código/precio sin fuente verificable\"\n   ```\n\n2. **Bot no puede responder adecuadamente:**\n   ```\n   - Cliente pide info que bot no tiene\n   - Herramienta falló o dio error\n   - Consulta fuera del alcance del bot\n   → detalle: \"Bot no tiene información sobre [tema], requiere apoyo humano\"\n   ```\n\n3. **Inquilino/Propietario existente:**\n   ```\n   - \"Soy inquilino de...\"\n   - \"Alquilo con ustedes...\"\n   - Problema contractual/administrativo\n   → detalle: \"Inquilino existente con problema [tipo], requiere atención administrativa\"\n   ```\n\n4. **Situación compleja/urgente:**\n   ```\n   - Problema legal o contractual\n   - Emergencia de vivienda\n   - Múltiples propiedades o grupo grande\n   → detalle: \"Situación compleja: [descripción], requiere asesor especializado\"\n   ```\n\n5. **Bot dio respuesta inadecuada:**\n   ```\n   - Confirmó visita sin ser MODO\n   - No siguió el flujo correcto\n   - Respuesta confusa o contradictoria\n   → detalle: \"Bot confirmó visita incorrectamente/dio respuesta confusa sobre [tema]\"\n   ```\n\n6. **Cliente con necesidades especiales:**\n   ```\n   - Discapacidad mencionada\n   - Requisitos muy específicos\n   - Situación vulnerable\n   → detalle: \"Cliente con [situación especial], requiere atención personalizada\"\n   ```\n\n---\n\n## ⚡ **PROCESO DE ANÁLISIS V9.0**\n\n### **PASO 1: IDENTIFICACIÓN INICIAL**\n\n```\n1. DETECTAR URL:\n   ¿Hay URL en conversación/infoPrevia?\n   SI → Usar \"BUSQUEDA_LINK_URBANIA\"\n      → Extraer código\n      → origen = \"URBANIA\"\n   NO → Continuar análisis\n\n2. DETECTAR MODO:\n   ¿Menciona PUCP/Católica/San Miguel/Universitaria?\n   SI → codPropiedad = \"MODO\"\n      → origen = \"OTROS\" (excepto si vino de URL)\n   NO → Buscar código en conversación\n\n3. VALIDAR RESPUESTA BOT:\n   ¿Bot inventó información?\n   ¿Bot no pudo responder?\n   ¿Bot cometió error?\n   SI → caso_especial = \"SI\"\n      → Detallar problema específico\n```\n\n### **PASO 2: EXTRACCIÓN DE DATOS**\n\n```\nDATOS CLIENTE:\n- nombre: Extraer si mencionó\n- telefono: Formato +51XXXXXXXXX\n- correo: email@dominio\n\nPROPIEDAD:\n- codPropiedad: SOLO si existe (NO inventar)\n- propiedadInteres: Descripción de búsqueda\n\nFILTROS (NUEVO FORMATO):\n- ingresos_minimos: \"CUMPLE\" / \"NO_CUMPLE\" / \"VACIO\"\n- mudanza_proxima: \"CUMPLE\" / \"NO_CUMPLE\" / \"VACIO\"\n```\n\n### **PASO 3: ANÁLISIS DE SOLUCIÓN**\n\n```\ntiene_solucion = \"SI\" CUANDO:\n✅ Bot dio código de propiedad real\n✅ Bot presentó opciones con datos verificables\n✅ Bot respondió consulta completamente\n✅ Bot siguió flujo correcto\n\ntiene_solucion = \"NO\" CUANDO:\n✅ Bot no pudo responder\n✅ Información incompleta\n✅ Error en respuesta\n✅ Requiere seguimiento\n```\n\n### **PASO 4: PROGRESIÓN Y ESTADO**\n\n```\nFLUJO MODO:\n90801076 → 90801080 → 90801092 → 92800052\n(Definiendo → Interactuando → Interesado → Visita MODO)\n\nFLUJO REGULAR:\n90801072 → 90801080 → 90801092 → 90801096\n(Ingreso → Interactuando → Interesado → Horario Indicado)\n\nCASO ESPECIAL:\nCualquier etapa → 91040128 (si caso_especial = \"SI\")\n```\n\n### **PASO 5: MENSAJES DE SEGUIMIENTO**\n\n```\nREGLAS:\n✅ Solo si statusId NO es final (90801096/92800052)\n✅ Máximo 150 caracteres\n✅ SIN emojis\n✅ Contextuales a la conversación\n✅ Si caso_especial = \"SI\" → Mensajes de contención\n```\n\n---\n\n## 📍 **ESTADOS Y CONDICIONES V9.0**\n\n### **90801072 - Ingreso con Propiedad**\n```\nACTIVACIÓN:\n- URL en infoPrevia o primer mensaje\n- Usó herramienta exitosamente\n\nVALIDACIÓN:\n- origen = \"URBANIA\"\n- codPropiedad = [código de herramienta]\n- caso_especial = \"NO\" (si todo OK)\n```\n\n### **90801076 - Definiendo Propiedad**\n```\nACTIVACIÓN:\n- Sin código específico\n- Explorando opciones\n\nVALIDACIÓN:\n- codPropiedad = \"VACIO\"\n- origen = \"OTROS\"\n- Verificar si bot puede ayudar\n```\n\n### **90801080 - Interactuando**\n```\nACTIVACIÓN:\n- Bot presentó propiedad con código\n- Cliente recibió información\n\nCRÍTICO:\n- Verificar que código sea real\n- Si bot inventó → caso_especial = \"SI\"\n```\n\n### **90801092 - Interesado**\n```\nACTIVACIÓN:\n- Cliente quiere visitar\n- Aún sin horarios confirmados\n\nMODO vs REGULAR:\n- MODO: Espera 1 horario\n- REGULAR: Espera 2 horarios\n```\n\n### **90801096 - Horario Indicado (REGULAR)**\n```\nCONDICIÓN ESTRICTA:\n✓ NO es MODO\n✓ Cliente dio 2 horarios COMPLETOS\n✓ Bot registró correctamente\n✓ NO confirmó visita directamente\n\nSi bot confirmó → caso_especial = \"SI\"\n```\n\n### **92800052 - Visita MODO**\n```\nCONDICIÓN ESTRICTA:\n✓ codPropiedad = \"MODO\"\n✓ Bot dijo \"te esperamos/espero\"\n✓ Horario específico confirmado\n✓ fechaMODO extraída correctamente\n```\n\n### **91040128 - Caso Especial/Escalado**\n```\nACTIVACIÓN AUTOMÁTICA SI:\n✓ caso_especial = \"SI\"\n✓ Inquilino/propietario\n✓ Bot cometió error crítico\n✓ Necesita intervención humana\n\nOBLIGATORIO:\n- detalle_caso_especial completo\n- seg_1 y seg_2 de contención\n```\n\n---\n\n## 🔢 **FILTROS RENOVADOS (NO BOOLEANOS)**\n\n### **ingresos_minimos**\n```\nVALORES:\n\"CUMPLE\" = Ingresos ≥ 2x renta\n\"NO_CUMPLE\" = Ingresos < 2x renta  \n\"VACIO\" = No mencionó ingresos\n\nCÁLCULO:\nIngresos S/5,000 + Renta S/2,000 → \"CUMPLE\"\nIngresos S/3,000 + Renta S/2,000 → \"NO_CUMPLE\"\nNo mencionó → \"VACIO\"\n```\n\n### **mudanza_proxima**\n```\nVALORES:\n\"CUMPLE\" = Se muda en ≤30 días\n\"NO_CUMPLE\" = Se muda en >30 días\n\"VACIO\" = No mencionó fecha\n\nEJEMPLOS:\n\"Me mudo en 2 semanas\" → \"CUMPLE\"\n\"Busco para enero 2026\" → \"NO_CUMPLE\"\n\"Urgente\" con contexto → \"CUMPLE\"\nNo mencionó → \"VACIO\"\n```\n\n---\n\n## 📝 **ESTRUCTURA JSON V9.0 (SIN BOOLEANOS)**\n\n```json\n{\n  \"origen\": \"URBANIA/OTROS\",\n  \"nombre\": \"Nombre o VACIO\",\n  \"telefono\": \"+51XXXXXXXXX o VACIO\",\n  \"correo\": \"email o VACIO\",\n  \"propiedadInteres\": \"Descripción detallada\",\n  \"codPropiedad\": \"CÓDIGO o VACIO - NUNCA INVENTAR\",\n  \n  \"categoria_completa\": \"NIVEL_1 - NIVEL_2 - NIVEL_3\",\n  \n  \"fecha1\": \"DD/MM/YYYY HH:mm o VACIO\",\n  \"fecha2\": \"DD/MM/YYYY HH:mm o VACIO\",\n  \"fechaMODO\": \"DD/MM/YYYY HH:mm o VACIO\",\n  \n  \"ingresos_minimos\": \"CUMPLE/NO_CUMPLE/VACIO\",\n  \"mudanza_proxima\": \"CUMPLE/NO_CUMPLE/VACIO\",\n  \n  \"resumen_solicitud\": \"Resumen completo máx 250 caracteres\",\n  \n  \"tiene_solucion\": \"SI/NO\",\n  \"descripcion_solucion\": \"Qué solución se brindó o VACIO\",\n  \n  \"caso_especial\": \"SI/NO\",\n  \"detalle_caso_especial\": \"Explicación detallada o VACIO\",\n  \n  \"animo\": \"caliente/tibio/frio\",\n  \n  \"estatusEmbudo\": \"Nombre de etapa\",\n  \"statusId\": 90801080,\n  \n  \"seg_1\": \"Mensaje contextual sin emojis o VACIO\",\n  \"seg_2\": \"Segundo mensaje sin emojis o VACIO\"\n}\n```\n\n---\n\n## 💬 **MENSAJES DE SEGUIMIENTO MEJORADOS**\n\n### **CASO ESPECIAL - Mensajes de Contención**\n```\nseg_1: \"Entiendo tu situación. Un especialista te contactará pronto para ayudarte mejor\"\nseg_2: \"Tu caso requiere atención especial. El equipo adecuado se comunicará contigo\"\n```\n\n### **ERROR DEL BOT - Mensajes Correctivos**\n```\nseg_1: \"Disculpa la confusión anterior. Un asesor te contactará para aclarar todo\"\nseg_2: \"Para asegurar la mejor atención, un especialista revisará tu solicitud\"\n```\n\n### **INQUILINO/PROPIETARIO**\n```\nseg_1: \"Como inquilino actual, tu caso será atendido por el área correspondiente\"\nseg_2: \"El equipo de gestión de inquilinos se comunicará contigo pronto\"\n```\n\n---\n\n## 📊 **EJEMPLOS COMPLETOS V9.0**\n\n### **EJEMPLO 1: Bot Inventó Código (CASO ESPECIAL)**\n\n**Conversación:**\n```\nCliente: \"Busco depa en Miraflores\"\nBot: \"Tengo el MIR-999 disponible...\" [NO existe este código]\nCliente: \"Me interesa\"\n```\n\n**Análisis:**\n```\n1. NO hay URL → No uso herramienta\n2. Bot mencionó código MIR-999 sin fuente\n3. No aparece en herramientas ni base de datos\n4. CRÍTICO: Bot inventó → caso_especial = \"SI\"\n```\n\n**JSON:**\n```json\n{\n  \"origen\": \"OTROS\",\n  \"nombre\": \"VACIO\",\n  \"telefono\": \"VACIO\",\n  \"correo\": \"VACIO\",\n  \"propiedadInteres\": \"Departamento en Miraflores\",\n  \"codPropiedad\": \"VACIO\",\n  \n  \"categoria_completa\": \"CASO_ESPECIAL - OTROS - ESCALADO\",\n  \n  \"fecha1\": \"VACIO\",\n  \"fecha2\": \"VACIO\",\n  \"fechaMODO\": \"VACIO\",\n  \n  \"ingresos_minimos\": \"VACIO\",\n  \"mudanza_proxima\": \"VACIO\",\n  \n  \"resumen_solicitud\": \"Cliente busca departamento en Miraflores, bot mencionó código no verificable MIR-999\",\n  \n  \"tiene_solucion\": \"NO\",\n  \"descripcion_solucion\": \"VACIO\",\n  \n  \"caso_especial\": \"SI\",\n  \"detalle_caso_especial\": \"Bot inventó código MIR-999 sin fuente verificable. Requiere intervención para proporcionar información real al cliente interesado en Miraflores\",\n  \n  \"animo\": \"tibio\",\n  \n  \"estatusEmbudo\": \"Caso Especial\",\n  \"statusId\": 91040128,\n  \n  \"seg_1\": \"Disculpa la confusión. Un asesor te contactará con opciones reales en Miraflores\",\n  \"seg_2\": \"Estamos verificando disponibilidad. Pronto recibirás información correcta\"\n}\n```\n\n### **EJEMPLO 2: Cliente con URL - Flujo Correcto**\n\n**Conversación:**\n```\nCliente: \"https://urbania.pe/inmueble/barranco-123\"\nBot: [usa herramienta, obtiene BAR-45]\nBot: \"El depa BAR-45 tiene 2 dorm, S/1,800...\"\nCliente: \"Perfecto, puedo martes 4pm o jueves 10am\"\n```\n\n**Análisis:**\n```\n1. HAY URL → Usar herramienta\n2. Herramienta retorna: BAR-45\n3. origen = \"URBANIA\"\n4. Cliente dio 2 horarios completos\n5. Bot no inventó → caso_especial = \"NO\"\n```\n\n**JSON:**\n```json\n{\n  \"origen\": \"URBANIA\",\n  \"nombre\": \"VACIO\",\n  \"telefono\": \"VACIO\",\n  \"correo\": \"VACIO\",\n  \"propiedadInteres\": \"Departamento 2 dormitorios Barranco\",\n  \"codPropiedad\": \"BAR-45\",\n  \n  \"categoria_completa\": \"LEAD_CALIENTE - URBANIA - HORARIOS_DADOS\",\n  \n  \"fecha1\": \"19/11/2024 16:00\",\n  \"fecha2\": \"21/11/2024 10:00\",\n  \"fechaMODO\": \"VACIO\",\n  \n  \"ingresos_minimos\": \"VACIO\",\n  \"mudanza_proxima\": \"VACIO\",\n  \n  \"resumen_solicitud\": \"Cliente interesado en BAR-45 desde Urbania, 2 dormitorios S/1,800, dio 2 horarios para visita\",\n  \n  \"tiene_solucion\": \"SI\",\n  \"descripcion_solucion\": \"Se presentó propiedad BAR-45 con código verificado, precio S/1,800 y características completas\",\n  \n  \"caso_especial\": \"NO\",\n  \"detalle_caso_especial\": \"VACIO\",\n  \n  \"animo\": \"caliente\",\n  \n  \"estatusEmbudo\": \"Horario Indicado\",\n  \"statusId\": 90801096,\n  \n  \"seg_1\": \"VACIO\",\n  \"seg_2\": \"VACIO\"\n}\n```\n\n### **EJEMPLO 3: MODO con Error - Bot Confirmó Mal**\n\n**Conversación:**\n```\nCliente: \"Busco cerca de la PUCP\"\nBot: \"Tenemos MODO...\" \nCliente: \"Voy mañana\"\nBot: \"Te esperamos mañana\" [SIN hora específica]\n```\n\n**Análisis:**\n```\n1. Es MODO → codPropiedad = \"MODO\"\n2. Bot confirmó SIN hora específica\n3. Error en confirmación → caso_especial = \"SI\"\n```\n\n**JSON:**\n```json\n{\n  \"origen\": \"OTROS\",\n  \"nombre\": \"VACIO\",\n  \"telefono\": \"VACIO\",\n  \"correo\": \"VACIO\",\n  \"propiedadInteres\": \"MODO - proyecto cerca PUCP\",\n  \"codPropiedad\": \"MODO\",\n  \n  \"categoria_completa\": \"CASO_ESPECIAL - MODO - ESCALADO\",\n  \n  \"fecha1\": \"VACIO\",\n  \"fecha2\": \"VACIO\",\n  \"fechaMODO\": \"VACIO\",\n  \n  \"ingresos_minimos\": \"VACIO\",\n  \"mudanza_proxima\": \"VACIO\",\n  \n  \"resumen_solicitud\": \"Cliente interesado en MODO cerca PUCP, bot confirmó visita sin hora específica\",\n  \n  \"tiene_solucion\": \"NO\",\n  \"descripcion_solucion\": \"VACIO\",\n  \n  \"caso_especial\": \"SI\",\n  \"detalle_caso_especial\": \"Bot confirmó visita MODO sin obtener hora específica del cliente. Requiere contacto para coordinar horario exacto de visita\",\n  \n  \"animo\": \"caliente\",\n  \n  \"estatusEmbudo\": \"Caso Especial\",\n  \"statusId\": 91040128,\n  \n  \"seg_1\": \"Para confirmar tu visita a MODO necesitamos coordinar la hora exacta\",\n  \"seg_2\": \"Un asesor te contactará para definir el horario de tu visita a MODO\"\n}\n```\n\n### **EJEMPLO 4: Inquilino con Problema**\n\n**Conversación:**\n```\nCliente: \"Soy inquilino en San Isidro y tengo filtraciones\"\nBot: \"Entiendo, voy a derivar tu caso...\"\n```\n\n**JSON:**\n```json\n{\n  \"origen\": \"OTROS\",\n  \"nombre\": \"VACIO\",\n  \"telefono\": \"VACIO\",\n  \"correo\": \"VACIO\",\n  \"propiedadInteres\": \"Inquilino San Isidro - problema mantenimiento\",\n  \"codPropiedad\": \"VACIO\",\n  \n  \"categoria_completa\": \"CONSULTA - INTERNO - INFORMACION\",\n  \n  \"fecha1\": \"VACIO\",\n  \"fecha2\": \"VACIO\",\n  \"fechaMODO\": \"VACIO\",\n  \n  \"ingresos_minimos\": \"VACIO\",\n  \"mudanza_proxima\": \"VACIO\",\n  \n  \"resumen_solicitud\": \"Inquilino actual en San Isidro reporta filtraciones, requiere atención de mantenimiento\",\n  \n  \"tiene_solucion\": \"NO\",\n  \"descripcion_solucion\": \"VACIO\",\n  \n  \"caso_especial\": \"SI\",\n  \"detalle_caso_especial\": \"Inquilino existente en San Isidro con problema de filtraciones. Requiere atención del área de mantenimiento y gestión de propiedades\",\n  \n  \"animo\": \"tibio\",\n  \n  \"estatusEmbudo\": \"Inquilino/Propietario\",\n  \"statusId\": 91040128,\n  \n  \"seg_1\": \"Tu reporte de filtraciones fue registrado. El área de mantenimiento te contactará hoy\",\n  \"seg_2\": \"Como inquilino actual, tu caso tiene prioridad. Pronto recibirás asistencia\"\n}\n```\n\n---\n\n## ✅ **CHECKLIST FINAL V9.0**\n\n```\nINTEGRIDAD DE DATOS:\n□ ¿Usé herramienta si hay URL?\n□ ¿Código es real o VACIO? (NUNCA inventar)\n□ ¿Origen correcto? (URBANIA solo si de URL)\n□ ¿Detecté si bot inventó/erró?\n\nFORMATO SIN BOOLEANOS:\n□ tiene_solucion: \"SI\" o \"NO\"\n□ caso_especial: \"SI\" o \"NO\"\n□ ingresos_minimos: \"CUMPLE\"/\"NO_CUMPLE\"/\"VACIO\"\n□ mudanza_proxima: \"CUMPLE\"/\"NO_CUMPLE\"/\"VACIO\"\n□ Campos vacíos: \"VACIO\" no \"\"\n\nCASO ESPECIAL:\n□ ¿Bot inventó? → caso_especial = \"SI\"\n□ ¿Bot no puede responder? → caso_especial = \"SI\"\n□ ¿Inquilino/propietario? → caso_especial = \"SI\"\n□ ¿detalle_caso_especial explicativo?\n\nCATEGORIZACIÓN:\n□ ¿3 niveles con formato correcto?\n□ ¿Refleja estado real?\n□ ¿CASO_ESPECIAL si corresponde?\n\nMENSAJES:\n□ ¿Sin emojis?\n□ ¿Máximo 150 caracteres?\n□ ¿Contextuales?\n□ ¿Vacíos si statusId final?\n\nVALIDACIÓN FINAL:\n□ statusId numérico sin comillas\n□ JSON válido y completo\n□ Todo verificable\n□ Nada inventado\n```\n\n---\n\n## 🔴 **RECORDATORIO CRÍTICO V9.0**\n\n```\n1. VALORES: \"SI\"/\"NO\"/\"VACIO\" (NO true/false/null)\n2. CASO_ESPECIAL = \"SI\" si bot inventa/no responde/necesita apoyo\n3. FILTROS: \"CUMPLE\"/\"NO_CUMPLE\"/\"VACIO\"\n4. CÓDIGO: Real o \"VACIO\" (NUNCA inventar)\n5. ORIGEN \"URBANIA\": SOLO si código de herramienta URL\n6. DETALLE_CASO_ESPECIAL: Explicar problema específico\n7. MENSAJES: Sin emojis, contextuales\n8. CATEGORIZACIÓN: 3 niveles obligatorios\n9. VERIFICAR 3 VECES antes de responder\n\nRESPUESTA = JSON COMPLETO SIN BOOLEANOS\n```\n\n---\n\n**FIN DEL PROMPT PROPER ANALYZER V9.0**"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        5728,
+        2128
+      ],
+      "id": "dcf0668b-5b57-489d-bf30-ed5676bfbe81",
+      "name": "Campos1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a20676ee-dc3f-45fa-ad6d-f8db1ce5343e",
+                    "leftValue": "={{ $('Respuesta4').item.json.output }}",
+                    "rightValue": "={{ $('new message').item.json.body['message[add][0][text]'] }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "continuar"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9a725f34-1bc4-40eb-a025-096e506725da",
+                    "leftValue": "={{ $('Respuesta4').item.json.output }}",
+                    "rightValue": "={{ $('new message').item.json.body['message[add][0][text]'] }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "mismo mensaje"
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        4864,
+        2112
+      ],
+      "id": "d6ac44e8-81cf-4d00-8b8d-ffb60790833b",
+      "name": "SwitchBot1",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.output }}",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "origen",
+              "description": "\"URBANIA\" (si código de URL) o \"OTROS\"",
+              "required": true
+            },
+            {
+              "name": "nombre",
+              "description": "Nombre completo del cliente o \"\"",
+              "required": true
+            },
+            {
+              "name": "telefono",
+              "description": "+51XXXXXXXXX o \"\"",
+              "required": true
+            },
+            {
+              "name": "correo",
+              "description": "email@domain.com o \"\"",
+              "required": true
+            },
+            {
+              "name": "propiedadInteres",
+              "description": "Descripción de lo que busca",
+              "required": true
+            },
+            {
+              "name": "codPropiedad",
+              "description": "Código extraído (NO inventar) o \"\"",
+              "required": true
+            },
+            {
+              "name": "categoria_completa",
+              "description": "\"NIVEL_1 - NIVEL_2 - NIVEL_3\"  Formato exacto con espacios y guiones Todo en MAYÚSCULAS Refleja el tipo de lead, origen y estado actual",
+              "required": true
+            },
+            {
+              "name": "fecha1",
+              "description": "Primera opción horario (solo regulares) o \"\"",
+              "required": true
+            },
+            {
+              "name": "fecha2",
+              "description": " Segunda opción horario (solo regulares) o \"\"",
+              "required": true
+            },
+            {
+              "name": "fechaMODO",
+              "description": "Horario confirmado (solo MODO) o \"\"",
+              "required": true
+            },
+            {
+              "name": "ingresos_minimos",
+              "description": "1 / 0 / null",
+              "required": true
+            },
+            {
+              "name": "mudanza_proxima",
+              "description": "1 / 0 / null",
+              "required": true
+            },
+            {
+              "name": "resumen_solicitud",
+              "description": "Resumen completo de lo que el cliente solicita ",
+              "required": true
+            },
+            {
+              "name": "tiene_solucion",
+              "type": "boolean",
+              "description": "true / false  true = Bot ya proporcionó información/respuesta al cliente false = Aún no se brindó solución completa",
+              "required": true
+            },
+            {
+              "name": "descripcion_solucion",
+              "description": "(SOLO si tiene_solucion = true)  Describir QUÉ información se proporcionó Usar tiempo pasado Ejemplos: \"Se presentó propiedad MIR85 con código, precio y características\" Si tiene_solucion = false → \"\"",
+              "required": true
+            },
+            {
+              "name": "caso_especial",
+              "type": "boolean",
+              "description": "true / false  true = Cliente es inquilino/propietario O consulta no comercial false = Lead comercial normal",
+              "required": true
+            },
+            {
+              "name": "detalle_caso_especial",
+              "description": "(SOLO si caso_especial = true)  Explicar por qué es caso especial Describir situación del cliente Si caso_especial = false → \"\"",
+              "required": true
+            },
+            {
+              "name": "animo",
+              "description": "\"caliente\" / \"tibio\" / \"frio\"",
+              "required": true
+            },
+            {
+              "name": "estatusEmbudo",
+              "description": "Nombre de la etapa",
+              "required": true
+            },
+            {
+              "name": "statusId",
+              "type": "number",
+              "description": "Código numérico SIN comillas",
+              "required": true
+            },
+            {
+              "name": "seg_1",
+              "description": "Primer mensaje de seguimiento",
+              "required": true
+            },
+            {
+              "name": "seg_2",
+              "description": "Segundo mensaje de seguimiento",
+              "required": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1,
+      "position": [
+        6128,
+        2128
+      ],
+      "id": "5ff050f7-d672-4255-996c-84b4b568504e",
+      "name": "Information Extractor1",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        5664,
+        2352
+      ],
+      "id": "061734c2-551f-4efd-9a70-d25e162d2742",
+      "name": "OpenAI Chat Model7",
+      "credentials": {
+        "openAiApi": {
+          "id": "LZHR7cL6uCBXIyJd",
+          "name": "Proper - Oct 2025"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        6208,
+        2352
+      ],
+      "id": "946e08c6-f5c8-476e-8bf0-b19c8e8f1c78",
+      "name": "OpenAI Chat Model8",
+      "credentials": {
+        "openAiApi": {
+          "id": "LZHR7cL6uCBXIyJd",
+          "name": "Proper - Oct 2025"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('new message').item.json.body['message[add][0][entity_id]'] }}",
+              "pipeline_id": 11240224,
+              "status_id": "={{ Number($('Information Extractor1').item.json.output.statusId) }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":797869,\"type\":\"text\"}",
+                    "value": "={{ $('Information Extractor1').item.json.output.nombreCliente }}"
+                  },
+                  {
+                    "data": "{\"id\":797871,\"type\":\"text\"}",
+                    "value": "={{ $('Information Extractor1').item.json.output.propiedadInteres }}"
+                  },
+                  {
+                    "data": "{\"id\":797875,\"type\":\"text\"}",
+                    "value": "={{ $('Information Extractor1').item.json.output.estatusEmbudo }}"
+                  },
+                  {
+                    "data": "{\"id\":797879,\"type\":\"text\"}",
+                    "value": "={{ $('Information Extractor1').item.json.output.animo }}"
+                  },
+                  {
+                    "data": "{\"id\":797917,\"type\":\"textarea\"}",
+                    "value": "={{ $('Information Extractor1').item.json.output.seg1 }}"
+                  },
+                  {
+                    "data": "{\"id\":797919,\"type\":\"textarea\"}",
+                    "value": "={{ $('Information Extractor1').item.json.output.seg2 }}"
+                  },
+                  {
+                    "data": "{\"id\":798001,\"type\":\"text\"}",
+                    "value": "={{ $('Information Extractor1').item.json.output.fecha1 }}"
+                  },
+                  {
+                    "data": "{\"id\":798003,\"type\":\"text\"}",
+                    "value": "={{ $('Information Extractor1').item.json.output.fecha2 }}"
+                  },
+                  {
+                    "data": "{\"id\":798327,\"type\":\"text\"}",
+                    "value": "={{ $('Information Extractor1').item.json.output.fechaMODO }}"
+                  },
+                  {
+                    "data": "{\"id\":798355,\"type\":\"text\"}",
+                    "value": "={{ $('Information Extractor1').item.json.output.codPropiedad }}"
+                  },
+                  {
+                    "data": "{\"id\":798353,\"type\":\"text\"}",
+                    "value": "={{ $('Information Extractor1').item.json.output.origen }}"
+                  },
+                  {
+                    "data": "{\"id\":798463,\"type\":\"text\"}",
+                    "value": "NUEVO"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        6480,
+        2128
+      ],
+      "id": "c23b5a21-1faf-49f3-b45a-ad0781aa3c53",
+      "name": "Update leads3",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=**Mensaje cliente:** {{ $('Chat input').item.json.chat_input }}\n\n**Info previa:** {{ $('Chat input').item.json.infoPrevia }}\n\n**Fecha Actual:** {{ $('Chat input').item.json.fecha_actual }}",
+        "options": {
+          "systemMessage": "=# **PROMPT MAESTRO V8.0: DAVID - ESPECIALISTA INMOBILIARIO PROPER RENTAS**\n\n## **🎯 IDENTIDAD Y MISIÓN CORE**\n\nEres David, un especialista inmobiliario **humano** y experto en geografía de Lima Metropolitana. Trabajas en Proper Rentas con profundo conocimiento de cada distrito, zona, urbanización y calle de Lima. Tu misión es guiar naturalmente a los clientes hasta encontrar su departamento ideal y coordinar una visita, siempre manteniendo una conversación fluida y amigable.\n\n**Tu objetivo final:** Conseguir 2 horarios para visita, pero SOLO después de que el cliente haya elegido una propiedad específica.\n\n---\n\n## **🛠️ HERRAMIENTAS Y SU USO ESTRATÉGICO**\n\n### **1. THINK (Siempre Primero)**\n**CUÁNDO:** ANTES de CADA respuesta\n**PARA QUÉ:** Analizar el mensaje, planear tu respuesta, verificar que no inventas nada\n**CÓMO:** Piensa internamente la estrategia sin comunicarlo al cliente\n\n### **2. PROPERTIES_SQL**\n**CUÁNDO:** Cliente busca opciones sin link específico\n**PARÁMETROS:**\n- `distrito`: SOLO nombres de distrito (nunca zonas/calles)\n- `dormitorios`: Si especifica cantidad\n- `precio_maximo`: Si menciona presupuesto\n- `tiene_panel`: \"si\" SOLO cuando viene de foto/redes sociales\n\n### **3. BUSQUEDA_LINK_URBANIA**\n**CUÁNDO:** Cliente envía link de Urbania\n**ACCIÓN:** Ejecutar inmediatamente para obtener código y detalles\n\n### **4. BASE_DE_CONOCIMIENTO**\n**CUÁNDO:** Necesitas información adicional antes de escalar\n**PARA QUÉ:** Buscar datos específicos que no tienes en memoria\n\n---\n\n## **🧭 PROCESO DE DECISIÓN MAESTRO**\n\n### **PASO 0: THINK (OBLIGATORIO)**\nAntes de responder, analiza internamente:\n- ¿Qué busca el cliente?\n- ¿En qué punto de la conversación estamos?\n- ¿Ya eligió propiedad o aún está buscando?\n- ¿Qué información tengo y qué me falta?\n\n### **FLUJO PRINCIPAL:**\n\n#### **SITUACIÓN A: Cliente envía FOTO o LINK de redes (TikTok/FB/Instagram)**\n```\n1. Saluda naturalmente\n2. Pregunta: \"Vi lo que me enviaste, ¿en qué distrito queda?\"\n3. Con el distrito → PROPERTIES_SQL con tiene_panel=\"si\"\n4. Presenta resultados de forma atractiva\n5. Espera que elija\n6. Solo entonces pide horarios suavemente\n```\n\n#### **SITUACIÓN B: Cliente envía LINK de Urbania**\n```\n1. Ejecuta BUSQUEDA_LINK_URBANIA\n2. Si código = MODOTW/MODOLF → Flujo MODO\n3. Otros → Presenta info + condiciones\n4. Pregunta si le interesa visitarlo\n5. Si dice sí → pide 2 horarios amablemente\n```\n\n#### **SITUACIÓN C: Menciona PUCP/Católica/MODO**\n```\n1. Activa flujo especial MODO (sin herramientas)\n2. Presenta opciones con entusiasmo\n3. Menciona visita sin cita previa\n4. Si da 1 horario → confirma inmediatamente\n```\n\n#### **SITUACIÓN D: Búsqueda general**\n```\n1. Si menciona zona → confirma distrito primero\n2. Ejecuta PROPERTIES_SQL\n3. Presenta opciones de forma atractiva\n4. Guía la conversación hacia elección\n5. Una vez elegido → solicita horarios naturalmente\n```\n\n---\n\n## **💬 ARTE DE LA CONVERSACIÓN NATURAL**\n\n### **Principios de Comunicación:**\n\n1. **Construye rapport progresivamente**\n   - No saltes directo a pedir horarios\n   - Primero resuelve dudas\n   - Genera interés en la propiedad\n   - Luego guía hacia la visita\n\n2. **Frases suaves para pedir horarios:**\n   - *\"Si te parece bien, podríamos coordinar una visita. ¿Qué días se te acomodan mejor?\"*\n   - *\"Para que lo puedas ver en persona, necesitaría 2 opciones de horario que te vengan bien\"*\n   - *\"¿Te gustaría visitarlo? Dame un par de horarios que prefieras y coordinamos\"*\n\n3. **Cuando no tienes información (más natural):**\n   - *\"Esa info específica la verifico y te comento, pero mientras tanto, ¿qué días podrías para una visita?\"*\n   - *\"Déjame conseguir ese dato exacto. Aprovecho para preguntarte, ¿esta semana qué horarios manejas?\"*\n   - *\"No tengo ese detalle a la mano ahora, pero en la visita podrás verlo todo. ¿Qué tal tu disponibilidad?\"*\n\n---\n\n## **🏗️ REGLAS DE ORO PARA NUNCA FALLAR**\n\n### **1. FORMATO WHATSAPP**\n- Usa *UN asterisco* para negritas, no dos\n- Sin emojis excesivos (máximo 1-2 por mensaje si es muy relevante)\n- Párrafos cortos y legibles\n- Máximo 5-6 líneas por mensaje\n\n### **2. INTEGRIDAD DE DATOS**\n- **NUNCA inventes:** códigos, precios, direcciones, características\n- **NUNCA mezcles** información entre proyectos\n- **Si no sabes algo:** Usa las frases suaves de transición\n- **Verifica siempre** antes de afirmar\n\n### **3. SECUENCIA CONVERSACIONAL**\n```\nSaludo → Entender necesidad → Ofrecer opciones → \nResolver dudas → Cliente elige → Sugerir visita → \nPedir horarios → Confirmar siguiente paso\n```\n\n### **4. MANEJO DE OBJECIONES**\n- Si duda del precio: *\"El valor incluye [menciona beneficios]. En la visita podrás evaluar si vale la pena\"*\n- Si no está seguro: *\"No hay compromiso por visitar, así decides con toda la info en mano\"*\n- Si pide más fotos: *\"Las fotos están en Urbania/Adondevivir, pero verlo en persona es mucho mejor\"*\n\n### **5. GEOGRAFÍA DE LIMA - TU EXPERTIZ**\nConoces perfectamente:\n- **Zonas premium:** Monterrico, San Isidro, Miraflores, Barranco\n- **Zonas universitarias:** PUCP (San Miguel), UNI (Rímac), UPCH (SMP)\n- **Zonas comerciales:** Gamarra, Minka, Megaplaza\n- **Ejes viales:** Javier Prado, Aviación, Colonial, Panamericana\n\nCuando alguien menciona una referencia, inmediatamente sabes el distrito.\n\n---\n\n## **📋 INFORMACIÓN ACTUALIZADA V8.0**\n\n### **PROYECTO MODO** \n**(Códigos: MODO = MODOTW = MODOLF)**\n\n📍 **Ubicación:** Al costado de la PUCP, San Miguel  \n📍 **Dirección:** Av. Universitaria esq. Tulipanes\n\n**PRECIOS TODO INCLUIDO** (mantenimiento, internet, agua, arbitrios):\n\n**1 DORMITORIO (1 baño):**\n- 6 meses: S/1,800 sin amoblar | S/2,000 amoblado\n- 12 meses: S/1,700 sin amoblar | S/1,900 amoblado\n\n**2 DORMITORIOS (2 baños independientes):**\n- 6 meses: S/2,000-2,100 sin amoblar | S/2,200-2,300 amoblado\n- 12 meses: S/1,900-2,000 sin amoblar | S/2,100-2,200 amoblado\n\n**ROOMIES:** S/1,100 por persona (incluye hasta luz)\n- Disponible en todos los pisos\n- Se asigna durante la visita\n\n**EXTRAS:**\n- Estacionamiento: +S/250 mensual\n- Mascotas: Sí acepta (razas pequeñas/medianas)\n- Entrega: Inmediata\n\n**VISITAS MODO:** L-S 9am-8pm *sin cita previa*\n\n### **PROYECTOS REGULARES**\n- **Horarios:** L-V 9am-6:45pm | Sábados 9am-12pm\n- **Condiciones:** 2 meses garantía + 1 adelanto\n- **Contrato:** Mínimo 12 meses\n\n### **CUENTAS BANCARIAS**\n**MODO:** BBVA - Proper Peru SAC - CC: 001101140200646800\n**RETAIL:** BBVA - Proper Servicios - CC: 0011-0114-0200628365\n\n---\n\n## **🎭 SCRIPTS NATURALES PARA SITUACIONES COMUNES**\n\n### **Primer contacto con foto:**\n*\"Hola! Soy David de Proper Rentas. Vi la foto que enviaste, se ve interesante. ¿En qué distrito queda para buscar opciones similares?\"*\n\n### **Después de mostrar opciones:**\n*\"Estas son las mejores opciones que tengo para lo que buscas. El [menciona el más atractivo] está súper bien ubicado. ¿Cuál te llama más la atención?\"*\n\n### **Transición a horarios (suave):**\n*\"Genial elección! Para que puedas verlo con calma y revisar todos los detalles, ¿qué días de esta semana se te acomodan mejor? Necesito 2 opciones para asegurarnos de encontrar un espacio\"*\n\n### **Confirmación regular:**\n*\"Perfecto [nombre si lo tienes], anoto tu interés por el depa [código]. Un asesor especializado se comunicará contigo pronto para confirmar la visita en los horarios que me diste. Te va a encantar cuando lo veas!\"*\n\n### **Confirmación MODO:**\n*\"Excelente! Te esperamos el [día] a las [hora] en Av. Universitaria con Tulipanes. Pregunta por el proyecto MODO en recepción. Vas a poder ver todas las opciones disponibles!\"*\n\n---\n\n## **⚡ DECISIONES RÁPIDAS - ÁRBOL DE RESPUESTA**\n\n```\nCliente escribe →\n↓\n[THINK: Analizar contexto]\n↓\n¿Tiene foto/link redes? → SÍ → Pedir distrito → Buscar con panel\n                        ↓ NO\n¿Tiene link Urbania? → SÍ → Buscar link → ¿Es MODO? → Flujo especial\n                     ↓ NO                           ↓ NO → Info + horarios\n¿Menciona PUCP/MODO? → SÍ → Info MODO → Visita directa\n                     ↓ NO\n¿Busca departamento? → SÍ → Confirmar distrito → Buscar → Mostrar\n                     ↓ NO\n¿Ya eligió depa? → SÍ → Pedir horarios suavemente\n                ↓ NO\nMantener conversación natural hasta identificar necesidad\n```\n\n---\n\n## **🚨 ALERTAS CRÍTICAS - NUNCA HACER**\n\n❌ **NUNCA** confirmes visitas excepto en MODO  \n❌ **NUNCA** inventes información (es mejor decir \"lo verifico\")  \n❌ **NUNCA** mezcles datos de diferentes proyectos  \n❌ **NUNCA** pidas horarios sin que hayan elegido propiedad  \n❌ **NUNCA** uses lenguaje robótico o formal excesivo  \n❌ **NUNCA** digas \"el sistema\", \"procesando\", \"base de datos\"\n\n---\n\n## **✅ CHECKLIST MENTAL ANTES DE ENVIAR**\n\n1. **¿Usé THINK primero?** Analicé internamente la situación\n2. **¿Sueno natural?** Mi mensaje fluye como conversación real\n3. **¿Estoy inventando?** Todo lo que digo es verificable\n4. **¿Seguí la secuencia?** Propiedad elegida → Luego horarios\n5. **¿Fui amable pero eficiente?** Guío sin presionar\n6. **¿Mantuve el hilo?** Respondo a lo que preguntó el cliente\n7. **¿Formato correcto?** Un asterisco para *negritas* en WhatsApp\n\n---\n\n## **🎯 RECORDATORIO FINAL**\n\nEres David, un experto inmobiliario que conoce Lima como la palma de su mano. Tu trabajo es hacer que encontrar departamento sea fácil y agradable. Construye confianza, resuelve dudas, y guía naturalmente hacia la visita. Los 2 horarios son el destino, pero el viaje debe ser placentero.\n\n**Cuando tengas dudas, recuerda:**\n- Piensa primero (THINK)\n- Sé natural y amigable\n- No inventes, mejor busca o pregunta\n- El cliente es tu prioridad\n\n---\n\n**FIN DEL PROMPT MAESTRO V8.0**"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        4176,
+        2128
+      ],
+      "id": "305bd7d8-a2de-4037-9509-9143cc10cfac",
+      "name": "Respuesta4",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTimeTool",
+      "typeVersion": 2,
+      "position": [
+        4048,
+        2352
+      ],
+      "id": "6c34da4a-bda5-457b-9ac4-f3a42729da29",
+      "name": "Date & Time4"
+    },
+    {
+      "parameters": {
+        "description": "Usar esta herramienta para obtener información de la propiedad de urbania indicada",
+        "workflowId": {
+          "__rl": true,
+          "value": "cJUTPVdxTIIbq1h0",
+          "mode": "list",
+          "cachedResultName": "BUSQUEDA LINK URBANIA"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('url', `url de urbania brindado por el cliente`, 'string') }}"
+          },
+          "matchingColumns": [
+            "url"
+          ],
+          "schema": [
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        4176,
+        2352
+      ],
+      "id": "86f43e61-ef2b-46c0-bbd1-d99f8c12c529",
+      "name": "BUSQUEDA LINK URBANIA1"
+    },
+    {
+      "parameters": {
+        "description": "Usar esta herramienta para buscar propiedades del inventario que tenemos disponible",
+        "workflowId": {
+          "__rl": true,
+          "value": "L1zeFzAUk5BcltFH",
+          "mode": "list",
+          "cachedResultName": "PROPERTIES - SQL"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "busqueda": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('busqueda', `Criterio de busqueda de propiedad`, 'string') }}",
+            "chat_id": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "busqueda",
+              "displayName": "busqueda",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        4304,
+        2352
+      ],
+      "id": "a9e31a51-836d-47f0-9c8e-0a2c046db578",
+      "name": "PROPERTIES - SQL1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {
+          "temperature": 0.3
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3792,
+        2352
+      ],
+      "id": "2bcd3015-4e51-43d2-b7c9-18a570e83e36",
+      "name": "OpenAI Chat Model10",
+      "credentials": {
+        "openAiApi": {
+          "id": "LZHR7cL6uCBXIyJd",
+          "name": "Proper - Oct 2025"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        3920,
+        2352
+      ],
+      "id": "5a1c07ff-3801-4a28-bc5f-df036add848f",
+      "name": "Postgres Chat Memory4",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        5792,
+        2352
+      ],
+      "id": "b3eef60e-399e-4961-ad9a-99380fb6f4a9",
+      "name": "Postgres Chat Memory6",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        4432,
+        2352
+      ],
+      "id": "d6714825-752a-4d6b-84d2-6897e432224e",
+      "name": "Calculator2"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        5920,
+        2352
+      ],
+      "id": "921cdced-1aef-496a-b5c8-a4f2baa11e18",
+      "name": "Calculator3"
+    },
+    {
+      "parameters": {
+        "description": "=# THINK V8.1 - ANALISIS ESTRATEGICO PRE-RESPUESTA\n\n## ANALISIS DE CONTEXTO - Primero siempre\n\n### 1. COMPRENSION DEL CLIENTE\n- Que busca realmente: departamento especifico, informacion general, resolver duda\n- En que etapa esta:\n  - Explorando opciones\n  - Ya vio algo especifico (foto/link)\n  - Ya eligio propiedad\n  - Listo para agendar visita\n- Que tono esta usando: urgente, relajado, dudoso, decidido\n\n### 2. REVISION DEL HISTORIAL\n- Ultimos 5-7 mensajes: Que hemos conversado\n- Ya menciono preferencias: distrito, dormitorios, presupuesto\n- Ya eligio una propiedad especifica: codigo, descripcion\n- Ya di informacion: No repetir, continuar la conversacion\n\n## IDENTIFICACION GEOGRAFICA\n\n### DETECCION MODO - Prioridad alta\nEs MODO si menciona:\n- PUCP, Catolica, universidad en San Miguel/Pueblo Libre\n- Av. Universitaria con Tulipanes\n- Codigos: MODO, MODOTW, MODOLF\n- Proyecto al lado de la PUCP\n\nSi es MODO: NO usar herramientas, responder con info memorizada\n\n### MAPEO DE ZONAS A DISTRITO\nSi menciona zona/referencia, identificar distrito:\n- Monterrico = Surco\n- El Olivar = San Isidro \n- Santa Catalina = La Victoria\n- Gamarra = La Victoria\n- Kennedy = Miraflores\n- Chacarilla = Surco\n\nRegla: A herramientas SOLO envio DISTRITOS, nunca calles/zonas\n\n## DECISION DE HERRAMIENTAS\n\n### ARBOL DE DECISION RAPIDO\n\n1. Tiene FOTO o link REDES SOCIALES\n   SI: Preguntar distrito, luego PROPERTIES_SQL con tiene_panel=si\n   NO: Continuar\n\n2. Tiene LINK URBANIA\n   SI: BUSQUEDA_LINK_URBANIA, si codigo MODO entonces flujo especial\n   NO: Continuar\n\n3. Menciona MODO/PUCP\n   SI: Info directa sin herramientas\n   NO: Continuar\n\n4. Busca departamento\n   SI: Confirmar distrito, luego PROPERTIES_SQL normal\n   NO: Continuar\n\n5. Pide info que no tengo\n   SI: BASE_DE_CONOCIMIENTO, si no hay hacer transicion suave\n   NO: Mantener conversacion natural\n\n## ESTRATEGIA CONVERSACIONAL\n\n### PRINCIPIO FUNDAMENTAL\nObjetivo final: 2 horarios PERO solo DESPUES de elegir propiedad\n\n### SECUENCIA NATURAL\n1. Entender necesidad - no asumir\n2. Ofrecer valor - opciones atractivas\n3. Resolver dudas - generar confianza\n4. Cliente elige - esperar decision\n5. Sugerir visita - transicion suave\n6. Pedir horarios - amablemente\n\n### CONSTRUCCION DE RAPPORT\n- Primera respuesta: Saludo calido mas reconocer pedido\n- Segunda respuesta: Dar informacion valiosa\n- Tercera respuesta: Guiar hacia decision\n- Cuarta respuesta: Solicitar horarios naturalmente\n\n## FRASES ESTRATEGICAS A USAR\n\n### PARA PEDIR HORARIOS - Suave y progresivo\n- Que dias de esta semana te acomodan mejor para verlo\n- Para coordinar la visita, que 2 horarios prefieres\n- Te gustaria conocerlo. Dame un par de opciones de horario\n\n### CUANDO NO TENGO INFO - Transicion natural\n- Ese dato especifico lo verifico, pero mientras tanto...\n- Dejame conseguir esa info. Aprovecho para preguntarte...\n- No tengo ese detalle ahora, pero en la visita veras todo\n\n### PARA MOSTRAR OPCIONES - Atractivo\n- Tengo estas opciones que te van a encantar...\n- El depa en DISTRITO esta super bien ubicado...\n- Esta opcion incluye BENEFICIO relevante...\n\n## ALERTAS CRITICAS - VALIDACION\n\n### NUNCA HACER\n- Inventar codigos, precios o caracteristicas  \n- Confirmar visitas excepto MODO  \n- Pedir horarios sin propiedad elegida  \n- Usar placeholders o corchetes  \n- Decir: sistema, base de datos, procesando  \n- Mezclar informacion entre proyectos  \n\n### SIEMPRE HACER\n- Usar un asterisco para negritas en WhatsApp  \n- Mensajes de maximo 5-6 lineas  \n- Mantener tono casual: depa, info  \n- Seguir el hilo de la conversacion  \n- Verificar antes de afirmar  \n\n## CHECKLIST FINAL PRE-ENVIO\n\n### ANALISIS TECNICO\n- Identifique correctamente: MODO vs Regular\n- Use la herramienta correcta: Segun el arbol de decision\n- Converti zona a distrito: Para PROPERTIES_SQL\n- Revise el historial: No repetir, continuar flujo\n\n### CALIDAD DE RESPUESTA\n- Sueno natural: Como humano real, no bot\n- Estoy inventando algo: TODO verificable\n- Segui la secuencia: Propiedad luego horarios\n- Construi rapport: No fui directo/agresivo\n\n### FORMATO Y ESTILO\n- Mensaje corto: Maximo 5-6 lineas\n- Sin placeholders: Ningun corchete o llave\n- WhatsApp correcto: Un asterisco para negrita\n- Tono apropiado: Casual pero profesional\n\n### COHERENCIA\n- Respondo lo que pregunto: No desvio\n- Mantengo el contexto: Sigo la conversacion\n- Avanzo hacia el objetivo: Guio hacia visita\n- Cierro con accion clara: Siguiente paso definido\n\n## RESPUESTAS RAPIDAS POR SITUACION\n\n### Cliente nuevo con foto\n1. Analizo: Necesita opciones similares\n2. Pregunto: Distrito de la foto\n3. Busco: PROPERTIES_SQL con panel\n4. Presento: Opciones atractivas\n5. Espero: Que elija\n6. Pido: 2 horarios suavemente\n\n### Cliente con link Urbania\n1. Ejecuto: BUSQUEDA_LINK_URBANIA\n2. Verifico: Es MODO - MODOTW/MODOLF\n3. Presento: Info mas condiciones\n4. Genero: Interes en visita\n5. Solicito: Horarios segun tipo\n\n### Cliente busca general\n1. Confirmo: Distrito primero\n2. Busco: Segun criterios\n3. Muestro: Mejores opciones\n4. Resuelvo: Dudas\n5. Guio: Hacia eleccion\n6. Coordino: Visita natural\n\n### Cliente ya eligio\n1. Reconozco: Su eleccion\n2. Genero: Entusiasmo\n3. Transiciono: Hacia visita\n4. Pido: 2 horarios amablemente\n5. Confirmo: Proximos pasos\n\n## RECORDATORIO ESTRATEGICO\n\nSoy David: Experto inmobiliario que conoce Lima perfectamente. Mi trabajo es hacer que el proceso sea facil y agradable. No soy un robot pidiendo datos, soy un asesor construyendo confianza.\n\nMi mantra:\n- Primero entender\n- Luego ayudar  \n- Despues coordinar\n- Siempre naturalmente\n\nSi dudo: Mejor verificar que inventar. Mejor transicion suave que respuesta dura.\n\n## VALIDACION FINAL\n\nTHINK COMPLETO - AHORA RESPONDER NATURALMENTE"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        4576,
+        2352
+      ],
+      "id": "1133a7fe-ed82-40b2-a842-cf65aba8482c",
+      "name": "Think1"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Usar en caso tengamos alguna consulta sobre MODO, horarios de atención o datos de cuenta de proper",
+        "url": "https://docs.google.com/document/d/e/2PACX-1vQJkHToHD6IQlB-imI-ZFwrwZkk1F4ZylrbiksQ9Gm2y0zpOeGfi29mhG3OjKyYXJR3WLxasQlttPW5/pub",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        4688,
+        2352
+      ],
+      "id": "fe02ea05-bff6-487e-87f3-251cacf957bc",
+      "name": "BASE DE CONOCIMIENTO - DAVID1"
     }
   ],
   "pinData": {
@@ -5879,17 +6874,17 @@
           "headers": {
             "host": "primary-production-0299.up.railway.app",
             "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "981",
+            "content-length": "929",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "e6a54b29-0ec0-49c2-99f9-da639e80f539",
+            "x-amocrm-requestid": "adaa2e7a-94ef-4a74-a5d7-5a7f202dda7c",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "C9BZAhMjQiCpOwc8ozsQ6Q",
+            "x-railway-request-id": "UVKa8mfQQYCny9oyCx5-qw",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1763562152246"
+            "x-request-start": "1763653732832"
           },
           "params": {},
           "query": {},
@@ -5897,20 +6892,20 @@
             "account[subdomain]": "propertamibotcom",
             "account[id]": "30050693",
             "account[_links][self]": "https://propertamibotcom.amocrm.com",
-            "message[add][0][id]": "6d260933-b613-4bb1-8286-c70d36274d00",
-            "message[add][0][chat_id]": "6796303f-72cf-4e6f-bc2d-539a859c1ea3",
-            "message[add][0][talk_id]": "220447",
-            "message[add][0][contact_id]": "24782394",
-            "message[add][0][text]": "Podría brindarme información por favor",
-            "message[add][0][created_at]": "1763562145",
+            "message[add][0][id]": "3f2caf38-0df3-407a-83f3-94800ee8cf0e",
+            "message[add][0][chat_id]": "c421a402-4f57-45fd-a264-a85f2c075927",
+            "message[add][0][talk_id]": "220347",
+            "message[add][0][contact_id]": "24786749",
+            "message[add][0][text]": "Muy amable",
+            "message[add][0][created_at]": "1763653731",
             "message[add][0][element_type]": "2",
             "message[add][0][entity_type]": "lead",
-            "message[add][0][element_id]": "22429948",
-            "message[add][0][entity_id]": "22429948",
+            "message[add][0][element_id]": "22435661",
+            "message[add][0][entity_id]": "22435661",
             "message[add][0][type]": "incoming",
-            "message[add][0][author][id]": "d2187ef5-e521-404e-bbdc-0c58ae873c01",
+            "message[add][0][author][id]": "197af187-fdef-4aa8-a4ce-3d09590d7a57",
             "message[add][0][author][type]": "external",
-            "message[add][0][author][name]": "La Chabela detergente",
+            "message[add][0][author][name]": "Alfredo",
             "message[add][0][origin]": "waba"
           },
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/rentas",
@@ -5943,6 +6938,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-19T14:44:33.813Z",
-  "versionId": "b8c3e601-b830-41c5-a2fd-69ee4bea45b2"
+  "updatedAt": "2025-11-20T16:43:55.151Z",
+  "versionId": "91bb19fe-db87-45a8-9531-37d248993317"
 }
