@@ -100,18 +100,7 @@
       "main": [
         [
           {
-            "node": "Update leads",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Update leads": {
-      "main": [
-        [
-          {
-            "node": "Update a record",
+            "node": "Create new leads1",
             "type": "main",
             "index": 0
           }
@@ -185,6 +174,17 @@
         [
           {
             "node": "Update leads1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new leads1": {
+      "main": [
+        [
+          {
+            "node": "Update a record",
             "type": "main",
             "index": 0
           }
@@ -520,36 +520,6 @@
     {
       "parameters": {
         "authentication": "longLivedToken",
-        "resource": "leads",
-        "operation": "updateLeads",
-        "collection": {
-          "lead": [
-            {
-              "id": "={{ $('Get list of contacts').item.json._embedded.contacts[0]._embedded.leads[0].id }}",
-              "pipeline_id": 8874156,
-              "status_id": "={{ Number($('Select rows from a table').item.json.Kommo) }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        2240,
-        -192
-      ],
-      "id": "96a0958a-a2ca-4d1e-aca5-b91a2465e576",
-      "name": "Update leads",
-      "credentials": {
-        "kommoLongLivedApi": {
-          "id": "20bzHfzuZvuDPmtm",
-          "name": "Kommo Long Lived Token account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "authentication": "longLivedToken",
         "resource": "contacts",
         "operation": "createContacts",
         "collection": {
@@ -591,8 +561,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2016,
-        0
+        2048,
+        176
       ],
       "id": "fbfb6932-a2a3-40dd-95ac-a6aeb91f9263",
       "name": "Create new contacts",
@@ -620,7 +590,7 @@
       "type": "n8n-nodes-bitrix.bitrix",
       "typeVersion": 1,
       "position": [
-        2464,
+        2496,
         -192
       ],
       "id": "443aaa2c-0a6c-4555-a936-6ebd25aef6ee",
@@ -671,8 +641,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        2240,
-        0
+        2272,
+        176
       ],
       "id": "e64e45ed-e01b-4d8e-ab6c-4820977e4ba5",
       "name": "Create new leads",
@@ -700,8 +670,8 @@
       "type": "n8n-nodes-bitrix.bitrix",
       "typeVersion": 1,
       "position": [
-        2464,
-        0
+        2496,
+        176
       ],
       "id": "64f4a55b-d906-4a0d-8681-7652628d2ccf",
       "name": "Update a record1",
@@ -874,6 +844,57 @@
           "name": "Kommo Long Lived Token account"
         }
       }
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "name": "={{ $('Get a record1').item.json.result.ID }}",
+              "pipeline_id": 8874156,
+              "status_id": "={{ Number($('Select rows from a table').item.json.Kommo) }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":522512,\"type\":\"tracking_data\"}",
+                    "value": "={{ $('Edit Fields').item.json[\"Categoría del Cliente\"] }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ Number($json._embedded.contacts[0].id) }}"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        2224,
+        -192
+      ],
+      "id": "8f72b90b-f3fc-46d7-9e2b-c065bc1d6621",
+      "name": "Create new leads1",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
     }
   ],
   "pinData": {
@@ -925,6 +946,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-20T14:39:25.275Z",
-  "versionId": "4c7c9598-fb3c-4b8e-8d6e-76020cfde345"
+  "updatedAt": "2025-11-24T20:00:53.176Z",
+  "versionId": "0b63e32d-f654-4038-89bc-34d9366dfbcc"
 }
