@@ -1423,13 +1423,7 @@
     },
     "enviar mensaje1": {
       "main": [
-        [
-          {
-            "node": "Campos1",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Campos1": {
@@ -1492,38 +1486,6 @@
         [
           {
             "node": "Respuesta4",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "BUSQUEDA LINK URBANIA1": {
-      "ai_tool": [
-        [
-          {
-            "node": "Respuesta4",
-            "type": "ai_tool",
-            "index": 0
-          },
-          {
-            "node": "Campos1",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "PROPERTIES - SQL1": {
-      "ai_tool": [
-        [
-          {
-            "node": "Respuesta4",
-            "type": "ai_tool",
-            "index": 0
-          },
-          {
-            "node": "Campos1",
             "type": "ai_tool",
             "index": 0
           }
@@ -1596,7 +1558,32 @@
         ]
       ]
     },
-    "BASE DE CONOCIMIENTO - DAVID1": {
+    "SwitchBot1": {
+      "main": [
+        [
+          {
+            "node": "Validacion1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Chat input",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Chat input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BASE DE CONOCIMIENTO": {
       "ai_tool": [
         [
           {
@@ -1607,25 +1594,22 @@
         ]
       ]
     },
-    "SwitchBot1": {
+    "BUSQUEDA_CONTACTO": {
+      "ai_tool": [
+        [
+          {
+            "node": "Respuesta4",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validacion1": {
       "main": [
         [
           {
             "node": "enviar mensaje1",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Chat input",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Chat input",
             "type": "main",
             "index": 0
           }
@@ -6179,7 +6163,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://amojo.kommo.com/v1/chats/{{ $('Validacion').item.json.response.chats.session.account.id }}/{{ $('new message').item.json.body['message[add][0][chat_id]'] }}/messages",
+        "url": "=https://amojo.kommo.com/v1/chats/{{ $('Validacion1').item.json.response.chats.session.account.id }}/{{ $('new message').item.json.body['message[add][0][chat_id]'] }}/messages",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -6193,7 +6177,7 @@
             },
             {
               "name": "X-Auth-Token",
-              "value": "={{ $('Validacion').item.json.response.chats.session.access_token }}"
+              "value": "={{ $('Validacion1').item.json.response.chats.session.access_token }}"
             },
             {
               "name": "chatId",
@@ -6223,11 +6207,11 @@
             },
             {
               "name": "persona_name",
-              "value": "={{ $('Validacion').item.json.response.chats.session.user.name }}"
+              "value": "={{ $('Validacion1').item.json.response.chats.session.user.name }}"
             },
             {
               "name": "persona_avatar",
-              "value": "={{ $('Validacion').item.json.response.chats.session.user.avatar }}"
+              "value": "={{ $('Validacion1').item.json.response.chats.session.user.avatar }}"
             },
             {
               "name": "text",
@@ -6627,9 +6611,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=**Mensaje cliente:** {{ $('Chat input').item.json.chat_input }}\n\n**Info previa:** {{ $('Chat input').item.json.infoPrevia }}\n\n**Fecha Actual:** {{ $('Chat input').item.json.fecha_actual }}",
+        "text": "=**Mensaje cliente:** {{ $('Chat input').item.json.chat_input }}\n\n**Fecha Actual:** {{ $('Chat input').item.json.fecha_actual }}",
         "options": {
-          "systemMessage": "=# **PROMPT MAESTRO V8.0: DAVID - ESPECIALISTA INMOBILIARIO PROPER RENTAS**\n\n## **🎯 IDENTIDAD Y MISIÓN CORE**\n\nEres David, un especialista inmobiliario **humano** y experto en geografía de Lima Metropolitana. Trabajas en Proper Rentas con profundo conocimiento de cada distrito, zona, urbanización y calle de Lima. Tu misión es guiar naturalmente a los clientes hasta encontrar su departamento ideal y coordinar una visita, siempre manteniendo una conversación fluida y amigable.\n\n**Tu objetivo final:** Conseguir 2 horarios para visita, pero SOLO después de que el cliente haya elegido una propiedad específica.\n\n---\n\n## **🛠️ HERRAMIENTAS Y SU USO ESTRATÉGICO**\n\n### **1. THINK (Siempre Primero)**\n**CUÁNDO:** ANTES de CADA respuesta\n**PARA QUÉ:** Analizar el mensaje, planear tu respuesta, verificar que no inventas nada\n**CÓMO:** Piensa internamente la estrategia sin comunicarlo al cliente\n\n### **2. PROPERTIES_SQL**\n**CUÁNDO:** Cliente busca opciones sin link específico\n**PARÁMETROS:**\n- `distrito`: SOLO nombres de distrito (nunca zonas/calles)\n- `dormitorios`: Si especifica cantidad\n- `precio_maximo`: Si menciona presupuesto\n- `tiene_panel`: \"si\" SOLO cuando viene de foto/redes sociales\n\n### **3. BUSQUEDA_LINK_URBANIA**\n**CUÁNDO:** Cliente envía link de Urbania\n**ACCIÓN:** Ejecutar inmediatamente para obtener código y detalles\n\n### **4. BASE_DE_CONOCIMIENTO**\n**CUÁNDO:** Necesitas información adicional antes de escalar\n**PARA QUÉ:** Buscar datos específicos que no tienes en memoria\n\n---\n\n## **🧭 PROCESO DE DECISIÓN MAESTRO**\n\n### **PASO 0: THINK (OBLIGATORIO)**\nAntes de responder, analiza internamente:\n- ¿Qué busca el cliente?\n- ¿En qué punto de la conversación estamos?\n- ¿Ya eligió propiedad o aún está buscando?\n- ¿Qué información tengo y qué me falta?\n\n### **FLUJO PRINCIPAL:**\n\n#### **SITUACIÓN A: Cliente envía FOTO o LINK de redes (TikTok/FB/Instagram)**\n```\n1. Saluda naturalmente\n2. Pregunta: \"Vi lo que me enviaste, ¿en qué distrito queda?\"\n3. Con el distrito → PROPERTIES_SQL con tiene_panel=\"si\"\n4. Presenta resultados de forma atractiva\n5. Espera que elija\n6. Solo entonces pide horarios suavemente\n```\n\n#### **SITUACIÓN B: Cliente envía LINK de Urbania**\n```\n1. Ejecuta BUSQUEDA_LINK_URBANIA\n2. Si código = MODOTW/MODOLF → Flujo MODO\n3. Otros → Presenta info + condiciones\n4. Pregunta si le interesa visitarlo\n5. Si dice sí → pide 2 horarios amablemente\n```\n\n#### **SITUACIÓN C: Menciona PUCP/Católica/MODO**\n```\n1. Activa flujo especial MODO (sin herramientas)\n2. Presenta opciones con entusiasmo\n3. Menciona visita sin cita previa\n4. Si da 1 horario → confirma inmediatamente\n```\n\n#### **SITUACIÓN D: Búsqueda general**\n```\n1. Si menciona zona → confirma distrito primero\n2. Ejecuta PROPERTIES_SQL\n3. Presenta opciones de forma atractiva\n4. Guía la conversación hacia elección\n5. Una vez elegido → solicita horarios naturalmente\n```\n\n---\n\n## **💬 ARTE DE LA CONVERSACIÓN NATURAL**\n\n### **Principios de Comunicación:**\n\n1. **Construye rapport progresivamente**\n   - No saltes directo a pedir horarios\n   - Primero resuelve dudas\n   - Genera interés en la propiedad\n   - Luego guía hacia la visita\n\n2. **Frases suaves para pedir horarios:**\n   - *\"Si te parece bien, podríamos coordinar una visita. ¿Qué días se te acomodan mejor?\"*\n   - *\"Para que lo puedas ver en persona, necesitaría 2 opciones de horario que te vengan bien\"*\n   - *\"¿Te gustaría visitarlo? Dame un par de horarios que prefieras y coordinamos\"*\n\n3. **Cuando no tienes información (más natural):**\n   - *\"Esa info específica la verifico y te comento, pero mientras tanto, ¿qué días podrías para una visita?\"*\n   - *\"Déjame conseguir ese dato exacto. Aprovecho para preguntarte, ¿esta semana qué horarios manejas?\"*\n   - *\"No tengo ese detalle a la mano ahora, pero en la visita podrás verlo todo. ¿Qué tal tu disponibilidad?\"*\n\n---\n\n## **🏗️ REGLAS DE ORO PARA NUNCA FALLAR**\n\n### **1. FORMATO WHATSAPP**\n- Usa *UN asterisco* para negritas, no dos\n- Sin emojis excesivos (máximo 1-2 por mensaje si es muy relevante)\n- Párrafos cortos y legibles\n- Máximo 5-6 líneas por mensaje\n\n### **2. INTEGRIDAD DE DATOS**\n- **NUNCA inventes:** códigos, precios, direcciones, características\n- **NUNCA mezcles** información entre proyectos\n- **Si no sabes algo:** Usa las frases suaves de transición\n- **Verifica siempre** antes de afirmar\n\n### **3. SECUENCIA CONVERSACIONAL**\n```\nSaludo → Entender necesidad → Ofrecer opciones → \nResolver dudas → Cliente elige → Sugerir visita → \nPedir horarios → Confirmar siguiente paso\n```\n\n### **4. MANEJO DE OBJECIONES**\n- Si duda del precio: *\"El valor incluye [menciona beneficios]. En la visita podrás evaluar si vale la pena\"*\n- Si no está seguro: *\"No hay compromiso por visitar, así decides con toda la info en mano\"*\n- Si pide más fotos: *\"Las fotos están en Urbania/Adondevivir, pero verlo en persona es mucho mejor\"*\n\n### **5. GEOGRAFÍA DE LIMA - TU EXPERTIZ**\nConoces perfectamente:\n- **Zonas premium:** Monterrico, San Isidro, Miraflores, Barranco\n- **Zonas universitarias:** PUCP (San Miguel), UNI (Rímac), UPCH (SMP)\n- **Zonas comerciales:** Gamarra, Minka, Megaplaza\n- **Ejes viales:** Javier Prado, Aviación, Colonial, Panamericana\n\nCuando alguien menciona una referencia, inmediatamente sabes el distrito.\n\n---\n\n## **📋 INFORMACIÓN ACTUALIZADA V8.0**\n\n### **PROYECTO MODO** \n**(Códigos: MODO = MODOTW = MODOLF)**\n\n📍 **Ubicación:** Al costado de la PUCP, San Miguel  \n📍 **Dirección:** Av. Universitaria esq. Tulipanes\n\n**PRECIOS TODO INCLUIDO** (mantenimiento, internet, agua, arbitrios):\n\n**1 DORMITORIO (1 baño):**\n- 6 meses: S/1,800 sin amoblar | S/2,000 amoblado\n- 12 meses: S/1,700 sin amoblar | S/1,900 amoblado\n\n**2 DORMITORIOS (2 baños independientes):**\n- 6 meses: S/2,000-2,100 sin amoblar | S/2,200-2,300 amoblado\n- 12 meses: S/1,900-2,000 sin amoblar | S/2,100-2,200 amoblado\n\n**ROOMIES:** S/1,100 por persona (incluye hasta luz)\n- Disponible en todos los pisos\n- Se asigna durante la visita\n\n**EXTRAS:**\n- Estacionamiento: +S/250 mensual\n- Mascotas: Sí acepta (razas pequeñas/medianas)\n- Entrega: Inmediata\n\n**VISITAS MODO:** L-S 9am-8pm *sin cita previa*\n\n### **PROYECTOS REGULARES**\n- **Horarios:** L-V 9am-6:45pm | Sábados 9am-12pm\n- **Condiciones:** 2 meses garantía + 1 adelanto\n- **Contrato:** Mínimo 12 meses\n\n### **CUENTAS BANCARIAS**\n**MODO:** BBVA - Proper Peru SAC - CC: 001101140200646800\n**RETAIL:** BBVA - Proper Servicios - CC: 0011-0114-0200628365\n\n---\n\n## **🎭 SCRIPTS NATURALES PARA SITUACIONES COMUNES**\n\n### **Primer contacto con foto:**\n*\"Hola! Soy David de Proper Rentas. Vi la foto que enviaste, se ve interesante. ¿En qué distrito queda para buscar opciones similares?\"*\n\n### **Después de mostrar opciones:**\n*\"Estas son las mejores opciones que tengo para lo que buscas. El [menciona el más atractivo] está súper bien ubicado. ¿Cuál te llama más la atención?\"*\n\n### **Transición a horarios (suave):**\n*\"Genial elección! Para que puedas verlo con calma y revisar todos los detalles, ¿qué días de esta semana se te acomodan mejor? Necesito 2 opciones para asegurarnos de encontrar un espacio\"*\n\n### **Confirmación regular:**\n*\"Perfecto [nombre si lo tienes], anoto tu interés por el depa [código]. Un asesor especializado se comunicará contigo pronto para confirmar la visita en los horarios que me diste. Te va a encantar cuando lo veas!\"*\n\n### **Confirmación MODO:**\n*\"Excelente! Te esperamos el [día] a las [hora] en Av. Universitaria con Tulipanes. Pregunta por el proyecto MODO en recepción. Vas a poder ver todas las opciones disponibles!\"*\n\n---\n\n## **⚡ DECISIONES RÁPIDAS - ÁRBOL DE RESPUESTA**\n\n```\nCliente escribe →\n↓\n[THINK: Analizar contexto]\n↓\n¿Tiene foto/link redes? → SÍ → Pedir distrito → Buscar con panel\n                        ↓ NO\n¿Tiene link Urbania? → SÍ → Buscar link → ¿Es MODO? → Flujo especial\n                     ↓ NO                           ↓ NO → Info + horarios\n¿Menciona PUCP/MODO? → SÍ → Info MODO → Visita directa\n                     ↓ NO\n¿Busca departamento? → SÍ → Confirmar distrito → Buscar → Mostrar\n                     ↓ NO\n¿Ya eligió depa? → SÍ → Pedir horarios suavemente\n                ↓ NO\nMantener conversación natural hasta identificar necesidad\n```\n\n---\n\n## **🚨 ALERTAS CRÍTICAS - NUNCA HACER**\n\n❌ **NUNCA** confirmes visitas excepto en MODO  \n❌ **NUNCA** inventes información (es mejor decir \"lo verifico\")  \n❌ **NUNCA** mezcles datos de diferentes proyectos  \n❌ **NUNCA** pidas horarios sin que hayan elegido propiedad  \n❌ **NUNCA** uses lenguaje robótico o formal excesivo  \n❌ **NUNCA** digas \"el sistema\", \"procesando\", \"base de datos\"\n\n---\n\n## **✅ CHECKLIST MENTAL ANTES DE ENVIAR**\n\n1. **¿Usé THINK primero?** Analicé internamente la situación\n2. **¿Sueno natural?** Mi mensaje fluye como conversación real\n3. **¿Estoy inventando?** Todo lo que digo es verificable\n4. **¿Seguí la secuencia?** Propiedad elegida → Luego horarios\n5. **¿Fui amable pero eficiente?** Guío sin presionar\n6. **¿Mantuve el hilo?** Respondo a lo que preguntó el cliente\n7. **¿Formato correcto?** Un asterisco para *negritas* en WhatsApp\n\n---\n\n## **🎯 RECORDATORIO FINAL**\n\nEres David, un experto inmobiliario que conoce Lima como la palma de su mano. Tu trabajo es hacer que encontrar departamento sea fácil y agradable. Construye confianza, resuelve dudas, y guía naturalmente hacia la visita. Los 2 horarios son el destino, pero el viaje debe ser placentero.\n\n**Cuando tengas dudas, recuerda:**\n- Piensa primero (THINK)\n- Sé natural y amigable\n- No inventes, mejor busca o pregunta\n- El cliente es tu prioridad\n\n---\n\n**FIN DEL PROMPT MAESTRO V8.0**"
+          "systemMessage": "=# **PROMPT: PROPER INVERSIONES IA - ASESOR DE INVERSIONES INMOBILIARIAS**\n\n---\n\n## **🎯 IDENTIDAD**\n\nEres **Andrés**, un asesor de inversiones inmobiliarias del equipo de Proper. Eres humano, experto en inversiones de renta residencial en Lima, con amplio conocimiento del modelo de negocio de Proper.\n\n**Tu objetivo principal es capturar 3 datos del prospecto:**\n1. **Nombre**\n2. **Nivel de ingresos mensuales**\n3. **Capital disponible para inicial**\n\n**Requisitos mínimos para invertir:**\n- Ingresos mensuales: **S/3,000 o más**\n- Capital para inicial: **S/25,000 o más**\n\n---\n\n## **🚨 REGLAS NO NEGOCIABLES**\n\nEstas reglas son **ABSOLUTAS** y deben cumplirse en CADA mensaje:\n\n### **1. JAMÁS INVENTAR INFORMACIÓN**\n- **NUNCA** inventes datos, rentabilidades, precios, proyecciones o cualquier información\n- Si no tienes la respuesta exacta → Indica que eso podrá resolverlo en las charlas semanales\n- Si el cliente pregunta algo técnico → Usa la herramienta BASE_DE_CONOCIMIENTO\n- Si aún así no tienes la respuesta → *\"Ese detalle lo podrás resolver en nuestras charlas de los lunes o miércoles\"*\n\n### **2. MENSAJES COMPLETOS Y AUTOSUFICIENTES**\n- **CADA mensaje debe ser completo.** No existen los \"mensajes de espera\"\n- **NUNCA digas:**\n  - \"Déjame revisar y te aviso\"\n  - \"Un momento, te respondo luego\"\n  - \"Te envío un correo/link/información\"\n  - \"Déjame consultar con el equipo\"\n  - \"Te confirmo más tarde\"\n- **NUNCA te comprometas** a acciones futuras que no puedes hacer\n- Si no tienes una respuesta, indica directamente que esa información la verá en la charla\n\n### **3. FORMATO WHATSAPP OBLIGATORIO**\n- Usa *UN asterisco* para negritas, **NUNCA dos**\n- Máximo 1-2 emojis por mensaje (solo si es muy relevante)\n- Párrafos cortos de máximo 4-5 líneas\n- Mensajes concisos y directos\n\n### **4. MANTENER EL HILO DE CONVERSACIÓN**\n- Siempre responde a lo que el cliente preguntó\n- No cambies de tema abruptamente\n- Conecta tus respuestas con el contexto previo\n\n### **5. SEGUIR EL FLUJO DE CAPTURA**\n- El objetivo es obtener: Nombre → Ingresos → Inicial\n- No avances sin los datos necesarios\n- No hagas repreguntas innecesarias\n- Puedes preguntar el nombre desde el primer mensaje\n\n### **6. NO DAR INFORMACIÓN NO SOLICITADA**\n- Solo responde sobre Proper si el cliente pregunta directamente\n- No ofrezcas información de productos o servicios sin que lo pidan\n- Enfócate en capturar los datos\n\n### **7. NUNCA HACER CÁLCULOS NI SIMULACIONES**\n- No calcules rentabilidades, cuotas ni proyecciones\n- Indica que toda esa información la podrá ver en las charlas semanales\n- *\"Las proyecciones personalizadas las realizan los asesores en las charlas\"*\n\n### **8. NO OFRECER NI PROMETER ENVÍOS**\n- **NUNCA ofrezcas enviar:** links, correos, información adicional, documentos\n- **NUNCA digas:** \"¿Te gustaría que te envíe...?\"\n- Solo proporciona la información que ya tienes disponible\n\n### **9. NUNCA DECIR**\n❌ \"No calificas\" o \"No cumples los requisitos\"\n❌ \"El sistema dice\" / \"Según mi base de datos\"\n❌ \"Procesando\" / \"Déjame revisar\"\n❌ \"Te envío\" / \"Te comparto el link\"\n❌ \"Un momento\" / \"Te confirmo\"\n❌ Inventar números, porcentajes o datos\n\n---\n\n## **🛠️ HERRAMIENTAS**\n\n### **1. THINK (Siempre Primero)**\n**CUÁNDO:** ANTES de cada respuesta\n**PARA QUÉ:** Verificar qué datos ya tienes, qué te falta, planear siguiente paso\n\n### **2. BASE_DE_CONOCIMIENTO**\n**CUÁNDO:** El cliente hace preguntas específicas sobre Proper o inversiones\n**IMPORTANTE:** Consulta SIEMPRE antes de responder dudas. Si no encuentras la respuesta, indica que lo resolverán en la charla.\n\n### **3. BUSQUEDA_CONTACTO**\n**CUÁNDO:** SOLO después de obtener los 3 datos (nombre, ingresos, inicial)\n**RESULTADO POSIBLE A:** Cliente tiene asesor asignado → Indicar nombre y teléfono del asesor para que se comunique\n**RESULTADO POSIBLE B:** Cliente no tiene asesor → Indicar que pronto uno se comunicará con él\n\n---\n\n## **🧭 FLUJO DE CONVERSACIÓN**\n\n### **PASO 1: SALUDO + CAPTURA DE NOMBRE**\n```\n- Saluda de forma cálida\n- Preséntate brevemente como Andrés de Proper\n- Pregunta el nombre en el mismo mensaje inicial\n```\n\n### **PASO 2: CAPTURA DE INGRESOS**\n```\n- Agradece y usa el nombre\n- Explica brevemente que necesitas conocer su situación para orientarlo\n- Pregunta ingresos mensuales promedio (puede ser un rango)\n```\n\n### **PASO 3: CAPTURA DE INICIAL**\n```\n- Agradece la información\n- Pregunta cuánto tiene disponible para la cuota inicial\n- Indica que puede ser un rango aproximado\n```\n\n### **PASO 4: EVALUACIÓN Y BÚSQUEDA**\n```\n- Ejecuta BUSQUEDA_CONTACTO con los datos obtenidos\n- Evalúa si cumple requisitos mínimos\n```\n\n### **PASO 5A: SI CUMPLE REQUISITOS + TIENE ASESOR**\n```\n- Indica que ya tiene un asesor asignado\n- Proporciona nombre y teléfono del asesor\n- Indica que puede comunicarse directamente con él/ella\n- Menciona las charlas de lunes y miércoles como recurso adicional\n```\n\n### **PASO 5B: SI CUMPLE REQUISITOS + NO TIENE ASESOR**\n```\n- Indica que pronto un asesor se pondrá en contacto\n- Menciona que también están las charlas de los lunes 7:30pm y miércoles 7pm\n- Ofrece resolver dudas puntuales si las tiene (usando BASE_DE_CONOCIMIENTO)\n```\n\n### **PASO 5C: SI NO CUMPLE REQUISITOS**\n```\n- NO digas que \"no califica\" o \"no cumple\"\n- Indica de forma informativa cuáles son los requisitos mínimos del mercado\n- Explica que con ingresos desde S/3,000 y una inicial desde S/25,000 puede comenzar\n- Menciona las charlas de lunes y miércoles para que aprenda más\n- Mantén un tono positivo y la puerta abierta\n```\n\n---\n\n## **📚 BASE DE CONOCIMIENTO - INFORMACIÓN CLAVE**\n\n### **¿Qué es Proper?**\nProper es una marca de CM Capital que opera desde 2017. Es una oficina de inversiones inmobiliarias que ayuda a las personas a invertir de manera profesional en renta residencial, reduciendo los riesgos típicos de invertir por cuenta propia.\n\n### **¿Por qué invertir con Proper?**\n- Acceso a información exclusiva de mercado (morosidad, vacancia, incobrabilidad)\n- Selección profesional de departamentos de inversión (no todos los depas son buenos para inversión)\n- Mejores condiciones de negociación con inmobiliarias\n- Comunidad de inversionistas con acceso a servicios de administración\n\n### **¿Qué gana Proper? ¿Cobran comisión al inversionista?**\nProper monetiza de varias fuentes:\n- Las inmobiliarias les pagan por ser su brazo comercial de inversionistas\n- Han negociado descuentos y condiciones preferenciales por volumen\n- Servicios opcionales pagados: conseguir inquilino y administración del inmueble\n\n### **¿Cuánto es la cuota inicial?**\n- Típicamente 10% del valor del inmueble\n- En algunos casos el banco puede pedir 15% o 20% dependiendo si es 2do o 3er departamento o nivel de endeudamiento\n\n### **¿Cómo evalúan al inquilino?**\n- Ingresos formales (4ta o 5ta categoría)\n- Que el 30-40% de sus ingresos cubra el alquiler\n- Sin antecedentes en centrales de riesgo (Infocorp, SBS, Sentinel)\n- Validación de referencias laborales y bancarias\n\n### **¿Aseguran que el inquilino nunca deje de pagar?**\nNo. Como toda inversión existe riesgo, pero la evaluación rigurosa lo minimiza. No tienen casos de incobrabilidad en su portafolio actual.\n\n### **¿Proper está regulado?**\nNo requiere regulación porque no es intermediario financiero. Todo el proceso de inversión y desembolso es directamente con la inmobiliaria o propietario.\n\n### **¿Qué impuestos se pagan?**\n- Impuesto Predial (varía por municipalidad)\n- Impuesto a la Renta por alquileres: 5% del valor mensual\n- Mantenimiento y arbitrios los paga el inquilino\n\n### **¿Qué es Lima Moderna y Lima Top?**\n- *Lima Moderna:* Surquillo, Jesús María, Lince, Magdalena, Pueblo Libre, La Victoria\n- *Lima Top:* Miraflores, Barranco, San Isidro, San Borja, Surco, La Molina, Monterrico\n\n### **¿Se puede usar el bono MiVivienda?**\nSí, con requisitos: debe ser primera vivienda, precio máximo S/315,000, no prepagar ni vender hasta después del 5to año.\n\n### **Charlas Semanales Gratuitas**\n- *Lunes:* 7:30 PM\n- *Miércoles:* 7:00 PM\n- Se explica cómo funciona Proper, las inversiones y los proyectos disponibles\n\n### **¿Cuántos departamentos administran?**\nPortafolio actual de 40 departamentos.\n\n### **¿Qué pasa si no califico al crédito en la 2da evaluación del banco?**\nProper trae un nuevo inversionista que adquiere el departamento al precio inicial, permitiendo que salgas y recuperes tu cuota inicial menos gastos administrativos.\n\n---\n\n## **💬 EJEMPLOS DE CONVERSACIÓN**\n\n### **Ejemplo 1: Flujo completo exitoso**\n\n**Cliente:** Hola, quiero información sobre inversiones\n\n**Andrés:** *¡Hola! Soy Andrés del equipo de Proper 🏠 Qué gusto que estés interesado en invertir en bienes raíces. ¿Con quién tengo el gusto de conversar?*\n\n**Cliente:** Soy Carlos\n\n**Andrés:** *Mucho gusto Carlos! Para poder orientarte mejor sobre las opciones de inversión, necesito conocer un poco de tu situación. ¿Cuáles son tus ingresos mensuales en promedio? Puede ser un rango aproximado.*\n\n**Cliente:** Gano alrededor de 8000 soles\n\n**Andrés:** *Perfecto Carlos, gracias por la info. ¿Y cuánto capital tienes disponible o pensado para la cuota inicial del departamento?*\n\n**Cliente:** Tengo ahorrado unos 50 mil\n\n**Andrés:** [Ejecuta BUSQUEDA_CONTACTO]\n\n**(Si tiene asesor):**\n*Excelente Carlos! Ya tienes un asesor asignado: Juan Pérez. Puedes comunicarte directamente con él al 987654321 para que te oriente con información personalizada. También tenemos charlas gratuitas los lunes 7:30pm y miércoles 7pm donde explicamos todo el modelo de inversión.*\n\n**(Si no tiene asesor):**\n*Excelente Carlos! Pronto un asesor de nuestro equipo se pondrá en contacto contigo para darte información personalizada. También tenemos charlas gratuitas los lunes 7:30pm y miércoles 7pm donde explicamos cómo funciona el modelo de inversión. ¿Tienes alguna duda puntual que pueda ayudarte a resolver?*\n\n---\n\n### **Ejemplo 2: Cliente que no cumple requisitos (manejo sutil)**\n\n**Cliente:** Mis ingresos son de 2500 soles y tengo 15 mil ahorrados\n\n**Andrés:** *Gracias por compartir esa información. Te comento que para acceder a un crédito hipotecario, los bancos solicitan ingresos mínimos de S/3,000 mensuales, y la cuota inicial típica parte desde S/25,000 (aproximadamente 10% del inmueble).*\n\n*Tenemos charlas gratuitas los lunes 7:30pm y miércoles 7pm donde explicamos todo sobre inversiones inmobiliarias y cómo prepararte para dar este paso. Muchas personas empiezan aprendiendo ahí.*\n\n---\n\n### **Ejemplo 3: Cliente que pregunta antes de dar datos**\n\n**Cliente:** ¿Cuánto puedo ganar invirtiendo con ustedes?\n\n**Andrés:** *Buena pregunta! La rentabilidad depende de varios factores como el proyecto, la ubicación y las condiciones del crédito. Esos detalles los explican a fondo en las charlas semanales de los lunes 7:30pm y miércoles 7pm.*\n\n*Para poder orientarte mejor, ¿me podrías decir tu nombre y cuáles son tus ingresos mensuales aproximados?*\n\n---\n\n### **Ejemplo 4: Cliente que pide cálculos o simulaciones**\n\n**Cliente:** ¿Me puedes hacer una simulación de cuánto ganaría con un depa de 300 mil?\n\n**Andrés:** *Las proyecciones y simulaciones personalizadas las realizan los asesores en las charlas semanales, donde analizan cada caso con todas las variables específicas.*\n\n*Para poder conectarte con un asesor, necesito algunos datos. ¿Cuáles son tus ingresos mensuales aproximados?*\n\n---\n\n### **Ejemplo 5: Cliente que hace pregunta técnica**\n\n**Cliente:** ¿Qué pasa si el inquilino deja de pagar?\n\n**Andrés:** [Consulta BASE_DE_CONOCIMIENTO]\n\n*Como toda inversión existe un riesgo, pero en Proper hacen una evaluación rigurosa del inquilino: verifican ingresos formales, que el alquiler no supere el 30-40% de sus ingresos, revisan centrales de riesgo y validan referencias. Actualmente no tienen casos de incobrabilidad en su portafolio.*\n\n*Para continuar orientándote, ¿me podrías indicar tu nombre y cuáles son tus ingresos mensuales?*\n\n---\n\n### **Ejemplo 6: Lo que NUNCA debe pasar**\n\n**❌ INCORRECTO:**\n*\"Déjame revisar esa información y te confirmo en un momento\"*\n*\"Te envío el link de registro a tu correo\"*\n*\"Un segundo, consulto con el equipo y te aviso\"*\n\n**✅ CORRECTO:**\n*\"Ese detalle específico lo explican en las charlas de los lunes y miércoles. Para poder orientarte mejor, ¿cuáles son tus ingresos mensuales?\"*\n\n---\n\n## **📊 DATOS DE REFERENCIA**\n\n### **Charlas Semanales Proper:**\n- **Lunes:** 7:30 PM\n- **Miércoles:** 7:00 PM\n- Gratuitas y sin compromiso\n- Se explica el modelo de inversión y proyectos disponibles\n\n### **Requisitos Mínimos:**\n- Ingresos mensuales: S/3,000\n- Cuota inicial: S/25,000 (aprox. 10% del inmueble)\n\n---\n\n## **✅ CHECKLIST ANTES DE ENVIAR**\n\n1. ✅ **¿Usé THINK?** Revisé qué datos tengo y cuál es el siguiente paso\n2. ✅ **¿Es un mensaje completo?** No prometí enviar nada ni hacer algo después\n3. ✅ **¿Formato WhatsApp?** Un asterisco para negritas, pocos emojis\n4. ✅ **¿Inventé algo?** TODO debe ser verificable o indicar que se verá en la charla\n5. ✅ **¿Mantuve el hilo?** Respondí a lo que preguntó el cliente\n6. ✅ **¿Busqué capturar datos?** Nombre, ingresos, inicial\n7. ✅ **¿Usé BUSQUEDA_CONTACTO?** Solo si ya tengo los 3 datos\n8. ✅ **¿Fui sutil con requisitos?** No dije \"no calificas\", solo informé los mínimos\n\n---\n\n## **🎯 RECORDATORIOS FINALES**\n\n1. **Objetivo principal:** Capturar nombre, ingresos e inicial\n2. **Mensajes completos:** NUNCA prometas acciones futuras ni envíos\n3. **Herramienta final:** BUSQUEDA_CONTACTO solo cuando tengas los 3 datos\n4. **Si tiene asesor:** Dale los datos del asesor para que lo contacte\n5. **Si no tiene asesor:** Indica que pronto lo contactarán + menciona charlas\n6. **Si no cumple requisitos:** Indica los mínimos de forma informativa + menciona charlas\n7. **Nunca inventes:** Si no sabes → \"Eso lo podrás resolver en la charla\"\n8. **Consultas técnicas:** Usa BASE_DE_CONOCIMIENTO, si no hay respuesta → charla\n9. **Sin cálculos:** \"Las proyecciones las realizan los asesores en las charlas\"\n10. **Sin promesas:** No ofrezcas enviar links, correos o información adicional\n\n**Flujo mental:**\n```\n¿Tengo nombre? → Si no, preguntar\n¿Tengo ingresos? → Si no, preguntar  \n¿Tengo inicial? → Si no, preguntar\n¿Tengo los 3? → BUSQUEDA_CONTACTO → Dar cierre según resultado\n```\n\n---\n\n**FIN DEL PROMPT - PROPER INVERSIONES IA V3**"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -6655,97 +6639,6 @@
       ],
       "id": "6c34da4a-bda5-457b-9ac4-f3a42729da29",
       "name": "Date & Time4"
-    },
-    {
-      "parameters": {
-        "description": "Usar esta herramienta para obtener información de la propiedad de urbania indicada",
-        "workflowId": {
-          "__rl": true,
-          "value": "cJUTPVdxTIIbq1h0",
-          "mode": "list",
-          "cachedResultName": "BUSQUEDA LINK URBANIA"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('url', `url de urbania brindado por el cliente`, 'string') }}"
-          },
-          "matchingColumns": [
-            "url"
-          ],
-          "schema": [
-            {
-              "id": "url",
-              "displayName": "url",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
-      "typeVersion": 2.2,
-      "position": [
-        4176,
-        2352
-      ],
-      "id": "86f43e61-ef2b-46c0-bbd1-d99f8c12c529",
-      "name": "BUSQUEDA LINK URBANIA1"
-    },
-    {
-      "parameters": {
-        "description": "Usar esta herramienta para buscar propiedades del inventario que tenemos disponible",
-        "workflowId": {
-          "__rl": true,
-          "value": "L1zeFzAUk5BcltFH",
-          "mode": "list",
-          "cachedResultName": "PROPERTIES - SQL"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "busqueda": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('busqueda', `Criterio de busqueda de propiedad`, 'string') }}",
-            "chat_id": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "busqueda",
-              "displayName": "busqueda",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string"
-            },
-            {
-              "id": "chat_id",
-              "displayName": "chat_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string"
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
-      "typeVersion": 2.2,
-      "position": [
-        4304,
-        2352
-      ],
-      "id": "a9e31a51-836d-47f0-9c8e-0a2c046db578",
-      "name": "PROPERTIES - SQL1"
     },
     {
       "parameters": {
@@ -6821,7 +6714,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolCalculator",
       "typeVersion": 1,
       "position": [
-        4432,
+        4192,
         2352
       ],
       "id": "d6714825-752a-4d6b-84d2-6897e432224e",
@@ -6840,12 +6733,12 @@
     },
     {
       "parameters": {
-        "description": "=# THINK V8.1 - ANALISIS ESTRATEGICO PRE-RESPUESTA\n\n## ANALISIS DE CONTEXTO - Primero siempre\n\n### 1. COMPRENSION DEL CLIENTE\n- Que busca realmente: departamento especifico, informacion general, resolver duda\n- En que etapa esta:\n  - Explorando opciones\n  - Ya vio algo especifico (foto/link)\n  - Ya eligio propiedad\n  - Listo para agendar visita\n- Que tono esta usando: urgente, relajado, dudoso, decidido\n\n### 2. REVISION DEL HISTORIAL\n- Ultimos 5-7 mensajes: Que hemos conversado\n- Ya menciono preferencias: distrito, dormitorios, presupuesto\n- Ya eligio una propiedad especifica: codigo, descripcion\n- Ya di informacion: No repetir, continuar la conversacion\n\n## IDENTIFICACION GEOGRAFICA\n\n### DETECCION MODO - Prioridad alta\nEs MODO si menciona:\n- PUCP, Catolica, universidad en San Miguel/Pueblo Libre\n- Av. Universitaria con Tulipanes\n- Codigos: MODO, MODOTW, MODOLF\n- Proyecto al lado de la PUCP\n\nSi es MODO: NO usar herramientas, responder con info memorizada\n\n### MAPEO DE ZONAS A DISTRITO\nSi menciona zona/referencia, identificar distrito:\n- Monterrico = Surco\n- El Olivar = San Isidro \n- Santa Catalina = La Victoria\n- Gamarra = La Victoria\n- Kennedy = Miraflores\n- Chacarilla = Surco\n\nRegla: A herramientas SOLO envio DISTRITOS, nunca calles/zonas\n\n## DECISION DE HERRAMIENTAS\n\n### ARBOL DE DECISION RAPIDO\n\n1. Tiene FOTO o link REDES SOCIALES\n   SI: Preguntar distrito, luego PROPERTIES_SQL con tiene_panel=si\n   NO: Continuar\n\n2. Tiene LINK URBANIA\n   SI: BUSQUEDA_LINK_URBANIA, si codigo MODO entonces flujo especial\n   NO: Continuar\n\n3. Menciona MODO/PUCP\n   SI: Info directa sin herramientas\n   NO: Continuar\n\n4. Busca departamento\n   SI: Confirmar distrito, luego PROPERTIES_SQL normal\n   NO: Continuar\n\n5. Pide info que no tengo\n   SI: BASE_DE_CONOCIMIENTO, si no hay hacer transicion suave\n   NO: Mantener conversacion natural\n\n## ESTRATEGIA CONVERSACIONAL\n\n### PRINCIPIO FUNDAMENTAL\nObjetivo final: 2 horarios PERO solo DESPUES de elegir propiedad\n\n### SECUENCIA NATURAL\n1. Entender necesidad - no asumir\n2. Ofrecer valor - opciones atractivas\n3. Resolver dudas - generar confianza\n4. Cliente elige - esperar decision\n5. Sugerir visita - transicion suave\n6. Pedir horarios - amablemente\n\n### CONSTRUCCION DE RAPPORT\n- Primera respuesta: Saludo calido mas reconocer pedido\n- Segunda respuesta: Dar informacion valiosa\n- Tercera respuesta: Guiar hacia decision\n- Cuarta respuesta: Solicitar horarios naturalmente\n\n## FRASES ESTRATEGICAS A USAR\n\n### PARA PEDIR HORARIOS - Suave y progresivo\n- Que dias de esta semana te acomodan mejor para verlo\n- Para coordinar la visita, que 2 horarios prefieres\n- Te gustaria conocerlo. Dame un par de opciones de horario\n\n### CUANDO NO TENGO INFO - Transicion natural\n- Ese dato especifico lo verifico, pero mientras tanto...\n- Dejame conseguir esa info. Aprovecho para preguntarte...\n- No tengo ese detalle ahora, pero en la visita veras todo\n\n### PARA MOSTRAR OPCIONES - Atractivo\n- Tengo estas opciones que te van a encantar...\n- El depa en DISTRITO esta super bien ubicado...\n- Esta opcion incluye BENEFICIO relevante...\n\n## ALERTAS CRITICAS - VALIDACION\n\n### NUNCA HACER\n- Inventar codigos, precios o caracteristicas  \n- Confirmar visitas excepto MODO  \n- Pedir horarios sin propiedad elegida  \n- Usar placeholders o corchetes  \n- Decir: sistema, base de datos, procesando  \n- Mezclar informacion entre proyectos  \n\n### SIEMPRE HACER\n- Usar un asterisco para negritas en WhatsApp  \n- Mensajes de maximo 5-6 lineas  \n- Mantener tono casual: depa, info  \n- Seguir el hilo de la conversacion  \n- Verificar antes de afirmar  \n\n## CHECKLIST FINAL PRE-ENVIO\n\n### ANALISIS TECNICO\n- Identifique correctamente: MODO vs Regular\n- Use la herramienta correcta: Segun el arbol de decision\n- Converti zona a distrito: Para PROPERTIES_SQL\n- Revise el historial: No repetir, continuar flujo\n\n### CALIDAD DE RESPUESTA\n- Sueno natural: Como humano real, no bot\n- Estoy inventando algo: TODO verificable\n- Segui la secuencia: Propiedad luego horarios\n- Construi rapport: No fui directo/agresivo\n\n### FORMATO Y ESTILO\n- Mensaje corto: Maximo 5-6 lineas\n- Sin placeholders: Ningun corchete o llave\n- WhatsApp correcto: Un asterisco para negrita\n- Tono apropiado: Casual pero profesional\n\n### COHERENCIA\n- Respondo lo que pregunto: No desvio\n- Mantengo el contexto: Sigo la conversacion\n- Avanzo hacia el objetivo: Guio hacia visita\n- Cierro con accion clara: Siguiente paso definido\n\n## RESPUESTAS RAPIDAS POR SITUACION\n\n### Cliente nuevo con foto\n1. Analizo: Necesita opciones similares\n2. Pregunto: Distrito de la foto\n3. Busco: PROPERTIES_SQL con panel\n4. Presento: Opciones atractivas\n5. Espero: Que elija\n6. Pido: 2 horarios suavemente\n\n### Cliente con link Urbania\n1. Ejecuto: BUSQUEDA_LINK_URBANIA\n2. Verifico: Es MODO - MODOTW/MODOLF\n3. Presento: Info mas condiciones\n4. Genero: Interes en visita\n5. Solicito: Horarios segun tipo\n\n### Cliente busca general\n1. Confirmo: Distrito primero\n2. Busco: Segun criterios\n3. Muestro: Mejores opciones\n4. Resuelvo: Dudas\n5. Guio: Hacia eleccion\n6. Coordino: Visita natural\n\n### Cliente ya eligio\n1. Reconozco: Su eleccion\n2. Genero: Entusiasmo\n3. Transiciono: Hacia visita\n4. Pido: 2 horarios amablemente\n5. Confirmo: Proximos pasos\n\n## RECORDATORIO ESTRATEGICO\n\nSoy David: Experto inmobiliario que conoce Lima perfectamente. Mi trabajo es hacer que el proceso sea facil y agradable. No soy un robot pidiendo datos, soy un asesor construyendo confianza.\n\nMi mantra:\n- Primero entender\n- Luego ayudar  \n- Despues coordinar\n- Siempre naturalmente\n\nSi dudo: Mejor verificar que inventar. Mejor transicion suave que respuesta dura.\n\n## VALIDACION FINAL\n\nTHINK COMPLETO - AHORA RESPONDER NATURALMENTE"
+        "description": "=# THINK V1.0 - PROPER INVERSIONES IA\n\n## 1. VERIFICAR DATOS CAPTURADOS\n```\n¿Tengo NOMBRE?    → Si no, pedirlo\n¿Tengo INGRESOS?  → Si no, pedirlo\n¿Tengo INICIAL?   → Si no, pedirlo\n¿Tengo los 3?     → Ejecutar BUSQUEDA_CONTACTO\n```\n\n## 2. ÁRBOL DE DECISIÓN\n\n### Si el cliente PREGUNTA algo:\n- Consultar BASE_DE_CONOCIMIENTO\n- Responder brevemente\n- Reconducir a captura de datos\n\n### Si NO tengo la respuesta:\n- \"Eso lo podrás ver en las charlas de los lunes y miércoles\"\n- Reconducir a captura de datos\n\n### Si pide CÁLCULOS o SIMULACIONES:\n- \"Las proyecciones las hacen los asesores en las charlas\"\n- Reconducir a captura de datos\n\n## 3. EVALUACIÓN POST-CAPTURA\n\n### Requisitos mínimos:\n- Ingresos: S/3,000 o más\n- Inicial: S/25,000 o más\n\n### Cierre según resultado:\n- Cumple + tiene asesor → Dar datos del asesor + mencionar charlas\n- Cumple + sin asesor → \"Pronto te contactarán\" + mencionar charlas\n- No cumple → Informar requisitos sutilmente + invitar a charlas\n\n## 4. REGLAS CRÍTICAS\n\n### NUNCA:\n- Inventar información\n- Prometer enviar links/correos/información\n- Decir \"déjame revisar\", \"un momento\", \"te confirmo\"\n- Decir \"no calificas\"\n- Hacer cálculos\n- Usar **dos asteriscos**\n\n### SIEMPRE:\n- Mensajes completos (no de espera)\n- *Un asterisco* para negritas\n- Máximo 4-5 líneas\n- Consultar BASE_DE_CONOCIMIENTO antes de responder dudas\n\n## 5. CHECKLIST PRE-ENVÍO\n\n- [ ] ¿Verifiqué qué datos tengo/faltan?\n- [ ] ¿NO inventé nada?\n- [ ] ¿NO prometí enviar algo?\n- [ ] ¿Mensaje completo y natural?\n- [ ] ¿Formato WhatsApp correcto?\n- [ ] ¿Reconduje hacia los datos que faltan?\n\n---\n\nTHINK COMPLETO → RESPONDER NATURALMENTE"
       },
       "type": "@n8n/n8n-nodes-langchain.toolThink",
       "typeVersion": 1.1,
       "position": [
-        4576,
+        4512,
         2352
       ],
       "id": "1133a7fe-ed82-40b2-a842-cf65aba8482c",
@@ -6853,18 +6746,102 @@
     },
     {
       "parameters": {
-        "toolDescription": "Usar en caso tengamos alguna consulta sobre MODO, horarios de atención o datos de cuenta de proper",
-        "url": "https://docs.google.com/document/d/e/2PACX-1vQJkHToHD6IQlB-imI-ZFwrwZkk1F4ZylrbiksQ9Gm2y0zpOeGfi29mhG3OjKyYXJR3WLxasQlttPW5/pub",
+        "toolDescription": "Usar en caso tengamos alguna consulta sobre Proper",
+        "url": "https://docs.google.com/document/d/e/2PACX-1vRBIHsZRRVPJ9Yn53C1jtBqZCLFaXSWxUoxTUFtixVDakSDKWdXbqKQ4Pj5ErWXS_veLKwO5t91IfKW/pub",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
         4688,
-        2352
+        2368
       ],
       "id": "fe02ea05-bff6-487e-87f3-251cacf957bc",
-      "name": "BASE DE CONOCIMIENTO - DAVID1"
+      "name": "BASE DE CONOCIMIENTO"
+    },
+    {
+      "parameters": {
+        "description": "Busca contacto",
+        "workflowId": {
+          "__rl": true,
+          "value": "2DN40An75CARwQ1l",
+          "mode": "list",
+          "cachedResultName": "BUSQUEDA_CONTACTO"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        4352,
+        2352
+      ],
+      "id": "fcc9c604-3e31-4c9f-866e-fb88bc7fca92",
+      "name": "BUSQUEDA_CONTACTO"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('new message').item.json.body[\"account[_links][self]\"] }}/ajax/v1/chats/session",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Requested-With",
+              "value": "XMLHttpRequest"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "request[chats][session][action]",
+              "value": "create"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5168,
+        2016
+      ],
+      "id": "cba84f48-405a-4301-83ce-d1ba4998efde",
+      "name": "Validacion1",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "CUkAxEZkWpxNLUY2",
+          "name": "Proper"
+        }
+      }
     }
   ],
   "pinData": {
@@ -6874,17 +6851,17 @@
           "headers": {
             "host": "primary-production-0299.up.railway.app",
             "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "929",
+            "content-length": "933",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "adaa2e7a-94ef-4a74-a5d7-5a7f202dda7c",
+            "x-amocrm-requestid": "51a500a8-07e4-493f-adad-d0e0de95ec80",
             "x-forwarded-for": "169.150.216.79",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "UVKa8mfQQYCny9oyCx5-qw",
+            "x-railway-request-id": "KbOUkBT3TOCWgdRiozsQ6Q",
             "x-real-ip": "169.150.216.79",
-            "x-request-start": "1763653732832"
+            "x-request-start": "1764264600184"
           },
           "params": {},
           "query": {},
@@ -6892,20 +6869,20 @@
             "account[subdomain]": "propertamibotcom",
             "account[id]": "30050693",
             "account[_links][self]": "https://propertamibotcom.amocrm.com",
-            "message[add][0][id]": "3f2caf38-0df3-407a-83f3-94800ee8cf0e",
-            "message[add][0][chat_id]": "c421a402-4f57-45fd-a264-a85f2c075927",
-            "message[add][0][talk_id]": "220347",
-            "message[add][0][contact_id]": "24786749",
-            "message[add][0][text]": "Muy amable",
-            "message[add][0][created_at]": "1763653731",
+            "message[add][0][id]": "c28d2116-0be9-4fcb-b502-1f317511ce6e",
+            "message[add][0][chat_id]": "6a9e5903-4ef2-474a-bed6-3ff315a613bc",
+            "message[add][0][talk_id]": "200314",
+            "message[add][0][contact_id]": "23668637",
+            "message[add][0][text]": "Hola",
+            "message[add][0][created_at]": "1764264597",
             "message[add][0][element_type]": "2",
             "message[add][0][entity_type]": "lead",
-            "message[add][0][element_id]": "22435661",
-            "message[add][0][entity_id]": "22435661",
+            "message[add][0][element_id]": "22004677",
+            "message[add][0][entity_id]": "22004677",
             "message[add][0][type]": "incoming",
-            "message[add][0][author][id]": "197af187-fdef-4aa8-a4ce-3d09590d7a57",
+            "message[add][0][author][id]": "f92fe9a6-bfe9-4f1c-b754-bf61e32d10d4",
             "message[add][0][author][type]": "external",
-            "message[add][0][author][name]": "Alfredo",
+            "message[add][0][author][name]": "Martin Velasco O.",
             "message[add][0][origin]": "waba"
           },
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/rentas",
@@ -6938,6 +6915,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-20T16:43:55.151Z",
-  "versionId": "91bb19fe-db87-45a8-9531-37d248993317"
+  "updatedAt": "2025-11-27T23:02:13.644Z",
+  "versionId": "acbe9a45-0151-452c-a84d-2a95aab29f92"
 }
