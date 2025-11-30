@@ -99,11 +99,6 @@
             "index": 0
           },
           {
-            "node": "HTTP Request5",
-            "type": "main",
-            "index": 0
-          },
-          {
             "node": "HTTP Request2",
             "type": "main",
             "index": 0
@@ -299,7 +294,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields",
+            "node": "Code1",
             "type": "main",
             "index": 0
           }
@@ -1111,7 +1106,7 @@
             },
             {
               "name": "filter[created_at][from]",
-              "value": "1759640400"
+              "value": "1762750800"
             },
             {
               "name": "filter[created_at][to]",
@@ -2622,7 +2617,7 @@
       "typeVersion": 2.6,
       "position": [
         2720,
-        760
+        768
       ],
       "id": "de29fd2f-bcba-4f00-ab77-71d46a5c698a",
       "name": "Insert or update rows in a table1",
@@ -2897,6 +2892,40 @@
       ],
       "id": "7c836d75-2c4b-4f3b-b482-26a9c2e09ad8",
       "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- =============================================\n-- TABLA SIMPLIFICADA - Solo datos de Kommo\n-- =============================================\n\nCREATE TABLE IF NOT EXISTS crm.bot_leads_david (\n    -- === IDENTIFICADORES ===\n    id BIGINT PRIMARY KEY,\n    \n    -- === DATOS BÁSICOS ===\n    nombre VARCHAR(255),\n    telefono VARCHAR(50),\n    fecha_creacion TIMESTAMP,\n    status_id INTEGER,\n    etapa VARCHAR(100),\n    \n    -- === PROPIEDAD ===\n    cod_inmueble VARCHAR(50),\n    cod_propiedad VARCHAR(50),\n    cod_propiedad_unificado VARCHAR(50),\n    inmueble_identificado SMALLINT DEFAULT 0,\n    link_urbania TEXT,\n    \n    -- === ORIGEN ===\n    origen VARCHAR(30),\n    \n    -- === BOT - RESPUESTA ===\n    bot_respondio SMALLINT DEFAULT 0,\n    bot_apagado_manual SMALLINT DEFAULT 0,\n    bot_fecha_ult_msg TIMESTAMP,\n    \n    -- === BOT - HORARIOS ===\n    dio_horario SMALLINT DEFAULT 0,\n    genero_horario SMALLINT DEFAULT 0,\n    horario_registrado SMALLINT DEFAULT 0,\n    horario_notificado SMALLINT DEFAULT 0,\n    fecha1 VARCHAR(50),\n    fecha2 VARCHAR(50),\n    fecha_modo VARCHAR(50),\n    \n    -- === BOT - ERRORES ===\n    tuvo_error SMALLINT DEFAULT 0,\n    detalle_error TEXT,\n    error_marcado SMALLINT DEFAULT 0,\n    estado_correccion VARCHAR(20),\n    detalle_correccion TEXT,\n    \n    -- === BOT - CASO ESPECIAL ===\n    caso_especial SMALLINT DEFAULT 0,\n    detalle_caso_especial TEXT,\n    \n    -- === BOT - SEGUIMIENTO ===\n    seg1 TEXT,\n    seg2 TEXT,\n    animo VARCHAR(50),\n    tiene_solucion SMALLINT DEFAULT 0,\n    cliente_identificado SMALLINT DEFAULT 0,\n    \n    -- === CLIENTE ===\n    tipo_cliente VARCHAR(50),\n    es_nuevo SMALLINT DEFAULT 0,\n    \n    -- === FECHAS CALCULADAS ===\n    fecha_dia DATE,\n    fecha_semana DATE,\n    fecha_mes DATE,\n    \n    -- === METADATA ===\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n\n-- Índices\nCREATE INDEX IF NOT EXISTS idx_bld_fecha ON crm.bot_leads_david(fecha_creacion);\nCREATE INDEX IF NOT EXISTS idx_bld_origen ON crm.bot_leads_david(origen);\nCREATE INDEX IF NOT EXISTS idx_bld_propiedad ON crm.bot_leads_david(cod_propiedad_unificado);\nCREATE INDEX IF NOT EXISTS idx_bld_error ON crm.bot_leads_david(tuvo_error);\nCREATE INDEX IF NOT EXISTS idx_bld_horario ON crm.bot_leads_david(genero_horario);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -224,
+        -176
+      ],
+      "id": "4866244e-5e41-4bce-9c38-cf59173e2f97",
+      "name": "Execute a SQL query7",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// ========================================\n// TRANSFORMACIÓN DE LEAD KOMMO → POSTGRESQL\n// ========================================\n\nconst lead = $('Split Out1').item.json;\nconst statuses = $('HTTP Request Statuses').first().json._embedded?.statuses || [];\nconst contact = $('Split Out1').item.json._embedded?.contacts?.[0] || {};\n\n// Función helper para obtener custom field\nfunction getCF(fieldName) {\n  const cf = (lead.custom_fields_values || []).find(x => x.field_name === fieldName);\n  return (cf && cf.values && cf.values[0]) ? cf.values[0].value : null;\n}\n\n// Función helper para campos booleanos (toggle/checkbox)\nfunction getCFBool(fieldName) {\n  const val = getCF(fieldName);\n  return (val === true || val === 1 || val === '1') ? 1 : 0;\n}\n\n// Función para obtener teléfono del contacto\nfunction getPhone() {\n  const phoneField = (contact.custom_fields_values || []).find(f => f.field_name === 'Phone');\n  return phoneField?.values?.[0]?.value || null;\n}\n\n// Función para obtener nombre del status\nfunction getStatusName(statusId) {\n  const hit = statuses.find(s => String(s.id) === String(statusId));\n  return hit?.name || '';\n}\n\n// Función para parsear fecha Unix a ISO\nfunction unixToISO(unix) {\n  if (!unix) return null;\n  return new Date(unix * 1000).toISOString().replace('T', ' ').substring(0, 19);\n}\n\n// Función para calcular fecha del lunes de la semana\nfunction getMonday(date) {\n  const d = new Date(date);\n  const day = d.getDay();\n  const diff = (day === 0 ? -6 : 1) - day;\n  d.setDate(d.getDate() + diff);\n  return d.toISOString().split('T')[0];\n}\n\n// ========================================\n// EXTRACCIÓN DE CAMPOS\n// ========================================\n\n// Códigos de propiedad\nconst codInmueble = getCF('codigoInmueble');\nconst codPropiedad = getCF('n8n - CODPROPIEDAD');\nconst codUnificadoRaw = codInmueble || codPropiedad || null;\n\n// Normalizar MODO\nlet codUnificado = codUnificadoRaw;\nif (codUnificadoRaw && codUnificadoRaw.toString().toUpperCase().includes('MODO')) {\n  codUnificado = 'MODO';\n}\n\n// Origen: priorizar LinkUrbania, sino n8n - Origen\nconst linkUrbania = getCF('LinkUrbania');\nlet origen = getCF('n8n - Origen') || 'SIN_ORIGEN';\nif (linkUrbania) {\n  origen = 'URBANIA';\n}\n\n// Fechas de horarios\nconst fecha1 = getCF('n8n - fecha1');\nconst fecha2 = getCF('n8n - fecha2');\nconst fechaModo = getCF('n8n - fechaMODO');\nconst dioHorario = (fecha1 || fecha2 || fechaModo) ? 1 : 0;\n\n// Fecha de creación y derivadas\nconst fechaCreacionUnix = lead.created_at;\nconst fechaCreacion = unixToISO(fechaCreacionUnix);\nconst fechaDia = fechaCreacion ? fechaCreacion.substring(0, 10) : null;\nconst fechaMes = fechaDia ? fechaDia.substring(0, 7) + '-01' : null;\nconst fechaSemana = fechaCreacionUnix ? getMonday(new Date(fechaCreacionUnix * 1000)) : null;\n\n// Tipo cliente\nconst tipoCliente = getCF('n8n - TipoCliente');\nconst esNuevo = (tipoCliente === 'NUEVO') ? 1 : 0;\n\n// Caso especial: por campo O por status_id\nconst casoEspecialCampo = getCFBool('n8n - supp - caso_especial');\nconst casoEspecialStatus = (lead.status_id === 90801084) ? 1 : 0;\nconst casoEspecial = (casoEspecialCampo || casoEspecialStatus) ? 1 : 0;\n\n// ========================================\n// OBJETO FINAL\n// ========================================\n\nreturn {\n  json: {\n    // Identificadores\n    id: lead.id,\n    \n    // Datos básicos\n    nombre: contact.name || null,\n    telefono: getPhone(),\n    fecha_creacion: fechaCreacion,\n    status_id: lead.status_id,\n    etapa: getStatusName(lead.status_id),\n    \n    // Propiedad\n    cod_inmueble: codInmueble,\n    cod_propiedad: codPropiedad,\n    cod_propiedad_unificado: codUnificado,\n    inmueble_identificado: codUnificadoRaw ? 1 : 0,\n    link_urbania: linkUrbania,\n    \n    // Origen\n    origen: origen,\n    \n    // Bot - Respuesta\n    bot_respondio: getCFBool('rentas_mensajeia_salio'),\n    bot_apagado_manual: getCFBool('rentas_bot_apagado_manual'),\n    bot_fecha_ult_msg: getCF('bot - fecha_ult_msg'),\n    \n    // Bot - Horarios\n    dio_horario: dioHorario,\n    genero_horario: getCFBool('rentas_ia_generohorario'),\n    horario_registrado: getCFBool('rentas_ia_generohorario_registrado'),\n    horario_notificado: getCFBool('rentas_ia_generohorario_notificado'),\n    fecha1: fecha1,\n    fecha2: fecha2,\n    fecha_modo: fechaModo,\n    \n    // Bot - Errores\n    tuvo_error: getCFBool('n8n - supp - es_error'),\n    detalle_error: getCF('n8n - supp - detalle_es_error'),\n    error_marcado: getCFBool('rentas_error_marcado'),\n    estado_correccion: getCF('n8n - corregido') || 'N/A',\n    detalle_correccion: getCF('n8n - detalle corregido'),\n    \n    // Bot - Caso especial\n    caso_especial: casoEspecial,\n    detalle_caso_especial: getCF('n8n - supp - detalle_caso_especial'),\n    \n    // Bot - Seguimiento\n    seg1: getCF('n8n - supp - seg1'),\n    seg2: getCF('n8n - supp - seg2'),\n    animo: getCF('n8n - animo') || getCF('n8n - supp - animo'),\n    tiene_solucion: getCFBool('n8n - supp - tiene_solucion'),\n    cliente_identificado: getCFBool('n8n - supp - clienteIdentificado'),\n    \n    // Cliente\n    tipo_cliente: tipoCliente,\n    es_nuevo: esNuevo,\n    \n    // Fechas calculadas\n    fecha_dia: fechaDia,\n    fecha_semana: fechaSemana,\n    fecha_mes: fechaMes\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1808,
+        48
+      ],
+      "id": "dc7f8aea-a5a8-4c3e-abf4-bf419d62048b",
+      "name": "Code1"
     }
   ],
   "pinData": {},
@@ -2928,6 +2957,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-03T14:22:37.101Z",
-  "versionId": "0ba23880-5c48-4631-99cf-57be9e661bd6"
+  "updatedAt": "2025-11-29T15:58:01.881Z",
+  "versionId": "a0aafcd3-c3b3-49db-bbe0-3cbf3c599e79"
 }
