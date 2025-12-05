@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "Filter",
+            "node": "Sort",
             "type": "main",
             "index": 0
           }
@@ -24,17 +24,6 @@
       ]
     },
     "Get list of contacts": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request": {
       "main": [
         [
           {
@@ -88,7 +77,7 @@
             "index": 0
           },
           {
-            "node": "HTTP Request2",
+            "node": "HTTP Request Statuses",
             "type": "main",
             "index": 0
           }
@@ -264,168 +253,6 @@
         ]
       ]
     },
-    "If2": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Execute a SQL query5": {
-      "main": [
-        [
-          {
-            "node": "Execute a SQL query6",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Execute a SQL query4": {
-      "main": [
-        [
-          {
-            "node": "Execute a SQL query5",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Execute a SQL query6": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields8",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields8": {
-      "main": [
-        [
-          {
-            "node": "Insert or update rows in a table1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields3": {
-      "main": [
-        [
-          {
-            "node": "If2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request1": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get list of contacts1": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields2": {
-      "main": [
-        [
-          {
-            "node": "Execute a SQL query4",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request3": {
-      "main": [
-        [
-          {
-            "node": "Get list of contacts1",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Loop Over Items1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Loop Over Items1": {
-      "main": [
-        [],
-        [
-          {
-            "node": "HTTP Request3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "When clicking ‘Execute workflow’": {
-      "main": [
-        [
-          {
-            "node": "Code",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Insert or update rows in a table1": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Code1": {
       "main": [
         [
@@ -442,6 +269,28 @@
         [
           {
             "node": "Insert or update rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request Statuses": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sort": {
+      "main": [
+        [
+          {
+            "node": "Filter",
             "type": "main",
             "index": 0
           }
@@ -509,7 +358,7 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        480,
+        688,
         272
       ],
       "id": "73bb32d5-058b-41b9-ab8a-34a2fee7a7ff",
@@ -532,7 +381,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        928,
+        1136,
         176
       ],
       "id": "2c8ecad3-06b7-4f1b-914d-1142cbfd32cc",
@@ -546,40 +395,12 @@
     },
     {
       "parameters": {
-        "url": " https://propertamibotcom.kommo.com/api/v4/leads/pipelines/11240224/statuses",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "oAuth2Api",
-        "options": {
-          "response": {
-            "response": {
-              "responseFormat": "json"
-            }
-          }
-        }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        1152,
-        176
-      ],
-      "id": "a9a909b6-c353-486d-a2fd-bd20ba2c4eae",
-      "name": "HTTP Request",
-      "credentials": {
-        "oAuth2Api": {
-          "id": "CUkAxEZkWpxNLUY2",
-          "name": "Proper"
-        }
-      }
-    },
-    {
-      "parameters": {
         "options": {}
       },
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        704,
+        912,
         272
       ],
       "id": "f270d9f4-cbda-44c1-a100-6f3e18aa05ba",
@@ -592,7 +413,7 @@
             {
               "id": "9cd639ed-d911-486c-8770-5fbe6f7e9670",
               "name": "etapa",
-              "value": "={{\n  (() => {\n    const statuses = $('HTTP Request').item.json?._embedded?.statuses ?? [];\n    const statusId = $('Split Out1').item.json.status_id;\n    const hit = statuses.find(s => String(s.id) === String(statusId));\n    return hit?.name || '';\n  })()\n}}",
+              "value": "={{\n  (() => {\n    const statuses = $('HTTP Request Statuses').item.json?._embedded?.statuses ?? [];\n    const statusId = $('Split Out1').item.json.status_id;\n    const hit = statuses.find(s => String(s.id) === String(statusId));\n    return hit?.name || '';\n  })()\n}}",
               "type": "string"
             }
           ]
@@ -1130,11 +951,11 @@
             },
             {
               "name": "filter[created_at][from]",
-              "value": "1762750800"
+              "value": "1763960400"
             },
             {
               "name": "filter[created_at][to]",
-              "value": "={{ Math.floor(new Date(new Date($now).setHours(0,0,0,0) + 24*60*60*1000).getTime() / 1000) }}"
+              "value": "={{ Math.floor(new Date(new Date($now).setHours(0,0,0,0) + 48*60*60*1000).getTime() / 1000) }}"
             },
             {
               "name": "filter[pipeline_id][]",
@@ -1187,7 +1008,7 @@
       "typeVersion": 4.2,
       "position": [
         32,
-        272
+        256
       ],
       "id": "cbf10df5-5cd6-4377-8603-473438f969c5",
       "name": "HTTP Request2",
@@ -1963,817 +1784,14 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "WITH num_normalizado AS (\n  -- 1. Normaliza el número de teléfono recibido como parámetro ($1) una sola vez.\n  SELECT RIGHT(REGEXP_REPLACE($1, '\\D', '', 'g'), 9) AS n\n),\nbusqueda_unificada AS (\n  -- 2. Une los teléfonos normalizados de las 3 tablas, etiquetando su origen.\n  SELECT\n    RIGHT(REGEXP_REPLACE(COALESCE(telefono, ''), '\\D', '', 'g'), 9) AS tel9,\n    'INQUILINO' AS fuente\n  FROM RENTAS_CRM.INQUILINOS\n\n  UNION ALL\n\n  SELECT\n    RIGHT(REGEXP_REPLACE(COALESCE(telefono, ''), '\\D', '', 'g'), 9) AS tel9,\n    'PROPIETARIO' AS fuente\n  FROM RENTAS_CRM.PROPIETARIOS\n\n  UNION ALL\n\n  SELECT\n    RIGHT(REGEXP_REPLACE(COALESCE(telefono, ''), '\\D', '', 'g'), 9) AS tel9,\n    'PROPER' AS fuente\n  FROM CRM.equipo_proper_directorio\n),\ncoincidencias AS (\n  -- 3. Encuentra todas las coincidencias del número en la data unificada.\n  SELECT DISTINCT b.fuente\n  FROM busqueda_unificada b\n  JOIN num_normalizado n ON b.tel9 = n.n\n  WHERE b.tel9 IS NOT NULL AND b.tel9 <> '' AND b.tel9 NOT IN ('0', '000000000')\n)\n-- 4. Genera el resultado final: un booleano de existencia y un texto con las fuentes.\nSELECT\n  (SELECT COUNT(*) FROM coincidencias) > 0 AS existe,\n  COALESCE((SELECT STRING_AGG(fuente, ', ') FROM coincidencias), 'NINGUNO') AS encontrado_en;",
-        "options": {
-          "queryReplacement": "={{ $('Edit Fields2').item.json.telefono }}"
-        }
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        2272,
-        688
-      ],
-      "id": "fceedf5b-1726-4984-8ab2-0477467e68d6",
-      "name": "Execute a SQL query6",
-      "credentials": {
-        "postgres": {
-          "id": "fuKiWlAN9ojbRM9W",
-          "name": "Postgres account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": false,
-            "leftValue": "",
-            "typeValidation": "loose",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "add02cca-2660-4c19-a042-f1a71ff7e63b",
-              "leftValue": "={{ $('Get list of contacts1').item.json._embedded.contacts[0].custom_fields_values\n     .find(f => f.field_name === 'Phone')?.values?.[0]?.value || '' }}",
-              "rightValue": "",
-              "operator": {
-                "type": "string",
-                "operation": "exists",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "looseTypeValidation": true,
-        "options": {
-          "ignoreCase": true
-        }
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        1376,
-        688
-      ],
-      "id": "1224ce22-f955-442b-b453-8c1bf359945e",
-      "name": "If2"
-    },
-    {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "WITH num AS (\n  -- Normaliza el número de entrada: solo dígitos y últimos 9\n  SELECT RIGHT(REGEXP_REPLACE($1, '\\D', '', 'g'), 9) AS n\n),\nvis AS (\n  -- Normaliza todos los celulares de la tabla\n  SELECT\n    v.*,\n    RIGHT(REGEXP_REPLACE(COALESCE(v.celular, ''), '\\D', '', 'g'), 9) AS cel9\n  FROM RENTAS_CRM.VISITAS v\n),\nhits AS (\n  -- Coincidencias por celular normalizado (evita vacíos)\n  SELECT 1\n  FROM vis\n  JOIN num ON vis.cel9 = num.n\n  WHERE vis.cel9 <> ''\n),\nhits_con_inicio AS (\n  SELECT 1\n  FROM vis\n  JOIN num ON vis.cel9 = num.n\n  WHERE vis.cel9 <> '' AND vis.inicio IS NOT NULL\n)\nSELECT\n  EXISTS(SELECT 1 FROM hits)           AS existe_en_visitas,\n  EXISTS(SELECT 1 FROM hits_con_inicio) AS tiene_inicio;",
-        "options": {
-          "queryReplacement": "={{ $('Edit Fields2').item.json.telefono }}"
-        }
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        2048,
-        688
-      ],
-      "id": "320d5f80-bcce-4eda-a5d8-1391b9443195",
-      "name": "Execute a SQL query5",
-      "alwaysOutputData": true,
-      "credentials": {
-        "postgres": {
-          "id": "fuKiWlAN9ojbRM9W",
-          "name": "Postgres account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "SELECT EXISTS (\n  SELECT 1\n  FROM RENTAS_CRM.ENTREGA_INMUEBLE A\n  JOIN RENTAS_CRM.INQUILINOS B ON A.INQUILINO_ID = B.ID\n  WHERE RIGHT(REGEXP_REPLACE($1, '\\D', '', 'g'), 9) IN (\n    B.CLEAN_TELEFONO,\n    RIGHT(REGEXP_REPLACE(B.TELEFONO, '\\D', '', 'g'), 9)\n  )\n) AS ya_entregado;",
-        "options": {
-          "queryReplacement": "={{ $('Edit Fields2').item.json.telefono }}"
-        }
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        1824,
-        688
-      ],
-      "id": "ac7c13e1-2949-4cd7-ac28-2f8f205b2a8c",
-      "name": "Execute a SQL query4",
-      "alwaysOutputData": true,
-      "credentials": {
-        "postgres": {
-          "id": "fuKiWlAN9ojbRM9W",
-          "name": "Postgres account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "5e1bb824-6e86-4bd3-9268-334c0aa98eb5",
-              "name": "dio_horario",
-              "value": "={{ ($('Edit Fields2').item.json.fecha1?.trim() || $('Edit Fields2').item.json.fecha2?.trim() || $('Edit Fields2').item.json.fechaMODO?.trim()) ? 1 : 0 }}",
-              "type": "string"
-            },
-            {
-              "id": "6f7b16c5-fd23-4ace-92e9-e64f0911f1b5",
-              "name": "inmueble_identificado",
-              "value": "={{ $('Edit Fields2').item.json.codInmueble ? 1 : 0 }}",
-              "type": "string"
-            },
-            {
-              "id": "bd372d99-89ae-4496-bdbf-314005ef08e0",
-              "name": "agendo_visita",
-              "value": "={{ $('Execute a SQL query5').item.json.existe_en_visitas ? 1 : 0 }}",
-              "type": "boolean"
-            },
-            {
-              "id": "503a1740-4b14-471f-ae76-e95e3bf341f2",
-              "name": "realizo_visita",
-              "value": "={{ $('Execute a SQL query5').item.json.tiene_inicio ? 1 : 0 }}",
-              "type": "boolean"
-            },
-            {
-              "id": "327d03b2-aaf6-44dd-b5a8-316dff59661e",
-              "name": "inmueble_entregado",
-              "value": "={{ $('Execute a SQL query4').item.json.ya_entregado ? 1 : 0 }}",
-              "type": "boolean"
-            },
-            {
-              "id": "4f38fa84-0d64-4c5c-b21d-3dc7f6537c70",
-              "name": "fecha_dia",
-              "value": "={{ new Date($('Edit Fields2').item.json.fechaCreacion * 1000).toISOString().slice(0, 10) }}",
-              "type": "string"
-            },
-            {
-              "id": "2384ba2c-ab71-4a04-a800-2758c608a5c9",
-              "name": "fecha_mes",
-              "value": "={{ new Date($('Edit Fields2').item.json.fechaCreacion * 1000).toISOString().split('T')[0].slice(0,7) + \"-01\" }}",
-              "type": "string"
-            },
-            {
-              "id": "49900d16-c092-4124-99c9-45e066f7dcdb",
-              "name": "caso_especial",
-              "value": "={{ $('Edit Fields2').item.json.statusID === \"90801084\" ? 1 : 0 }}",
-              "type": "string"
-            },
-            {
-              "id": "297a8f5c-4972-4930-a9cd-71f9c66783d3",
-              "name": "fecha_semana",
-              "value": "={{\n  (() => {\n    const d = new Date($('Edit Fields2').item.json.fechaCreacion * 1000);\n    const day = d.getDay(); // domingo=0, lunes=1, ..., sábado=6\n    const diff = (day === 0 ? -6 : 1) - day; // retroceder hasta lunes\n    d.setDate(d.getDate() + diff);\n    d.setHours(0, 0, 0, 0);\n    return d.toISOString().split('T')[0]; // YYYY-MM-DD\n  })()\n}}",
-              "type": "string"
-            },
-            {
-              "id": "0fee53d8-b95f-4cb4-a7df-a086bf8fdfa1",
-              "name": "tipo_cliente",
-              "value": "={{(($('HTTP Request3').item.json.custom_fields_values || []).find(x => x.field_name === 'n8n - TipoCliente')?.values[0].value) || ''}}",
-              "type": "string"
-            },
-            {
-              "id": "4dfee34b-8b36-4b9d-b6d6-64848edb38a9",
-              "name": "es_nuevo",
-              "value": "={{((($('HTTP Request3').item.json.custom_fields_values || []).find(x => x.field_name === 'n8n - TipoCliente')?.values[0].value) === 'NUEVO') ? 1 : 0}}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        2496,
-        688
-      ],
-      "id": "4b88892c-0fd8-433f-8949-c767ef1bdb4d",
-      "name": "Edit Fields8"
-    },
-    {
-      "parameters": {
-        "operation": "upsert",
-        "schema": {
-          "__rl": true,
-          "value": "crm",
-          "mode": "list",
-          "cachedResultName": "crm"
-        },
-        "table": {
-          "__rl": true,
-          "value": "reporte_david_ia",
-          "mode": "list",
-          "cachedResultName": "reporte_david_ia"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "id": "={{ $('Edit Fields2').item.json.idKommo }}",
-            "nombre": "={{ $('Edit Fields2').item.json.nombre }}",
-            "telefono": "={{ $('Edit Fields2').item.json.telefono }}",
-            "fechaCreacion": "={{ new Date($('Edit Fields2').item.json.fechaCreacion * 1000).toISOString().replace('T',' ').substring(0,19) }}",
-            "statusID": "={{ $('Edit Fields2').item.json.statusID }}",
-            "codInmueble": "={{ $('Edit Fields2').item.json.codInmueble }}",
-            "idKommo": "={{ $('Edit Fields2').item.json.idKommo }}",
-            "origen": "={{ $('Edit Fields2').item.json.origen }}",
-            "etapa": "={{ $('Edit Fields2').item.json.etapa }}",
-            "nc_order": 0,
-            "fecha1": "={{ $('Edit Fields2').item.json.fecha1 }}",
-            "fecha2": "={{ $('Edit Fields2').item.json.fecha2 }}",
-            "fecha_modo": "={{ $('Edit Fields2').item.json.fechaMODO }}",
-            "dio_horario": "={{ $json.dio_horario }}",
-            "agendo_visita": "={{ $json.agendo_visita }}",
-            "inmueble_entregado": "={{ $json.inmueble_entregado }}",
-            "realizo_visita": "={{ $json.realizo_visita }}",
-            "inmueble_identificado": "={{ $json.inmueble_identificado }}",
-            "caso_especial": "={{ $json.caso_especial }}",
-            "fecha_mes": "={{ $json.fecha_mes }}",
-            "fecha_dia": "={{ $json.fecha_dia }}",
-            "fecha_semana": "={{ $json.fecha_semana }}",
-            "tipo_cliente": "={{ $json.tipo_cliente }}",
-            "es_nuevo": "={{ $json.es_nuevo }}",
-            "descp_caso_especial": "={{ $('Edit Fields2').item.json.desc_caso_especial }}"
-          },
-          "matchingColumns": [
-            "id"
-          ],
-          "schema": [
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "created_at",
-              "displayName": "created_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "updated_at",
-              "displayName": "updated_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "created_by",
-              "displayName": "created_by",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "updated_by",
-              "displayName": "updated_by",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "nc_order",
-              "displayName": "nc_order",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "nombre",
-              "displayName": "nombre",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "telefono",
-              "displayName": "telefono",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "fechaCreacion",
-              "displayName": "fechaCreacion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "statusID",
-              "displayName": "statusID",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "codInmueble",
-              "displayName": "codInmueble",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "idKommo",
-              "displayName": "idKommo",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "origen",
-              "displayName": "origen",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "etapa",
-              "displayName": "etapa",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "fecha1",
-              "displayName": "fecha1",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "fecha2",
-              "displayName": "fecha2",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "fecha_modo",
-              "displayName": "fecha_modo",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "dio_horario",
-              "displayName": "dio_horario",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "agendo_visita",
-              "displayName": "agendo_visita",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "inmueble_entregado",
-              "displayName": "inmueble_entregado",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "realizo_visita",
-              "displayName": "realizo_visita",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "inmueble_identificado",
-              "displayName": "inmueble_identificado",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "caso_especial",
-              "displayName": "caso_especial",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "fecha_mes",
-              "displayName": "fecha_mes",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "fecha_dia",
-              "displayName": "fecha_dia",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "fecha_semana",
-              "displayName": "fecha_semana",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "tipo_cliente",
-              "displayName": "tipo_cliente",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "es_nuevo",
-              "displayName": "es_nuevo",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "descp_caso_especial",
-              "displayName": "descp_caso_especial",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false,
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        2720,
-        768
-      ],
-      "id": "de29fd2f-bcba-4f00-ab77-71d46a5c698a",
-      "name": "Insert or update rows in a table1",
-      "alwaysOutputData": true,
-      "credentials": {
-        "postgres": {
-          "id": "fuKiWlAN9ojbRM9W",
-          "name": "Postgres account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "9cd639ed-d911-486c-8770-5fbe6f7e9670",
-              "name": "etapa",
-              "value": "={{\n  (() => {\n    const statuses = $('HTTP Request1').item.json?._embedded?.statuses ?? [];\n    const statusId = $('HTTP Request3').item.json.status_id;\n    const hit = statuses.find(s => String(s.id) === String(statusId));\n    return hit?.name || '';\n  })()\n}}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1152,
-        688
-      ],
-      "id": "2ebf3f1d-c5b4-4a69-b965-372c28ef4ad6",
-      "name": "Edit Fields3"
-    },
-    {
-      "parameters": {
-        "url": " https://propertamibotcom.kommo.com/api/v4/leads/pipelines/11240224/statuses",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "oAuth2Api",
-        "options": {
-          "response": {
-            "response": {
-              "responseFormat": "json"
-            }
-          }
-        }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        928,
-        688
-      ],
-      "id": "cc23a3ff-6da0-4274-b4d9-b584b699949a",
-      "name": "HTTP Request1",
-      "credentials": {
-        "oAuth2Api": {
-          "id": "CUkAxEZkWpxNLUY2",
-          "name": "Proper"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "authentication": "longLivedToken",
-        "resource": "contacts",
-        "filter": {
-          "id": "={{ $json._embedded.contacts[0].id }}"
-        },
-        "options": {
-          "with": [
-            "leads"
-          ]
-        },
-        "limit": 1
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        704,
-        688
-      ],
-      "id": "380b8bf0-d056-453e-8194-291aae6ad15a",
-      "name": "Get list of contacts1",
-      "credentials": {
-        "kommoLongLivedApi": {
-          "id": "20bzHfzuZvuDPmtm",
-          "name": "Kommo Long Lived Token account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "ed4e7330-076f-4bc8-a9fe-655965921e07",
-              "name": "nombre",
-              "value": "={{ $('Get list of contacts1').item.json._embedded.contacts[0].name }}",
-              "type": "string"
-            },
-            {
-              "id": "09d7ed93-7735-4993-b380-9e4529016f0d",
-              "name": "telefono",
-              "value": "={{ $('Get list of contacts1').item.json._embedded.contacts[0].custom_fields_values\n     .find(f => f.field_name === 'Phone')?.values?.[0]?.value || '' }}",
-              "type": "string"
-            },
-            {
-              "id": "830bdbe1-696d-4a85-9e28-7912409b356e",
-              "name": "fechaCreacion",
-              "value": "={{ $('HTTP Request3').item.json.created_at }}",
-              "type": "string"
-            },
-            {
-              "id": "90859fd1-3a39-4eba-89e5-47c1e46d998d",
-              "name": "statusID",
-              "value": "={{ $('HTTP Request3').item.json.status_id }}",
-              "type": "string"
-            },
-            {
-              "id": "7a0f0042-58be-4ea3-8fc3-d90db25c73b1",
-              "name": "codInmueble",
-              "value": "={{\n  (()=>{\n    const lead = $('HTTP Request3').item.json;\n    const cf = (lead.custom_fields_values || []).find(x => x.field_name === 'codigoInmueble');\n    const val = (cf && cf.values && cf.values[0]) ? cf.values[0].value : '';\n    return val;\n  })()\n}}",
-              "type": "string"
-            },
-            {
-              "id": "921a1934-e048-4b53-b493-15ed624117d1",
-              "name": "idKommo",
-              "value": "={{ $('HTTP Request3').item.json.id }}",
-              "type": "string"
-            },
-            {
-              "id": "02b2ae1b-ec65-420d-88c7-f0edf9038110",
-              "name": "origen",
-              "value": "={{\n  (()=>{\n    const lead = $('HTTP Request3').item.json;\n    const customFields = lead.custom_fields_values || [];\n    const cfUrbania = customFields.find(x => x.field_name === 'LinkUrbania');\n    const hasLinkUrbania = (cfUrbania && cfUrbania.values && cfUrbania.values[0] && cfUrbania.values[0].value);\n    if (hasLinkUrbania) {\n      return 'URBANIA';\n    }\n    const cfOrigen = customFields.find(x => x.field_name === 'n8n - Origen');\n    const origenValue = (cfOrigen && cfOrigen.values && cfOrigen.values[0]) ? cfOrigen.values[0].value : '';\n    return origenValue;\n  })()\n}}",
-              "type": "string"
-            },
-            {
-              "id": "1ffd7449-5232-40fd-8fe0-5b6520736d1f",
-              "name": "etapa",
-              "value": "={{ $('Edit Fields3').item.json.etapa }}",
-              "type": "string"
-            },
-            {
-              "id": "1d19dd78-6a98-45db-81d4-f21b72c4bff1",
-              "name": "fecha1",
-              "value": "={{(()=>{const lead = $('HTTP Request3').item.json; const cf = (lead.custom_fields_values || []).find(x => x.field_name === 'n8n - fecha1'); return (cf && cf.values && cf.values[0]) ? cf.values[0].value : '';})()}}",
-              "type": "string"
-            },
-            {
-              "id": "e98d67b2-6626-41d7-9312-07ef8e399d31",
-              "name": "fecha2",
-              "value": "={{(()=>{const lead = $('HTTP Request3').item.json; const cf = (lead.custom_fields_values || []).find(x => x.field_name === 'n8n - fecha2'); return (cf && cf.values && cf.values[0]) ? cf.values[0].value : '';})()}}",
-              "type": "string"
-            },
-            {
-              "id": "d3556b37-eeb5-4100-a1c3-366bff4ec8b1",
-              "name": "fechaMODO",
-              "value": "={{(()=>{const lead = $('HTTP Request3').item.json; const cf = (lead.custom_fields_values || []).find(x => x.field_name === 'n8n - fechaMODO'); return (cf && cf.values && cf.values[0]) ? cf.values[0].value : '';})()}}",
-              "type": "string"
-            },
-            {
-              "id": "b2b50474-be45-4d6d-9123-d7a6594fbf2e",
-              "name": "LinkUrbania",
-              "value": "={{(()=>{const lead = $('HTTP Request3').item.json; const cf = (lead.custom_fields_values || []).find(x => x.field_name === 'LinkUrbania'); const val = (cf && cf.values && cf.values[0]) ? cf.values[0].value : ''; return val;})()}}",
-              "type": "string"
-            },
-            {
-              "id": "b17f0c16-d2ad-451a-8656-f3dee1cd16da",
-              "name": "desc_caso_especial",
-              "value": "={{(()=>{const lead = $('HTTP Request3').item.json; const cf = (lead.custom_fields_values || []).find(x => x.field_name === 'n8n - casoEspecial'); const val = (cf && cf.values && cf.values[0]) ? cf.values[0].value : ''; return val;})()}}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1600,
-        688
-      ],
-      "id": "8a91b028-34b4-495e-b3bc-7eb09ba40172",
-      "name": "Edit Fields2"
-    },
-    {
-      "parameters": {
-        "url": "=https://propertamibotcom.kommo.com/api/v4/leads/{{ $json.leadId }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "oAuth2Api",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "with",
-              "value": "contacts"
-            }
-          ]
-        },
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "accept",
-              "value": "application/json"
-            }
-          ]
-        },
-        "options": {
-          "response": {
-            "response": {
-              "fullResponse": false,
-              "neverError": false,
-              "responseFormat": "json"
-            }
-          },
-          "pagination": {}
-        }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        480,
-        688
-      ],
-      "id": "9c0230b4-edb9-4f91-9bf8-82082792c7d5",
-      "name": "HTTP Request3",
-      "alwaysOutputData": true,
-      "retryOnFail": false,
-      "credentials": {
-        "oAuth2Api": {
-          "id": "CUkAxEZkWpxNLUY2",
-          "name": "Proper"
-        }
-      },
-      "onError": "continueErrorOutput"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 3,
-      "position": [
-        256,
-        736
-      ],
-      "id": "77a3bace-f2d7-4c12-a4fe-c5cd217f696e",
-      "name": "Loop Over Items1"
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        -192,
-        736
-      ],
-      "id": "783e5f54-af3a-4d39-aea8-575fe231dd83",
-      "name": "When clicking ‘Execute workflow’"
-    },
-    {
-      "parameters": {
-        "jsCode": "const leadIds = [22208525, 22205767, 22205719, 22193641, 22189485, 22185553, 22185433, 22184581, 22184255, 22183093, 22182781, 22182665, 22182525, 22175345, 22160307, 22151069, 22135139, 22135129, 22133593, 22132619, 22128499, 22126007, 22121113, 22119819, 22101855, 22098461, 22080719, 22058837, 22039433, 22032121, 22028283, 22027075, 22027071, 22026009, 22025811, 22025799, 22001351, 21993925, 21993919, 21989293]\n\nreturn leadIds.map(id => ({json: {leadId: id}}));"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        32,
-        736
-      ],
-      "id": "7c836d75-2c4b-4f3b-b482-26a9c2e09ad8",
-      "name": "Code"
-    },
-    {
-      "parameters": {
-        "operation": "executeQuery",
         "query": "-- =============================================\n-- TABLA SIMPLIFICADA - Solo datos de Kommo\n-- =============================================\n\nCREATE TABLE IF NOT EXISTS crm.bot_leads_david (\n    -- === IDENTIFICADORES ===\n    id BIGINT PRIMARY KEY,\n    \n    -- === DATOS BÁSICOS ===\n    nombre VARCHAR(255),\n    telefono VARCHAR(50),\n    fecha_creacion TIMESTAMP,\n    status_id INTEGER,\n    etapa VARCHAR(100),\n    \n    -- === PROPIEDAD ===\n    cod_inmueble VARCHAR(50),\n    cod_propiedad VARCHAR(50),\n    cod_propiedad_unificado VARCHAR(50),\n    inmueble_identificado SMALLINT DEFAULT 0,\n    link_urbania TEXT,\n    \n    -- === ORIGEN ===\n    origen VARCHAR(30),\n    \n    -- === BOT - RESPUESTA ===\n    bot_respondio SMALLINT DEFAULT 0,\n    bot_apagado_manual SMALLINT DEFAULT 0,\n    bot_fecha_ult_msg TIMESTAMP,\n    \n    -- === BOT - HORARIOS ===\n    dio_horario SMALLINT DEFAULT 0,\n    genero_horario SMALLINT DEFAULT 0,\n    horario_registrado SMALLINT DEFAULT 0,\n    horario_notificado SMALLINT DEFAULT 0,\n    fecha1 VARCHAR(50),\n    fecha2 VARCHAR(50),\n    fecha_modo VARCHAR(50),\n    \n    -- === BOT - ERRORES ===\n    tuvo_error SMALLINT DEFAULT 0,\n    detalle_error TEXT,\n    error_marcado SMALLINT DEFAULT 0,\n    estado_correccion VARCHAR(20),\n    detalle_correccion TEXT,\n    \n    -- === BOT - CASO ESPECIAL ===\n    caso_especial SMALLINT DEFAULT 0,\n    detalle_caso_especial TEXT,\n    \n    -- === BOT - SEGUIMIENTO ===\n    seg1 TEXT,\n    seg2 TEXT,\n    animo VARCHAR(50),\n    tiene_solucion SMALLINT DEFAULT 0,\n    cliente_identificado SMALLINT DEFAULT 0,\n    \n    -- === CLIENTE ===\n    tipo_cliente VARCHAR(50),\n    es_nuevo SMALLINT DEFAULT 0,\n    \n    -- === FECHAS CALCULADAS ===\n    fecha_dia DATE,\n    fecha_semana DATE,\n    fecha_mes DATE,\n    \n    -- === METADATA ===\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n\n-- Índices\nCREATE INDEX IF NOT EXISTS idx_bld_fecha ON crm.bot_leads_david(fecha_creacion);\nCREATE INDEX IF NOT EXISTS idx_bld_origen ON crm.bot_leads_david(origen);\nCREATE INDEX IF NOT EXISTS idx_bld_propiedad ON crm.bot_leads_david(cod_propiedad_unificado);\nCREATE INDEX IF NOT EXISTS idx_bld_error ON crm.bot_leads_david(tuvo_error);\nCREATE INDEX IF NOT EXISTS idx_bld_horario ON crm.bot_leads_david(genero_horario);",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -224,
-        -176
+        -464,
+        -208
       ],
       "id": "4866244e-5e41-4bce-9c38-cf59173e2f97",
       "name": "Execute a SQL query7",
@@ -2786,7 +1804,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// ========================================\n// TRANSFORMACIÓN DE LEAD KOMMO → POSTGRESQL\n// ========================================\n\n// Obtener datos de los nodos correctos de TU flujo\nconst lead = $('Split Out1').item.json;\nconst statuses = $('HTTP Request').first().json._embedded?.statuses || [];\nconst contactData = $('Get list of contacts').first().json._embedded?.contacts?.[0] || {};\n\n// Función helper para obtener custom field del LEAD\nfunction getCF(fieldName) {\n  const cf = (lead.custom_fields_values || []).find(x => x.field_name === fieldName);\n  return (cf && cf.values && cf.values[0]) ? cf.values[0].value : null;\n}\n\n// Función helper para campos booleanos (toggle/checkbox)\nfunction getCFBool(fieldName) {\n  const val = getCF(fieldName);\n  return (val === true || val === 1 || val === '1') ? 1 : 0;\n}\n\n// Función para obtener teléfono del contacto\nfunction getPhone() {\n  const phoneField = (contactData.custom_fields_values || []).find(f => f.field_name === 'Phone');\n  return phoneField?.values?.[0]?.value || null;\n}\n\n// Función para obtener nombre del status\nfunction getStatusName(statusId) {\n  const hit = statuses.find(s => String(s.id) === String(statusId));\n  return hit?.name || '';\n}\n\n// Función para parsear fecha Unix a ISO\nfunction unixToISO(unix) {\n  if (!unix) return null;\n  return new Date(unix * 1000).toISOString().replace('T', ' ').substring(0, 19);\n}\n\n// Función para calcular fecha del lunes de la semana\nfunction getMonday(date) {\n  const d = new Date(date);\n  const day = d.getDay();\n  const diff = (day === 0 ? -6 : 1) - day;\n  d.setDate(d.getDate() + diff);\n  return d.toISOString().split('T')[0];\n}\n\n// ========================================\n// EXTRACCIÓN DE CAMPOS\n// ========================================\n\n// Códigos de propiedad\nconst codInmueble = getCF('codigoInmueble');\nconst codPropiedad = getCF('n8n - CODPROPIEDAD');\nconst codUnificadoRaw = codInmueble || codPropiedad || null;\n\n// Normalizar MODO\nlet codUnificado = codUnificadoRaw;\nif (codUnificadoRaw && codUnificadoRaw.toString().toUpperCase().includes('MODO')) {\n  codUnificado = 'MODO';\n}\n\n// Origen: priorizar LinkUrbania, sino n8n - Origen\nconst linkUrbania = getCF('LinkUrbania');\nlet origen = getCF('n8n - Origen') || 'SIN_ORIGEN';\nif (linkUrbania) {\n  origen = 'URBANIA';\n}\n\n// Fechas de horarios\nconst fecha1 = getCF('n8n - fecha1');\nconst fecha2 = getCF('n8n - fecha2');\nconst fechaModo = getCF('n8n - fechaMODO');\nconst dioHorario = (fecha1 || fecha2 || fechaModo) ? 1 : 0;\n\n// Fecha de creación y derivadas\nconst fechaCreacionUnix = lead.created_at;\nconst fechaCreacion = unixToISO(fechaCreacionUnix);\nconst fechaDia = fechaCreacion ? fechaCreacion.substring(0, 10) : null;\nconst fechaMes = fechaDia ? fechaDia.substring(0, 7) + '-01' : null;\nconst fechaSemana = fechaCreacionUnix ? getMonday(new Date(fechaCreacionUnix * 1000)) : null;\n\n// Tipo cliente\nconst tipoCliente = getCF('n8n - TipoCliente');\nconst esNuevo = (tipoCliente === 'NUEVO') ? 1 : 0;\n\n// Caso especial: por campo O por status_id\nconst casoEspecialCampo = getCFBool('n8n - supp - caso_especial');\nconst casoEspecialStatus = (lead.status_id === 90801084) ? 1 : 0;\nconst casoEspecial = (casoEspecialCampo || casoEspecialStatus) ? 1 : 0;\n\n// ========================================\n// OBJETO FINAL\n// ========================================\n\nreturn {\n  json: {\n    // Identificadores\n    id: lead.id,\n    \n    // Datos básicos\n    nombre: contactData.name || null,\n    telefono: getPhone(),\n    fecha_creacion: fechaCreacion,\n    status_id: lead.status_id,\n    etapa: getStatusName(lead.status_id),\n    \n    // Propiedad\n    cod_inmueble: codInmueble,\n    cod_propiedad: codPropiedad,\n    cod_propiedad_unificado: codUnificado,\n    inmueble_identificado: codUnificadoRaw ? 1 : 0,\n    link_urbania: linkUrbania,\n    \n    // Origen\n    origen: origen,\n    \n    // Bot - Respuesta\n    bot_respondio: getCFBool('rentas_mensajeia_salio'),\n    bot_apagado_manual: getCFBool('rentas_bot_apagado_manual'),\n    bot_fecha_ult_msg: getCF('bot - fecha_ult_msg'),\n    \n    // Bot - Horarios\n    dio_horario: dioHorario,\n    genero_horario: getCFBool('rentas_ia_generohorario'),\n    horario_registrado: getCFBool('rentas_ia_generohorario_registrado'),\n    horario_notificado: getCFBool('rentas_ia_generohorario_notificado'),\n    fecha1: fecha1,\n    fecha2: fecha2,\n    fecha_modo: fechaModo,\n    \n    // Bot - Errores\n    tuvo_error: getCFBool('n8n - supp - es_error'),\n    detalle_error: getCF('n8n - supp - detalle_es_error'),\n    error_marcado: getCFBool('rentas_error_marcado'),\n    estado_correccion: getCF('n8n - corregido') || 'N/A',\n    detalle_correccion: getCF('n8n - detalle corregido'),\n    \n    // Bot - Caso especial\n    caso_especial: casoEspecial,\n    detalle_caso_especial: getCF('n8n - supp - detalle_caso_especial'),\n    \n    // Bot - Seguimiento\n    seg1: getCF('n8n - supp - seg1'),\n    seg2: getCF('n8n - supp - seg2'),\n    animo: getCF('n8n - animo') || getCF('n8n - supp - animo'),\n    tiene_solucion: getCFBool('n8n - supp - tiene_solucion'),\n    cliente_identificado: getCFBool('n8n - supp - clienteIdentificado'),\n    \n    // Cliente\n    tipo_cliente: tipoCliente,\n    es_nuevo: esNuevo,\n    \n    // Fechas calculadas\n    fecha_dia: fechaDia,\n    fecha_semana: fechaSemana,\n    fecha_mes: fechaMes\n  }\n};"
+        "jsCode": "// ========================================\n// TRANSFORMACIÓN DE LEAD KOMMO → POSTGRESQL\n// ========================================\n\n// Obtener datos de los nodos correctos de TU flujo\nconst lead = $('Split Out1').item.json;\nconst statuses = $('HTTP Request Statuses').first().json._embedded?.statuses || [];\nconst contactData = $('Get list of contacts').first().json._embedded?.contacts?.[0] || {};\n\n// Función helper para obtener custom field del LEAD\nfunction getCF(fieldName) {\n  const cf = (lead.custom_fields_values || []).find(x => x.field_name === fieldName);\n  return (cf && cf.values && cf.values[0]) ? cf.values[0].value : null;\n}\n\n// Función helper para campos booleanos (toggle/checkbox)\nfunction getCFBool(fieldName) {\n  const val = getCF(fieldName);\n  return (val === true || val === 1 || val === '1') ? 1 : 0;\n}\n\n// Función para obtener teléfono del contacto\nfunction getPhone() {\n  const phoneField = (contactData.custom_fields_values || []).find(f => f.field_name === 'Phone');\n  return phoneField?.values?.[0]?.value || null;\n}\n\n// Función para obtener nombre del status\nfunction getStatusName(statusId) {\n  const hit = statuses.find(s => String(s.id) === String(statusId));\n  return hit?.name || '';\n}\n\n// Función para parsear fecha Unix a ISO\nfunction unixToISO(unix) {\n  if (!unix) return null;\n  return new Date(unix * 1000).toISOString().replace('T', ' ').substring(0, 19);\n}\n\n// Función para calcular fecha del lunes de la semana\nfunction getMonday(date) {\n  const d = new Date(date);\n  const day = d.getDay();\n  const diff = (day === 0 ? -6 : 1) - day;\n  d.setDate(d.getDate() + diff);\n  return d.toISOString().split('T')[0];\n}\n\n// ========================================\n// EXTRACCIÓN DE CAMPOS\n// ========================================\n\n// Códigos de propiedad\nconst codInmueble = getCF('codigoInmueble');\nconst codPropiedad = getCF('n8n - CODPROPIEDAD');\nconst codUnificadoRaw = codInmueble || codPropiedad || null;\n\n// Normalizar MODO\nlet codUnificado = codUnificadoRaw;\nif (codUnificadoRaw && codUnificadoRaw.toString().toUpperCase().includes('MODO')) {\n  codUnificado = 'MODO';\n}\n\n// Origen: priorizar LinkUrbania, sino n8n - Origen\nconst linkUrbania = getCF('LinkUrbania');\nlet origen = getCF('n8n - Origen') || 'SIN_ORIGEN';\nif (linkUrbania) {\n  origen = 'URBANIA';\n}\n\n// Fechas de horarios\nconst fecha1 = getCF('n8n - fecha1');\nconst fecha2 = getCF('n8n - fecha2');\nconst fechaModo = getCF('n8n - fechaMODO');\nconst dioHorario = (fecha1 || fecha2 || fechaModo) ? 1 : 0;\n\n// Fecha de creación y derivadas\nconst fechaCreacionUnix = lead.created_at;\nconst fechaCreacion = unixToISO(fechaCreacionUnix);\nconst fechaDia = fechaCreacion ? fechaCreacion.substring(0, 10) : null;\nconst fechaMes = fechaDia ? fechaDia.substring(0, 7) + '-01' : null;\nconst fechaSemana = fechaCreacionUnix ? getMonday(new Date(fechaCreacionUnix * 1000)) : null;\n\n// Tipo cliente\nconst tipoCliente = getCF('n8n - TipoCliente');\nconst esNuevo = (tipoCliente === 'NUEVO') ? 1 : 0;\n\n// Caso especial: por campo O por status_id\nconst casoEspecialCampo = getCFBool('n8n - supp - caso_especial');\nconst casoEspecialStatus = (lead.status_id === 90801084) ? 1 : 0;\nconst casoEspecial = (casoEspecialCampo || casoEspecialStatus) ? 1 : 0;\n\n// ========================================\n// OBJETO FINAL\n// ========================================\n\nreturn {\n  json: {\n    // Identificadores\n    id: lead.id,\n    \n    // Datos básicos\n    nombre: contactData.name || null,\n    telefono: getPhone(),\n    fecha_creacion: fechaCreacion,\n    status_id: lead.status_id,\n    etapa: getStatusName(lead.status_id),\n    \n    // Propiedad\n    cod_inmueble: codInmueble,\n    cod_propiedad: codPropiedad,\n    cod_propiedad_unificado: codUnificado,\n    inmueble_identificado: codUnificadoRaw ? 1 : 0,\n    link_urbania: linkUrbania,\n    \n    // Origen\n    origen: origen,\n    \n    // Bot - Respuesta\n    bot_respondio: getCFBool('rentas_mensajeia_salio'),\n    bot_apagado_manual: getCFBool('rentas_bot_apagado_manual'),\n    bot_fecha_ult_msg: getCF('bot - fecha_ult_msg'),\n    \n    // Bot - Horarios\n    dio_horario: dioHorario,\n    genero_horario: getCFBool('rentas_ia_generohorario'),\n    horario_registrado: getCFBool('rentas_ia_generohorario_registrado'),\n    horario_notificado: getCFBool('rentas_ia_generohorario_notificado'),\n    fecha1: fecha1,\n    fecha2: fecha2,\n    fecha_modo: fechaModo,\n    \n    // Bot - Errores\n    tuvo_error: getCFBool('n8n - supp - es_error'),\n    detalle_error: getCF('n8n - supp - detalle_es_error'),\n    error_marcado: getCFBool('rentas_error_marcado'),\n    estado_correccion: getCF('n8n - corregido') || 'N/A',\n    detalle_correccion: getCF('n8n - detalle corregido'),\n    \n    // Bot - Caso especial\n    caso_especial: casoEspecial,\n    detalle_caso_especial: getCF('n8n - supp - detalle_caso_especial'),\n    \n    // Bot - Seguimiento\n    seg1: getCF('n8n - supp - seg1'),\n    seg2: getCF('n8n - supp - seg2'),\n    animo: getCF('n8n - animo') || getCF('n8n - supp - animo'),\n    tiene_solucion: getCFBool('n8n - supp - tiene_solucion'),\n    cliente_identificado: getCFBool('n8n - supp - clienteIdentificado'),\n    \n    // Cliente\n    tipo_cliente: tipoCliente,\n    es_nuevo: esNuevo,\n    \n    // Fechas calculadas\n    fecha_dia: fechaDia,\n    fecha_semana: fechaSemana,\n    fecha_mes: fechaMes\n  }\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -3047,6 +2065,55 @@
       ],
       "id": "3b36cad6-1a8a-4487-934e-d16a8c471739",
       "name": "Edit Fields9"
+    },
+    {
+      "parameters": {
+        "url": " https://propertamibotcom.kommo.com/api/v4/leads/pipelines/11240224/statuses",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -160,
+        256
+      ],
+      "id": "a9a909b6-c353-486d-a2fd-bd20ba2c4eae",
+      "name": "HTTP Request Statuses",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "CUkAxEZkWpxNLUY2",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "created_at",
+              "order": "descending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        464,
+        272
+      ],
+      "id": "89389419-fc80-4d8a-b790-e878da0d8c20",
+      "name": "Sort"
     }
   ],
   "pinData": {},
@@ -3078,6 +2145,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-12-03T17:10:19.138Z",
-  "versionId": "5ee2b665-f452-4741-a6ae-99f4ac39fa9a"
+  "updatedAt": "2025-12-04T13:11:01.397Z",
+  "versionId": "8e9cfd6b-5a22-4a88-b18a-d9d963d5c1c7"
 }
