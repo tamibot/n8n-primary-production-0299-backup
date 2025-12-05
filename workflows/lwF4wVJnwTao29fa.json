@@ -1,0 +1,200 @@
+{
+  "active": true,
+  "connections": {
+    "Al hacer clic en Ejecutar": {
+      "main": [
+        [
+          {
+            "node": "Postgres Diario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Diario": {
+      "main": [
+        [
+          {
+            "node": "Postgres Semanal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Semanal": {
+      "main": [
+        [
+          {
+            "node": "Crear Tablas HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear Tablas HTML": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Programado (8 AM)1": {
+      "main": [
+        [
+          {
+            "node": "Postgres Diario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-04T16:41:28.839Z",
+  "id": "lwF4wVJnwTao29fa",
+  "isArchived": false,
+  "meta": null,
+  "name": "Reporte Bot Leads: Diario vs Semanal",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "d5b95d23-e73d-4a27-973c-e3d6d2139db2",
+      "name": "Al hacer clic en Ejecutar",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT fecha_dia::date AS dia, COUNT(DISTINCT telefono) AS cant_leads, COUNT(DISTINCT CASE WHEN inmueble_identificado = 1 THEN telefono END) AS cant_leads_inmueble_identificado, ROUND( COUNT(DISTINCT CASE WHEN inmueble_identificado = 1 THEN telefono END)::numeric / NULLIF(COUNT(DISTINCT telefono), 0), 2 ) AS porc_identificado, COUNT(DISTINCT CASE WHEN cod_propiedad_unificado ILIKE '%MODO%' THEN telefono END) AS cant_leads_modo, COUNT(DISTINCT CASE WHEN cod_propiedad_unificado NOT ILIKE '%MODO%' THEN telefono END) AS cant_leads_retail FROM crm.bot_leads_david WHERE es_nuevo = 1 AND FECHA_DIA::DATE = CURRENT_DATE - 1 GROUP BY 1 ORDER BY 1 DESC;",
+        "additionalFields": {}
+      },
+      "id": "f8a1cb93-6d63-4ebb-ba07-9abe949a7a26",
+      "name": "Postgres Diario",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -64
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT date_trunc('week', fecha_dia)::date AS semana, COUNT(DISTINCT telefono) AS cant_leads, COUNT(DISTINCT CASE WHEN inmueble_identificado = 1 THEN telefono END) AS cant_leads_inmueble_identificado, ROUND( COUNT(DISTINCT CASE WHEN inmueble_identificado = 1 THEN telefono END)::numeric / NULLIF(COUNT(DISTINCT telefono), 0), 2 ) AS porc_identificado, COUNT(DISTINCT CASE WHEN COD_PROPIEDAD_UNIFICADO ILIKE '%MODO%' THEN TELEFONO END) CANT_LEADS_MODO, COUNT(DISTINCT CASE WHEN COD_PROPIEDAD_UNIFICADO NOT ILIKE '%MODO%' THEN TELEFONO END) CANT_LEADS_RETAIL FROM crm.bot_leads_david WHERE es_nuevo = 1 GROUP BY 1 ORDER BY 1 DESC;",
+        "additionalFields": {}
+      },
+      "id": "6b2004e5-675f-4696-842e-2c5911288d8d",
+      "name": "Postgres Semanal",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [
+        208,
+        -64
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtenemos los datos de los nodos anteriores\nconst dailyData = $('Postgres Diario').all().map(i => i.json);\nconst weeklyData = $('Postgres Semanal').all().map(i => i.json);\n\n// Función auxiliar para construir tablas\nfunction buildTable(data, title, dateColumnName) {\n  let html = `<h3 style=\"font-family: Arial, sans-serif; color: #333;\">${title}</h3>`;\n  \n  if (!data || data.length === 0) {\n    return html + \"<p>No se encontraron datos.</p>\";\n  }\n\n  html += '<table style=\"width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 13px; margin-bottom: 20px;\">';\n  \n  // Cabeceras\n  html += '<thead style=\"background-color: #f2f2f2;\">';\n  html += '<tr>';\n  html += '<th style=\"padding: 8px; border: 1px solid #ddd;\">Fecha</th>';\n  html += '<th style=\"padding: 8px; border: 1px solid #ddd;\">Total Leads</th>';\n  html += '<th style=\"padding: 8px; border: 1px solid #ddd;\">Inm. Ident.</th>';\n  html += '<th style=\"padding: 8px; border: 1px solid #ddd;\">% Ident.</th>';\n  html += '<th style=\"padding: 8px; border: 1px solid #ddd;\">Modo</th>';\n  html += '<th style=\"padding: 8px; border: 1px solid #ddd;\">Retail</th>';\n  html += '</tr></thead><tbody>';\n\n  // Filas\n  for (const row of data) {\n    const rawDate = row[dateColumnName];\n    const dateStr = rawDate ? new Date(rawDate).toISOString().split('T')[0] : 'N/A';\n    const percentage = row.porc_identificado ? Math.round(row.porc_identificado * 100) + '%' : '0%';\n    \n    html += '<tr>';\n    html += `<td style=\"padding: 8px; border: 1px solid #ddd; text-align: center;\"><strong>${dateStr}</strong></td>`;\n    html += `<td style=\"padding: 8px; border: 1px solid #ddd; text-align: center;\">${row.cant_leads || 0}</td>`;\n    html += `<td style=\"padding: 8px; border: 1px solid #ddd; text-align: center;\">${row.cant_leads_inmueble_identificado || 0}</td>`;\n    html += `<td style=\"padding: 8px; border: 1px solid #ddd; text-align: center;\">${percentage}</td>`;\n    html += `<td style=\"padding: 8px; border: 1px solid #ddd; text-align: center;\">${row.cant_leads_modo || 0}</td>`;\n    html += `<td style=\"padding: 8px; border: 1px solid #ddd; text-align: center;\">${row.cant_leads_retail || 0}</td>`;\n    html += '</tr>';\n  }\n  \n  html += '</tbody></table>';\n  return html;\n}\n\n// Construir el HTML final combinando ambas tablas\nconst html1 = buildTable(dailyData, \"Reporte Diario (Ayer)\", \"dia\");\nconst html2 = buildTable(weeklyData, \"Reporte Semanal (Acumulado)\", \"semana\");\n\nreturn [{ json: { html_final: html1 + \"<hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;'>\" + html2 } }];"
+      },
+      "id": "0577877c-bd33-4021-8f00-1ee3055a99b1",
+      "name": "Crear Tablas HTML",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "valeria.vega@proper.com.pe, mvelascoo@tamibot.com",
+        "subject": "Reporte Bot Leads: Diario vs Semanal",
+        "message": "={{ $json.html_final }}",
+        "options": {}
+      },
+      "id": "43cb0dc4-b9bd-466a-9663-c6c33dca1554",
+      "name": "Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        640,
+        -64
+      ],
+      "webhookId": "e061af9a-eae8-4388-95ef-4966afbac880",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "SPurZ4Z9pGQy8MKJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      },
+      "id": "0cd4a838-6f9f-486a-aca9-faf3d5450e22",
+      "name": "Programado (8 AM)1",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -240,
+        128
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "lwF4wVJnwTao29fa"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-12-04T16:41:28.839Z",
+      "updatedAt": "2025-12-04T16:41:28.839Z",
+      "role": "workflow:owner",
+      "workflowId": "lwF4wVJnwTao29fa",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": {
+    "node:Programado (8 AM)1": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-12-04T17:10:39.965Z",
+  "versionId": "7ef0a413-e305-422e-8b1a-c30c0d8f7e1c"
+}
