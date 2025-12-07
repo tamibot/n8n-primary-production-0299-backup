@@ -296,6 +296,135 @@
           }
         ]
       ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Sort by Date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sort by Date": {
+      "main": [
+        [
+          {
+            "node": "Filter DIEGO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter DIEGO": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Contact": {
+      "main": [
+        [
+          {
+            "node": "If Phone Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Phone Exists": {
+      "main": [
+        [
+          {
+            "node": "Code Diego",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code Diego": {
+      "main": [
+        [
+          {
+            "node": "Postgres Upsert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Upsert": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request Statuses1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request Statuses1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get Contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-09-23T04:15:40.700Z",
@@ -951,7 +1080,7 @@
             },
             {
               "name": "filter[created_at][from]",
-              "value": "1763960400"
+              "value": "1762750800"
             },
             {
               "name": "filter[created_at][to]",
@@ -2114,6 +2243,581 @@
       ],
       "id": "89389419-fc80-4d8a-b790-e878da0d8c20",
       "name": "Sort"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "=_embedded.leads",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -304,
+        928
+      ],
+      "id": "34bad1a3-6360-4503-a0c5-3e3589edbb59",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "created_at",
+              "order": "descending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        928
+      ],
+      "id": "45026a6e-25b0-44da-97ed-8c5a6099b516",
+      "name": "Sort by Date"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2504f489-361c-447f-93c2-2e867ae0c54f",
+              "leftValue": "={{ $json._embedded.tags.toJsonString() }}",
+              "rightValue": "DIEGO",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "7972cc23-970e-40a7-9973-5f70f5d42a25",
+              "leftValue": "={{ $json._embedded.contacts[0].id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        144,
+        928
+      ],
+      "id": "6f166b73-a10b-4063-afd3-607164074b17",
+      "name": "Filter DIEGO"
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "contacts",
+        "filter": {
+          "id": "={{ $('Split Out').item.json._embedded.contacts[0].id }}"
+        },
+        "options": {
+          "with": [
+            "leads"
+          ]
+        },
+        "limit": 1
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        592,
+        928
+      ],
+      "id": "3da811d4-8a3b-43b5-b15b-da810c8af03d",
+      "name": "Get Contact",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "add02cca-2660-4c19-a042-f1a71ff7e63b",
+              "leftValue": "={{ $('Get Contact').item.json._embedded.contacts[0].custom_fields_values.find(f => f.field_name === 'Phone')?.values?.[0]?.value || '' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        816,
+        928
+      ],
+      "id": "849d617e-4f44-4ee3-8861-4a3c6b709ca5",
+      "name": "If Phone Exists"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ========================================\n// TRANSFORMACIÓN LEAD KOMMO → POSTGRESQL (DIEGO)\n// ========================================\n\nconst lead = $('Split Out').item.json;\nconst statuses = $('HTTP Request Statuses1').first().json._embedded?.statuses || [];\nconst contactData = $('Get Contact').first().json._embedded?.contacts?.[0] || {};\n\n// Helper: obtener custom field\nfunction getCF(fieldName) {\n  const cf = (lead.custom_fields_values || []).find(x => x.field_name === fieldName);\n  return (cf && cf.values && cf.values[0]) ? cf.values[0].value : null;\n}\n\n// Helper: campo booleano\nfunction getCFBool(fieldName) {\n  const val = getCF(fieldName);\n  return (val === true || val === 1 || val === '1') ? 1 : 0;\n}\n\n// Helper: teléfono del contacto\nfunction getPhone() {\n  const phoneField = (contactData.custom_fields_values || []).find(f => f.field_name === 'Phone');\n  return phoneField?.values?.[0]?.value || null;\n}\n\n// Helper: nombre del status\nfunction getStatusName(statusId) {\n  const hit = statuses.find(s => String(s.id) === String(statusId));\n  return hit?.name || '';\n}\n\n// Helper: Unix a ISO\nfunction unixToISO(unix) {\n  if (!unix) return null;\n  return new Date(unix * 1000).toISOString().replace('T', ' ').substring(0, 19);\n}\n\n// Helper: lunes de la semana\nfunction getMonday(date) {\n  const d = new Date(date);\n  const day = d.getDay();\n  const diff = (day === 0 ? -6 : 1) - day;\n  d.setDate(d.getDate() + diff);\n  return d.toISOString().split('T')[0];\n}\n\n// ========================================\n// EXTRACCIÓN DE CAMPOS\n// ========================================\n\n// Campos Diego\nconst origen = getCF('n8n - diego - origen') || 'SIN_ORIGEN';\nconst animo = getCF('n8n - diego - animo');\n\n// Horarios\nconst fecha1 = getCF('n8n - diego - fecha1');\nconst fecha2 = getCF('n8n - diego - fecha2');\nconst dioHorario = (fecha1 || fecha2) ? 1 : 0;\n\n// Errores (campos compartidos)\nconst tuvoError = getCFBool('n8n - supp - es_error');\nconst detalleError = getCF('n8n - supp - detalle_es_error');\nconst errorMarcado = getCFBool('rentas_error_marcado');\nconst estadoCorreccion = getCF('n8n - corregido') || 'N/A';\n\n// Caso especial\nconst casoEspecialCampo = getCFBool('n8n - supp - caso_especial');\nconst casoEspecialStatus = (lead.status_id === 92821236) ? 1 : 0;\nconst casoEspecial = (casoEspecialCampo || casoEspecialStatus) ? 1 : 0;\n\n// Fechas\nconst fechaCreacionUnix = lead.created_at;\nconst fechaCreacion = unixToISO(fechaCreacionUnix);\nconst fechaDia = fechaCreacion ? fechaCreacion.substring(0, 10) : null;\nconst fechaMes = fechaDia ? fechaDia.substring(0, 7) + '-01' : null;\nconst fechaSemana = fechaCreacionUnix ? getMonday(new Date(fechaCreacionUnix * 1000)) : null;\n\n// Cliente\nconst tipoCliente = getCF('n8n - TipoCliente');\nconst esNuevo = (tipoCliente === 'NUEVO') ? 1 : 0;\n\n// ========================================\n// RETORNO\n// ========================================\n\nreturn {\n  json: {\n    id: lead.id,\n    nombre: contactData.name || null,\n    telefono: getPhone(),\n    fecha_creacion: fechaCreacion,\n    status_id: lead.status_id,\n    etapa: getStatusName(lead.status_id),\n    origen: origen,\n    bot_respondio: 0,\n    bot_apagado_manual: 0,\n    dio_horario: dioHorario,\n    fecha1: fecha1,\n    fecha2: fecha2,\n    tuvo_error: tuvoError,\n    detalle_error: detalleError,\n    error_marcado: errorMarcado,\n    estado_correccion: estadoCorreccion,\n    caso_especial: casoEspecial,\n    animo: animo,\n    tipo_cliente: tipoCliente,\n    es_nuevo: esNuevo,\n    fecha_dia: fechaDia,\n    fecha_semana: fechaSemana,\n    fecha_mes: fechaMes\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        880
+      ],
+      "id": "45fa1988-6c5f-4666-94ff-2d4beaef24d5",
+      "name": "Code Diego"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "value": "crm",
+          "mode": "list",
+          "cachedResultName": "crm"
+        },
+        "table": {
+          "__rl": true,
+          "value": "bot_leads_diego",
+          "mode": "list",
+          "cachedResultName": "bot_leads_diego"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "nombre": "={{ $json.nombre }}",
+            "telefono": "={{ $json.telefono }}",
+            "fecha_creacion": "={{ $json.fecha_creacion }}",
+            "status_id": "={{ $json.status_id }}",
+            "etapa": "={{ $json.etapa }}",
+            "origen": "={{ $json.origen }}",
+            "bot_respondio": "={{ $json.bot_respondio }}",
+            "bot_apagado_manual": "={{ $json.bot_apagado_manual }}",
+            "dio_horario": "={{ $json.dio_horario }}",
+            "fecha1": "={{ $json.fecha1 }}",
+            "fecha2": "={{ $json.fecha2 }}",
+            "tuvo_error": "={{ $json.tuvo_error }}",
+            "detalle_error": "={{ $json.detalle_error }}",
+            "error_marcado": "={{ $json.error_marcado }}",
+            "estado_correccion": "={{ $json.estado_correccion }}",
+            "caso_especial": "={{ $json.caso_especial }}",
+            "animo": "={{ $json.animo }}",
+            "tipo_cliente": "={{ $json.tipo_cliente }}",
+            "es_nuevo": "={{ $json.es_nuevo }}",
+            "fecha_dia": "={{ $json.fecha_dia }}",
+            "fecha_semana": "={{ $json.fecha_semana }}",
+            "fecha_mes": "={{ $json.fecha_mes }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha_creacion",
+              "displayName": "fecha_creacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "status_id",
+              "displayName": "status_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "etapa",
+              "displayName": "etapa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "origen",
+              "displayName": "origen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "bot_respondio",
+              "displayName": "bot_respondio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "bot_apagado_manual",
+              "displayName": "bot_apagado_manual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "dio_horario",
+              "displayName": "dio_horario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha1",
+              "displayName": "fecha1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha2",
+              "displayName": "fecha2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tuvo_error",
+              "displayName": "tuvo_error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "detalle_error",
+              "displayName": "detalle_error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "error_marcado",
+              "displayName": "error_marcado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "estado_correccion",
+              "displayName": "estado_correccion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "caso_especial",
+              "displayName": "caso_especial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "animo",
+              "displayName": "animo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tipo_cliente",
+              "displayName": "tipo_cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "es_nuevo",
+              "displayName": "es_nuevo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha_dia",
+              "displayName": "fecha_dia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha_semana",
+              "displayName": "fecha_semana",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha_mes",
+              "displayName": "fecha_mes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1264,
+        880
+      ],
+      "id": "a7d2804f-04bc-4b30-815b-38f3c56ef3d5",
+      "name": "Postgres Upsert",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 23
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -960,
+        928
+      ],
+      "id": "7f6700b5-4c55-4a08-826f-0de45d58563b",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "url": "https://propertamibotcom.kommo.com/api/v4/leads/pipelines/9165176/statuses",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -816,
+        608
+      ],
+      "id": "5f159daa-e140-4357-8335-491cdd52caa7",
+      "name": "HTTP Request Statuses1",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "CUkAxEZkWpxNLUY2",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        368,
+        928
+      ],
+      "id": "a31054ae-2457-49f5-98a4-79300ef2cb39",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "url": "=https://propertamibotcom.kommo.com/api/v4/leads",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "with",
+              "value": "contacts"
+            },
+            {
+              "name": "filter[created_at][from]",
+              "value": "1762750800"
+            },
+            {
+              "name": "filter[created_at][to]",
+              "value": "={{ Math.floor(new Date(new Date($now).setHours(0,0,0,0) + 48*60*60*1000).getTime() / 1000) }}"
+            },
+            {
+              "name": "filter[pipeline_id][]",
+              "value": "9165176"
+            },
+            {
+              "name": "limit",
+              "value": "250"
+            },
+            {
+              "name": "page",
+              "value": "1"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "page",
+                    "value": "={{ $pageCount + 1 }}"
+                  }
+                ]
+              },
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ !$response.body?._links?.next?.href }}",
+              "limitPagesFetched": true,
+              "maxRequests": 10
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -448,
+        704
+      ],
+      "id": "69e0d06a-9434-49f7-81e3-c8c47d18241a",
+      "name": "HTTP Request",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "CUkAxEZkWpxNLUY2",
+          "name": "Proper"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -2134,6 +2838,9 @@
   "staticData": {
     "node:Schedule Trigger": {
       "recurrenceRules": []
+    },
+    "node:Schedule Trigger1": {
+      "recurrenceRules": []
     }
   },
   "tags": [
@@ -2144,7 +2851,7 @@
       "name": "IA"
     }
   ],
-  "triggerCount": 1,
-  "updatedAt": "2025-12-04T13:11:01.397Z",
-  "versionId": "8e9cfd6b-5a22-4a88-b18a-d9d963d5c1c7"
+  "triggerCount": 2,
+  "updatedAt": "2025-12-06T17:54:54.254Z",
+  "versionId": "210c8eda-2ea8-4d8d-8709-9d446f3d1a95"
 }
