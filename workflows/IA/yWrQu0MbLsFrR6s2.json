@@ -2690,8 +2690,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -960,
-        928
+        -976,
+        880
       ],
       "id": "7f6700b5-4c55-4a08-826f-0de45d58563b",
       "name": "Schedule Trigger1"
@@ -2712,8 +2712,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -816,
-        608
+        -768,
+        896
       ],
       "id": "5f159daa-e140-4357-8335-491cdd52caa7",
       "name": "HTTP Request Statuses1",
@@ -2808,7 +2808,7 @@
       "typeVersion": 4.2,
       "position": [
         -448,
-        704
+        896
       ],
       "id": "69e0d06a-9434-49f7-81e3-c8c47d18241a",
       "name": "HTTP Request",
@@ -2852,6 +2852,6 @@
     }
   ],
   "triggerCount": 2,
-  "updatedAt": "2025-12-06T17:54:54.254Z",
-  "versionId": "210c8eda-2ea8-4d8d-8709-9d446f3d1a95"
+  "updatedAt": "2025-12-10T15:03:09.085Z",
+  "versionId": "fed09c14-71cb-4006-9f16-0eace4a7483e"
 }
