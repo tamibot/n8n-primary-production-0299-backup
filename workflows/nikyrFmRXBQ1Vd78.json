@@ -1,0 +1,550 @@
+{
+  "active": true,
+  "connections": {
+    "Formatear Datos": {
+      "main": [
+        [
+          {
+            "node": "Switch Servicio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Formatear Datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Servicio": {
+      "main": [
+        [
+          {
+            "node": "Create new contacts",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create new contacts1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create new contacts2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new contacts": {
+      "main": [
+        [
+          {
+            "node": "Create new leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new contacts1": {
+      "main": [
+        [
+          {
+            "node": "Create new leads1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create new contacts2": {
+      "main": [
+        [
+          {
+            "node": "Create new leads2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-11T14:16:57.061Z",
+  "id": "nikyrFmRXBQ1Vd78",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Gestión Comercial Proper Rentas - Nuevos Leads",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "nombre",
+              "name": "nombre",
+              "value": "={{ $json.Nombre }}",
+              "type": "string"
+            },
+            {
+              "id": "telefono",
+              "name": "telefono",
+              "value": "={{ \"+51\" + String($json.Telefono).replace(/\\D/g, '').slice(-9) }}",
+              "type": "string"
+            },
+            {
+              "id": "servicio",
+              "name": "servicio",
+              "value": "={{ $json.Servicio }}",
+              "type": "string"
+            },
+            {
+              "id": "propiedad",
+              "name": "propiedad",
+              "value": "={{ $json.Propiedad }}",
+              "type": "string"
+            },
+            {
+              "id": "nota",
+              "name": "nota",
+              "value": "={{ $json.NOTA }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        512
+      ],
+      "id": "ff400fa6-d7fe-49a0-87d5-914fbffc3be8",
+      "name": "Formatear Datos"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.servicio }}",
+                    "rightValue": "RENTAS - INQUILINO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Inquilino"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.servicio }}",
+                    "rightValue": "INVERSIONES",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Inversiones"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.servicio }}",
+                    "rightValue": "RENTAS - PROPIETARIO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Propietario"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        448,
+        496
+      ],
+      "id": "529df35f-4cc5-4420-b524-d2c4e3bcd9c0",
+      "name": "Switch Servicio"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "11FTMVYLNm8-o50DZnAM5W5zsE7hoPOBV_TQeYqQ3bl8",
+          "mode": "list",
+          "cachedResultName": "Gestión Comercial Proper Rentas - Nuevos Leads (Respuestas)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/11FTMVYLNm8-o50DZnAM5W5zsE7hoPOBV_TQeYqQ3bl8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1607472748,
+          "mode": "list",
+          "cachedResultName": "Respuestas de formulario 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/11FTMVYLNm8-o50DZnAM5W5zsE7hoPOBV_TQeYqQ3bl8/edit#gid=1607472748"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        512
+      ],
+      "id": "05e40338-1e43-4a1b-be5a-1a8ee94669d9",
+      "name": "Google Sheets Trigger1",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "41QRHSZvnOEhvV3X",
+          "name": "mvelascoo - spreadsheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "createContacts",
+        "collection": {
+          "contact": [
+            {
+              "name": "={{ $json.nombre }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":522504,\"type\":\"multitext\"}",
+                    "value": "={{ $json.telefono }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        672,
+        320
+      ],
+      "id": "5ef64ed1-99f6-4ac8-8164-03704bc157a4",
+      "name": "Create new contacts",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Xm12cHoxJw7jGGaV",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "createContacts",
+        "collection": {
+          "contact": [
+            {
+              "name": "={{ $json.nombre }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":522504,\"type\":\"multitext\"}",
+                    "value": "={{ $json.telefono }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        672,
+        512
+      ],
+      "id": "b81d8230-579b-4942-b604-881be90d6817",
+      "name": "Create new contacts1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Xm12cHoxJw7jGGaV",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "contacts",
+        "operation": "createContacts",
+        "collection": {
+          "contact": [
+            {
+              "name": "={{ $json.nombre }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":522504,\"type\":\"multitext\"}",
+                    "value": "={{ $json.telefono }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        672,
+        704
+      ],
+      "id": "289498f2-5b61-42a4-bd4f-cabf4e80b13b",
+      "name": "Create new contacts2",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Xm12cHoxJw7jGGaV",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "pipeline_id": 11240224,
+              "status_id": 97996236,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":798355,\"type\":\"text\"}",
+                    "value": "={{ $('Switch Servicio').item.json.propiedad }}"
+                  },
+                  {
+                    "data": "{\"id\":797051,\"type\":\"textarea\"}",
+                    "value": "={{ $('Switch Servicio').item.json.propiedad }}"
+                  },
+                  {
+                    "data": "{\"id\":798801,\"type\":\"text\"}",
+                    "value": "={{ $('Switch Servicio').item.json.propiedad }}"
+                  }
+                ]
+              },
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ $json._embedded.contacts[0].id }}"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        896,
+        320
+      ],
+      "id": "0e41b851-f4a5-4fa1-a03c-c11e8b10e790",
+      "name": "Create new leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Xm12cHoxJw7jGGaV",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "pipeline_id": 8874156,
+              "status_id": 96388008,
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ $json._embedded.contacts[0].id }}"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        896,
+        512
+      ],
+      "id": "dde07f21-4622-402f-a2e6-44339075a956",
+      "name": "Create new leads1",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Xm12cHoxJw7jGGaV",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "createLeads",
+        "collection": {
+          "lead": [
+            {
+              "pipeline_id": 9165176,
+              "status_id": 90694444,
+              "_embedded": {
+                "contacts": [
+                  {
+                    "id": {
+                      "contact": [
+                        {
+                          "id": "={{ $json._embedded.contacts[0].id }}"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        896,
+        704
+      ],
+      "id": "04c11f96-a1e2-46c0-8c4e-c8ee6502966d",
+      "name": "Create new leads2",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Xm12cHoxJw7jGGaV",
+          "name": "Proper"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Google Sheets Trigger1": [
+      {
+        "json": {
+          "Marca temporal": "11/12/2025 14:13:53",
+          "Dirección de correo electrónico": "",
+          "Nombre": "Martin Velasco",
+          "Telefono": 995547575,
+          "Servicio": "RENTAS - INQUILINO",
+          "Propiedad": "MODO - San Miguel",
+          "NOTA": "Alquiler MODO"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-12-11T14:16:57.061Z",
+      "updatedAt": "2025-12-11T14:16:57.061Z",
+      "role": "workflow:owner",
+      "workflowId": "nikyrFmRXBQ1Vd78",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": {
+    "node:Google Sheets Trigger1": {
+      "documentId": "11FTMVYLNm8-o50DZnAM5W5zsE7hoPOBV_TQeYqQ3bl8",
+      "sheetId": 1607472748,
+      "lastIndexChecked": 3
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-12-11T19:16:53.306Z",
+  "versionId": "8a0fe007-d267-4649-be71-e21961d49633"
+}
