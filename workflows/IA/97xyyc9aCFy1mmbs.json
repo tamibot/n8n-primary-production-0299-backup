@@ -2946,7 +2946,8 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('url', `url de urbania brindado por el cliente`, 'string') }}"
+            "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('url', `url de urbania brindado por el cliente`, 'string') }}",
+            "idkommo": "={{ $('GET Lead').item.json.id }}"
           },
           "matchingColumns": [
             "url"
@@ -2955,6 +2956,16 @@
             {
               "id": "url",
               "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "idkommo",
+              "displayName": "idkommo",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -2989,7 +3000,8 @@
           "mappingMode": "defineBelow",
           "value": {
             "busqueda": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('busqueda', `Criterio de busqueda de propiedad`, 'string') }}",
-            "chat_id": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}"
+            "chat_id": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}",
+            "idkommo": "={{ $('GET Lead').item.json.id }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -3010,6 +3022,16 @@
               "display": true,
               "canBeUsedToMatch": true,
               "type": "string"
+            },
+            {
+              "id": "idkommo",
+              "displayName": "idkommo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -6338,7 +6360,7 @@
       "typeVersion": 1,
       "position": [
         5968,
-        2528
+        2524
       ],
       "id": "5ff050f7-d672-4255-996c-84b4b568504e",
       "name": "Information Extractor1",
@@ -6799,17 +6821,17 @@
           "headers": {
             "host": "primary-production-0299.up.railway.app",
             "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "975",
+            "content-length": "942",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "2e7892d5-94f0-469c-bf7f-d1f8eff13a09",
+            "x-amocrm-requestid": "cbb85bc2-4748-4c96-8298-7e16ea95e955",
             "x-forwarded-for": "169.150.216.80",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "1DYFq9tiSBy0qydSwoOzXw",
+            "x-railway-request-id": "oIARVwexQF6z_o5SAax-fw",
             "x-real-ip": "169.150.216.80",
-            "x-request-start": "1765484762916"
+            "x-request-start": "1765648328775"
           },
           "params": {},
           "query": {},
@@ -6817,20 +6839,20 @@
             "account[subdomain]": "propertamibotcom",
             "account[id]": "30050693",
             "account[_links][self]": "https://propertamibotcom.amocrm.com",
-            "message[add][0][id]": "aefb91f3-d686-497f-8c4d-1252a81a4859",
-            "message[add][0][chat_id]": "39535b22-0045-4a5e-93d4-7fe6d64cbab9",
-            "message[add][0][talk_id]": "229016",
-            "message[add][0][contact_id]": "24759313",
-            "message[add][0][text]": "Tengo 80,000 soles ahorrados para la inicial",
-            "message[add][0][created_at]": "1765484761",
+            "message[add][0][id]": "8092f704-20b5-42d5-aabb-828b1dcbbeae",
+            "message[add][0][chat_id]": "f77a8ec6-f543-4363-8b5e-5ba9a6d07e5c",
+            "message[add][0][talk_id]": "230535",
+            "message[add][0][contact_id]": "25003331",
+            "message[add][0][text]": "10AM\n11AM",
+            "message[add][0][created_at]": "1765648327",
             "message[add][0][element_type]": "2",
             "message[add][0][entity_type]": "lead",
-            "message[add][0][element_id]": "22519849",
-            "message[add][0][entity_id]": "22519849",
+            "message[add][0][element_id]": "22645983",
+            "message[add][0][entity_id]": "22645983",
             "message[add][0][type]": "incoming",
-            "message[add][0][author][id]": "f92fe9a6-bfe9-4f1c-b754-bf61e32d10d4",
+            "message[add][0][author][id]": "59ab3bc0-daa9-4475-bd14-7f2316673084",
             "message[add][0][author][type]": "external",
-            "message[add][0][author][name]": "Martin Velasco O.",
+            "message[add][0][author][name]": "Adrián Siverio",
             "message[add][0][origin]": "waba"
           },
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/rentas",
@@ -6863,6 +6885,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-12-12T18:46:06.338Z",
-  "versionId": "e9a69279-3282-40aa-86f7-64edcf5a4c16"
+  "updatedAt": "2025-12-14T01:38:24.427Z",
+  "versionId": "ccddd3ce-4733-4e35-b0bf-23e0dd7fceff"
 }
