@@ -166,6 +166,12 @@
               "name": "nombre",
               "value": "={{ $json._embedded.contacts[0].name }}",
               "type": "string"
+            },
+            {
+              "id": "94d252b8-05fa-41ab-816c-d6924f421e47",
+              "name": "codpropiedad_logico",
+              "value": "={{    ($('Kommo API Node').item.json._embedded.leads[0].custom_fields_values || [])     .find(f => (f.field_name || '').trim() === 'n8n - codpropiedad logico')     ?.values?.[0]?.value || ''  }}",
+              "type": "string"
             }
           ]
         },
@@ -248,7 +254,7 @@
             {
               "id": "ee37e207-4dfe-4ba0-a965-e289d11a4270",
               "name": "cod_inmueble",
-              "value": "={{ $json.codigoInmueble ? $json.codigoInmueble : $json['n8n - CODPROPIEDAD'] }}",
+              "value": "={{ $json.codigoInmueble || $json.codpropiedad_logico || $json['n8n - CODPROPIEDAD'] }}",
               "type": "string"
             }
           ]
@@ -337,6 +343,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-17T17:18:57.223Z",
-  "versionId": "03829cfa-67d1-474a-8732-414efd13e003"
+  "updatedAt": "2025-12-15T02:28:40.501Z",
+  "versionId": "9dbe1461-24e8-4750-8d51-630661c3555a"
 }
