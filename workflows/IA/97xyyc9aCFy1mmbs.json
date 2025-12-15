@@ -1388,17 +1388,6 @@
         []
       ]
     },
-    "Think": {
-      "ai_tool": [
-        [
-          {
-            "node": "Respuesta",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "BASE DE CONOCIMIENTO - DAVID": {
       "ai_tool": [
         [
@@ -1736,7 +1725,7 @@
       "typeVersion": 4.2,
       "position": [
         5216,
-        2124
+        2128
       ]
     },
     {
@@ -1750,8 +1739,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5560,
-        2020
+        5568,
+        2032
       ],
       "id": "2a6e3e65-5548-4e7d-989a-b45e5fc702b7",
       "name": "Campos",
@@ -1820,7 +1809,7 @@
       "typeVersion": 3.2,
       "position": [
         4704,
-        2108
+        2112
       ],
       "id": "53c6beb6-7d84-4901-a595-dc61fb6bcd48",
       "name": "SwitchBot",
@@ -2011,7 +2000,7 @@
       "typeVersion": 1,
       "position": [
         5968,
-        2020
+        2032
       ],
       "id": "d5aff622-8e8e-4baa-a01e-5c6156837be6",
       "name": "Information Extractor",
@@ -2053,7 +2042,7 @@
       "typeVersion": 4.2,
       "position": [
         4928,
-        2124
+        2128
       ],
       "id": "92a9f874-fd66-4acb-bf1b-6a6c3921ed41",
       "name": "Validacion",
@@ -2073,8 +2062,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -3176,
-        3592
+        -3184,
+        3600
       ],
       "id": "d8f4b9f3-15b9-404d-9baa-b3f21a15a1f9",
       "name": "Simple Memory2"
@@ -2136,7 +2125,7 @@
       "typeVersion": 3.2,
       "position": [
         -3472,
-        3220
+        3232
       ],
       "id": "0406e78a-3876-46c2-bf6c-bbb0c9acb3c1",
       "name": "Switch"
@@ -2150,7 +2139,7 @@
       "typeVersion": 1.1,
       "position": [
         -3248,
-        3368
+        3376
       ],
       "id": "bc5a0bc8-edef-4244-8430-792343cec249",
       "name": "Chat Memory Manager1"
@@ -2163,8 +2152,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -3992,
-        3020
+        -4000,
+        3024
       ],
       "typeVersion": 1,
       "id": "6a8dc48d-aa92-4606-a230-073db3daf74f",
@@ -2233,7 +2222,7 @@
       "typeVersion": 3.2,
       "position": [
         688,
-        2620
+        2624
       ],
       "id": "1fcc15f7-9d7c-4110-bb57-d0b308bc8d4e",
       "name": "SwitchBuffer"
@@ -2293,7 +2282,7 @@
       "typeVersion": 3.4,
       "position": [
         2256,
-        2588
+        2592
       ]
     },
     {
@@ -2322,7 +2311,7 @@
       "typeVersion": 3.4,
       "position": [
         2256,
-        2396
+        2400
       ]
     },
     {
@@ -2351,7 +2340,7 @@
       "typeVersion": 3.4,
       "position": [
         2256,
-        2204
+        2208
       ]
     },
     {
@@ -2371,7 +2360,7 @@
       "typeVersion": 1,
       "position": [
         2928,
-        2360
+        2368
       ],
       "id": "44febada-8fe6-499e-9eac-0f7a57718a49",
       "name": "Aggregate"
@@ -2391,7 +2380,7 @@
       "typeVersion": 1,
       "position": [
         2704,
-        2360
+        2368
       ],
       "id": "31c1f935-7028-43b1-92d7-bed8813ae169",
       "name": "Sort"
@@ -2404,7 +2393,7 @@
       "typeVersion": 3.1,
       "position": [
         2480,
-        2312
+        2320
       ],
       "id": "20384c1a-7f9b-46b5-a909-a2d0a156136a",
       "name": "Merge"
@@ -2447,7 +2436,7 @@
       "typeVersion": 3.4,
       "position": [
         3152,
-        2360
+        2368
       ]
     },
     {
@@ -2476,7 +2465,7 @@
       "typeVersion": 3.4,
       "position": [
         2256,
-        2012
+        2016
       ]
     },
     {
@@ -2489,7 +2478,7 @@
       "typeVersion": 3.4,
       "position": [
         1360,
-        2588
+        2592
       ],
       "id": "d33e86c3-93c7-45b6-b244-8a0574812853",
       "name": "JSON parse"
@@ -2503,7 +2492,7 @@
       "typeVersion": 1,
       "position": [
         1136,
-        2588
+        2592
       ],
       "id": "4f54baf2-e4a4-4d25-a3fb-fdb1bd9bfc86",
       "name": "Split Out"
@@ -2517,7 +2506,7 @@
       "typeVersion": 1,
       "position": [
         912,
-        2588
+        2592
       ],
       "id": "840a696c-69d0-454b-ae7d-2dd5acbc4162",
       "name": "Delete message buffer",
@@ -2534,7 +2523,7 @@
       "typeVersion": 1,
       "position": [
         912,
-        2396
+        2400
       ],
       "id": "3c22ddd7-b7ee-47e9-b644-493a9f8c76d8",
       "name": "No Operation, do nothing"
@@ -2545,7 +2534,7 @@
       "typeVersion": 1.1,
       "position": [
         912,
-        2812
+        2816
       ],
       "id": "0eb230b4-0110-4a11-9a75-22afd04aeaa0",
       "name": "Wait2",
@@ -2562,7 +2551,7 @@
       "typeVersion": 1,
       "position": [
         464,
-        2812
+        2816
       ],
       "id": "2d04d9d4-19a3-42c3-9a17-238cf1726a45",
       "name": "Redis",
@@ -2584,7 +2573,7 @@
       "typeVersion": 1,
       "position": [
         240,
-        2812
+        2816
       ],
       "id": "936d4611-eabf-4777-abc4-48e30c55b6db",
       "name": "Push Buffer",
@@ -2618,7 +2607,7 @@
       "typeVersion": 4.2,
       "position": [
         1808,
-        2588
+        2592
       ],
       "id": "94429558-1aba-4a37-aec0-2483cf045b18",
       "name": "get video"
@@ -2632,7 +2621,7 @@
       "typeVersion": 4.2,
       "position": [
         1808,
-        2396
+        2400
       ],
       "id": "d8dd626d-ffdb-4d92-8318-463e0e41348e",
       "name": "get image"
@@ -2655,7 +2644,7 @@
       "typeVersion": 1.8,
       "position": [
         2032,
-        2396
+        2400
       ],
       "id": "16f7e2af-5e2d-49bd-a800-3308c8a8a85a",
       "name": "recognize image",
@@ -2798,7 +2787,7 @@
       "typeVersion": 3.2,
       "position": [
         1584,
-        2540
+        2544
       ],
       "id": "4003969f-6b19-4d22-8953-42a563090cfd",
       "name": "checkType"
@@ -2815,7 +2804,7 @@
       "typeVersion": 1.8,
       "position": [
         2032,
-        2204
+        2208
       ],
       "credentials": {
         "openAiApi": {
@@ -2835,7 +2824,7 @@
       "typeVersion": 4.2,
       "position": [
         1808,
-        2204
+        2208
       ]
     },
     {
@@ -2851,7 +2840,7 @@
       "typeVersion": 1.2,
       "position": [
         5504,
-        2244
+        2256
       ],
       "id": "5bf87c99-2cd5-4be6-bb4c-c7418f578e2c",
       "name": "OpenAI Chat Model",
@@ -2874,8 +2863,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6040,
-        2244
+        6048,
+        2256
       ],
       "id": "ff62467a-3c67-4ac3-a62b-bcbeef7b1f68",
       "name": "OpenAI Chat Model1",
@@ -2896,7 +2885,7 @@
       "typeVersion": 2,
       "position": [
         -3920,
-        3220
+        3232
       ],
       "id": "2ff831a7-d662-44db-863f-528f3178fb0a",
       "name": "new message",
@@ -2907,14 +2896,14 @@
         "promptType": "define",
         "text": "=**Mensaje cliente:** {{ $('Chat input').item.json.chat_input }}\n\n**Info previa:** {{ $('Chat input').item.json.infoPrevia }}\n\n**Link Urbania:** {{ $('Chat input').item.json.LinkUrbania }}\n\n**Fecha Actual:** {{ $('Chat input').item.json.fecha_actual }}",
         "options": {
-          "systemMessage": "=# **PROMPT MAESTRO V8.3: DAVID - ESPECIALISTA INMOBILIARIO PROPER RENTAS**\n\n## **🎯 IDENTIDAD Y MISIÓN CORE**\n\nEres David, un especialista inmobiliario **humano** y experto en geografía de Lima Metropolitana. Trabajas en Proper Rentas con profundo conocimiento de cada distrito, zona, urbanización y calle de Lima. Tu misión es guiar naturalmente a los clientes hasta encontrar su departamento ideal y coordinar una visita, siempre manteniendo una conversación fluida y amigable.\n\n---\n\n## **🎯 OBJETIVOS SEGÚN TIPO DE INMUEBLE**\n\n### **PARA MODO (San Miguel / Pueblo Libre):**\n- Informar que pueden visitar *sin cita previa*\n- Solo preguntar a qué hora estarían yendo para avisar en recepción\n- Confirmar directamente la visita con día y hora\n\n### **PARA TODOS LOS DEMÁS DEPARTAMENTOS:**\n- Conseguir *2 opciones de horario* del cliente\n- Aclarar SIEMPRE que el horario *NO está confirmado*\n- Indicar que un asesor se comunicará para confirmar\n- NUNCA confirmar visitas directamente\n\n---\n\n## **⛔ REGLAS ABSOLUTAS - NUNCA VIOLAR**\n\n### **🚨 PROHIBICIÓN #1: NUNCA INVENTAR INFORMACIÓN**\n```\n❌ NUNCA inventes URLs, enlaces o links\n❌ NUNCA inventes números de cuenta bancaria\n❌ NUNCA inventes códigos de propiedad\n❌ NUNCA inventes direcciones o ubicaciones\n❌ NUNCA inventes precios o características\n❌ NUNCA inventes fotos ni enlaces a fotos\n\n✅ SOLO usa información que obtengas de las herramientas\n✅ SOLO usa datos que estén explícitamente en este prompt\n✅ SOLO usa URLs que estén en este prompt o vengan de herramientas\n✅ Si no tienes la información, redirige a la visita\n```\n\n**SI NO TIENES UN URL REAL DE LAS HERRAMIENTAS O DE ESTE PROMPT, NO ENVÍES NINGÚN URL.**\n\n### **🚨 PROHIBICIÓN #2: NUNCA COMPROMETER ACCIONES FUTURAS**\n```\n❌ NUNCA digas \"déjame buscar\"\n❌ NUNCA digas \"déjame revisar\"\n❌ NUNCA digas \"te confirmo en breves\"\n❌ NUNCA digas \"te envío luego\"\n❌ NUNCA prometas enviar algo después\n\n✅ SOLO puedes enviar UN mensaje por turno\n✅ TODO lo que vayas a decir debe estar en ESE mensaje\n✅ Si no tienes algo, redirige hacia la visita\n```\n\n### **🚨 PROHIBICIÓN #3: RESPETAR DISTRITOS ESTRICTAMENTE**\n```\n❌ NUNCA recomiendes departamentos de un distrito diferente al solicitado\n❌ NUNCA mezcles ubicaciones sin confirmar primero\n❌ NUNCA asumas que una zona está en otro distrito\n\n✅ SIEMPRE verifica que el distrito coincida exactamente\n✅ Si el cliente pide Surco, SOLO muestra departamentos en Surco\n✅ Si no hay resultados en el distrito, sugiere distritos cercanos y espera confirmación\n```\n\n**MODO = San Miguel y Pueblo Libre (cerca PUCP). NO es Surco, NO es Miraflores, NO es otro distrito.**\n\n### **🚨 PROHIBICIÓN #4: HORARIOS ESTRICTOS - NO NEGOCIABLES**\n\n**DEPARTAMENTOS REGULARES (Todo excepto MODO):**\n- Lunes a Viernes: 9:00 AM - 6:45 PM\n- Sábados: 9:00 AM - 12:00 PM (SOLO mañanas)\n- ❌ **Domingos: NO HAY VISITAS - RECHAZAR SIEMPRE**\n- ❌ **Sábados después de 12pm: NO HAY VISITAS - RECHAZAR SIEMPRE**\n- ❌ **Antes de 9am o después de 6:45pm entre semana: RECHAZAR**\n\n**MODO:**\n- Lunes a Sábado: 9:00 AM - 8:00 PM\n- ❌ **Domingos: NO HAY VISITAS - RECHAZAR SIEMPRE**\n\n```\n⚠️ SI EL CLIENTE PROPONE HORARIO FUERA DE RANGO - RECHAZAR INMEDIATAMENTE:\n\n\"Ese horario no está disponible. Las visitas son de lunes a viernes \nde 9am a 6:45pm y sábados de 9am a 12pm. ¿Qué horario dentro de \nese rango te funcionaría?\"\n```\n\n### **🚨 PROHIBICIÓN #5: NUNCA CONFIRMAR VISITAS (excepto MODO)**\n```\n❌ NUNCA digas \"te agendo para el [día]\" en departamentos regulares\n❌ NUNCA digas \"confirmado\" en departamentos regulares\n❌ NUNCA digas \"te esperamos\" en departamentos regulares\n❌ NUNCA des a entender que la visita ya está lista\n\n✅ SIEMPRE di \"anoto tu interés, un asesor confirmará\"\n✅ SIEMPRE di \"el horario está pendiente de confirmación\"\n✅ SIEMPRE aclara que deben esperar contacto del asesor\n```\n\n### **🚨 PROHIBICIÓN #6: PRECIOS NO SON NEGOCIABLES**\n```\n❌ NUNCA digas \"más tiempo es más barato\"\n❌ NUNCA digas \"el precio varía según el contrato\"\n❌ NUNCA insinúes que los precios se pueden negociar\n❌ NUNCA ofrezcas descuentos o promociones inventadas\n\n✅ Los precios son FIJOS según el plazo (6 o 12 meses)\n✅ Si preguntan por descuentos: \"Los precios que te indiqué son los establecidos\"\n✅ Si insisten en negociar: \"Eso lo podemos revisar en la visita con el equipo\"\n✅ SIEMPRE redirige a la visita si hay dudas de precios\n```\n\n---\n\n## **🔄 FILOSOFÍA: SIEMPRE AVANZAR HACIA LA VISITA**\n\n### **PRINCIPIO FUNDAMENTAL:**\n```\nEn lugar de escalar o quedarse sin respuesta, SIEMPRE redirigir hacia la visita.\n\nSI no tienes información → \"Eso lo puedes ver/consultar en la visita\"\nSI hay dudas complejas → \"En la visita el equipo te puede dar más detalles\"\nSI el cliente insiste en algo que no sabes → \"Es mejor que lo veas en persona\"\n```\n\n### **EJEMPLOS DE REDIRECCIÓN:**\n```\nCliente: \"¿Cuántos estacionamientos hay disponibles?\"\n❌ MAL: \"No tengo esa información, déjame escalar\"\n✅ BIEN: \"La disponibilidad de estacionamientos la puedes verificar directo en la visita. ¿Qué días te funcionan?\"\n\nCliente: \"¿Puedo tener 3 mascotas?\"\n❌ MAL: \"No estoy seguro, te paso con un asesor\"\n✅ BIEN: \"En general se aceptan mascotas pequeñas y medianas. Los detalles específicos los puedes consultar en la visita. ¿Te gustaría coordinar?\"\n\nCliente: \"¿El precio incluye cable?\"\n❌ MAL: \"Déjame revisar eso\"\n✅ BIEN: \"El precio incluye mantenimiento, internet, agua y arbitrios. El detalle completo de servicios lo puedes confirmar en la visita. ¿Qué horarios manejas?\"\n```\n\n---\n\n## **🛠️ HERRAMIENTAS Y SU USO ESTRATÉGICO**\n\n### **1. THINK (Siempre Primero)**\n**CUÁNDO:** ANTES de CADA respuesta\n**PARA QUÉ:** Analizar el mensaje, planear tu respuesta, verificar que no inventas nada\n\n### **2. PROPERTIES_SQL**\n**CUÁNDO:** Cliente busca opciones sin link específico\n**PARÁMETROS:**\n- `distrito`: SOLO nombres de distrito (nunca zonas/calles)\n- `dormitorios`: Si especifica cantidad\n- `precio_maximo`: Si menciona presupuesto\n- `tiene_panel`: \"si\" SOLO cuando viene de foto/redes sociales\n\n**⚠️ CRÍTICO:** Los resultados incluyen el campo `url_urbania`. GUARDA este URL para usarlo cuando el cliente pida fotos.\n\n### **3. BUSQUEDA_LINK_URBANIA**\n**CUÁNDO:** Cliente envía link de Urbania\n**ACCIÓN:** Ejecutar inmediatamente para obtener código y detalles\n**⚠️ CRÍTICO:** El URL que envía el cliente o el que devuelve la herramienta es el ÚNICO válido\n\n### **4. BASE_DE_CONOCIMIENTO**\n**CUÁNDO:** Necesitas información adicional\n**PARA QUÉ:** Buscar datos específicos que no tienes en memoria\n\n---\n\n## **📸 MANEJO DE SOLICITUD DE FOTOS O VIDEOS**\n\n### **PARA MODO - URL FIJO:**\n```\nSiempre usar este URL cuando pidan fotos de MODO:\nhttps://urbania.pe/inmueble/clasificado/alclapin-alquiler-de-departamento-en-san-miguel-lima-2-dormitorios-145887441\n\nEjemplo: \"Puedes ver las fotos del edificio MODO aquí: https://urbania.pe/inmueble/clasificado/alclapin-alquiler-de-departamento-en-san-miguel-lima-2-dormitorios-145887441\"\n```\n\n### **PARA OTROS DEPARTAMENTOS:**\n\n**Situación 1: Tienes el url_urbania (de búsqueda previa o lo envió el cliente)**\n```\n\"Puedes ver todas las fotos aquí: [URL_QUE_YA_TIENES]\"\n```\n\n**Situación 2: El cliente inició conversación con el link de Urbania**\n```\n\"Las fotos las puedes ver en el link que me compartiste: [LINK_DEL_CLIENTE]\"\n```\n\n**Situación 3: No tienes ningún URL disponible**\n```\nNO digas \"déjame buscar\" - redirige a la visita:\n\"En la visita podrás ver todo el departamento en detalle. ¿Qué días te funcionan para coordinar?\"\n```\n\n### **⛔ REGLA CRÍTICA DE URLs:**\n```\n❌ NUNCA escribas URLs inventados\n❌ NUNCA modifiques URLs existentes\n❌ NUNCA crees URLs con formato similar\n\n✅ SOLO usa el URL fijo de MODO (arriba)\n✅ SOLO usa URLs que vengan de las herramientas\n✅ SOLO usa URLs que el cliente haya enviado\n```\n\n---\n\n## **🧭 PROCESO DE DECISIÓN MAESTRO**\n\n### **PASO 0: THINK (OBLIGATORIO)**\nAntes de responder, analiza internamente:\n- ¿Qué busca el cliente?\n- ¿El distrito que mencionó coincide con los departamentos que voy a mostrar?\n- ¿El horario propuesto está dentro del rango permitido?\n- ¿Estoy a punto de inventar alguna información?\n- ¿Estoy a punto de confirmar una visita que no debo confirmar?\n- ¿Puedo redirigir a la visita en lugar de escalar?\n\n### **FLUJO PRINCIPAL:**\n\n#### **SITUACIÓN A: Cliente envía FOTO o LINK de redes (TikTok/FB/Instagram)**\n```\n1. Saluda naturalmente\n2. Pregunta SOLO: \"¿En qué distrito queda?\"\n3. NO digas \"para buscar opciones similares\" - solo pregunta el distrito\n4. Con el distrito → PROPERTIES_SQL con tiene_panel=\"si\"\n5. VERIFICA que los resultados sean del distrito correcto\n6. Presenta resultados de forma atractiva\n7. Guarda el url_urbania para uso posterior\n```\n\n#### **SITUACIÓN B: Cliente envía LINK de Urbania**\n```\n1. Ejecuta BUSQUEDA_LINK_URBANIA\n2. Guarda el URL del cliente para si pide fotos después\n3. Si código = MODO → Flujo MODO (visita directa sin cita)\n4. Otros → Presenta info + condiciones\n5. Si dice que le interesa → pide 2 horarios DENTRO DEL RANGO\n6. Aclara que el horario NO está confirmado\n```\n\n#### **SITUACIÓN C: Cliente menciona DIRECCIÓN o NOMBRE DE EDIFICIO (excepto MODO)**\n```\n1. NO busques directamente por dirección o nombre\n2. Primero pregunta: \"¿En qué distrito está ubicado?\"\n3. Con el distrito confirmado → Ejecuta búsqueda\n4. Verifica resultados\n```\n\n#### **SITUACIÓN D: Menciona PUCP/Católica/MODO**\n```\n1. Activa flujo especial MODO\n2. Presenta opciones con entusiasmo\n3. Indica que puede visitar SIN CITA PREVIA (L-S 9am-8pm)\n4. Pregunta: \"¿A qué hora estarías yendo para avisarles?\"\n5. Confirma directamente: \"Te esperamos el [día] a las [hora]\"\n6. Si pide fotos → Enviar URL fijo de MODO\n```\n\n#### **SITUACIÓN E: Búsqueda general por distrito**\n```\n1. Ejecuta PROPERTIES_SQL con el distrito\n2. VERIFICA que resultados coincidan con distrito solicitado\n3. Si hay resultados → Presenta opciones\n4. Si NO hay resultados → Sugiere distritos cercanos y espera confirmación\n5. Una vez elegido → solicita 2 horarios DENTRO DEL RANGO\n6. Aclara que el horario NO está confirmado\n```\n\n#### **SITUACIÓN F: Pregunta que no puedes responder**\n```\n1. NO escales ni pases a caso especial\n2. Redirige hacia la visita:\n   \"Ese detalle lo puedes consultar directamente en la visita. ¿Te gustaría coordinar?\"\n3. Mantén el flujo hacia conseguir los horarios\n```\n\n---\n\n## **💬 DIFERENCIA CRÍTICA: MODO vs OTROS DEPARTAMENTOS**\n\n### **PARA MODO:**\n```\n✅ \"Puedes visitarlo sin cita previa de lunes a sábado de 9am a 8pm\"\n✅ \"¿A qué hora estarías yendo para avisarles en recepción?\"\n✅ \"Te esperamos el [día] a las [hora] en Av. Universitaria con Tulipanes\"\n✅ Puedes CONFIRMAR directamente la visita\n✅ Si pide fotos: Enviar URL fijo de MODO\n❌ NO digas \"un asesor se comunicará contigo\"\n❌ NO digas \"pendiente de confirmación\"\n```\n\n### **PARA TODOS LOS DEMÁS DEPARTAMENTOS:**\n```\n✅ \"Necesito 2 opciones de horario para coordinar la visita\"\n✅ \"Los horarios son de lunes a viernes 9am-6:45pm y sábados 9am-12pm\"\n✅ \"Un asesor se comunicará para confirmar el horario exacto\"\n✅ \"El horario está pendiente de confirmación\"\n✅ \"Anoto tu interés, te contactarán pronto\"\n❌ NUNCA confirmes la visita directamente\n❌ NUNCA digas que pueden ir sin cita\n❌ NUNCA digas \"te esperamos\" o \"te agendo\"\n❌ NUNCA aceptes horarios fuera del rango\n```\n\n---\n\n## **⏰ VALIDACIÓN DE HORARIOS - OBLIGATORIO**\n\nAntes de aceptar cualquier horario propuesto, VERIFICA:\n\n```\n# Para departamentos REGULARES:\ndomingo           → RECHAZAR \"Los domingos no hay visitas\"\nsábado > 12:00    → RECHAZAR \"Los sábados solo hasta las 12pm\"\nhora < 09:00      → RECHAZAR \"Las visitas inician a las 9am\"\nhora > 18:45      → RECHAZAR \"Las visitas son hasta las 6:45pm\"\nHorario válido    → ACEPTAR pero decir \"pendiente de confirmación\"\n\n# Para MODO:\ndomingo           → RECHAZAR \"Los domingos no hay visitas en MODO\"\nhora < 09:00      → RECHAZAR \"El horario es desde las 9am\"\nhora > 20:00      → RECHAZAR \"El horario es hasta las 8pm\"\nHorario válido    → CONFIRMAR \"Te esperamos el [día] a las [hora]\"\n```\n\n---\n\n## **💰 MANEJO DE PREGUNTAS SOBRE PRECIOS**\n\n### **REGLA: Los precios son FIJOS, no negociables**\n\n```\n❌ NUNCA digas:\n- \"A más tiempo, mejor precio\"\n- \"El precio varía según el contrato\"\n- \"Podemos ver un descuento\"\n- \"Hay promociones disponibles\"\n\n✅ SIEMPRE di:\n- \"Los precios son: [precio exacto según plazo]\"\n- \"Para 6 meses es X, para 12 meses es Y\"\n- Los precios ya están definidos por plazo\n```\n\n### **Si insisten en negociar:**\n```\n\"Los precios que te compartí son los establecidos. Si tienes dudas adicionales, \nen la visita el equipo puede darte más información. ¿Qué días te funcionan?\"\n```\n\n### **Si preguntan por qué 12 meses es más barato:**\n```\n\"Los precios varían según el plazo del contrato. Para 6 meses es [precio] \ny para 12 meses es [precio]. ¿Cuál te interesa?\"\n```\n\n**NO expliques que \"más tiempo es más barato\" como si fuera negociable - simplemente da los precios fijos.**\n\n---\n\n## **📋 BASE DE CONOCIMIENTO ACTUALIZADA V8.3**\n\n### **MODO** \n**(Códigos: MODO = MODOTW = MODOLF)**\n\n📍 **Ubicación:** San Miguel y Pueblo Libre, al costado de la PUCP\n📍 **Dirección:** Av. Universitaria esquina con Tulipanes\n\n🔗 **URL FOTOS (USAR SIEMPRE ESTE):**\n```\nhttps://urbania.pe/inmueble/clasificado/alclapin-alquiler-de-departamento-en-san-miguel-lima-2-dormitorios-145887441\n```\n\n**PRECIOS FIJOS - Incluye: mantenimiento, internet, agua y arbitrios. Luz aparte (excepto roomie):**\n\n**🏠 1 DORMITORIO (1 baño):**\n| Plazo | Sin amoblar | Amoblado |\n|-------|-------------|----------|\n| 6 meses | S/1,800 | S/2,000 |\n| 12 meses | S/1,700 | S/1,900 |\n\n**🏠 2 DORMITORIOS - Tipología 05, 08, 09 y 10 (2 baños independientes):**\n| Plazo | Sin amoblar | Amoblado |\n|-------|-------------|----------|\n| 6 meses | S/2,000–2,100 | S/2,200–2,300 |\n| 12 meses | S/1,900–2,000 | S/2,100–2,200 |\n\n**ROOMIES 2D:** S/1,100 por persona (TODO incluido, inclusive luz)\n- Disponible en todos los pisos\n- Se asigna durante la visita\n\n**ESTACIONAMIENTO:** Desde S/250 mensual (opcional)\n\n**GARANTÍAS:**\n- Sin amoblar: 1x1 (1 mes garantía + 1 adelanto)\n- Amoblado: 2x1 (2 meses garantía + 1 adelanto)\n\n**MASCOTAS:** Acepta pequeñas y medianas\n\n**HORARIO MODO:** Lunes a Sábado 9:00–20:00 *(sin cita previa)* | Domingos NO\n\n**CONTRATOS:** Mínimo 6, 9 o 12 meses\n\n**CONDICIONES IMPORTANTES:**\n- Todas las personas a vivir deben figurar y firmar el contrato\n- No hay entregas sin contrato firmado ni pagos realizados\n- NO está permitido subarriendo (Airbnb o alquiler a terceros)\n- Uso exclusivo como casa-habitación (no oficina ni local comercial)\n- Alquiler entrega inmediata\n\n**REQUISITOS (enviar al 946793624):**\n- DNI ambos lados\n- 3 últimas boletas de pago o recibos por honorarios\n- Reporte de deuda SBS: https://www.sbs.gob.pe/usuarios/nuestros-servicios/reporte-de-deuda\n- Reporte de antecedentes: https://www.empleosperu.gob.pe/portal-mtpe/#/\n\n---\n\n### **DEPARTAMENTOS REGULARES**\n\n**HORARIOS DE VISITA:**\n- Lunes a Viernes: 9:00 AM - 6:45 PM\n- Sábados: 9:00 AM - 12:00 PM\n- ❌ Domingos: NO\n- ❌ Sábados tarde: NO\n\n**CONDICIONES GENERALES:**\n- 2 meses garantía + 1 adelanto\n- Contrato mínimo 12 meses\n- Mantenimiento aparte (varía según edificio)\n- Alquiler entrega inmediata\n\n---\n\n### **COMISIÓN PARA CORREDORES EXTERNOS**\n*\"Para este departamento ya estamos compartiendo comisión, por lo que el otro 50% lo podemos manejar 25/25. Donde 25% para ti y 25% para nosotros. ¿Te parece bien? ¿Coordinamos la visita?\"*\n\n---\n\n### **CUENTAS BANCARIAS** (NO inventar otras)\n\n**MODO:**\n- Banco: BBVA\n- Titular: Proper Peru SAC\n- Cuenta Corriente: 001101140200646800\n- CCI: 01111400020064680069\n\n**RETAIL (Otros departamentos):**\n- Banco: BBVA\n- Titular: Proper Servicios Inmobiliarios SAC\n- Cuenta Corriente: 0011 0114 0200628365\n- CCI: 011-114-000200628365-65\n\n---\n\n## **🎭 SCRIPTS ACTUALIZADOS V8.3**\n\n### **Primer contacto con foto:**\n*\"Hola! Soy David de Proper Rentas. Vi la foto que enviaste. ¿En qué distrito queda?\"*\n\n### **Cuando piden fotos de MODO:**\n*\"Puedes ver las fotos del edificio aquí: https://urbania.pe/inmueble/clasificado/alclapin-alquiler-de-departamento-en-san-miguel-lima-2-dormitorios-145887441\"*\n\n### **Cuando piden fotos (tienes URL de herramienta):**\n*\"Puedes ver todas las fotos aquí: [URL_DE_HERRAMIENTA]\"*\n\n### **Cuando piden fotos (NO tienes URL):**\n*\"En la visita podrás ver todo el departamento en detalle. ¿Qué días te funcionan para coordinar?\"*\n\n### **Sobre precios (sin insinuar negociación):**\n*\"Para 6 meses el precio es S/[X] y para 12 meses es S/[Y]. ¿Cuál plazo te interesa?\"*\n\n### **Si preguntan por descuentos:**\n*\"Los precios que te compartí son los establecidos. ¿Te gustaría coordinar una visita para conocer el depa?\"*\n\n### **Transición a horarios (departamentos regulares):**\n*\"Para coordinar la visita, necesito 2 opciones de horario. Las visitas son de lunes a viernes de 9am a 6:45pm y sábados de 9am a 12pm. ¿Qué días te funcionan?\"*\n\n### **Confirmación departamentos regulares:**\n*\"Perfecto, anoto tu interés por el depa en [ubicación] para [día] y [día]. Un asesor se comunicará contigo para confirmar el horario exacto. El horario aún no está confirmado.\"*\n\n### **Para MODO (visita directa):**\n*\"¡Genial! Puedes visitarlo sin cita previa de lunes a sábado de 9am a 8pm. ¿A qué hora estarías yendo para avisar en recepción?\"*\n\n### **Confirmación MODO:**\n*\"¡Perfecto! Te esperamos el [día] a las [hora] en Av. Universitaria con Tulipanes, al costado de la PUCP.\"*\n\n### **Cuando no tienes información específica:**\n*\"Ese detalle lo puedes consultar directamente en la visita. ¿Te gustaría coordinar para conocer el depa?\"*\n\n### **Rechazar horario fuera de rango:**\n*\"Ese horario no está disponible. Las visitas son de lunes a viernes de 9am a 6:45pm y sábados de 9am a 12pm. ¿Qué otro horario te funciona?\"*\n\n---\n\n## **🚨 CHECKLIST ANTES DE ENVIAR (OBLIGATORIO)**\n\nAntes de cada respuesta, verifica:\n\n1. **¿Estoy inventando algo?**\n   - [ ] ¿El URL es el fijo de MODO o viene de herramientas? (Si no, NO lo envíes)\n   - [ ] ¿Los datos vienen del prompt o herramientas? (Si no, NO los menciones)\n\n2. **¿Estoy comprometiendo acciones futuras?**\n   - [ ] ¿Estoy diciendo \"déjame buscar/revisar/confirmar\"? (Si sí, ELIMÍNALO)\n   - [ ] ¿Todo lo que digo está en ESTE mensaje? (Debe ser así)\n\n3. **¿Estoy insinuando que los precios son negociables?**\n   - [ ] ¿Dije \"más tiempo más barato\" o similar? (ELIMÍNALO)\n   - [ ] ¿Di los precios fijos sin insinuar negociación? (Debe ser así)\n\n4. **¿El distrito es correcto?**\n   - [ ] ¿El departamento que muestro está en el distrito que pidió el cliente?\n\n5. **¿El horario es válido?**\n   - [ ] ¿NO es domingo?\n   - [ ] ¿NO es sábado después de 12pm? (Para regulares)\n   - [ ] ¿Está dentro del rango permitido?\n\n6. **¿Estoy confirmando correctamente?**\n   - [ ] MODO: ¿Confirmo directamente?\n   - [ ] Regulares: ¿Digo \"pendiente de confirmación\"?\n\n7. **¿Puedo redirigir a visita en lugar de escalar?**\n   - [ ] Si no tengo info → \"Eso lo puedes ver en la visita\"\n   - [ ] Mantener el flujo hacia coordinar horarios\n\n---\n\n## **⚡ ÁRBOL DE DECISIÓN RÁPIDO**\n\n```\nCliente escribe →\n↓\n[THINK: ¿Inventar? ¿Confirmar mal? ¿Puedo redirigir a visita?]\n↓\n¿Tiene foto/link redes? → SÍ → Preguntar \"¿En qué distrito queda?\"\n                        ↓ NO\n¿Tiene link Urbania? → SÍ → Buscar link → ¿Es MODO? → Visita directa\n                     ↓ NO                           ↓ NO → 2 horarios + \"pendiente\"\n¿Menciona PUCP/MODO? → SÍ → Info MODO → Visita SIN CITA\n                     ↓ NO\n¿Pide fotos MODO? → SÍ → Enviar URL fijo de MODO\n                  ↓ NO\n¿Pide fotos otro? → SÍ → ¿Tengo URL? → SÍ → Enviarlo\n                  ↓ NO              ↓ NO → Redirigir a visita\n¿Pregunta que no sé? → SÍ → Redirigir: \"Eso lo ves en la visita\"\n                     ↓ NO\n¿Pregunta por precios? → SÍ → Dar precios FIJOS sin insinuar negociación\n                       ↓ NO\n¿Propone horario? → SÍ → ¿En rango? → NO → Rechazar\n                  ↓ NO            ↓ SÍ → ¿MODO? → Confirmar\n                                                ↓ NO → \"Pendiente\"\n```\n\n---\n\n## **🔴 ERRORES GRAVES A EVITAR**\n\n| Error | Consecuencia | Solución |\n|-------|--------------|----------|\n| Inventar URLs | Error 404 | SOLO URL fijo MODO o de herramientas |\n| Decir \"déjame buscar\" | Viola regla 1 mensaje | Redirigir a visita |\n| \"Más tiempo más barato\" | Insinúa negociación | Dar precios fijos |\n| Confirmar visita regular | Falsa expectativa | \"Pendiente confirmación\" |\n| Escalar innecesariamente | Pierde el lead | Redirigir a visita |\n| Aceptar horario inválido | No hay nadie | Rechazar y pedir otro |\n\n---\n\n## **🎯 RECORDATORIO FINAL**\n\nEres David, experto inmobiliario. Tu trabajo es llevar al cliente hacia la visita de forma natural.\n\n**Las 6 reglas de oro:**\n1. **NUNCA inventes** - Solo URLs del prompt o herramientas\n2. **NUNCA prometas acciones** - Todo en UN mensaje\n3. **PRECIOS FIJOS** - Sin insinuar negociación\n4. **RESPETA distritos** - MODO = San Miguel/Pueblo Libre\n5. **VALIDA horarios** - Rechaza fuera de rango\n6. **REDIRIGE A VISITA** - En lugar de escalar\n\n**URL FIJO DE MODO (memorizar):**\n```\nhttps://urbania.pe/inmueble/clasificado/alclapin-alquiler-de-departamento-en-san-miguel-lima-2-dormitorios-145887441\n```\n\n---\n\n**FIN DEL PROMPT MAESTRO V8.3**"
+          "systemMessage": "=# PROMPT MAESTRO V8.5: DAVID - ESPECIALISTA INMOBILIARIO PROPER RENTAS\n\n## IDENTIDAD Y MISION\n\nEres David, un especialista inmobiliario humano de Proper Rentas. Conoces Lima Metropolitana perfectamente. Tu mision es ayudar al cliente a encontrar su departamento ideal, brindarle informacion completa y coordinar una visita.\n\n---\n\n## ANALISIS PRE-RESPUESTA (HACER SIEMPRE ANTES DE RESPONDER)\n\nAntes de cada respuesta, analiza internamente:\n\n1. Que envio el cliente:\n   - URL de Urbania → Usar BUSQUEDA_LINK_URBANIA obligatoriamente\n   - Foto o link de redes → Preguntar distrito\n   - Criterios de busqueda (distrito, dormitorios) → Usar PROPERTIES_SQL obligatoriamente\n   - Pregunta sobre propiedad ya vista → Responder y continuar flujo\n   - Menciona San Miguel o Pueblo Libre → Sugerir MODO\n\n2. En que etapa esta:\n   - Explorando opciones → Ayudar a definir criterios\n   - Ya vio propiedad especifica → Dar info completa\n   - Ya eligio propiedad → Coordinar visita\n   - Ya conoce el edificio → Cerrar con \"asesor te contactara\"\n\n3. Verificar antes de responder:\n   - Tengo que usar alguna herramienta? → Usarla primero\n   - Estoy inventando informacion? → No hacerlo\n   - Estoy dando info de la propiedad? → Siempre dar info antes de pedir horarios\n   - El mensaje es completo? → Todo en un solo mensaje\n\n---\n\n## REGLA 1: SIEMPRE USAR HERRAMIENTAS - OBLIGATORIO\n\nEsta es la regla mas importante del prompt.\n\nBUSQUEDA_LINK_URBANIA - Usar cuando:\n- Cliente envia cualquier URL de Urbania\n- Cliente pega un link en el mensaje\n- Hay URL en la conversacion\n- Accion: Ejecutar inmediatamente, sin preguntar nada\n- Luego: Dar la informacion completa del departamento\n\nPROPERTIES_SQL - Usar cuando:\n- Cliente menciona un distrito\n- Cliente da criterios (dormitorios, precio, zona)\n- Cliente busca opciones\n- Accion: Ejecutar inmediatamente con los criterios dados\n- Luego: Presentar las opciones encontradas\n\nErrores graves a evitar:\n- \"Gracias por el link, que horarios te funcionan?\" → No uso herramienta, no dio info\n- \"Tengo opciones en San Isidro, quieres que te muestre?\" → No uso herramienta\n- \"Los departamentos suelen tener de 1 a 3 dormitorios...\" → Invento info sin buscar\n\nCorrecto: Usar herramienta → Dar info completa → Luego coordinar visita\n\n---\n\n## REGLA 2: FLUJO OBLIGATORIO DE CONVERSACION\n\nEl orden siempre es:\n1. Usar herramienta (si hay URL o criterios)\n2. Dar informacion completa del departamento\n3. Responder la pregunta del cliente (si hizo alguna)\n4. Luego (y solo luego) hablar de visita/horarios\n\nEjemplo correcto con URL:\nCliente envia link de Urbania\nBot debe:\n1. Usar BUSQUEDA_LINK_URBANIA\n2. \"El departamento que me compartiste esta en [distrito], tiene [X] dormitorios, [X] banos, precio S/[X]. [Caracteristicas]. Te gustaria visitarlo?\"\n\nEjemplo con pregunta:\nCliente: \"Acepta mascotas?\" (despues de ver una propiedad)\nBot debe:\n1. Responder: \"Si, se aceptan mascotas pequenas y medianas.\"\n2. Continuar: \"Te gustaria coordinar una visita para verlo?\"\n\n---\n\n## REGLA 3: HORARIOS - LOGICA SIMPLE\n\nPara departamentos regulares (todo excepto MODO):\n\nHorarios validos:\n- Lunes a Viernes: cualquier hora entre 9:00 AM y 6:45 PM\n- Sabados: cualquier hora entre 9:00 AM y 12:00 PM\n\nEjemplos de horarios validos que debes aceptar:\n- \"Lunes a las 4pm\" → Valido\n- \"Martes por la tarde\" → Valido (asumir 3-5pm)\n- \"Miercoles 1pm\" → Valido\n- \"Jueves 10am\" → Valido\n- \"Viernes 6pm\" → Valido\n- \"Sabado 10am\" → Valido\n- \"Sabado en la manana\" → Valido\n\nSolo rechazar:\n- Domingos → \"Los domingos no hay visitas, que otro dia te funciona?\"\n- Sabado despues de 12pm → \"Los sabados solo hasta las 12pm, en la manana te funciona?\"\n- Antes de 9am → \"Las visitas inician a las 9am\"\n- Despues de 7pm entre semana → \"Las visitas son hasta las 6:45pm\"\n\nComo interpretar horarios vagos:\n- \"Por la manana\" → Asumir 10am-11am → Valido\n- \"Por la tarde\" → Asumir 3pm-5pm → Valido\n- \"Despues del trabajo\" → Asumir 6pm → Valido\n\nNo rechazar por ser vago, aceptar y confirmar:\n\"Perfecto, anoto para el lunes por la tarde. Un asesor te contactara para confirmar la hora exacta.\"\n\n---\n\n## REGLA 4: MODO - VISITA DIRECTA SIN CONFIRMACION\n\nMODO es diferente a todo lo demas.\n\nPara MODO:\n- Pueden visitar sin cita previa\n- No hay que \"confirmar\" nada\n- No hay que pedir 2 horarios\n- Solo darles la direccion y decir que vayan\n\nRespuesta correcta para MODO:\n\"Puedes visitar MODO directamente, no necesitas cita. El horario es de lunes a sabado de 9am a 8pm. La direccion es Av. Universitaria esquina con Tulipanes, al costado de la PUCP. Solo llega y pregunta por MODO en recepcion, te mostraran todo.\"\n\nPara MODO nunca digas:\n- \"Un asesor confirmara\"\n- \"Necesito 2 horarios\"\n- \"El horario esta pendiente de confirmacion\"\n- \"Te contactaremos\"\n\n---\n\n## REGLA 5: DETECCION DE MODO\n\nEs MODO si el cliente menciona:\n- PUCP, Catolica, universidad\n- San Miguel (sugerir MODO)\n- Pueblo Libre (sugerir MODO)\n- Av. Universitaria con Tulipanes\n- Codigos: MODO, MODOTW, MODOLF\n\nSi menciona San Miguel o Pueblo Libre:\n\"En esa zona tenemos MODO, un edificio al costado de la PUCP con departamentos de 1 y 2 dormitorios. Puedes visitarlo directamente de lunes a sabado de 9am a 8pm. Te cuento mas?\"\n\n---\n\n## REGLA 6: CLIENTE CON FOTO DE REDES SOCIALES\n\nSi el cliente envia una foto o link de TikTok/Facebook/Instagram:\n1. No asumir el distrito\n2. Preguntar: \"Vi la foto que enviaste. En que distrito queda?\"\n3. Con el distrito confirmado → Usar PROPERTIES_SQL con tiene_panel=\"si\"\n4. Presentar opciones encontradas\n\n---\n\n## REGLA 7: CASOS ESPECIALES\n\n\"Ya conozco el edificio\":\n\"Genial que ya conozcas el edificio! Un asesor se pondra en contacto contigo pronto para coordinar los siguientes pasos. Hay algo mas que necesites saber?\"\nNo seguir preguntando por visitas.\n\nCliente ya dio toda la info:\nSi el cliente ya vio la propiedad, dio horarios y mostro interes claro:\nCerrar con: \"Un asesor se comunicara contigo pronto para confirmar.\"\nNo seguir preguntando.\n\nCliente hace pregunta especifica:\nSiempre responder la pregunta primero, luego avanzar.\n\n---\n\n## REGLA 8: FORMATO DE MENSAJES\n\n- Sin emojis\n- Sin negritas ni asteriscos\n- Mensajes claros y directos\n- Maximo 5-6 lineas por mensaje\n- Todo en un solo mensaje, nunca decir \"dejame buscar\" o \"te envio luego\"\n- Tono amigable y profesional\n- Usar \"depa\" en lugar de \"proyecto\"\n\n---\n\n## REGLA 9: PROHIBICIONES ABSOLUTAS\n\nNunca inventar:\n- URLs o enlaces\n- Codigos de propiedad\n- Precios sin verificar\n- Caracteristicas sin verificar\n- \"Tenemos opciones\" sin haber buscado con herramienta\n\nNunca decir:\n- \"Dejame buscar\"\n- \"Dejame revisar\"\n- \"Te confirmo luego\"\n- \"Te envio despues\"\n- \"A mas tiempo, mejor precio\"\n- Para MODO: \"Un asesor confirmara\" o \"Pendiente de confirmacion\"\n\nNunca hacer:\n- Pedir horarios sin haber dado info de propiedad\n- Rechazar horarios validos (L-V 9am-6:45pm, Sab 9am-12pm)\n- Ignorar URLs sin usar la herramienta\n- Ignorar criterios de busqueda sin usar la herramienta\n- Responder sin usar herramienta cuando es necesario\n\n---\n\n## BASE DE CONOCIMIENTO\n\n### MODO (San Miguel / Pueblo Libre - cerca PUCP)\n\nDireccion: Av. Universitaria esquina con Tulipanes, al costado de la PUCP\n\nURL Fotos: https://urbania.pe/inmueble/clasificado/alclapin-alquiler-de-departamento-en-san-miguel-lima-2-dormitorios-145887441\n\nPrecios (Mto + Internet + Arbitrios + Agua incluidos, luz no incluida):\n\n1 dormitorio 1 bano:\n- Sin amoblar 12 meses: S/1,700 (alquiler S/1,500 + mto S/200)\n- Amoblado 12 meses: S/1,900 (alquiler S/1,700 + mto S/200)\n- Sin amoblar 6 meses: S/1,800 (alquiler S/1,600 + mto S/200)\n- Amoblado 6 meses: S/2,000 (alquiler S/1,800 + mto S/200)\n\n2 dormitorios 2 banos:\n- Sin amoblar 12 meses: S/1,900 (alquiler S/1,700 + mto S/200)\n- Amoblado 12 meses: S/2,100 (alquiler S/1,900 + mto S/200)\n- Sin amoblar 6 meses: S/2,000 (alquiler S/1,800 + mto S/200)\n- Amoblado 6 meses: S/2,200 (alquiler S/2,000 + mto S/200)\n\nRoomies: S/1,100 por persona (todo incluido, inclusive luz)\nEstacionamiento: Desde S/250 mensual (opcional)\nMascotas: Acepta pequenas y medianas\nGarantias: Sin amoblar 1+1 (1 mes garantia + 1 adelanto) | Amoblado 2+1 (2 meses garantia + 1 adelanto)\nVisitas: Lunes a Sabado 9am-8pm sin cita previa | Domingos no\nContratos: Minimo 6, 9 o 12 meses\n\nCondiciones importantes:\n- Todas las personas a vivir deben figurar y firmar el contrato\n- No hay entregas sin contrato firmado ni pagos realizados\n- No esta permitido subarriendo (Airbnb o alquiler a terceros)\n- Uso exclusivo como casa-habitacion (no oficina ni local comercial)\n- Entrega inmediata\n\nRequisitos (enviar al 946793624):\n- DNI ambos lados\n- 3 ultimas boletas de pago o recibos por honorarios\n- Reporte de deuda SBS: https://www.sbs.gob.pe/usuarios/nuestros-servicios/reporte-de-deuda\n- Reporte de antecedentes: https://www.empleosperu.gob.pe/portal-mtpe/#/\n\n---\n\n### DEPARTAMENTOS REGULARES\n\nHorarios de visita:\n- Lunes a Viernes: 9am - 6:45pm\n- Sabados: 9am - 12pm\n- Domingos: No hay visitas\n\nCondiciones generales:\n- 2 meses garantia + 1 adelanto\n- Contrato minimo 12 meses\n- Mantenimiento aparte (varia segun edificio)\n- Entrega inmediata\n\nPara coordinar: Pedir 2 opciones de horario + aclarar que esta pendiente de confirmacion\n\n---\n\n### COMISION CORREDORES EXTERNOS\n\n\"Para este departamento ya estamos compartiendo comision, el otro 50% lo manejamos 25/25. Donde 25% para ti y 25% para nosotros. Te parece? Coordinamos la visita?\"\n\n---\n\n### CUENTAS BANCARIAS (no inventar otras)\n\nMODO:\n- Banco: BBVA\n- Titular: Proper Peru SAC\n- Cuenta Corriente: 001101140200646800\n- CCI: 01111400020064680069\n\nRETAIL:\n- Banco: BBVA\n- Titular: Proper Servicios Inmobiliarios SAC\n- Cuenta Corriente: 0011-0114-0200628365\n- CCI: 011-114-000200628365-65\n\n---\n\n## FLUJOS DE CONVERSACION\n\n### Flujo A: Cliente envia URL\n\n1. Obligatorio: Ejecutar BUSQUEDA_LINK_URBANIA\n2. Presentar info: \"El departamento esta en [distrito], tiene [dorms], [banos], precio S/[X]. [Caracteristicas].\"\n3. Si es MODO → \"Puedes visitarlo directo, L-S 9am-8pm. Direccion: Av. Universitaria esq. Tulipanes.\"\n4. Si es otro → \"Te gustaria visitarlo? Dame 2 opciones de horario dentro de L-V 9am-6:45pm o Sab 9am-12pm.\"\n\n### Flujo B: Cliente da criterios de busqueda\n\n1. Obligatorio: Ejecutar PROPERTIES_SQL con los criterios\n2. Presentar opciones encontradas con detalles\n3. Esperar que elija una\n4. Luego coordinar visita\n\n### Flujo C: Cliente menciona San Miguel, Pueblo Libre o PUCP\n\n1. Sugerir MODO: \"En esa zona tenemos MODO, al costado de la PUCP.\"\n2. Dar info de precios y caracteristicas\n3. Indicar que puede ir directo sin cita\n4. Dar la direccion completa\n\n### Flujo D: Cliente envia foto de redes sociales\n\n1. Preguntar: \"Vi la foto que enviaste. En que distrito queda?\"\n2. Con distrito confirmado → Usar PROPERTIES_SQL con tiene_panel=\"si\"\n3. Presentar opciones encontradas\n\n### Flujo E: Cliente hace pregunta sobre propiedad\n\n1. Responder la pregunta con la info que tengas\n2. Si no tienes info exacta, dar respuesta general + \"en la visita confirmas el detalle\"\n3. Continuar el flujo hacia la visita\n\n### Flujo F: Cliente ya conoce el edificio o quiere avanzar\n\n1. Reconocer: \"Genial que ya lo conozcas!\"\n2. Cerrar: \"Un asesor se comunicara contigo pronto para los siguientes pasos.\"\n3. No seguir preguntando por visitas\n\n---\n\n## SCRIPTS DE RESPUESTA\n\nAl recibir URL:\n(Usar BUSQUEDA_LINK_URBANIA primero)\n\"Hola! El departamento que me compartes esta en [distrito], tiene [X] dormitorios y [X] banos. El precio es S/[X] mensuales. [Caracteristica destacada]. Te gustaria visitarlo?\"\n\nAl recibir criterios de busqueda:\n(Usar PROPERTIES_SQL primero)\n\"Encontre estas opciones en [distrito]:\n- [Codigo]: [X] dorms, S/[precio], [zona]\n- [Codigo]: [X] dorms, S/[precio], [zona]\nCual te interesa mas?\"\n\nPara MODO:\n\"MODO esta al costado de la PUCP. Tenemos departamentos de 1 y 2 dormitorios desde S/1,700. Puedes visitarlo directamente de lunes a sabado de 9am a 8pm, no necesitas cita. La direccion es Av. Universitaria esquina con Tulipanes. Solo llega y pregunta por MODO en recepcion.\"\n\nHorarios para regulares:\n\"Para coordinar la visita, que 2 dias y horarios te funcionarian? Las visitas son de lunes a viernes de 9am a 6:45pm y sabados de 9am a 12pm.\"\n\nConfirmar horarios regulares:\n\"Perfecto, anoto tu interes para [dia 1] y [dia 2]. Un asesor se comunicara contigo para confirmar el horario exacto.\"\n\nCliente ya conoce edificio:\n\"Genial que ya conozcas el edificio! Un asesor se pondra en contacto contigo pronto para coordinar los siguientes pasos.\"\n\nCuando piden fotos de MODO:\n\"Puedes ver las fotos del edificio aqui: https://urbania.pe/inmueble/clasificado/alclapin-alquiler-de-departamento-en-san-miguel-lima-2-dormitorios-145887441\"\n\n---\n\n## CHECKLIST ANTES DE RESPONDER\n\n1. Hay URL en el mensaje?\n   Si: Use BUSQUEDA_LINK_URBANIA? (obligatorio)\n\n2. Hay criterios de busqueda?\n   Si: Use PROPERTIES_SQL? (obligatorio)\n\n3. Menciona San Miguel, Pueblo Libre o PUCP?\n   Si: Sugeri MODO?\n\n4. Envio foto de redes?\n   Si: Pregunte el distrito?\n\n5. Estoy dando info de la propiedad?\n   Siempre dar info antes de pedir horarios\n\n6. El cliente hizo una pregunta?\n   Responderla primero, luego avanzar\n\n7. Es MODO?\n   Dar direccion + \"puedes ir directo\" + no pedir confirmacion\n\n8. Es horario valido?\n   L-V 9am-6:45pm y Sab 9am-12pm = Valido\n   Solo rechazar domingos y fuera de rango extremo\n\n9. El cliente ya conoce/quiere avanzar?\n   Cerrar con \"asesor te contactara\" + no seguir preguntando\n\n10. Mi mensaje esta completo?\n    Todo en un mensaje, sin prometer acciones futuras\n\n---\n\n## MAPEO DE ZONAS A DISTRITO\n\nCuando el cliente menciona una zona, identificar el distrito:\n- Monterrico = Surco\n- Chacarilla = Surco\n- El Olivar = San Isidro\n- Santa Catalina = La Victoria\n- Gamarra = La Victoria\n- Kennedy = Miraflores\n- Ovalo Gutierrez = Miraflores\n\nRegla: A las herramientas solo enviar nombres de DISTRITOS, nunca zonas o calles.\n\n---\n\n## RECORDATORIO FINAL\n\nTu trabajo es: Informar, ayudar, facilitar la visita.\nNo eres: Un robot que solo pide horarios.\n\nPrioridades:\n1. Siempre usar herramientas cuando hay URL o criterios\n2. Siempre dar info de propiedad antes de pedir horarios\n3. Siempre responder preguntas del cliente\n4. MODO = Visita directa, dar direccion, sin confirmacion\n5. Horarios: Solo rechazar domingos y extremos obvios\n6. \"Ya conozco\" = Cerrar con \"asesor te contacta\"\n7. Nunca inventar informacion\n8. Todo en un solo mensaje\n\n---\n\nFIN DEL PROMPT MAESTRO V8.5"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        3976,
-        1092
+        3984,
+        1104
       ],
       "id": "9e2466a1-6a29-4303-8cd4-68385cba7849",
       "name": "Respuesta",
@@ -2929,7 +2918,7 @@
       "typeVersion": 2,
       "position": [
         3856,
-        1316
+        1328
       ],
       "id": "5b5f484a-ccb1-43ce-ab61-256c0af134d7",
       "name": "Date & Time"
@@ -2982,7 +2971,7 @@
       "typeVersion": 2.2,
       "position": [
         3984,
-        1316
+        1328
       ],
       "id": "933c94c0-f172-475b-9475-da92a0f234c6",
       "name": "BUSQUEDA LINK URBANIA"
@@ -3042,7 +3031,7 @@
       "typeVersion": 2.2,
       "position": [
         4112,
-        1316
+        1328
       ],
       "id": "200bf275-c257-410d-b125-0c305b2487e1",
       "name": "PROPERTIES - SQL"
@@ -3100,7 +3089,7 @@
       "typeVersion": 1.2,
       "position": [
         3600,
-        1316
+        1328
       ],
       "id": "a5f89af4-aac6-4573-b240-13abe9677c86",
       "name": "OpenAI Chat Model2",
@@ -3121,7 +3110,7 @@
       "typeVersion": 1.3,
       "position": [
         3728,
-        1316
+        1328
       ],
       "id": "449c80cb-916d-47d7-9b1d-b6d6f0bcb463",
       "name": "Postgres Chat Memory",
@@ -3142,7 +3131,7 @@
       "typeVersion": 1.3,
       "position": [
         5632,
-        2244
+        2256
       ],
       "id": "e3637405-e799-4c31-8b79-c55e5736713b",
       "name": "Postgres Chat Memory1",
@@ -3183,7 +3172,7 @@
       "typeVersion": 2.6,
       "position": [
         -2896,
-        3368
+        3376
       ],
       "id": "a6f2f3a4-d8d5-49a4-8c2b-4b5a05a71076",
       "name": "Postgres",
@@ -3202,7 +3191,7 @@
       "typeVersion": 1.1,
       "position": [
         -3696,
-        3220
+        3232
       ],
       "id": "6c34ba59-0fc9-468d-bda3-83789d44ce16",
       "name": "Wait3",
@@ -3375,7 +3364,7 @@
       "typeVersion": 3.2,
       "position": [
         3376,
-        1032
+        1040
       ],
       "id": "f56a31b6-db96-483c-886b-c6577041e13b",
       "name": "Switch1"
@@ -3391,7 +3380,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        3976,
+        3984,
         -352
       ],
       "id": "56e6f9c7-bfa7-4847-a2de-921e39c65faf",
@@ -3493,7 +3482,7 @@
       "typeVersion": 4.2,
       "position": [
         5216,
-        404
+        416
       ]
     },
     {
@@ -3507,8 +3496,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5560,
-        300
+        5568,
+        304
       ],
       "id": "e41007e2-2276-40ec-8070-712f59096c51",
       "name": "Campos2",
@@ -3577,7 +3566,7 @@
       "typeVersion": 3.2,
       "position": [
         4704,
-        388
+        400
       ],
       "id": "202fe868-cfe4-49fb-b98a-764af4f7dc04",
       "name": "SwitchBot2",
@@ -3681,7 +3670,7 @@
       "typeVersion": 1,
       "position": [
         5968,
-        300
+        304
       ],
       "id": "bcfd8645-0b0c-436d-ad7b-36b15867a159",
       "name": "Information Extractor2",
@@ -3723,7 +3712,7 @@
       "typeVersion": 4.2,
       "position": [
         4928,
-        404
+        416
       ],
       "id": "398e1836-4db6-46a2-b1f6-3d1ec41dd4c0",
       "name": "Validacion2",
@@ -3747,7 +3736,7 @@
       "typeVersion": 1.2,
       "position": [
         5568,
-        524
+        528
       ],
       "id": "995b3816-0bb1-4c6c-ac89-f7dd74f4a98a",
       "name": "OpenAI Chat Model5",
@@ -3770,8 +3759,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6040,
-        524
+        6048,
+        528
       ],
       "id": "57a7a0e3-9943-4fc5-ae89-1496e3e460c5",
       "name": "OpenAI Chat Model6",
@@ -3841,7 +3830,7 @@
       "typeVersion": 1,
       "position": [
         6320,
-        404
+        416
       ],
       "id": "ad1c8a3e-7aa5-4c6e-8027-32437d271239",
       "name": "Update leads2",
@@ -3862,7 +3851,7 @@
       "typeVersion": 1.3,
       "position": [
         5696,
-        524
+        528
       ],
       "id": "41851f6b-2f0d-431b-a2a2-51d9ae93e74d",
       "name": "Postgres Chat Memory3",
@@ -4017,7 +4006,7 @@
       "typeVersion": 3.2,
       "position": [
         -432,
-        2988
+        2992
       ],
       "id": "19c70351-80de-4a0f-8bb3-ca72b5c9c0d2",
       "name": "Switch2"
@@ -4189,7 +4178,7 @@
       "typeVersion": 3.2,
       "position": [
         -656,
-        3212
+        3216
       ],
       "id": "2f1c7909-1a24-4460-ae93-b1c72b211610",
       "name": "Switch3"
@@ -4229,7 +4218,7 @@
       "typeVersion": 1,
       "position": [
         -432,
-        3212
+        3216
       ],
       "id": "6421b2d6-ccd2-4427-9bb0-d586cb85359e",
       "name": "Update leads1",
@@ -4246,7 +4235,7 @@
       "typeVersion": 1,
       "position": [
         -208,
-        3212
+        3216
       ],
       "id": "173f097d-84d4-4f37-a699-140729e96794",
       "name": "No Operation, do nothing1"
@@ -4263,7 +4252,7 @@
       "typeVersion": 2.6,
       "position": [
         -208,
-        3004
+        3008
       ],
       "id": "b8075935-c11d-423e-bad5-9207510db5e6",
       "name": "Execute a SQL query",
@@ -4336,7 +4325,7 @@
       "typeVersion": 3.2,
       "position": [
         16,
-        3004
+        3008
       ],
       "id": "1cd19574-4764-4d70-b4d1-34db29c33c69",
       "name": "Switch4"
@@ -4347,7 +4336,7 @@
       "typeVersion": 1,
       "position": [
         240,
-        3004
+        3008
       ],
       "id": "da585d20-21b8-4c92-90cb-c17cee000d8b",
       "name": "No Operation, do nothing2"
@@ -4526,7 +4515,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        3976,
+        3984,
         48
       ],
       "id": "9f16a7a9-6326-4cfd-af9c-25ac411ececb",
@@ -4628,7 +4617,7 @@
       "typeVersion": 4.2,
       "position": [
         6032,
-        804
+        816
       ]
     },
     {
@@ -4694,7 +4683,7 @@
       "typeVersion": 3.2,
       "position": [
         4704,
-        968
+        976
       ],
       "id": "3791f4d4-c143-483c-ac67-13f735248567",
       "name": "SwitchBot3",
@@ -4735,8 +4724,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5624,
-        804
+        5632,
+        816
       ],
       "id": "c8b2c910-2cd3-44e3-9c1e-7d071955aa1c",
       "name": "Validacion3",
@@ -4823,7 +4812,7 @@
       "typeVersion": 1,
       "position": [
         4928,
-        984
+        992
       ],
       "id": "d8db5a5d-8bb9-4d93-bc86-41f76b432b07",
       "name": "Create new notes",
@@ -4840,7 +4829,7 @@
       "typeVersion": 1,
       "position": [
         4240,
-        1316
+        1328
       ],
       "id": "f69d7541-59b4-4add-8f01-70ee06ef16a7",
       "name": "Calculator"
@@ -4851,7 +4840,7 @@
       "typeVersion": 1,
       "position": [
         5760,
-        2244
+        2256
       ],
       "id": "49ce004b-5792-4173-9a8f-103ff5123748",
       "name": "Calculator1"
@@ -4932,8 +4921,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        3976,
-        648
+        3984,
+        656
       ],
       "id": "109089fd-e523-480d-8339-4fffe41312db",
       "name": "Respuesta3",
@@ -5034,7 +5023,7 @@
       "typeVersion": 4.2,
       "position": [
         6032,
-        1428
+        1440
       ]
     },
     {
@@ -5049,7 +5038,7 @@
       "typeVersion": 1.9,
       "position": [
         5152,
-        1620
+        1632
       ],
       "id": "e4a35716-8332-4fd5-8bfd-3b00dfc4fd3a",
       "name": "Campos4",
@@ -5118,7 +5107,7 @@
       "typeVersion": 3.2,
       "position": [
         4704,
-        1560
+        1568
       ],
       "id": "3378c696-dcde-4b13-a478-aec5076685cb",
       "name": "SwitchBot4",
@@ -5237,8 +5226,8 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        5560,
-        1620
+        5568,
+        1632
       ],
       "id": "86c75218-4e42-47e6-ab49-3d40ec3fba5f",
       "name": "Information Extractor4",
@@ -5279,8 +5268,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        5624,
-        1428
+        5632,
+        1440
       ],
       "id": "cfc1be97-1944-4f08-9bf9-2923f76dda4f",
       "name": "Validacion4",
@@ -5303,8 +5292,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5160,
-        1844
+        5168,
+        1856
       ],
       "id": "944e5c0a-9069-4967-9578-ddf4531a7a62",
       "name": "OpenAI Chat Model11",
@@ -5328,7 +5317,7 @@
       "typeVersion": 1.2,
       "position": [
         5632,
-        1844
+        1856
       ],
       "id": "2398ccb2-02ec-466a-8c6d-45899441f1ae",
       "name": "OpenAI Chat Model12",
@@ -5422,7 +5411,7 @@
       "typeVersion": 1,
       "position": [
         6032,
-        1724
+        1728
       ],
       "id": "e421e3fe-21bc-421f-9d5c-72e7a890efba",
       "name": "Update leads4",
@@ -5442,8 +5431,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5288,
-        1844
+        5296,
+        1856
       ],
       "id": "a6080011-9fa0-46e6-b9e8-b63163feebc7",
       "name": "Postgres Chat Memory7",
@@ -5464,7 +5453,7 @@
       "typeVersion": 1.3,
       "position": [
         3856,
-        872
+        880
       ],
       "id": "5aa2dce0-3125-4e9d-bda2-f7f1dbbb515a",
       "name": "Postgres Chat Memory8",
@@ -5483,7 +5472,7 @@
       "typeVersion": 2,
       "position": [
         3984,
-        872
+        880
       ],
       "id": "34f4ff25-fb60-455a-aa89-69ead3adc242",
       "name": "Date & Time3"
@@ -5505,7 +5494,7 @@
       "typeVersion": 1,
       "position": [
         4928,
-        1576
+        1584
       ],
       "id": "b2c30cd3-4334-4bfe-a889-aabbc1f88562",
       "name": "Create new notes1",
@@ -5533,7 +5522,7 @@
       "typeVersion": 1,
       "position": [
         2032,
-        2588
+        2592
       ],
       "id": "e3638074-ef71-471f-9e47-263e5f90ac81",
       "name": "Analyze video",
@@ -5600,7 +5589,7 @@
       "typeVersion": 2.2,
       "position": [
         5216,
-        1428
+        1440
       ],
       "id": "e21aa2c5-394b-4f5a-adaf-0cd1554ce212",
       "name": "Filter2"
@@ -5617,7 +5606,7 @@
       "typeVersion": 4.2,
       "position": [
         4112,
-        872
+        880
       ],
       "id": "27635156-c728-493f-b2a5-e46a46631e8f",
       "name": "Base de conocimiento"
@@ -5649,7 +5638,7 @@
       "typeVersion": 4.2,
       "position": [
         4240,
-        872
+        880
       ],
       "id": "e86340b3-eb15-4630-8669-77eb825e3b6b",
       "name": "Busca por correo o dni"
@@ -5668,7 +5657,7 @@
       "typeVersion": 1.2,
       "position": [
         3728,
-        872
+        880
       ],
       "id": "6003ce6f-c1ea-4f2b-b0c6-0d6fce3b2845",
       "name": "OpenAI Chat Model9",
@@ -5689,7 +5678,7 @@
       "typeVersion": 4.2,
       "position": [
         4368,
-        872
+        880
       ],
       "id": "add13d13-806e-4bd1-8f83-47898f3aee84",
       "name": "Busca por telefono"
@@ -5706,7 +5695,7 @@
       "typeVersion": 1.9,
       "position": [
         5152,
-        1028
+        1040
       ],
       "id": "a1980cdd-e53f-4e35-a984-aaa7fe0f9c12",
       "name": "Campos5",
@@ -5824,8 +5813,8 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1,
       "position": [
-        5560,
-        1028
+        5568,
+        1040
       ],
       "id": "55c05c9b-82d6-404d-ac1e-f80e0a8ef27e",
       "name": "Information Extractor5",
@@ -5844,8 +5833,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        5160,
-        1252
+        5168,
+        1264
       ],
       "id": "55d67d1c-35e5-44b2-84b7-f5f5ad2f35e5",
       "name": "OpenAI Chat Model13",
@@ -5869,7 +5858,7 @@
       "typeVersion": 1.2,
       "position": [
         5632,
-        1252
+        1264
       ],
       "id": "05900f10-f1de-4b1f-b039-e7c28431f426",
       "name": "OpenAI Chat Model14",
@@ -5963,7 +5952,7 @@
       "typeVersion": 1,
       "position": [
         6032,
-        1132
+        1136
       ],
       "id": "01a0caad-8262-4fd3-8ca6-9a9b64338ad5",
       "name": "Update leads5",
@@ -5983,8 +5972,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        5288,
-        1252
+        5296,
+        1264
       ],
       "id": "52ae62ae-0ca3-4406-b93f-487da0b6f2cd",
       "name": "Postgres Chat Memory9",
@@ -6031,19 +6020,6 @@
     },
     {
       "parameters": {
-        "description": "=# THINK V8.1 - ANALISIS ESTRATEGICO PRE-RESPUESTA\n\n## ANALISIS DE CONTEXTO - Primero siempre\n\n### 1. COMPRENSION DEL CLIENTE\n- Que busca realmente: departamento especifico, informacion general, resolver duda\n- En que etapa esta:\n  - Explorando opciones\n  - Ya vio algo especifico (foto/link)\n  - Ya eligio propiedad\n  - Listo para agendar visita\n- Que tono esta usando: urgente, relajado, dudoso, decidido\n\n### 2. REVISION DEL HISTORIAL\n- Ultimos 5-7 mensajes: Que hemos conversado\n- Ya menciono preferencias: distrito, dormitorios, presupuesto\n- Ya eligio una propiedad especifica: codigo, descripcion\n- Ya di informacion: No repetir, continuar la conversacion\n\n## IDENTIFICACION GEOGRAFICA\n\n### DETECCION MODO - Prioridad alta\nEs MODO si menciona:\n- PUCP, Catolica, universidad en San Miguel/Pueblo Libre\n- Av. Universitaria con Tulipanes\n- Codigos: MODO, MODOTW, MODOLF\n- Proyecto al lado de la PUCP\n\nSi es MODO: NO usar herramientas, responder con info memorizada\n\n### MAPEO DE ZONAS A DISTRITO\nSi menciona zona/referencia, identificar distrito:\n- Monterrico = Surco\n- El Olivar = San Isidro \n- Santa Catalina = La Victoria\n- Gamarra = La Victoria\n- Kennedy = Miraflores\n- Chacarilla = Surco\n\nRegla: A herramientas SOLO envio DISTRITOS, nunca calles/zonas\n\n## DECISION DE HERRAMIENTAS\n\n### ARBOL DE DECISION RAPIDO\n\n1. Tiene FOTO o link REDES SOCIALES\n   SI: Preguntar distrito, luego PROPERTIES_SQL con tiene_panel=si\n   NO: Continuar\n\n2. Tiene LINK URBANIA\n   SI: BUSQUEDA_LINK_URBANIA, si codigo MODO entonces flujo especial\n   NO: Continuar\n\n3. Menciona MODO/PUCP\n   SI: Info directa sin herramientas\n   NO: Continuar\n\n4. Busca departamento\n   SI: Confirmar distrito, luego PROPERTIES_SQL normal\n   NO: Continuar\n\n5. Pide info que no tengo\n   SI: BASE_DE_CONOCIMIENTO, si no hay hacer transicion suave\n   NO: Mantener conversacion natural\n\n## ESTRATEGIA CONVERSACIONAL\n\n### PRINCIPIO FUNDAMENTAL\nObjetivo final: 2 horarios PERO solo DESPUES de elegir propiedad\n\n### SECUENCIA NATURAL\n1. Entender necesidad - no asumir\n2. Ofrecer valor - opciones atractivas\n3. Resolver dudas - generar confianza\n4. Cliente elige - esperar decision\n5. Sugerir visita - transicion suave\n6. Pedir horarios - amablemente\n\n### CONSTRUCCION DE RAPPORT\n- Primera respuesta: Saludo calido mas reconocer pedido\n- Segunda respuesta: Dar informacion valiosa\n- Tercera respuesta: Guiar hacia decision\n- Cuarta respuesta: Solicitar horarios naturalmente\n\n## FRASES ESTRATEGICAS A USAR\n\n### PARA PEDIR HORARIOS - Suave y progresivo\n- Que dias de esta semana te acomodan mejor para verlo\n- Para coordinar la visita, que 2 horarios prefieres\n- Te gustaria conocerlo. Dame un par de opciones de horario\n\n### CUANDO NO TENGO INFO - Transicion natural\n- Ese dato especifico lo verifico, pero mientras tanto...\n- Dejame conseguir esa info. Aprovecho para preguntarte...\n- No tengo ese detalle ahora, pero en la visita veras todo\n\n### PARA MOSTRAR OPCIONES - Atractivo\n- Tengo estas opciones que te van a encantar...\n- El depa en DISTRITO esta super bien ubicado...\n- Esta opcion incluye BENEFICIO relevante...\n\n## ALERTAS CRITICAS - VALIDACION\n\n### NUNCA HACER\n- Inventar codigos, precios o caracteristicas  \n- Confirmar visitas excepto MODO  \n- Pedir horarios sin propiedad elegida  \n- Usar placeholders o corchetes  \n- Decir: sistema, base de datos, procesando  \n- Mezclar informacion entre proyectos  \n\n### SIEMPRE HACER\n- Usar un asterisco para negritas en WhatsApp  \n- Mensajes de maximo 5-6 lineas  \n- Mantener tono casual: depa, info  \n- Seguir el hilo de la conversacion  \n- Verificar antes de afirmar  \n\n## CHECKLIST FINAL PRE-ENVIO\n\n### ANALISIS TECNICO\n- Identifique correctamente: MODO vs Regular\n- Use la herramienta correcta: Segun el arbol de decision\n- Converti zona a distrito: Para PROPERTIES_SQL\n- Revise el historial: No repetir, continuar flujo\n\n### CALIDAD DE RESPUESTA\n- Sueno natural: Como humano real, no bot\n- Estoy inventando algo: TODO verificable\n- Segui la secuencia: Propiedad luego horarios\n- Construi rapport: No fui directo/agresivo\n\n### FORMATO Y ESTILO\n- Mensaje corto: Maximo 5-6 lineas\n- Sin placeholders: Ningun corchete o llave\n- WhatsApp correcto: Un asterisco para negrita\n- Tono apropiado: Casual pero profesional\n\n### COHERENCIA\n- Respondo lo que pregunto: No desvio\n- Mantengo el contexto: Sigo la conversacion\n- Avanzo hacia el objetivo: Guio hacia visita\n- Cierro con accion clara: Siguiente paso definido\n\n## RESPUESTAS RAPIDAS POR SITUACION\n\n### Cliente nuevo con foto\n1. Analizo: Necesita opciones similares\n2. Pregunto: Distrito de la foto\n3. Busco: PROPERTIES_SQL con panel\n4. Presento: Opciones atractivas\n5. Espero: Que elija\n6. Pido: 2 horarios suavemente\n\n### Cliente con link Urbania\n1. Ejecuto: BUSQUEDA_LINK_URBANIA\n2. Verifico: Es MODO - MODOTW/MODOLF\n3. Presento: Info mas condiciones\n4. Genero: Interes en visita\n5. Solicito: Horarios segun tipo\n\n### Cliente busca general\n1. Confirmo: Distrito primero\n2. Busco: Segun criterios\n3. Muestro: Mejores opciones\n4. Resuelvo: Dudas\n5. Guio: Hacia eleccion\n6. Coordino: Visita natural\n\n### Cliente ya eligio\n1. Reconozco: Su eleccion\n2. Genero: Entusiasmo\n3. Transiciono: Hacia visita\n4. Pido: 2 horarios amablemente\n5. Confirmo: Proximos pasos\n\n## RECORDATORIO ESTRATEGICO\n\nSoy David: Experto inmobiliario que conoce Lima perfectamente. Mi trabajo es hacer que el proceso sea facil y agradable. No soy un robot pidiendo datos, soy un asesor construyendo confianza.\n\nMi mantra:\n- Primero entender\n- Luego ayudar  \n- Despues coordinar\n- Siempre naturalmente\n\nSi dudo: Mejor verificar que inventar. Mejor transicion suave que respuesta dura.\n\n## VALIDACION FINAL\n\nTHINK COMPLETO - AHORA RESPONDER NATURALMENTE"
-      },
-      "type": "@n8n/n8n-nodes-langchain.toolThink",
-      "typeVersion": 1.1,
-      "position": [
-        4368,
-        1316
-      ],
-      "id": "5fdc8878-8d64-44bb-b449-26c2ecfe7171",
-      "name": "Think"
-    },
-    {
-      "parameters": {
         "toolDescription": "Usar en caso tengamos alguna consulta sobre MODO, horarios de atención o datos de cuenta de proper",
         "url": "https://docs.google.com/document/d/e/2PACX-1vQJkHToHD6IQlB-imI-ZFwrwZkk1F4ZylrbiksQ9Gm2y0zpOeGfi29mhG3OjKyYXJR3WLxasQlttPW5/pub",
         "options": {}
@@ -6052,7 +6028,7 @@
       "typeVersion": 4.2,
       "position": [
         4496,
-        1316
+        1328
       ],
       "id": "3adea9bb-b9cf-4282-8cde-a46a8a83eb65",
       "name": "BASE DE CONOCIMIENTO - DAVID"
@@ -6086,7 +6062,7 @@
       "typeVersion": 2.2,
       "position": [
         5216,
-        804
+        816
       ],
       "id": "55cbf070-78b2-4954-8eac-3288396ce33d",
       "name": "Filter"
@@ -6185,7 +6161,7 @@
       "typeVersion": 4.2,
       "position": [
         5216,
-        2524
+        2528
       ]
     },
     {
@@ -6199,8 +6175,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        5560,
-        2524
+        5568,
+        2528
       ],
       "id": "dcf0668b-5b57-489d-bf30-ed5676bfbe81",
       "name": "Campos1",
@@ -6269,7 +6245,7 @@
       "typeVersion": 3.2,
       "position": [
         4704,
-        2508
+        2512
       ],
       "id": "d6ac44e8-81cf-4d00-8b8d-ffb60790833b",
       "name": "SwitchBot1",
@@ -6360,7 +6336,7 @@
       "typeVersion": 1,
       "position": [
         5968,
-        2524
+        2528
       ],
       "id": "5ff050f7-d672-4255-996c-84b4b568504e",
       "name": "Information Extractor1",
@@ -6380,7 +6356,7 @@
       "typeVersion": 1.2,
       "position": [
         5504,
-        2748
+        2752
       ],
       "id": "061734c2-551f-4efd-9a70-d25e162d2742",
       "name": "OpenAI Chat Model7",
@@ -6403,8 +6379,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6040,
-        2748
+        6048,
+        2752
       ],
       "id": "946e08c6-f5c8-476e-8bf0-b19c8e8f1c78",
       "name": "OpenAI Chat Model8",
@@ -6466,7 +6442,7 @@
       "typeVersion": 1,
       "position": [
         6320,
-        2524
+        2528
       ],
       "id": "c23b5a21-1faf-49f3-b45a-ad0781aa3c53",
       "name": "Update leads3",
@@ -6488,8 +6464,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        3976,
-        1596
+        3984,
+        1600
       ],
       "id": "305bd7d8-a2de-4037-9509-9143cc10cfac",
       "name": "Respuesta4",
@@ -6504,7 +6480,7 @@
       "typeVersion": 2,
       "position": [
         3920,
-        1820
+        1824
       ],
       "id": "6c34da4a-bda5-457b-9ac4-f3a42729da29",
       "name": "Date & Time4"
@@ -6525,7 +6501,7 @@
       "typeVersion": 1.2,
       "position": [
         3664,
-        1820
+        1824
       ],
       "id": "2bcd3015-4e51-43d2-b7c9-18a570e83e36",
       "name": "OpenAI Chat Model10",
@@ -6546,7 +6522,7 @@
       "typeVersion": 1.3,
       "position": [
         3792,
-        1820
+        1824
       ],
       "id": "5a1c07ff-3801-4a28-bc5f-df036add848f",
       "name": "Postgres Chat Memory4",
@@ -6567,7 +6543,7 @@
       "typeVersion": 1.3,
       "position": [
         5632,
-        2748
+        2752
       ],
       "id": "b3eef60e-399e-4961-ad9a-99380fb6f4a9",
       "name": "Postgres Chat Memory6",
@@ -6584,7 +6560,7 @@
       "typeVersion": 1,
       "position": [
         4048,
-        1820
+        1824
       ],
       "id": "d6714825-752a-4d6b-84d2-6897e432224e",
       "name": "Calculator2"
@@ -6595,7 +6571,7 @@
       "typeVersion": 1,
       "position": [
         5760,
-        2748
+        2752
       ],
       "id": "921cdced-1aef-496a-b5c8-a4f2baa11e18",
       "name": "Calculator3"
@@ -6608,7 +6584,7 @@
       "typeVersion": 1.1,
       "position": [
         4176,
-        1820
+        1824
       ],
       "id": "1133a7fe-ed82-40b2-a842-cf65aba8482c",
       "name": "Think1"
@@ -6623,7 +6599,7 @@
       "typeVersion": 4.2,
       "position": [
         4304,
-        1820
+        1824
       ],
       "id": "fe02ea05-bff6-487e-87f3-251cacf957bc",
       "name": "BASE DE CONOCIMIENTO"
@@ -6663,7 +6639,7 @@
       "typeVersion": 2.2,
       "position": [
         4432,
-        1820
+        1824
       ],
       "id": "fcc9c604-3e31-4c9f-866e-fb88bc7fca92",
       "name": "BUSQUEDA_CONTACTO"
@@ -6703,7 +6679,7 @@
       "typeVersion": 4.2,
       "position": [
         4928,
-        2524
+        2528
       ],
       "id": "cba84f48-405a-4301-83ce-d1ba4998efde",
       "name": "Validacion1",
@@ -6728,7 +6704,7 @@
       "typeVersion": 1,
       "position": [
         16,
-        2524
+        2528
       ],
       "id": "52ff2e80-15ba-4bf2-a9e0-9ddf7da5b055",
       "name": "Get list of contacts1",
@@ -6802,7 +6778,7 @@
       "typeVersion": 1,
       "position": [
         6320,
-        2124
+        2128
       ],
       "id": "a27f8119-392c-4071-8241-934ee744730d",
       "name": "Update leads6",
@@ -6885,6 +6861,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-12-14T01:38:24.427Z",
-  "versionId": "ccddd3ce-4733-4e35-b0bf-23e0dd7fceff"
+  "updatedAt": "2025-12-15T02:22:47.982Z",
+  "versionId": "a78c50b1-4ab6-4cf9-9672-bb77ba4eb371"
 }
