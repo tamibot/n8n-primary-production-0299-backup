@@ -1,0 +1,146 @@
+{
+  "active": true,
+  "connections": {
+    "Ejecutar Diario (8am)": {
+      "main": [
+        [
+          {
+            "node": "Consultar Base de Datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar Base de Datos": {
+      "main": [
+        [
+          {
+            "node": "Crear Tabla HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear Tabla HTML": {
+      "main": [
+        [
+          {
+            "node": "Enviar Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-17T13:46:39.646Z",
+  "id": "CG5tcyN66PvITwhl",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "INMUEBLES EN CORRETAJE > 30 DÍAS",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "9fb3338d-b728-432c-9b9c-66cb18a78d1a",
+      "name": "Ejecutar Diario (8am)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        144,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH INMUEBLES AS (\n  SELECT DISTINCT ID,TIPO_NEGOCIO, TIPO_INMUEBLE, A.FECHA_CREACION, CODIGO CODIGO_INMUEBLE, ESTADO1\n  FROM RENTAS_CRM.INMUEBLES A \n  WHERE CODIGO NOT ILIKE '%TEST%'\n    AND CODIGO NOT ILIKE '%MODO%'\n    AND CODIGO NOT ILIKE '%PRUEBA%'\n    AND (TIPO_INMUEBLE IN ('departamento') OR TIPO_INMUEBLE IS NULL)\n),\nDEPAS_URBANIA AS (\nSELECT DISTINCT CODIGO CODIGO_INMUEBLE, LINK_URBANIA\nFROM CRM.DEPARTAMENTOS_URBANIA\n),\nRECEPCIONADOS AS (\n  SELECT DISTINCT B.CODIGO CODIGO_INMUEBLE,\n  A. INMUEBLE_ID,\n  MAX(FECHA_INGRESO) FECHA_RECEPCION\n  FROM RENTAS_CRM.RECEPCION_INMUEBLE A\n  LEFT JOIN RENTAS_CRM.INMUEBLES B ON A.INMUEBLE_ID=B.ID\n  GROUP BY 1,2\n  ORDER BY 3 DESC\n),\nSALIDAS AS (\n  SELECT DISTINCT B.CODIGO CODIGO_INMUEBLE,\n  A.INMUEBLE_ID,\n  MAX(FECHA_SALIDA) FECHA_SALIDA\n  FROM RENTAS_CRM.SALIDA_INMUEBLE A\n  LEFT JOIN RENTAS_CRM.INMUEBLES B ON A.INMUEBLE_ID=B.ID\n  GROUP BY 1,2\n  ORDER BY 3 DESC\n)\n,INICIO_CORRETAJE AS (\nSELECT DISTINCT A.CODIGO_INMUEBLE, GREATEST(FECHA_RECEPCION, FECHA_SALIDA) FECHA_INICIO_CORRETAJE\nFROM DEPAS_URBANIA A \nLEFT JOIN RECEPCIONADOS B ON A.CODIGO_INMUEBLE=B.CODIGO_INMUEBLE\nLEFT JOIN SALIDAS C ON A.CODIGO_INMUEBLE=C.CODIGO_INMUEBLE\n)\n,VISITAS AS (\n  SELECT \n    fecha_programada::DATE AS fecha, \n    codigo_inmueble, \n    celular, \n    estado,\n    CASE WHEN estado IN ('realizado puntual', 'realizado con tardanza') THEN 1 ELSE 0 END AS visita_realizada\n  FROM RENTAS_CRM.VISITAS\n  WHERE formulario = 'Inquilino interesado'\n    AND codigo_inmueble NOT ILIKE '%TEST%'\n    AND fecha_programada >= CURRENT_DATE - INTERVAL '15 days'\n),\nURBANIA AS (\nSELECT CODIGO, COUNT(DISTINCT TELEFONO) CANT_INTERESADOS\nFROM CRM.DATOS_URBANIA\nWHERE FECHA::DATE >= CURRENT_DATE - 15\nGROUP BY 1\n),\nSOLICITA_VISITA AS (\nWITH datos_urbania_unicos AS (\n    SELECT DISTINCT ON (telefono, codigo)\n        nombre_pre_inquilino,\n        telefono,\n        codigo\n    FROM crm.datos_urbania\n    ORDER BY telefono, codigo, nombre_pre_inquilino\n)\n    SELECT\n        dat.codigo,\n        count(distinct dat.telefono) cant_solicitan_visita\n    FROM crm.visitas_pre_inquilinos vi\n    LEFT JOIN crm.disponibilidad_pre_inquilinos disp ON vi.id = disp.visitas_pre_inquilinos_id\n    LEFT JOIN datos_urbania_unicos dat ON vi.telefono = REPLACE(dat.telefono, '+51', '')\n    LEFT JOIN rentas_crm.inmuebles inm ON dat.codigo = inm.codigo\n    LEFT JOIN crm.leads_pre_inquilinos lp ON lp.telefono_pre_inquilino = dat.telefono\n    WHERE 1=1\n\tAND REPLACE(dat.telefono, '+51', '') NOT ILIKE '%959264957%'\n\tAND vi.fecha_registro::date >= current_date - 15\n\tgroup by 1\n\torder by 2 desc\n)\n, FINAL AS (\nSELECT \n  UPPER(c.CODIGO_INMUEBLE) AS INMUEBLE,\n  C.LINK_URBANIA,\n  I.FECHA_INICIO_CORRETAJE,\n  CURRENT_DATE - I.FECHA_INICIO_CORRETAJE AS DIAS_EN_CORRETAJE,\n  COALESCE(U.CANT_INTERESADOS,0) CANT_INTERESADOS_ULTIMOS_15_DIAS,\n  COALESCE(S.CANT_SOLICITAN_VISITA,0) cant_solicitan_visita_ultimos_15_dias,\n  COUNT(DISTINCT v.celular) AS VISITAS_AGENDADAS_ULTIMOS_15_DIAS,\n  COUNT(DISTINCT CASE WHEN v.visita_realizada = 1 THEN v.celular END) AS VISITAS_REALIZADAS_ULTIMOS_15_DIAS,\n  COUNT(DISTINCT CASE \n    WHEN v.visita_realizada = 1 AND v.fecha >= date_trunc('week', CURRENT_DATE) - INTERVAL '28 days'\n                             AND v.fecha < date_trunc('week', CURRENT_DATE) - INTERVAL '21 days' \n    THEN v.celular END) AS VISITAS_REALIZADAS_SEMANA_1,\n\n  COUNT(DISTINCT CASE \n    WHEN v.visita_realizada = 1 AND v.fecha >= date_trunc('week', CURRENT_DATE) - INTERVAL '21 days'\n                             AND v.fecha < date_trunc('week', CURRENT_DATE) - INTERVAL '14 days' \n    THEN v.celular END) AS VISITAS_REALIZADAS_SEMANA_2,\n\n  COUNT(DISTINCT CASE \n    WHEN v.visita_realizada = 1 AND v.fecha >= date_trunc('week', CURRENT_DATE) - INTERVAL '14 days'\n                             AND v.fecha < date_trunc('week', CURRENT_DATE) - INTERVAL '7 days' \n    THEN v.celular END) AS VISITAS_REALIZADAS_SEMANA_3,\n\n  COUNT(DISTINCT CASE \n    WHEN v.visita_realizada = 1 AND v.fecha >= date_trunc('week', CURRENT_DATE) - INTERVAL '7 days'\n                             AND v.fecha < date_trunc('week', CURRENT_DATE) \n    THEN v.celular END) AS VISITAS_REALIZADAS_SEMANA_4\n\nFROM DEPAS_URBANIA c\nLEFT JOIN VISITAS v ON c.codigo_inmueble = v.codigo_inmueble\nLEFT JOIN URBANIA U ON C.CODIGO_INMUEBLE=U.CODIGO\nLEFT JOIN SOLICITA_VISITA S ON C.CODIGO_INMUEBLE=S.CODIGO\nLEFT JOIN INICIO_CORRETAJE I ON C.CODIGO_INMUEBLE=I.CODIGO_INMUEBLE\nWHERE 1=1\nAND C.CODIGO_INMUEBLE NOT IN ('Leyenda', 'Av Tomás Marsano 1553', '')\nAND CURRENT_DATE - I.FECHA_INICIO_CORRETAJE >= 30 OR I.FECHA_INICIO_CORRETAJE IS NULL\nGROUP BY 1, 2, 3, 4, 5, 6\nORDER BY DIAS_EN_CORRETAJE DESC\n)\n\nSELECT INMUEBLE, FECHA_INICIO_CORRETAJE, DIAS_EN_CORRETAJE, CANT_INTERESADOS_ULTIMOS_15_DIAS, VISITAS_AGENDADAS_ULTIMOS_15_DIAS,\nVISITAS_REALIZADAS_ULTIMOS_15_DIAS\nFROM FINAL\nORDER BY DIAS_EN_CORRETAJE DESC",
+        "options": {}
+      },
+      "id": "10d3e397-34d6-45f6-b83c-142d52ddc18f",
+      "name": "Consultar Base de Datos",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        368,
+        176
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.all();\n\nif (data.length === 0) {\n  return [{json: {html_table: \"<p>No se encontraron inmuebles con más de 30 días en espera hoy.</p>\"}}];\n}\n\nlet html = '<h3 style=\"font-family: Arial, sans-serif; color: #333;\">Reporte de Inmuebles en Espera (> 30 días)</h3>';\nhtml += '<table style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 13px;\">';\n\n// Headers\nhtml += '<tr style=\"background-color: #003366; color: white; text-align: left;\">';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Inmueble</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Inicio Corretaje</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Días en Mercado</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Interesados (15d)</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Visitas Agend. (15d)</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Visitas Real. (15d)</th>';\nhtml += '</tr>';\n\n// Rows\nfor (const item of data) {\n    const row = item.json;\n    \n    // Format Date\n    let fecha = '-';\n    if (row.fecha_inicio_corretaje) {\n      try {\n        fecha = new Date(row.fecha_inicio_corretaje).toISOString().split('T')[0];\n      } catch(e) {\n        fecha = row.fecha_inicio_corretaje;\n      }\n    }\n\n    html += '<tr>';\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; font-weight: bold;\">${row.inmueble || ''}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px;\">${fecha}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center; background-color: #fff4e5;\">${row.dias_en_corretaje || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_interesados_ultimos_15_dias || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.visitas_agendadas_ultimos_15_dias || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.visitas_realizadas_ultimos_15_dias || 0}</td>`;\n    html += '</tr>';\n}\n\nhtml += '</table>';\nhtml += `<p style=\"font-family: Arial; font-size: 11px; color: #666;\">Reporte generado automáticamente el ${new Date().toLocaleString()}</p>`;\n\nreturn [{json: {html_table: html}}];"
+      },
+      "id": "39a5d857-80dc-479b-b467-e391bf9091c0",
+      "name": "Crear Tabla HTML",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        592,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "valeria.vega@proper.com.pe",
+        "subject": "Reporte: Inmuebles en Corretaje (>30 días)",
+        "message": "={{ $json.html_table }}",
+        "options": {}
+      },
+      "id": "1bb8bd79-d753-4fc9-99d9-033e07653577",
+      "name": "Enviar Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        816,
+        176
+      ],
+      "webhookId": "65452369-1a51-4075-a0db-bf330e992c1a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "SPurZ4Z9pGQy8MKJ",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-12-17T13:46:39.646Z",
+      "updatedAt": "2025-12-17T13:46:39.646Z",
+      "role": "workflow:owner",
+      "workflowId": "CG5tcyN66PvITwhl",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": {
+    "node:Ejecutar Diario (8am)": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-12-17T13:48:03.063Z",
+  "versionId": "77e60f31-0d4b-4320-9f21-4034e8dca87f"
+}
