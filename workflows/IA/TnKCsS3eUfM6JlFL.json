@@ -223,6 +223,12 @@
               "name": "dormitorios",
               "value": "={{ $json.Dormitorios }}",
               "type": "string"
+            },
+            {
+              "id": "6df9fb4b-ff8c-4dd8-9426-c9333e388614",
+              "name": "separacion",
+              "value": "={{ $json['SEPARACIÓN'] }}",
+              "type": "string"
             }
           ]
         },
@@ -308,7 +314,8 @@
             "mantenimiento": "={{ $json.mantenimiento }}",
             "dormitorios": "={{ $json.dormitorios }}",
             "acepta_mascota": "={{ $json.acepta_mascota }}",
-            "tiene_panel": "={{ $json.tiene_panel }}"
+            "tiene_panel": "={{ $json.tiene_panel }}",
+            "separacion": "={{ $json.separacion }}"
           },
           "matchingColumns": [
             "id"
@@ -490,6 +497,16 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "separacion",
+              "displayName": "separacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -631,6 +648,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-13T18:42:56.695Z",
-  "versionId": "c9dbcfc9-d341-4d50-91fa-5bf8c12c662c"
+  "updatedAt": "2025-12-18T20:30:55.432Z",
+  "versionId": "d42a0710-3fee-4be2-b453-8c3eb5e71f81"
 }
