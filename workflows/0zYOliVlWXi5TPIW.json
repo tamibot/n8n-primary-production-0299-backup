@@ -323,7 +323,7 @@
     },
     {
       "parameters": {
-        "sendTo": "valeria.vega@proper.com.pe, mvelascoo@tamibot.com, jorge.campos@cmcapital.in",
+        "sendTo": "valeria.vega@proper.com.pe, mvelascoo@tamibot.com, jorge.campos@cmcapital.in, silvia.malca@proper.com.pe",
         "subject": "REPORTE DIARIO RENTAS",
         "message": "={{ $json.html_final }}",
         "options": {}
@@ -386,6 +386,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-12-18T22:03:38.039Z",
-  "versionId": "bcecfe16-7d79-419c-b35c-317804050cfc"
+  "updatedAt": "2025-12-20T14:55:05.902Z",
+  "versionId": "1bf2e8c0-5661-47a4-b5f5-e686f7e408ac"
 }
