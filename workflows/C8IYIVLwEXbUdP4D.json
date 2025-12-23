@@ -718,7 +718,6 @@
     },
     {
       "parameters": {
-        "authentication": "longLivedToken",
         "resource": "leads",
         "operation": "updateLeads",
         "collection": {
@@ -726,12 +725,7 @@
             {
               "id": "={{ Number($('Get a record').item.json.result.UF_CRM_1716382183688) }}",
               "pipeline_id": 8874156,
-              "status_id": "={{ Number($('Select rows from a table').item.json.Kommo) }}",
-              "custom_fields_values": {
-                "custom_field": [
-                  {}
-                ]
-              }
+              "status_id": "={{ Number($('Select rows from a table').item.json.Kommo) }}"
             }
           ]
         }
@@ -745,9 +739,9 @@
       "id": "85a72589-753f-429e-b688-80da597741e2",
       "name": "Update leads1",
       "credentials": {
-        "kommoLongLivedApi": {
-          "id": "20bzHfzuZvuDPmtm",
-          "name": "Kommo Long Lived Token account"
+        "kommoOAuth2Api": {
+          "id": "Xm12cHoxJw7jGGaV",
+          "name": "Proper"
         }
       }
     },
@@ -906,23 +900,23 @@
             "user-agent": "Make/production",
             "content-length": "0",
             "accept-encoding": "gzip, br, deflate",
-            "traceparent": "00-691c69980000000005179d0f2e679120-05179d0f2e679120-00",
-            "tracestate": "dd=t.tid:691c699800000000;t.dm:-1;s:0;p:05179d0f2e679120",
-            "x-datadog-parent-id": "366934583182594336",
+            "traceparent": "00-694974c300000000503022761b249617-503022761b249617-00",
+            "tracestate": "dd=t.tid:694974c300000000;t.dm:-1;s:0;p:503022761b249617",
+            "x-datadog-parent-id": "5778156212573214231",
             "x-datadog-sampling-priority": "0",
-            "x-datadog-tags": "_dd.p.tid=691c699800000000",
-            "x-datadog-trace-id": "366934583182594336",
-            "x-forwarded-for": "54.161.178.114",
+            "x-datadog-tags": "_dd.p.tid=694974c300000000",
+            "x-datadog-trace-id": "5778156212573214231",
+            "x-forwarded-for": "54.209.79.175",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "a4Y1WVQISM6P8cTqozsQ6Q",
-            "x-real-ip": "54.161.178.114",
-            "x-request-start": "1763469720238"
+            "x-railway-request-id": "GJjYPX5vSXa1voaCCx5-qw",
+            "x-real-ip": "54.209.79.175",
+            "x-request-start": "1766421699601"
           },
           "params": {},
           "query": {
-            "content": "DEAL_80919"
+            "content": "DEAL_77345"
           },
           "body": {},
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/bitrix-kommo-produccion",
@@ -946,6 +940,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-24T20:00:53.176Z",
-  "versionId": "0b63e32d-f654-4038-89bc-34d9366dfbcc"
+  "updatedAt": "2025-12-22T18:59:37.482Z",
+  "versionId": "2f9b74bd-d14d-4249-ba12-bd746edb37c7"
 }
