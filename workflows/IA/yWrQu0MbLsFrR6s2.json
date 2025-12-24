@@ -594,7 +594,7 @@
             "status_id": "={{ $json.status_id }}",
             "cod_inmueble": "={{ $json.cod_inmueble }}",
             "cod_propiedad": "={{ $json.cod_propiedad }}",
-            "cod_propiedad_unificado": "={{ $json.cod_propiedad_unificado }}",
+            "cod_propiedad_unificado": "={{ ($json.cod_propiedad_unificado ?? '').toString().slice(0, 20) }}",
             "link_urbania": "={{ $json.link_urbania }}",
             "bot_respondio": "={{ $json.bot_respondio }}",
             "bot_apagado_manual": "={{ $json.bot_apagado_manual }}",
@@ -610,7 +610,7 @@
             "seg1": "={{ $json.seg1 }}",
             "seg2": "={{ $json.seg2 }}",
             "animo": "={{ $json.animo }}",
-            "codpropiedad_logico": "={{ $json.cod_propiedad_logico }}"
+            "codpropiedad_logico": "={{ ($json.cod_propiedad_logico ?? '').toString().slice(0, 20) }}"
           },
           "matchingColumns": [
             "id"
@@ -1086,7 +1086,7 @@
             },
             {
               "name": "filter[created_at][from]",
-              "value": "1765256400"
+              "value": "1766120400"
             },
             {
               "name": "filter[created_at][to]",
@@ -2853,6 +2853,6 @@
     }
   ],
   "triggerCount": 2,
-  "updatedAt": "2025-12-14T01:46:22.802Z",
-  "versionId": "8091e723-d587-4555-920d-8e1e52b59526"
+  "updatedAt": "2025-12-23T13:17:22.731Z",
+  "versionId": "ebf956e8-ec25-4767-86bf-721d9aa9c4fe"
 }
