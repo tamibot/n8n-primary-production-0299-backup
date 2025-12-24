@@ -345,7 +345,7 @@
             "fechacierre": "={{ $items('Merge')[1].json.result.CLOSEDATE || null}}",
             "referencia": "={{ $items('Merge')[0].json.result.UF_CRM_1614197295057 }}",
             "distritopreferencia": "={{ $items('Merge')[0].json.result.UF_CRM_1614197634379 }}",
-            "motivobaja": "={{ $if($items('Merge')[0].json.result.UF_CRM_1653086803, $items('Merge')[0].json.result.UF_CRM_1653086803, $items('Merge')[0].json.result.UF_CRM_1743517815888) }}\n",
+            "motivobaja": "={{ $if(($json.result?.UF_CRM_1653086803 ?? '').toString().trim(), ($json.result.UF_CRM_1653086803 ?? '').toString().trim(), $if(($json.result?.UF_CRM_1743517815888 ?? '').toString().trim(), ($json.result.UF_CRM_1743517815888 ?? '').toString().trim(), $if(($json.result?.COMMENTS ?? '').toString().trim(), ($json.result.COMMENTS ?? '').toString().trim(), $if(($json.result?.ADDITIONAL_INFO ?? '').toString().trim(), ($json.result.ADDITIONAL_INFO ?? '').toString().trim(), null)))) }}\n\n",
             "motivointeres": "={{ $items('Merge')[0].json.result.UF_CRM_61562AA7731A1 }}",
             "desafioinversion": "={{ $items('Merge')[0].json.result.UF_CRM_1692741960 }}",
             "depindep": "={{ $items('Merge')[0].json.result.UF_CRM_1710528065 }}",
@@ -3102,7 +3102,7 @@
     },
     {
       "parameters": {
-        "jsCode": "return $input.all().map((item) => {\n  const base = item.json;                 // puede ser cualquier cosa\n  const src = base?.result ?? base;       // si hay result úsalo, si no usa base\n\n  const ingmensual = (src?.UF_CRM_1763416063 ?? \"\").toString().trim() || null;\n  const inicial    = (src?.UF_CRM_1763416079 ?? \"\").toString().trim() || null;\n\n  const out = { ...base, ingmensual, inicial };\n\n  // Si base.result existe y es objeto, lo enriqueces\n  if (base && typeof base === \"object\" && \"result\" in base && base.result && typeof base.result === \"object\") {\n    out.result = { ...base.result, ingmensual, inicial };\n  }\n\n  return { json: out };\n});\n"
+        "jsCode": "return $input.all().map((item) => {\n  const base = item.json;\n  const src = base?.result ?? base;\n\n  const ingmensual = (src?.UF_CRM_1763416063 ?? \"\").toString().trim() || null;\n  const inicial    = (src?.UF_CRM_1763416079 ?? \"\").toString().trim() || null;\n\n  const comments        = (src?.COMMENTS ?? \"\").toString().trim() || null;\n  const additional_info = (src?.ADDITIONAL_INFO ?? \"\").toString().trim() || null;\n\n  const out = { ...base, ingmensual, inicial, comments, additional_info };\n\n  if (base && typeof base === \"object\" && \"result\" in base && base.result && typeof base.result === \"object\") {\n    out.result = {\n      ...base.result,\n      ingmensual,\n      inicial,\n      comments,\n      additional_info,\n    };\n  }\n\n  return { json: out };\n});\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -3198,6 +3198,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-12-22T22:31:02.021Z",
-  "versionId": "dbc25fdc-32b8-499a-8bbe-2bc5bb2b7211"
+  "updatedAt": "2025-12-23T21:16:20.561Z",
+  "versionId": "7684be46-7757-4f1f-9c27-e907672ce226"
 }
