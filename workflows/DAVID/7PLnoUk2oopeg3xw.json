@@ -276,7 +276,7 @@
     },
     {
       "parameters": {
-        "url": "https://b9ugijtcz4.execute-api.us-east-2.amazonaws.com/prod/inmuebles/get_inmueble_codigo/MODO101/",
+        "url": "https://b9ugijtcz4.execute-api.us-east-2.amazonaws.com/prod/inmuebles/get_inmueble_codigo/MODOEDIF/",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -379,19 +379,19 @@
             "content-length": "314",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "bde59877-60c0-43ea-abed-21e3a83dedbf",
+            "x-amocrm-requestid": "8c065efa-c63d-4b33-843c-5d4bc65438ca",
             "x-forwarded-for": "204.74.253.164",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "Qe3F5iT3QhivxRBMAax-fw",
+            "x-railway-request-id": "pgzOkQIYQ_ahc2v6ezItjw",
             "x-real-ip": "204.74.253.164",
-            "x-request-start": "1766374735621"
+            "x-request-start": "1766455479658"
           },
           "params": {},
           "query": {},
           "body": {
-            "leads[status][0][id]": "22693784",
+            "leads[status][0][id]": "22697516",
             "leads[status][0][status_id]": "92800052",
             "leads[status][0][pipeline_id]": "11240224",
             "leads[status][0][old_status_id]": "90801092",
@@ -433,6 +433,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-12-22T18:59:16.355Z",
-  "versionId": "f873c606-e855-40ed-b501-92b8d3c1c085"
+  "updatedAt": "2025-12-23T13:26:39.612Z",
+  "versionId": "3a83b430-709f-4a91-9b34-a11c53e77aef"
 }
