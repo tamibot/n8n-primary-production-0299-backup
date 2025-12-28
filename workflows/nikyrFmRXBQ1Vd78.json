@@ -123,6 +123,12 @@
               "name": "nota",
               "value": "={{ $json.NOTA }}",
               "type": "string"
+            },
+            {
+              "id": "8caba4a8-8c6e-4485-aec1-e61ce9bff1ec",
+              "name": "origen",
+              "value": "={{ $json.Fuente }}",
+              "type": "string"
             }
           ]
         },
@@ -391,6 +397,10 @@
                   {
                     "data": "{\"id\":798801,\"type\":\"text\"}",
                     "value": "={{ $('Switch Servicio').item.json.propiedad }}"
+                  },
+                  {
+                    "data": "{\"id\":799148,\"type\":\"text\"}",
+                    "value": "={{ $('Switch Servicio').item.json.origen }}"
                   }
                 ]
               },
@@ -435,6 +445,14 @@
             {
               "pipeline_id": 8874156,
               "status_id": 96388008,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":799148,\"type\":\"text\"}",
+                    "value": "={{ $('Switch Servicio').item.json.origen }}"
+                  }
+                ]
+              },
               "_embedded": {
                 "contacts": [
                   {
@@ -476,6 +494,14 @@
             {
               "pipeline_id": 9165176,
               "status_id": 90694444,
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":799148,\"type\":\"text\"}",
+                    "value": "={{ $('Switch Servicio').item.json.origen }}"
+                  }
+                ]
+              },
               "_embedded": {
                 "contacts": [
                   {
@@ -513,13 +539,14 @@
     "Google Sheets Trigger1": [
       {
         "json": {
-          "Marca temporal": "11/12/2025 14:13:53",
+          "Marca temporal": "27/12/2025 7:53:00",
           "Dirección de correo electrónico": "",
-          "Nombre": "Martin Velasco",
+          "Nombre": "Martin",
           "Telefono": 995547575,
           "Servicio": "RENTAS - INQUILINO",
-          "Propiedad": "MODO - San Miguel",
-          "NOTA": "Alquiler MODO"
+          "Propiedad": "Retail",
+          "NOTA": "MODO",
+          "Fuente": "Facebook"
         }
       }
     ]
@@ -540,11 +567,11 @@
     "node:Google Sheets Trigger1": {
       "documentId": "11FTMVYLNm8-o50DZnAM5W5zsE7hoPOBV_TQeYqQ3bl8",
       "sheetId": 1607472748,
-      "lastIndexChecked": 59
+      "lastIndexChecked": 70
     }
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-12-11T19:16:53.306Z",
-  "versionId": "8a0fe007-d267-4649-be71-e21961d49633"
+  "updatedAt": "2025-12-27T12:55:24.167Z",
+  "versionId": "87f6bfa4-72cd-4d86-8093-e1c9b47041b3"
 }
