@@ -195,7 +195,7 @@
     },
     {
       "parameters": {
-        "sendTo": "valeria.vega@proper.com.pe",
+        "sendTo": "valeria.vega@proper.com.pe, jorge.campos@cmcapital.in",
         "subject": "Reporte Semanal de Leads y Visitas Rentas",
         "message": "={{ $json.html_final }}",
         "options": {}
@@ -257,6 +257,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-12-23T17:33:24.436Z",
-  "versionId": "f90548a8-88d7-4621-858b-5c48596065c3"
+  "updatedAt": "2025-12-29T14:25:55.338Z",
+  "versionId": "3cfffd1c-ac6c-47b2-b1eb-595c8249c1ec"
 }
