@@ -102,13 +102,7 @@
     },
     "API: Datos Interesado": {
       "main": [
-        [
-          {
-            "node": "Insert Postgres",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     }
   },
@@ -392,18 +386,187 @@
             "id": "={{ 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) { var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8); return v.toString(16); }) }}",
             "fecha_programada": "={{ $node[\"Edit Fields1\"].json.fecha_programada }}",
             "formulario": "Inquilino interesado",
-            "celular": "={{ $node[\"Edit Fields\"].json.telefono }}"
+            "celular": "={{ $node[\"Edit Fields\"].json.telefono }}",
+            "cliente_asistio": false
           },
           "matchingColumns": [
             "id"
-          ]
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "codigo_inmueble",
+              "displayName": "codigo_inmueble",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fecha_programada",
+              "displayName": "fecha_programada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "inicio",
+              "displayName": "inicio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fin",
+              "displayName": "fin",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "duracion",
+              "displayName": "duracion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "formulario",
+              "displayName": "formulario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "celular",
+              "displayName": "celular",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "agregar_alquileres",
+              "displayName": "agregar_alquileres",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "calendar_id",
+              "displayName": "calendar_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tiempo_reunion",
+              "displayName": "tiempo_reunion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "foto_inicio",
+              "displayName": "foto_inicio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "foto_fin",
+              "displayName": "foto_fin",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "cliente_asistio",
+              "displayName": "cliente_asistio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "inmueble_id",
+              "displayName": "inmueble_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "responsable_completo",
+              "displayName": "responsable_completo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
         },
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        448,
+        464,
         192
       ],
       "id": "e497e4ae-257f-42a0-9c78-9e9e35a60e6c",
@@ -426,19 +589,19 @@
             "content-length": "314",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "14bf4ce1-339a-439a-9e44-c8ee4149b281",
-            "x-forwarded-for": "204.74.253.164",
+            "x-amocrm-requestid": "afdba811-6c58-458c-8c64-66be82b0a39f",
+            "x-forwarded-for": "169.150.216.80",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "AlR7wMFWQwmqmyPGAax-fw",
-            "x-real-ip": "204.74.253.164",
-            "x-request-start": "1766423090211"
+            "x-railway-request-id": "eYqH_WWATRStkzcSPvyhXg",
+            "x-real-ip": "169.150.216.80",
+            "x-request-start": "1767375915568"
           },
           "params": {},
           "query": {},
           "body": {
-            "leads[status][0][id]": "22693824",
+            "leads[status][0][id]": "22733694",
             "leads[status][0][status_id]": "90801096",
             "leads[status][0][pipeline_id]": "11240224",
             "leads[status][0][old_status_id]": "90801092",
@@ -474,6 +637,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-12-22T19:02:51.273Z",
-  "versionId": "ddc79cd1-d30d-48a3-944e-7398da103a7b"
+  "updatedAt": "2026-01-02T19:13:29.047Z",
+  "versionId": "4dcd4bde-bc00-4a61-99d1-8cfd5b37d33e"
 }
