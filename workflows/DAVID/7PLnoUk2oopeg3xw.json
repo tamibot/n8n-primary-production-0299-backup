@@ -93,7 +93,7 @@
       "main": [
         [
           {
-            "node": "API: Datos Interesado",
+            "node": "API: Asignar Responsable1",
             "type": "main",
             "index": 0
           }
@@ -105,6 +105,28 @@
         [
           {
             "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API: Asignar Responsable1": {
+      "main": [
+        [
+          {
+            "node": "API: Asignar Responsable2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API: Asignar Responsable2": {
+      "main": [
+        [
+          {
+            "node": "API: Datos Interesado",
             "type": "main",
             "index": 0
           }
@@ -153,7 +175,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        -1936,
+        -1920,
         208
       ],
       "id": "9ed9414b-80c8-4c4f-939b-60f13ea41f68",
@@ -200,7 +222,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1488,
+        -1472,
         208
       ],
       "id": "38a801ca-a386-46dd-b127-bcf0b628adaa",
@@ -219,7 +241,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        -1712,
+        -1696,
         208
       ],
       "id": "9401ebe6-d655-4f18-b87a-dc5792092aff",
@@ -238,7 +260,7 @@
             {
               "id": "8645f397-dcc0-42c2-a93e-39ce5084ea6a",
               "name": "fechaMODO_formateada",
-              "value": "={{ DateTime.fromFormat($json.fechaMODO, 'dd/LL/yyyy HH:mm', { zone: 'America/Lima' }).minus({ hours: 4 }).toFormat(\"yyyy-LL-dd'T'HH:mm:ss\") }}",
+              "value": "={{ DateTime.fromFormat($json.fechaMODO, 'dd/LL/yyyy HH:mm', { zone: 'America/Lima' }).toFormat(\"yyyy-LL-dd'T'HH:mm:ss\") }}",
               "type": "string"
             },
             {
@@ -254,7 +276,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1280,
+        -1248,
         208
       ],
       "id": "3f1a2689-add5-48b5-b70b-9ceabb858306",
@@ -267,7 +289,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -2160,
+        -2144,
         208
       ],
       "id": "6b9fac96-d38b-4c0c-bc54-4cc9518d099b",
@@ -282,7 +304,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -1056,
+        -1024,
         208
       ],
       "id": "b400be68-6484-4e39-a3b6-2a477c5d7d94",
@@ -294,13 +316,13 @@
         "url": "https://b9ugijtcz4.execute-api.us-east-2.amazonaws.com/prod/visitas/",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"codigo_inmueble\": \"MODO101\",\n  \"fecha_programada\": \"{{ $node[\"Edit Fields1\"].json.fechaMODO_formateada }}\",\n  \"inmueble\": \"{{ $json.data.id }}\",\n  \"formulario\": \"Inquilino interesado\",\n  \"tiempo_reunion\": \"00:30\",\n  \"agregar_alquileres\": false,\n  \"cliente_asistio\": false,\n  \"celular\": \"{{ $node[\"Edit Fields\"].json.telefono }}\"\n}",
+        "jsonBody": "={\n  \"codigo_inmueble\": \"MODO\",\n  \"fecha_programada\": \"{{ $node[\"Edit Fields1\"].json.fechaMODO_formateada }}\",\n  \"inmueble\": \"{{ $json.data.id }}\",\n  \"formulario\": \"Inquilino interesado\",\n  \"tiempo_reunion\": \"00:30\",\n  \"agregar_alquileres\": false,\n  \"cliente_asistio\": false,\n  \"celular\": \"{{ $node[\"Edit Fields\"].json.telefono }}\"\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -832,
+        -800,
         208
       ],
       "id": "30748d5c-b194-43c5-a573-df2cf9b89703",
@@ -312,13 +334,13 @@
         "url": "https://b9ugijtcz4.execute-api.us-east-2.amazonaws.com/prod/visitas/responsables/",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"visita\": \"{{ $json.id_visita }}\",\n  \"email\": \"alquileres@proper.com.pe\"\n}",
+        "jsonBody": "={\n  \"visita\": \"{{ $('API: Crear Visita').item.json.id_visita }}\",\n  \"email\": \"edificio.modo@proper.com.pe\"\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -608,
+        -576,
         208
       ],
       "id": "1387ca65-4525-4efd-98cc-aaba9b2f81e2",
@@ -336,7 +358,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -384,
+        96,
         208
       ],
       "id": "2f147f13-27cc-4ed0-95ae-a00376d9c1a9",
@@ -344,7 +366,7 @@
     },
     {
       "parameters": {
-        "sendTo": "mvelascoo@tamibot.com, soporte.corretaje@proper.com.pe, valeria.vega@proper.com.pe",
+        "sendTo": "soporte.corretaje@proper.com.pe, valeria.vega@proper.com.pe",
         "subject": "=TamiBot - MODO - Nueva Visita - {{ $node[\"Edit Fields\"].json.telefono }}",
         "emailType": "text",
         "message": "=Se registra nueva solicitud de visita:\n\nNombre: {{ $node[\"Edit Fields\"].json.nombre }}\nTelefono: {{ $node[\"Edit Fields\"].json.telefono }}\nFecha: {{ $node[\"Edit Fields\"].json.fechaMODO }}\nURL: https://propertamibotcom.kommo.com/leads/detail/{{ $node[\"Kommo API Node\"].json._embedded.leads[0].id }}",
@@ -355,7 +377,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        -144,
+        320,
         208
       ],
       "id": "9b16e6a9-4a26-4615-be5b-91fa0ea34ecf",
@@ -367,6 +389,42 @@
           "name": "Gmail account"
         }
       }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://b9ugijtcz4.execute-api.us-east-2.amazonaws.com/prod/visitas/responsables/",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"visita\": \"{{ $('API: Crear Visita').item.json.id_visita }}\",\n  \"email\": \"soporte.corretaje@proper.com.pe\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -352,
+        208
+      ],
+      "id": "cd8a301d-3173-4113-8c57-de9cf6dc35a8",
+      "name": "API: Asignar Responsable1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://b9ugijtcz4.execute-api.us-east-2.amazonaws.com/prod/visitas/responsables/",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"visita\": \"{{ $('API: Crear Visita').item.json.id_visita }}\",\n  \"email\": \"administracion.modo@proper.com.pe\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -128,
+        208
+      ],
+      "id": "836867f8-fdfd-46df-9419-2a55770ee06d",
+      "name": "API: Asignar Responsable2"
     }
   ],
   "pinData": {
@@ -379,19 +437,19 @@
             "content-length": "314",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "8c065efa-c63d-4b33-843c-5d4bc65438ca",
-            "x-forwarded-for": "204.74.253.164",
+            "x-amocrm-requestid": "5c74714c-a296-4474-aee5-6b2ac1b6c3c3",
+            "x-forwarded-for": "142.0.207.172",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "pgzOkQIYQ_ahc2v6ezItjw",
-            "x-real-ip": "204.74.253.164",
-            "x-request-start": "1766455479658"
+            "x-railway-request-id": "Sja1PctZQJegeydOezItjw",
+            "x-real-ip": "142.0.207.172",
+            "x-request-start": "1767634062085"
           },
           "params": {},
           "query": {},
           "body": {
-            "leads[status][0][id]": "22697516",
+            "leads[status][0][id]": "22723780",
             "leads[status][0][status_id]": "92800052",
             "leads[status][0][pipeline_id]": "11240224",
             "leads[status][0][old_status_id]": "90801092",
@@ -433,6 +491,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-12-23T13:26:39.612Z",
-  "versionId": "3a83b430-709f-4a91-9b34-a11c53e77aef"
+  "updatedAt": "2026-01-05T17:58:13.745Z",
+  "versionId": "c8f09ec5-857a-4453-82ac-639c41a1cbb9"
 }
