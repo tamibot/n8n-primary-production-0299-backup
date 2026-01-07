@@ -80,6 +80,17 @@
           }
         ]
       ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Formatear Datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-12-11T14:16:57.061Z",
@@ -259,7 +270,7 @@
       "typeVersion": 1,
       "position": [
         0,
-        512
+        416
       ],
       "id": "05e40338-1e43-4a1b-be5a-1a8ee94669d9",
       "name": "Google Sheets Trigger1",
@@ -533,24 +544,25 @@
           "name": "Proper"
         }
       }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "gestcomercial",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -64,
+        688
+      ],
+      "id": "09bf05a7-3b5f-4b54-b995-9130135621eb",
+      "name": "Webhook",
+      "webhookId": "80a9f035-c360-4a02-9b33-2d798bcb37f2"
     }
   ],
-  "pinData": {
-    "Google Sheets Trigger1": [
-      {
-        "json": {
-          "Marca temporal": "27/12/2025 7:53:00",
-          "Dirección de correo electrónico": "",
-          "Nombre": "Martin",
-          "Telefono": 995547575,
-          "Servicio": "RENTAS - INQUILINO",
-          "Propiedad": "Retail",
-          "NOTA": "MODO",
-          "Fuente": "Facebook"
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "settings": {
     "executionOrder": "v1"
   },
@@ -567,11 +579,11 @@
     "node:Google Sheets Trigger1": {
       "documentId": "11FTMVYLNm8-o50DZnAM5W5zsE7hoPOBV_TQeYqQ3bl8",
       "sheetId": 1607472748,
-      "lastIndexChecked": 122
+      "lastIndexChecked": 131
     }
   },
   "tags": [],
-  "triggerCount": 1,
-  "updatedAt": "2025-12-27T12:55:24.167Z",
-  "versionId": "87f6bfa4-72cd-4d86-8093-e1c9b47041b3"
+  "triggerCount": 2,
+  "updatedAt": "2026-01-06T22:02:53.102Z",
+  "versionId": "83ada4d5-6d3e-4d6f-ade2-7b4aaa67335f"
 }
