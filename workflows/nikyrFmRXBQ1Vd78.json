@@ -14,13 +14,7 @@
     },
     "Google Sheets Trigger1": {
       "main": [
-        [
-          {
-            "node": "Formatear Datos",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Switch Servicio": {
@@ -85,6 +79,17 @@
       "main": [
         [
           {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
             "node": "Formatear Datos",
             "type": "main",
             "index": 0
@@ -108,25 +113,25 @@
             {
               "id": "nombre",
               "name": "nombre",
-              "value": "={{ $json.Nombre }}",
+              "value": "={{ $('Webhook').item.json.body.data.fields[0].value }}",
               "type": "string"
             },
             {
               "id": "telefono",
               "name": "telefono",
-              "value": "={{ \"+51\" + String($json.Telefono).replace(/\\D/g, '').slice(-9) }}",
+              "value": "={{ $('Webhook').item.json.body.data.fields[1].value }}",
               "type": "string"
             },
             {
               "id": "servicio",
               "name": "servicio",
-              "value": "={{ $json.Servicio }}",
+              "value": "={{ $json.servicio }}",
               "type": "string"
             },
             {
               "id": "propiedad",
               "name": "propiedad",
-              "value": "={{ $json.Propiedad }}",
+              "value": "={{ $json.propiedad }}",
               "type": "string"
             },
             {
@@ -138,7 +143,7 @@
             {
               "id": "8caba4a8-8c6e-4485-aec1-e61ce9bff1ec",
               "name": "origen",
-              "value": "={{ $json.Fuente }}",
+              "value": "={{ $json.fuente }}",
               "type": "string"
             }
           ]
@@ -269,7 +274,7 @@
       "type": "n8n-nodes-base.googleSheetsTrigger",
       "typeVersion": 1,
       "position": [
-        0,
+        -160,
         416
       ],
       "id": "05e40338-1e43-4a1b-be5a-1a8ee94669d9",
@@ -554,15 +559,209 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -64,
+        -208,
         688
       ],
       "id": "09bf05a7-3b5f-4b54-b995-9130135621eb",
       "name": "Webhook",
       "webhookId": "80a9f035-c360-4a02-9b33-2d798bcb37f2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const payload = $json; // tu webhook completo\nconst fields = payload.body.data.fields;\n\nfunction selectedTexts(questionKey) {\n  const f = fields.find(x => x.key === questionKey);\n  if (!f) return null;\n\n  const values = Array.isArray(f.value) ? f.value : (f.value ? [f.value] : []);\n  const optMap = new Map((f.options || []).map(o => [o.id, o.text]));\n\n  return values.map(v => optMap.get(v)).filter(Boolean); // array de textos\n}\n\n// Ejemplos con tus keys:\nreturn [{\n  servicio: selectedTexts(\"question_ZNJ9aB\")?.[0] ?? null,     // si esperas 1 selección\n  propiedad: selectedTexts(\"question_N60qoj\")?.[0] ?? null,\n  fuente: selectedTexts(\"question_qdP5V9\")?.[0] ?? null,\n\n  // si quieres todos (por si marcan más de uno):\n  servicio_all: selectedTexts(\"question_ZNJ9aB\") ?? [],\n  propiedad_all: selectedTexts(\"question_N60qoj\") ?? [],\n  fuente_all: selectedTexts(\"question_qdP5V9\") ?? [],\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        16,
+        672
+      ],
+      "id": "4bb7ed61-e8fb-4bfa-b7e2-72b52bc65b13",
+      "name": "Code"
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "primary-production-0299.up.railway.app",
+            "user-agent": "Tally Webhooks",
+            "content-length": "2720",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "baggage": "sentry-environment=production,sentry-release=2ac125e0bccbff57d6d79e815cd2e2dc86c74149,sentry-public_key=6af4b6673f1648edaa8fef3f2ca43405,sentry-trace_id=5d904ffee2c91220edd3c4a500849a1f,sentry-org_id=407628,sentry-sampled=false,sentry-sample_rand=0.5867072918433315,sentry-sample_rate=0.0001",
+            "content-type": "application/json",
+            "sentry-trace": "5d904ffee2c91220edd3c4a500849a1f-b85d3d4ed31146a5-0",
+            "x-forwarded-for": "34.96.62.94",
+            "x-forwarded-host": "primary-production-0299.up.railway.app",
+            "x-forwarded-proto": "https",
+            "x-railway-edge": "railway/europe-west4-drams3a",
+            "x-railway-request-id": "616ZaqwBT2WQfgSdm3z_FQ",
+            "x-real-ip": "34.96.62.94",
+            "x-request-start": "1767805391081"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "eventId": "d6d43b79-3411-4b8b-a5ba-e30b72659690",
+            "eventType": "FORM_RESPONSE",
+            "createdAt": "2026-01-07T17:03:11.034Z",
+            "data": {
+              "responseId": "J9EPGqR",
+              "submissionId": "J9EPGqR",
+              "respondentId": "b5xZGqg",
+              "formId": "LZ7ogO",
+              "formName": "Gestión Comercial Proper Rentas - Nuevos Leads",
+              "createdAt": "2026-01-07T17:03:10.000Z",
+              "fields": [
+                {
+                  "key": "question_pKAGG8",
+                  "label": "Nombre",
+                  "type": "INPUT_TEXT",
+                  "value": "pedro"
+                },
+                {
+                  "key": "question_xpZVY5",
+                  "label": "Telefono",
+                  "type": "INPUT_PHONE_NUMBER",
+                  "value": "+51990515824"
+                },
+                {
+                  "key": "question_ZNJ9aB",
+                  "label": "Servicio",
+                  "type": "CHECKBOXES",
+                  "value": [
+                    "14787ff0-624a-47ae-8a6b-a305ffa8a3f3"
+                  ],
+                  "options": [
+                    {
+                      "id": "14787ff0-624a-47ae-8a6b-a305ffa8a3f3",
+                      "text": "RENTAS - INQUILINO"
+                    },
+                    {
+                      "id": "de6e9b1b-554c-4c87-9a6d-fe472c6af4fd",
+                      "text": "INVERSIONES"
+                    },
+                    {
+                      "id": "1bcf4363-8804-4c90-89f1-4df0903b9f7b",
+                      "text": "RENTAS - PROPIETARIO"
+                    }
+                  ]
+                },
+                {
+                  "key": "question_ZNJ9aB_14787ff0-624a-47ae-8a6b-a305ffa8a3f3",
+                  "label": "Servicio (RENTAS - INQUILINO)",
+                  "type": "CHECKBOXES",
+                  "value": true
+                },
+                {
+                  "key": "question_ZNJ9aB_de6e9b1b-554c-4c87-9a6d-fe472c6af4fd",
+                  "label": "Servicio (INVERSIONES)",
+                  "type": "CHECKBOXES",
+                  "value": false
+                },
+                {
+                  "key": "question_ZNJ9aB_1bcf4363-8804-4c90-89f1-4df0903b9f7b",
+                  "label": "Servicio (RENTAS - PROPIETARIO)",
+                  "type": "CHECKBOXES",
+                  "value": false
+                },
+                {
+                  "key": "question_N60qoj",
+                  "label": "Propiedad",
+                  "type": "CHECKBOXES",
+                  "value": [
+                    "b242e965-2d0d-4c66-8e4f-a2031d11f435"
+                  ],
+                  "options": [
+                    {
+                      "id": "71b04a65-5ea0-4af3-b707-1ed7a1f8416e",
+                      "text": "MODO - San Miguel"
+                    },
+                    {
+                      "id": "b242e965-2d0d-4c66-8e4f-a2031d11f435",
+                      "text": "Retail"
+                    }
+                  ]
+                },
+                {
+                  "key": "question_N60qoj_71b04a65-5ea0-4af3-b707-1ed7a1f8416e",
+                  "label": "Propiedad (MODO - San Miguel)",
+                  "type": "CHECKBOXES",
+                  "value": false
+                },
+                {
+                  "key": "question_N60qoj_b242e965-2d0d-4c66-8e4f-a2031d11f435",
+                  "label": "Propiedad (Retail)",
+                  "type": "CHECKBOXES",
+                  "value": true
+                },
+                {
+                  "key": "question_qdP5V9",
+                  "label": "Fuente",
+                  "type": "CHECKBOXES",
+                  "value": [
+                    "8e5e46de-e428-4c50-a7a7-24402ea5b5c9"
+                  ],
+                  "options": [
+                    {
+                      "id": "e20cec3d-3af6-42ef-875b-bdcc81b9c6ba",
+                      "text": "Facebook"
+                    },
+                    {
+                      "id": "4836bb7e-eb74-44c4-bd3c-28acb3246e80",
+                      "text": "Instagram"
+                    },
+                    {
+                      "id": "8e5e46de-e428-4c50-a7a7-24402ea5b5c9",
+                      "text": "TikTok"
+                    },
+                    {
+                      "id": "fb3f4955-f98a-4f41-9f70-a09cdf6e5328",
+                      "text": "Otros"
+                    }
+                  ]
+                },
+                {
+                  "key": "question_qdP5V9_e20cec3d-3af6-42ef-875b-bdcc81b9c6ba",
+                  "label": "Fuente (Facebook)",
+                  "type": "CHECKBOXES",
+                  "value": false
+                },
+                {
+                  "key": "question_qdP5V9_4836bb7e-eb74-44c4-bd3c-28acb3246e80",
+                  "label": "Fuente (Instagram)",
+                  "type": "CHECKBOXES",
+                  "value": false
+                },
+                {
+                  "key": "question_qdP5V9_8e5e46de-e428-4c50-a7a7-24402ea5b5c9",
+                  "label": "Fuente (TikTok)",
+                  "type": "CHECKBOXES",
+                  "value": true
+                },
+                {
+                  "key": "question_qdP5V9_fb3f4955-f98a-4f41-9f70-a09cdf6e5328",
+                  "label": "Fuente (Otros)",
+                  "type": "CHECKBOXES",
+                  "value": false
+                },
+                {
+                  "key": "question_QD0oVG",
+                  "label": "NOTA",
+                  "type": "INPUT_TEXT",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "webhookUrl": "https://primary-production-0299.up.railway.app/webhook-test/gestcomercial",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
   "settings": {
     "executionOrder": "v1"
   },
@@ -584,6 +783,6 @@
   },
   "tags": [],
   "triggerCount": 2,
-  "updatedAt": "2026-01-06T22:02:53.102Z",
-  "versionId": "83ada4d5-6d3e-4d6f-ade2-7b4aaa67335f"
+  "updatedAt": "2026-01-07T17:29:11.258Z",
+  "versionId": "cfcb953c-0da7-4187-ab90-5394fe736d58"
 }
