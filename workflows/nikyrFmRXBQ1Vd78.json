@@ -12,11 +12,6 @@
         ]
       ]
     },
-    "Google Sheets Trigger1": {
-      "main": [
-        []
-      ]
-    },
     "Switch Servicio": {
       "main": [
         [
@@ -153,7 +148,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        224,
+        240,
         512
       ],
       "id": "ff400fa6-d7fe-49a0-87d5-914fbffc3be8",
@@ -239,52 +234,11 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        448,
+        464,
         496
       ],
       "id": "529df35f-4cc5-4420-b524-d2c4e3bcd9c0",
       "name": "Switch Servicio"
-    },
-    {
-      "parameters": {
-        "pollTimes": {
-          "item": [
-            {
-              "mode": "everyMinute"
-            }
-          ]
-        },
-        "documentId": {
-          "__rl": true,
-          "value": "11FTMVYLNm8-o50DZnAM5W5zsE7hoPOBV_TQeYqQ3bl8",
-          "mode": "list",
-          "cachedResultName": "Gestión Comercial Proper Rentas - Nuevos Leads (Respuestas)",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/11FTMVYLNm8-o50DZnAM5W5zsE7hoPOBV_TQeYqQ3bl8/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 1607472748,
-          "mode": "list",
-          "cachedResultName": "Respuestas de formulario 1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/11FTMVYLNm8-o50DZnAM5W5zsE7hoPOBV_TQeYqQ3bl8/edit#gid=1607472748"
-        },
-        "event": "rowAdded",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheetsTrigger",
-      "typeVersion": 1,
-      "position": [
-        -160,
-        416
-      ],
-      "id": "05e40338-1e43-4a1b-be5a-1a8ee94669d9",
-      "name": "Google Sheets Trigger1",
-      "credentials": {
-        "googleSheetsTriggerOAuth2Api": {
-          "id": "41QRHSZvnOEhvV3X",
-          "name": "mvelascoo - spreadsheets"
-        }
-      }
     },
     {
       "parameters": {
@@ -309,7 +263,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        672,
+        688,
         320
       ],
       "id": "5ef64ed1-99f6-4ac8-8164-03704bc157a4",
@@ -344,7 +298,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        672,
+        688,
         512
       ],
       "id": "b81d8230-579b-4942-b604-881be90d6817",
@@ -379,7 +333,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        672,
+        688,
         704
       ],
       "id": "289498f2-5b61-42a4-bd4f-cabf4e80b13b",
@@ -440,7 +394,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        896,
+        912,
         320
       ],
       "id": "0e41b851-f4a5-4fa1-a03c-c11e8b10e790",
@@ -489,7 +443,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        896,
+        912,
         512
       ],
       "id": "dde07f21-4622-402f-a2e6-44339075a956",
@@ -538,7 +492,7 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        896,
+        912,
         704
       ],
       "id": "04c11f96-a1e2-46c0-8c4e-c8ee6502966d",
@@ -560,7 +514,7 @@
       "typeVersion": 2.1,
       "position": [
         -208,
-        688
+        512
       ],
       "id": "09bf05a7-3b5f-4b54-b995-9130135621eb",
       "name": "Webhook",
@@ -574,194 +528,13 @@
       "typeVersion": 2,
       "position": [
         16,
-        672
+        512
       ],
       "id": "4bb7ed61-e8fb-4bfa-b7e2-72b52bc65b13",
       "name": "Code"
     }
   ],
-  "pinData": {
-    "Webhook": [
-      {
-        "json": {
-          "headers": {
-            "host": "primary-production-0299.up.railway.app",
-            "user-agent": "Tally Webhooks",
-            "content-length": "2720",
-            "accept": "application/json, text/plain, */*",
-            "accept-encoding": "gzip, compress, deflate, br",
-            "baggage": "sentry-environment=production,sentry-release=2ac125e0bccbff57d6d79e815cd2e2dc86c74149,sentry-public_key=6af4b6673f1648edaa8fef3f2ca43405,sentry-trace_id=5d904ffee2c91220edd3c4a500849a1f,sentry-org_id=407628,sentry-sampled=false,sentry-sample_rand=0.5867072918433315,sentry-sample_rate=0.0001",
-            "content-type": "application/json",
-            "sentry-trace": "5d904ffee2c91220edd3c4a500849a1f-b85d3d4ed31146a5-0",
-            "x-forwarded-for": "34.96.62.94",
-            "x-forwarded-host": "primary-production-0299.up.railway.app",
-            "x-forwarded-proto": "https",
-            "x-railway-edge": "railway/europe-west4-drams3a",
-            "x-railway-request-id": "616ZaqwBT2WQfgSdm3z_FQ",
-            "x-real-ip": "34.96.62.94",
-            "x-request-start": "1767805391081"
-          },
-          "params": {},
-          "query": {},
-          "body": {
-            "eventId": "d6d43b79-3411-4b8b-a5ba-e30b72659690",
-            "eventType": "FORM_RESPONSE",
-            "createdAt": "2026-01-07T17:03:11.034Z",
-            "data": {
-              "responseId": "J9EPGqR",
-              "submissionId": "J9EPGqR",
-              "respondentId": "b5xZGqg",
-              "formId": "LZ7ogO",
-              "formName": "Gestión Comercial Proper Rentas - Nuevos Leads",
-              "createdAt": "2026-01-07T17:03:10.000Z",
-              "fields": [
-                {
-                  "key": "question_pKAGG8",
-                  "label": "Nombre",
-                  "type": "INPUT_TEXT",
-                  "value": "pedro"
-                },
-                {
-                  "key": "question_xpZVY5",
-                  "label": "Telefono",
-                  "type": "INPUT_PHONE_NUMBER",
-                  "value": "+51990515824"
-                },
-                {
-                  "key": "question_ZNJ9aB",
-                  "label": "Servicio",
-                  "type": "CHECKBOXES",
-                  "value": [
-                    "14787ff0-624a-47ae-8a6b-a305ffa8a3f3"
-                  ],
-                  "options": [
-                    {
-                      "id": "14787ff0-624a-47ae-8a6b-a305ffa8a3f3",
-                      "text": "RENTAS - INQUILINO"
-                    },
-                    {
-                      "id": "de6e9b1b-554c-4c87-9a6d-fe472c6af4fd",
-                      "text": "INVERSIONES"
-                    },
-                    {
-                      "id": "1bcf4363-8804-4c90-89f1-4df0903b9f7b",
-                      "text": "RENTAS - PROPIETARIO"
-                    }
-                  ]
-                },
-                {
-                  "key": "question_ZNJ9aB_14787ff0-624a-47ae-8a6b-a305ffa8a3f3",
-                  "label": "Servicio (RENTAS - INQUILINO)",
-                  "type": "CHECKBOXES",
-                  "value": true
-                },
-                {
-                  "key": "question_ZNJ9aB_de6e9b1b-554c-4c87-9a6d-fe472c6af4fd",
-                  "label": "Servicio (INVERSIONES)",
-                  "type": "CHECKBOXES",
-                  "value": false
-                },
-                {
-                  "key": "question_ZNJ9aB_1bcf4363-8804-4c90-89f1-4df0903b9f7b",
-                  "label": "Servicio (RENTAS - PROPIETARIO)",
-                  "type": "CHECKBOXES",
-                  "value": false
-                },
-                {
-                  "key": "question_N60qoj",
-                  "label": "Propiedad",
-                  "type": "CHECKBOXES",
-                  "value": [
-                    "b242e965-2d0d-4c66-8e4f-a2031d11f435"
-                  ],
-                  "options": [
-                    {
-                      "id": "71b04a65-5ea0-4af3-b707-1ed7a1f8416e",
-                      "text": "MODO - San Miguel"
-                    },
-                    {
-                      "id": "b242e965-2d0d-4c66-8e4f-a2031d11f435",
-                      "text": "Retail"
-                    }
-                  ]
-                },
-                {
-                  "key": "question_N60qoj_71b04a65-5ea0-4af3-b707-1ed7a1f8416e",
-                  "label": "Propiedad (MODO - San Miguel)",
-                  "type": "CHECKBOXES",
-                  "value": false
-                },
-                {
-                  "key": "question_N60qoj_b242e965-2d0d-4c66-8e4f-a2031d11f435",
-                  "label": "Propiedad (Retail)",
-                  "type": "CHECKBOXES",
-                  "value": true
-                },
-                {
-                  "key": "question_qdP5V9",
-                  "label": "Fuente",
-                  "type": "CHECKBOXES",
-                  "value": [
-                    "8e5e46de-e428-4c50-a7a7-24402ea5b5c9"
-                  ],
-                  "options": [
-                    {
-                      "id": "e20cec3d-3af6-42ef-875b-bdcc81b9c6ba",
-                      "text": "Facebook"
-                    },
-                    {
-                      "id": "4836bb7e-eb74-44c4-bd3c-28acb3246e80",
-                      "text": "Instagram"
-                    },
-                    {
-                      "id": "8e5e46de-e428-4c50-a7a7-24402ea5b5c9",
-                      "text": "TikTok"
-                    },
-                    {
-                      "id": "fb3f4955-f98a-4f41-9f70-a09cdf6e5328",
-                      "text": "Otros"
-                    }
-                  ]
-                },
-                {
-                  "key": "question_qdP5V9_e20cec3d-3af6-42ef-875b-bdcc81b9c6ba",
-                  "label": "Fuente (Facebook)",
-                  "type": "CHECKBOXES",
-                  "value": false
-                },
-                {
-                  "key": "question_qdP5V9_4836bb7e-eb74-44c4-bd3c-28acb3246e80",
-                  "label": "Fuente (Instagram)",
-                  "type": "CHECKBOXES",
-                  "value": false
-                },
-                {
-                  "key": "question_qdP5V9_8e5e46de-e428-4c50-a7a7-24402ea5b5c9",
-                  "label": "Fuente (TikTok)",
-                  "type": "CHECKBOXES",
-                  "value": true
-                },
-                {
-                  "key": "question_qdP5V9_fb3f4955-f98a-4f41-9f70-a09cdf6e5328",
-                  "label": "Fuente (Otros)",
-                  "type": "CHECKBOXES",
-                  "value": false
-                },
-                {
-                  "key": "question_QD0oVG",
-                  "label": "NOTA",
-                  "type": "INPUT_TEXT",
-                  "value": null
-                }
-              ]
-            }
-          },
-          "webhookUrl": "https://primary-production-0299.up.railway.app/webhook-test/gestcomercial",
-          "executionMode": "test"
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "settings": {
     "executionOrder": "v1"
   },
@@ -782,7 +555,7 @@
     }
   },
   "tags": [],
-  "triggerCount": 2,
-  "updatedAt": "2026-01-07T17:29:11.258Z",
-  "versionId": "cfcb953c-0da7-4187-ab90-5394fe736d58"
+  "triggerCount": 1,
+  "updatedAt": "2026-01-08T15:12:02.029Z",
+  "versionId": "7b6d58f2-1b1f-4adc-a969-3ce10532d1cf"
 }
