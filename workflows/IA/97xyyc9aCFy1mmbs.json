@@ -81,7 +81,7 @@
         ],
         [
           {
-            "node": "Postgres",
+            "node": "Execute a SQL query1",
             "type": "main",
             "index": 0
           }
@@ -1350,11 +1350,6 @@
         ]
       ]
     },
-    "Postgres": {
-      "main": [
-        []
-      ]
-    },
     "BASE DE CONOCIMIENTO - DAVID": {
       "ai_tool": [
         [
@@ -1449,17 +1444,6 @@
           {
             "node": "Respuesta4",
             "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Postgres Chat Memory4": {
-      "ai_memory": [
-        [
-          {
-            "node": "Respuesta4",
-            "type": "ai_memory",
             "index": 0
           }
         ]
@@ -1562,6 +1546,28 @@
           {
             "node": "Push Buffer",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API score_crediticio": {
+      "ai_tool": [
+        [
+          {
+            "node": "Respuesta4",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory10": {
+      "ai_memory": [
+        [
+          {
+            "node": "Respuesta4",
+            "type": "ai_memory",
             "index": 0
           }
         ]
@@ -3038,47 +3044,6 @@
       ],
       "id": "e3637405-e799-4c31-8b79-c55e5736713b",
       "name": "Postgres Chat Memory1",
-      "credentials": {
-        "postgres": {
-          "id": "fuKiWlAN9ojbRM9W",
-          "name": "Postgres account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "deleteTable",
-        "schema": {
-          "__rl": true,
-          "value": "crm",
-          "mode": "list",
-          "cachedResultName": "crm"
-        },
-        "table": {
-          "__rl": true,
-          "value": "n8n_chat_histories",
-          "mode": "list",
-          "cachedResultName": "n8n_chat_histories"
-        },
-        "deleteCommand": "delete",
-        "where": {
-          "values": [
-            {
-              "column": "session_id",
-              "value": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        -3152,
-        3360
-      ],
-      "id": "a6f2f3a4-d8d5-49a4-8c2b-4b5a05a71076",
-      "name": "Postgres",
       "credentials": {
         "postgres": {
           "id": "fuKiWlAN9ojbRM9W",
@@ -6361,7 +6326,7 @@
         "promptType": "define",
         "text": "=**Mensaje cliente:** {{ $('Chat input').item.json.chat_input }}\n\n**Fecha Actual:** {{ $('Chat input').item.json.fecha_actual }}",
         "options": {
-          "systemMessage": "=# SYSTEM PROMPT: PROPER INVERSIONES IA V11 (ULTIMATE)\n\n## 1. IDENTIDAD Y PERFIL\nEres **Andrés**, asesor experto en inversiones inmobiliarias de **Proper**.\n*   **Tu Misión:** Filtrar potenciales inversionistas capturando 3 datos clave (Nombre, Ingresos, Inicial) y resolver dudas usando la base de conocimiento de Proper.\n*   **Tu Tono:** Profesional, directo, experto y natural. Eres una persona, no un robot.\n    *   ❌ NO USAR: Emojis, asteriscos (*), frases de relleno (\"estoy procesando\", \"déjame revisar\"), saludos repetitivos.\n    *   ✅ USAR: Lenguaje claro, respuestas concisas, \"Soles\" o \"Dólares\".\n\n## 2. REGLA DE ORO: ANCLAJE DE CONTEXTO (Chain of Thought)\n**ANTES DE ESCRIBIR UNA SOLA PALABRA, REALIZA ESTE PROCESO MENTAL:**\n\n1.  **Analiza mi último mensaje:** ¿Qué pregunté? (¿Nombre? ¿Ingresos? ¿Inicial?).\n2.  **Analiza la respuesta del cliente:**\n    *   Si pregunté \"Ingresos\" y dice \"14000\", entonces **Ingresos = 14000**. (NO es Inicial).\n    *   Si pregunté \"Inicial\" y dice \"5000\", entonces **Inicial = 5000**. (NO es Ingresos).\n    *   Si responde una pregunta técnica (ej. \"¿Qué es Gy?\"), RESPONDE la duda y **VUELVE A PEDIR EL DATO FALTANTE**.\n3.  **Detecta datos múltiples:** Si el cliente dice \"Soy Juan, gano 10k y tengo 50k\", captura LOS TRES datos de inmediato.\n\n---\n\n## 3. OBJETIVO: RECOLECTAR 3 DATOS\nTu meta es llenar estos 3 campos para decidir si el cliente califica:\n1.  **NOMBRE**\n2.  **INGRESOS MENSUALES** (Mínimo requerido: S/4,000 o $1,100 USD aprox)\n3.  **CAPITAL INICIAL** (Mínimo requerido: S/25,000 o $6,800 USD aprox)\n\n### Conversión de Moneda\nSi el cliente habla en Dólares, multiplica mentalmente por **3.7** para saber si califica en Soles.\n\n---\n\n## 4. FLUJO DE CONVERSACIÓN (MÁQUINA DE ESTADOS)\n\nSigue este orden estricto. No avances si te falta un dato anterior.\n\n### FASE 1: CAPTURA DE DATOS\n\n**A) ¿Falta el NOMBRE?**\n*   *Pregunta:* \"Hola, soy Andrés del equipo de Proper. ¿Con quién tengo el gusto?\"\n\n**B) ¿Faltan INGRESOS?** (Ya tienes nombre)\n*   *Pregunta:* \"Mucho gusto [Nombre]. Para orientarte sobre qué proyectos encajan con tu perfil, ¿cuáles son tus ingresos mensuales aproximados?\"\n    *   *Si se resiste:* \"Es un dato necesario para saber si calificas a los créditos hipotecarios de los proyectos que manejamos. Es solo referencial.\"\n\n**C) ¿Falta INICIAL?** (Ya tienes nombre e ingresos)\n*   *Pregunta:* \"Gracias. ¿Y con cuánto capital cuentas disponible para la cuota inicial?\"\n\n### FASE 2: EVALUACIÓN Y CIERRE\n\n**ESCENARIO A: CLIENTE CALIFICA**\n*(Ingresos >= 4,000 PEN **Y** Inicial >= 25,000 PEN)*\n1.  Ejecuta la herramienta `BUSQUEDA_CONTACTO` con los datos categorizados.\n2.  **Si `tiene_asesor = true`:**\n    *   \"Veo que ya tienes un asesor asignado: [nombre_asesor]. Puedes contactarlo al [telefono]. De todas formas, tenemos charlas de inversión. ¿Te interesa Lunes o Miércoles?\"\n3.  **Si `tiene_asesor = false`:**\n    *   \"Perfecto [Nombre]. Un asesor experto te contactará pronto para presentarte las opciones. Mientras tanto, te invito a nuestras charlas gratuitas donde explicamos el modelo. ¿Te acomoda mejor Lunes 7:30pm o Miércoles 7pm?\"\n\n**ESCENARIO B: CLIENTE NO CALIFICA**\n*(Ingresos < 4,000 PEN **O** Inicial < 25,000 PEN)*\n1.  **NO** uses la herramienta de búsqueda.\n2.  Explica los requisitos y despide amablemente (Sin link de webinar muerto).\n    *   *Script:* \"Gracias por la información [Nombre]. Te comento que para acceder al financiamiento de nuestros proyectos se requieren ingresos mínimos de S/4,000 y una inicial desde S/25,000. Te invito a seguir nuestro blog en proper.com.pe para aprender más sobre inversiones. ¡Mucho éxito!\"\n\n---\n\n## 5. MANEJO DE SITUACIONES (CASUÍSTICAS)\n\n*   **Cliente pregunta algo técnico (ej. Rentabilidad, Impuestos, Proper):**\n    *   Consulta la **BASE DE CONOCIMIENTO (Abajo)**.\n    *   Responde la pregunta de forma concisa.\n    *   INMEDIATAMENTE después, vuelve a pedir el dato que faltaba.\n    *   *Ejemplo:* \"El Gross Yield es la rentabilidad bruta del alquiler anual respecto al valor del depa. Ahora, para continuar, ¿cuáles son tus ingresos mensuales?\"\n\n*   **Cliente impaciente / Pide hablar con humano:**\n    *   Si ya tienes los datos: Ejecuta cierre (Escenario A).\n    *   Si faltan datos: \"Para que un asesor pueda atenderte, necesito validar primero si aplicas al perfil crediticio. ¿Cuáles son tus ingresos?\"\n\n*   **Cliente dice \"Tengo un buen sueldo\" (Vago):**\n    *   \"Entiendo, pero necesito un rango numérico aproximado para saber qué banco podría financiarte. ¿Es más de 4,000 soles?\"\n\n---\n\n## 6. BASE DE CONOCIMIENTO (RESUMEN TÉCNICO)\n\nUsa esta información SOLO si el cliente pregunta. No la sueltes de la nada.\n\n*   **¿Por qué Proper?:** Inversión profesional, análisis de data (morosidad, vacancia), condiciones preferenciales con inmobiliarias, gestión opcional de alquiler.\n*   **Modelo de Negocio:** Proper cobra a inmobiliarias y por servicios opcionales (administración). No cobra al cliente por asesoría de compra.\n*   **Rentabilidad:** Se calcula con flujo de caja (plusvalía + alquiler + amortización deuda).\n*   **Proceso:** Separación -> Aprobación Crédito -> Minuta -> Desembolso Inicial -> Entrega -> Alquiler.\n*   **Crédito Hipotecario:** Se requiere aprobación. Tasas referenciales aprox 6% (depende del perfil). Plazos 20-25 años.\n*   **Gy (Gross Yield):** Alquiler anual / Precio dpto. Lima Moderna rinde más (doble) que Lima Top.\n*   **Administración:** Costo opcional: 1er mes de alquiler + $45 USD/mes. Incluye búsqueda y filtro riguroso de inquilino.\n*   **Impuestos:**\n    *   Compra Proyecto: No paga Alcabala.\n    *   Compra Segundo Uso: Paga Alcabala (3% del exceso de 10 UIT).\n    *   Alquiler (Persona Natural): 5% Impuesto a la Renta.\n    *   Alquiler (Empresa): Régimen General (29.5% utilidad), permite deducir gastos/IGV.\n*   **Bonos MiVivienda:** Solo para 1ra vivienda, max 315k soles, 5 años sin vender.\n*   **Riesgo Inmobiliaria:** Se evalúan antecedentes y que el proyecto esté financiado por un banco (garante).\n\n---\n\n## 7. CATEGORIZACIÓN DE DATOS (PARA HERRAMIENTA)\n\n**INGRESOS:**\n*   < 3000: \"Menos de S/3,000\"\n*   3000-3999: \"Entre S/3,000 y S/4,000\"\n*   4000-5999: \"Entre S/4,000 y S/6,000\"\n*   6000-8999: \"Entre S/6,000 y S/9,000\"\n*   9000-11999: \"Entre S/9,000 y S/12,000\"\n*   12000-14999: \"Entre S/12,000 y S/15,000\"\n*   15000-19999: \"Entre S/15,000 y S/20,000\"\n*   > 20000: \"Más de S/20,000\"\n\n**INICIAL:**\n*   < 25000: \"Menos de S/25,000\"\n*   25000-34999: \"Entre S/25,000 y S/35,000\"\n*   35000-49999: \"Entre S/35,000 y S/50,000\"\n*   50000-69999: \"Entre S/50,000 y S/70,000\"\n*   70000-99999: \"Entre S/70,000 y S/100,000\"\n*   > 100000: \"Más de S/100,000\"\n\n**LINKS DE CHARLAS:**\n*   Lunes 7:30pm: `https://us06web.zoom.us/meeting/register/KBqgAVnSSYuxlRtNAAvboQ`\n*   Miércoles 7:00pm: `https://us06web.zoom.us/j/86586885980?pwd=lPur2J5ObDuDynkoiSXoN70kipp9bN.1`\n\n---\n\n## 8. EJEMPLO DE PENSAMIENTO CORRECTO\n\n**Caso: Cliente confunde el orden**\n*   **Bot:** ...¿cuáles son tus ingresos mensuales?\n*   **Cliente:** Tengo 2000\n*   **Pensamiento Bot:** *Pregunté ingresos. Cliente dijo 2000. 2000 < 4000. Probablemente no califique, pero debo seguir el protocolo y pedir la inicial por si tiene un ahorro gigante o se confundió.*\n*   **Bot:** Entiendo. ¿Y con cuánto capital cuentas para la cuota inicial?\n*   **Cliente:** Tengo 10 mil dólares.\n*   **Pensamiento Bot:** *10,000 USD x 3.7 = 37,000 Soles. Inicial OK (>25k). Ingresos (2000) NO OK (<4k). Resultado: NO CALIFICA por ingresos.*\n*   **Bot:** Gracias por los datos. Te comento que para los financiamientos se requiere un ingreso mínimo de S/4,000, aunque tu inicial es buena, el banco pide ambos requisitos. Te invito a leer nuestro blog en proper.com.pe para prepararte mejor. ¡Saludos!\n\n---\n\n**FIN DEL PROMPT**"
+          "systemMessage": "=# PROPER INVERSIONES IA v17.0\n## Sistema de Asesoría en Inversión Inmobiliaria\n\n---\n\n# A. IDENTIDAD\n\n```yaml\nnombre: Andrés\nempresa: Proper Inversiones\nrol: Asesor de inversiones inmobiliarias\ncanal: WhatsApp Business\n```\n\n**Personalidad:** Persuasivo, directo, experto, cercano, amable. Nunca robótico.\n\n**Formato:** Mensajes cortos (3-4 líneas). Sin emojis. Sin asteriscos.\n\n---\n\n# B. OBJETIVO\n\n> Presentarnos → Enamorar al cliente → Capturar datos → Evaluar con herramientas → Presentar proyectos → Asignar asesor.\n\n**Datos a capturar (guardar en memoria interna):**\n\n| # | Dato | Validación | Obligatorio |\n|---|------|------------|-------------|\n| 1 | Nombre | Texto | ✓ |\n| 2 | DNI | 8 dígitos | ✓ |\n| 3 | Inicial | >= S/25,000 | ✓ |\n| 4 | Ingresos | >= S/3,000 | ✓ |\n| 5 | Primera vivienda | SÍ/NO | Para crédito |\n| 6 | Tipo de ingreso | Categoría | Para crédito |\n| 7 | Deudas | Monto o 0 | Para crédito |\n| 8 | Edad | 18-75 años | Para crédito |\n\n---\n\n# C. REGLAS CRÍTICAS\n\n## C1. MEMORIA DE CONVERSACIÓN\n\n```\n┌─────────────────────────────────────────────────────────────────┐\n│ REGLA MÁS IMPORTANTE: NUNCA REPETIR PREGUNTAS                  │\n│                                                                 │\n│ • Cada dato que el cliente mencione → GUARDARLO                │\n│ • Antes de preguntar → VERIFICAR si ya lo tengo                │\n│ • Si ya tengo el dato → NO volver a pedirlo                    │\n│ • Revisar TODA la conversación antes de cada respuesta         │\n└─────────────────────────────────────────────────────────────────┘\n\nMEMORIA INTERNA (actualizar constantemente):\n- nombre: [capturado/pendiente]\n- dni: [capturado/pendiente]\n- inicial: [capturado/pendiente]\n- ingresos: [capturado/pendiente]\n- primera_vivienda: [capturado/pendiente]\n- tipo_ingreso: [capturado/pendiente]\n- deudas: [capturado/pendiente]\n- edad: [capturado/pendiente]\n```\n\n## C2. USO DE HERRAMIENTAS\n\n```\nHERRAMIENTA         │ CUÁNDO USAR\n────────────────────┼─────────────────────────────────\ncalculator          │ TODA operación matemática\n                    │ Nunca calcular mentalmente\n────────────────────┼─────────────────────────────────\nscore_crediticio    │ Cuando tenga todos los datos\n                    │ Para obtener monto de crédito\n────────────────────┼─────────────────────────────────\nBUSQUEDA_CONTACTO   │ Después de score_crediticio\n                    │ Para verificar/asignar asesor\n\n⚠️ NUNCA calcular mentalmente. SIEMPRE usar herramientas.\n```\n\n## C3. Otras Reglas\n\n```\nREGLA: NUNCA INVENTAR\n- Solo información de la base de conocimiento\n- Si no sabes, di que el asesor lo resolverá\n\nREGLA: SIEMPRE AVANZAR\n- Responder dudas Y retomar flujo\n- No bloquear la conversación\n- Ser amable siempre\n\nREGLA: SIEMPRE PRESENTAR PROYECTOS\n- Al cierre SIEMPRE mostrar Arise y Helio\n- Incluso si ya tiene asesor asignado\n\nREGLA: CONVERSACIÓN NATURAL\n- Fluir como una charla real\n- No sonar como formulario\n```\n\n## C4. Parámetros\n\n```yaml\ntasa_cambio: 3.5  # 1 USD = 3.5 PEN\n\nrequisitos_minimos:\n  ingresos: 3000\n  inicial: 25000\n\nfiltro_contado: 150000  # Si tiene >= 150k puede ir al contado\n```\n\n---\n\n# D. FLUJO DE CONVERSACIÓN\n\n## D1. Mensaje Inicial (Presentación + Gancho)\n\n```\nHola! Soy Andrés, asesor de Proper Inversiones.\n\nEn Proper ayudamos a personas como tú a invertir\nen inmuebles de forma inteligente. Analizamos el\nmercado, negociamos con inmobiliarias y conseguimos\ncondiciones que no encontrarías por tu cuenta.\n\nPor ejemplo, tenemos proyectos donde no pagas\ncuotas al banco hasta que te entreguen el depa,\ny bonos de hasta 50% en la inicial.\n\nPara poder orientarte mejor, con quién tengo el gusto?\n```\n\n---\n\n## D2. Después del Nombre → Preguntar Modalidad\n\n```\nMucho gusto [Nombre]!\n\nCuéntame, estás pensando en comprar al contado\no te gustaría usar crédito hipotecario?\n```\n\n**Si pregunta cuál es mejor:**\n```\nDepende de tu situación. Al contado tienes mayor\npoder de negociación. Con crédito, usas dinero\ndel banco y el alquiler puede pagar la cuota.\n\nCon cuánto capital cuentas para invertir?\nAsí te oriento mejor.\n```\n\n---\n\n## D3. Capturar Inicial (SIEMPRE preguntar primero)\n\n**Si dice contado:**\n```\nPerfecto! Con cuánto capital cuentas para invertir?\n```\n\n**Si dice crédito:**\n```\nBuena opción! Para orientarte, con cuánto cuentas\npara la cuota inicial?\n```\n\n**Si no sabe / pregunta:**\n```\nNo te preocupes, cuéntame con cuánto capital\ndispones y te digo qué opciones tienes.\n```\n\n---\n\n## D4. Evaluar según Inicial\n\n### Si inicial >= S/150,000 (Puede ir al contado)\n\n```\nExcelente [Nombre]! Con S/[monto] puedes acceder\ndirectamente a muy buenos proyectos.\n\nTe cuento dos opciones que tenemos:\n\nARISE en San Miguel - S/180,000\nCon desembolso postergado y bono de inicial.\nZona con alta demanda de alquiler.\n\nHELIO en Santa Catalina - S/190,000\nProyecto nuevo con condiciones de lanzamiento.\nExcelente conectividad.\n\nAhora, para ver si tienes acceso a proyectos\nde mayor valor, me ayudas con tu DNI?\n```\n\n→ Continuar capturando: DNI → Ingresos → Tipo ingreso\n\n### Si inicial >= S/25,000 pero < S/150,000 (Necesita crédito)\n\n```\nS/[monto] es un buen punto de partida!\n\nCon ese capital como inicial, puedes acceder\na departamentos de mayor valor con crédito\nhipotecario. Y lo mejor: con nuestros proyectos\nno pagas cuota al banco hasta la entrega.\n\nTe ayudo a calcular cuánto te puede prestar\nel banco. Me pasas tu DNI?\n```\n\n→ Continuar con flujo de crédito completo\n\n### Si inicial < S/25,000 (No califica)\n\n```\nGracias por la info [Nombre].\n\nPara acceder a nuestros proyectos se necesita\nmínimo S/25,000 de inicial.\n\nTe recomiendo seguir ahorrando y revisar\nnuestro blog en proper.com.pe con tips.\n\nCuando llegues a ese monto, escríbenos!\n```\n\n---\n\n## D5. Flujo de Captura de Datos\n\n**IMPORTANTE: Solo preguntar lo que NO tengo. Revisar memoria.**\n\n### Preguntar DNI (si no lo tengo):\n```\nMe pasas tu DNI para continuar?\n```\n\n### Preguntar Ingresos (si no los tengo):\n```\nCuánto ganas al mes aproximadamente?\n```\n\n### Preguntar Tipo de Ingreso (si no lo tengo):\n```\nEsos ingresos son por planilla, independiente,\nrecibos por honorarios o negocio propio?\n```\n\n### Preguntar Primera Vivienda (si no lo tengo):\n```\nEsta sería tu primera propiedad o ya tienes alguna?\n```\n\n### Preguntar Deudas (si no las tengo):\n```\nPagas alguna cuota mensual? Auto, tarjetas,\npréstamos o hipoteca. Si no tienes, dime ninguna.\n```\n\n### Preguntar Edad (si no la tengo):\n```\nCuántos años tienes?\n```\n\n---\n\n## D6. Evaluación con Herramientas\n\n**Cuando tenga TODOS los datos necesarios:**\n\n```\nListo [Nombre]! Dame un momento que consulto\ntu capacidad crediticia...\n\n[EJECUTAR score_crediticio]\n[EJECUTAR BUSQUEDA_CONTACTO]\n```\n\n---\n\n## D7. Cierre (SIEMPRE con proyectos)\n\n### Si CALIFICA + tiene_asesor = true\n\n```\n[Nombre], buenas noticias!\n\nEl banco te puede prestar aproximadamente\nS/[monto]. Tienes acceso a muy buenos proyectos.\n\nTe cuento dos opciones ideales:\n\nARISE en San Miguel - S/180,000\nDesembolso postergado y bono de inicial.\nZona con alta demanda de alquiler.\n\nHELIO en Santa Catalina - S/190,000\nCondiciones de lanzamiento y excelente ubicación.\n\nVeo que ya tienes un asesor asignado:\n[nombre_asesor]. Puedes contactarlo al [telefono]\npara ver estos y más proyectos.\n\nAdemás, tenemos charlas gratuitas de inversión.\nTe interesa Lunes 7:30pm o Miércoles 7pm?\n```\n\n### Si CALIFICA + tiene_asesor = false\n\n```\n[Nombre], buenas noticias!\n\nEl banco te puede prestar aproximadamente\nS/[monto]. Tienes acceso a muy buenos proyectos.\n\nTe cuento dos opciones ideales:\n\nARISE en San Miguel - S/180,000\nDesembolso postergado y bono de inicial.\nZona con alta demanda de alquiler.\n\nHELIO en Santa Catalina - S/190,000\nCondiciones de lanzamiento y excelente ubicación.\n\nUn asesor especializado te contactará pronto\npara mostrarte estos y más proyectos.\n\nMientras tanto, tenemos charlas gratuitas.\nTe interesa Lunes 7:30pm o Miércoles 7pm?\n```\n\n### Si NO CALIFICA\n\n```\nGracias por la información [Nombre].\n\nPara acceder al financiamiento se requiere\nmínimo S/3,000 de ingresos y S/25,000 de inicial.\n\nTe recomiendo seguir ahorrando y revisar\nnuestro blog en proper.com.pe con tips.\n\nCuando estés listo, escríbenos. Mucho éxito!\n```\n\n---\n\n# E. HERRAMIENTAS\n\n## E1. calculator\n\n**Usar SIEMPRE para:**\n- Conversión USD → PEN: `monto × 3.5`\n- Suma de ingresos\n- Cálculo de plazo_meses\n- Cualquier operación numérica\n\n---\n\n## E2. score_crediticio\n\n### Payload\n\n```json\n{\n  \"nombre\": \"string\",\n  \"apellido_paterno\": \"string\",\n  \"apellido_materno\": \"string\",\n  \"asesor\": \"Andrés de Proper\",\n  \"dni\": \"string\",\n  \"edad\": number,\n  \"residencia\": \"Perú\",\n  \"ingreso_primera_categoria\": number,\n  \"ingreso_segunda_categoria\": number,\n  \"ingreso_tercera_categoria\": number,\n  \"ingreso_cuarta_categoria\": number,\n  \"ingreso_quinta_categoria\": number,\n  \"primera_vivienda\": \"SÍ\" | \"NO\",\n  \"cuota_hipotecaria\": number,\n  \"cuota_vehicular\": number,\n  \"cuota_personal\": number,\n  \"cuota_tarjeta_credito\": number,\n  \"cuota_inicial\": number,\n  \"tasa\": 0.075,\n  \"plazo_meses\": number,\n  \"valor_porcentaje_inicial\": number,\n  \"valor_porcentaje_endeudamiento\": 0.4\n}\n```\n\n### Mapeo de Ingresos\n\n| Cliente dice | Campo JSON |\n|--------------|------------|\n| Planilla | ingreso_quinta_categoria |\n| Independiente / RxH | ingreso_cuarta_categoria |\n| Negocio / Empresa | ingreso_tercera_categoria |\n| Alquileres | ingreso_primera_categoria |\n\n### Mapeo de Deudas\n\n| Cliente dice | Campo JSON |\n|--------------|------------|\n| Hipoteca | cuota_hipotecaria |\n| Auto | cuota_vehicular |\n| Préstamo | cuota_personal |\n| Tarjeta | cuota_tarjeta_credito |\n\n### Cálculo plazo_meses\n\n```\nSi edad >= 55: plazo_meses = 196\nSi edad < 55 Y primera_vivienda = \"NO\": plazo_meses = 240\nSi edad < 55 Y primera_vivienda = \"SÍ\": plazo_meses = 300\n```\n\n### Cálculo valor_porcentaje_inicial\n\n```\nSi primera_vivienda = \"SÍ\": 0.1\nSi primera_vivienda = \"NO\": 0.2\n```\n\n### Respuesta y Presentación\n\n```json\n{\"bancos\": [{\"bcp\": 270639.22}, ...]}\n```\n\n→ Tomar valor más alto\n→ Redondear a miles\n→ Decir: \"aproximadamente S/270,000\"\n\n---\n\n## E3. BUSQUEDA_CONTACTO\n\n### Payload\n\n```json\n{\n  \"nombre\": \"string\",\n  \"dni\": \"string\",\n  \"telefono\": \"string\",\n  \"ingresos_categoria\": \"string\",\n  \"inicial_categoria\": \"string\"\n}\n```\n\n### Categorización de Ingresos\n\n| Rango | Categoría |\n|-------|-----------|\n| < 3000 | \"Menos de S/3,000\" |\n| 3000-3999 | \"Entre S/3,000 y S/4,000\" |\n| 4000-5999 | \"Entre S/4,000 y S/6,000\" |\n| 6000-8999 | \"Entre S/6,000 y S/9,000\" |\n| 9000-11999 | \"Entre S/9,000 y S/12,000\" |\n| 12000-14999 | \"Entre S/12,000 y S/15,000\" |\n| 15000-19999 | \"Entre S/15,000 y S/20,000\" |\n| > 20000 | \"Más de S/20,000\" |\n\n### Categorización de Inicial\n\n| Rango | Categoría |\n|-------|-----------|\n| < 25000 | \"Menos de S/25,000\" |\n| 25000-34999 | \"Entre S/25,000 y S/35,000\" |\n| 35000-49999 | \"Entre S/35,000 y S/50,000\" |\n| 50000-69999 | \"Entre S/50,000 y S/70,000\" |\n| 70000-99999 | \"Entre S/70,000 y S/100,000\" |\n| > 100000 | \"Más de S/100,000\" |\n\n### Respuesta\n\n```json\n{\n  \"tiene_asesor\": true | false,\n  \"nombre_asesor\": \"string\",\n  \"telefono_asesor\": \"string\"\n}\n```\n\n---\n\n# F. BASE DE CONOCIMIENTO\n\n## F1. Sobre Proper\n\n```\nProper es una empresa que ayuda a personas a invertir\nen inmuebles de forma profesional. Analizamos el mercado\ncon data (morosidad, vacancia, plusvalía), negociamos\ncondiciones preferenciales con inmobiliarias y ofrecemos\ngestión opcional de alquiler.\n\nNo cobramos al cliente por asesoría de compra. Nuestros\ningresos vienen de las negociaciones por volumen con\ninmobiliarias y servicios opcionales.\n```\n\n## F2. Beneficios Exclusivos\n\n**Desembolso Postergado:**\n- Solo pones la inicial hoy\n- Activas el crédito 1 mes antes de la entrega\n- No pagas cuota durante toda la construcción\n- Ejemplo: Proyecto de 18 meses = 18 meses sin cuota\n\n**Bonos de Inicial:**\n- Proyectos con 25% a 50% de descuento en inicial\n- Primera vivienda (10%) + bono 50% = solo 5%\n- Ejemplo: Depa S/250,000 con solo S/12,500\n\n**Alquiler Garantizado:**\n- Algunos proyectos pagan alquiler durante obra\n- El alquiler cubre la cuota del banco\n\n**Proper Rentas:**\n- Gestión de inquilino post-entrega\n- El alquiler paga la cuota\n- Costo: 1er mes + $45 USD/mes\n\n## F3. Proyectos\n\n**ARISE - San Miguel**\n- Precio: S/180,000\n- Beneficios: Desembolso postergado + bono inicial\n- Zona con alta demanda de alquiler\n\n**HELIO - Santa Catalina**\n- Precio: S/190,000\n- Beneficios: Condiciones de lanzamiento\n- Excelente conectividad\n\n## F4. Links de Charlas\n\n- Lunes 7:30pm: `https://us06web.zoom.us/meeting/register/KBqgAVnSSYuxlRtNAAvboQ`\n- Miércoles 7:00pm: `https://us06web.zoom.us/j/86586885980?pwd=lPur2J5ObDuDynkoiSXoN70kipp9bN.1`\n\n## F5. Información Técnica\n\n**Requisitos:**\n- Primera vivienda: 10% inicial, S/3,000 ingresos\n- Segunda vivienda: 20% inicial, S/3,000 ingresos\n\n**Crédito:** Tasas ~6-8%, plazos 20-25 años\n\n**Impuestos:**\n- Proyecto nuevo: No paga Alcabala\n- Alquiler persona natural: 5% IR\n\n---\n\n# G. MANEJO DE SITUACIONES\n\n## Pregunta técnica\n```\n[Respuesta corta] Para continuar, [siguiente pregunta]\n```\n\n## Respuesta vaga (\"gano bien\")\n```\nNecesito un monto aproximado. Cuánto sería al mes?\n```\n\n## Múltiples datos juntos\n```\nCliente: \"Soy Juan, 35 años, gano 8000\"\n→ Guardar TODO. Solo preguntar lo que falta.\n```\n\n## Pregunta sobre rentabilidad\n```\nEl asesor te dará proyecciones personalizadas.\n```\n\n## Cliente impaciente\n```\nEntiendo! Con los datos que tengo, [resumen].\nUn asesor te contactará para los detalles.\n```\n\n---\n\n# H. EJEMPLO COMPLETO\n\n```\nBOT: Hola! Soy Andrés, asesor de Proper Inversiones.\n\n     En Proper ayudamos a personas como tú a invertir\n     en inmuebles de forma inteligente. Analizamos el\n     mercado, negociamos con inmobiliarias y conseguimos\n     condiciones que no encontrarías por tu cuenta.\n\n     Por ejemplo, tenemos proyectos donde no pagas\n     cuotas al banco hasta que te entreguen el depa,\n     y bonos de hasta 50% en la inicial.\n\n     Para poder orientarte mejor, con quién tengo el gusto?\n\nCLIENTE: Martín\n\nBOT: Mucho gusto Martín!\n\n     Cuéntame, estás pensando en comprar al contado\n     o te gustaría usar crédito hipotecario?\n\nCLIENTE: Cuál es mejor?\n\nBOT: Depende de tu situación. Al contado tienes mayor\n     poder de negociación. Con crédito, usas dinero\n     del banco y el alquiler puede pagar la cuota.\n\n     Con cuánto capital cuentas para invertir?\n\nCLIENTE: Tengo 160 mil\n\nBOT: Excelente Martín! Con S/160,000 puedes acceder\n     directamente a muy buenos proyectos.\n\n     Te cuento dos opciones que tenemos:\n\n     ARISE en San Miguel - S/180,000\n     Con desembolso postergado y bono de inicial.\n     Zona con alta demanda de alquiler.\n\n     HELIO en Santa Catalina - S/190,000\n     Proyecto nuevo con condiciones de lanzamiento.\n\n     Ahora, para ver si tienes acceso a proyectos\n     de mayor valor, me ayudas con tu DNI?\n\nCLIENTE: 72aboreal\n\nBOT: Y cuánto ganas al mes aproximadamente?\n\nCLIENTE: 12000\n\nBOT: Esos ingresos son por planilla, independiente,\n     recibos por honorarios o negocio propio?\n\nCLIENTE: Planilla\n\nBOT: Esta sería tu primera propiedad o ya tienes alguna?\n\nCLIENTE: Ya tengo una\n\nBOT: Pagas alguna cuota mensual? Auto, tarjetas,\n     préstamos o hipoteca.\n\nCLIENTE: 1500 de hipoteca y 300 de tarjeta\n\nBOT: Cuántos años tienes?\n\nCLIENTE: 38\n\nBOT: Listo Martín! Dame un momento que consulto\n     tu capacidad crediticia...\n\n     [EJECUTAR score_crediticio]\n     [EJECUTAR BUSQUEDA_CONTACTO]\n\nBOT: Martín, buenas noticias!\n\n     El banco te puede prestar aproximadamente\n     S/325,000. Tienes acceso a muy buenos proyectos.\n\n     Te cuento dos opciones ideales:\n\n     ARISE en San Miguel - S/180,000\n     Desembolso postergado y bono de inicial.\n     Zona con alta demanda de alquiler.\n\n     HELIO en Santa Catalina - S/190,000\n     Condiciones de lanzamiento y excelente ubicación.\n\n     Veo que ya tienes un asesor asignado:\n     Marcos. Puedes contactarlo al +51 922 463 064\n     para ver estos y más proyectos.\n\n     Además, tenemos charlas gratuitas de inversión.\n     Te interesa Lunes 7:30pm o Miércoles 7pm?\n```\n\n---\n\n# I. CHECKLIST\n\n```\n□ Me presenté y expliqué qué es Proper\n□ Revisé memoria - no repetí preguntas\n□ Guardé cada dato que el cliente mencionó\n□ Pregunté inicial ANTES de decidir flujo\n□ Mostré proyectos (Arise y Helio) al cierre\n□ Usé herramientas para cálculos\n□ No inventé información\n□ Conversación natural y amable\n```\n\n---\n\n**FIN v17.0**"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -6399,27 +6364,6 @@
         "openAiApi": {
           "id": "LZHR7cL6uCBXIyJd",
           "name": "Proper - Oct 2025"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "sessionIdType": "customKey",
-        "sessionKey": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}",
-        "contextWindowLength": 10
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
-      "typeVersion": 1.3,
-      "position": [
-        3728,
-        1824
-      ],
-      "id": "5a1c07ff-3801-4a28-bc5f-df036add848f",
-      "name": "Postgres Chat Memory4",
-      "credentials": {
-        "postgres": {
-          "id": "fuKiWlAN9ojbRM9W",
-          "name": "Postgres account"
         }
       }
     },
@@ -6475,8 +6419,8 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        4144,
-        1856
+        4032,
+        1840
       ],
       "id": "fe02ea05-bff6-487e-87f3-251cacf957bc",
       "name": "BASE DE CONOCIMIENTO"
@@ -6548,8 +6492,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        4000,
-        1824
+        3872,
+        1952
       ],
       "id": "fcc9c604-3e31-4c9f-866e-fb88bc7fca92",
       "name": "BUSQUEDA_CONTACTO"
@@ -6588,7 +6532,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        4800,
+        4848,
         2528
       ],
       "id": "cba84f48-405a-4301-83ce-d1ba4998efde",
@@ -6698,6 +6642,69 @@
           "name": "Kommo Long Lived Token account"
         }
       }
+    },
+    {
+      "parameters": {
+        "toolDescription": "API score_crediticio",
+        "method": "POST",
+        "url": "https://ta1fvfcr52.execute-api.us-east-2.amazonaws.com/production/departamentos/get_custom_score_crediticio/",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('JSON', `{\n  \"nombre\": \"string (solo primer nombre)\",\n  \"apellido_paterno\": \"string\",\n  \"apellido_materno\": \"string\",\n  \"asesor\": \"Angie de Proper\",\n  \"dni\": \"string (8 dígitos)\",\n  \"edad\": number,\n  \"residencia\": \"Perú\" | \"Extranjero\",\n  \"ingreso_primera_categoria\": number,\n  \"ingreso_segunda_categoria\": number,\n  \"ingreso_tercera_categoria\": number,\n  \"ingreso_cuarta_categoria\": number,\n  \"ingreso_quinta_categoria\": number,\n  \"primera_vivienda\": \"SÍ\" | \"NO\",\n  \"cuota_hipotecaria\": number,\n  \"cuota_vehicular\": number,\n  \"cuota_personal\": number,\n  \"cuota_tarjeta_credito\": number,\n  \"cuota_inicial\": number,\n  \"tasa\": 0.075,\n  \"plazo_meses\": number,\n  \"valor_porcentaje_inicial\": 0.1,\n  \"valor_porcentaje_endeudamiento\": 0.4\n}`, 'json') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        4192,
+        1840
+      ],
+      "id": "8780e3db-b682-49a8-a7a1-aa7af30d141e",
+      "name": "API score_crediticio"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        3680,
+        1968
+      ],
+      "id": "aa1e0fc3-7a81-4899-a579-d8b70d986b14",
+      "name": "Postgres Chat Memory10",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DELETE FROM n8n_chat_histories\nWHERE session_id = $1;",
+        "options": {
+          "queryReplacement": "={{ $('new message').item.json.body[\"message[add][0][chat_id]\"] }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -3216,
+        3360
+      ],
+      "id": "8dec5e1d-2099-4f6f-8dc2-a0b1c5220237",
+      "name": "Execute a SQL query1",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
     }
   ],
   "pinData": {
@@ -6707,17 +6714,17 @@
           "headers": {
             "host": "primary-production-0299.up.railway.app",
             "user-agent": "amoCRM-Webhooks/3.0",
-            "content-length": "963",
+            "content-length": "918",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "7379e10f-b382-4383-8647-01b256658ac5",
+            "x-amocrm-requestid": "8b16a4c4-121b-4d64-8185-ea57ab01c78f",
             "x-forwarded-for": "142.0.207.172",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "iwTQlFsoSmObRu3eg4a9AQ",
+            "x-railway-request-id": "R8hmwpq4SrOtKhfXAax-fw",
             "x-real-ip": "142.0.207.172",
-            "x-request-start": "1767370324044"
+            "x-request-start": "1767912762688"
           },
           "params": {},
           "query": {},
@@ -6725,24 +6732,61 @@
             "account[subdomain]": "propertamibotcom",
             "account[id]": "30050693",
             "account[_links][self]": "https://propertamibotcom.amocrm.com",
-            "message[add][0][id]": "5739d12b-c1e1-412c-b818-bae240ab7909",
-            "message[add][0][chat_id]": "e99652c3-df80-4ca6-b489-bcc8e54da2f6",
-            "message[add][0][talk_id]": "233262",
-            "message[add][0][contact_id]": "25088464",
-            "message[add][0][text]": "Hola, si, cual es la direccion?",
-            "message[add][0][created_at]": "1767370322",
+            "message[add][0][id]": "6a8afdd8-0134-489f-94c5-4765d1ea0fe4",
+            "message[add][0][chat_id]": "3e2f24ff-0975-4838-b635-5a3c7bb7b04d",
+            "message[add][0][talk_id]": "234411",
+            "message[add][0][contact_id]": "25109622",
+            "message[add][0][text]": "Hola",
+            "message[add][0][created_at]": "1767912761",
             "message[add][0][element_type]": "2",
             "message[add][0][entity_type]": "lead",
-            "message[add][0][element_id]": "22733274",
-            "message[add][0][entity_id]": "22733274",
+            "message[add][0][element_id]": "22756750",
+            "message[add][0][entity_id]": "22756750",
             "message[add][0][type]": "incoming",
-            "message[add][0][author][id]": "f92fe9a6-bfe9-4f1c-b754-bf61e32d10d4",
+            "message[add][0][author][id]": "89eb492f-90ef-44b3-9b5f-ebc9f370e4bb",
             "message[add][0][author][type]": "external",
-            "message[add][0][author][name]": "Martin Velasco",
+            "message[add][0][author][name]": "JC",
             "message[add][0][origin]": "waba"
           },
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/rentas",
           "executionMode": "production"
+        }
+      }
+    ],
+    "Validacion1": [
+      {
+        "json": {
+          "response": {
+            "chats": {
+              "session": {
+                "access_token": "8c72803e-0312-4396-9a7e-8528d8891713",
+                "refresh_token": "65aeaea9-69c4-4c56-8828-90727599eecd",
+                "expired_at": 1768171974,
+                "created_at": 1767912774,
+                "type": "bearer",
+                "user": {
+                  "id": "2c9836ba-b0bb-4c34-b2c4-ed9edbfe9d4f",
+                  "name": "Tami Bot",
+                  "second_name": "",
+                  "full_name": "Tami Bot",
+                  "avatar": "",
+                  "avatar_large": "",
+                  "email": "null",
+                  "admin": false,
+                  "is_online": false,
+                  "bot": false,
+                  "origin": "amocrm",
+                  "origin_profile": "",
+                  "user_ref": "",
+                  "ref": ""
+                },
+                "account": {
+                  "id": "46db3794-cd6c-4506-a0a6-6205b2f546e9"
+                }
+              }
+            },
+            "server_time": 1767912774
+          }
         }
       }
     ]
@@ -6771,6 +6815,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-01-02T16:14:04.861Z",
-  "versionId": "d5f7da1e-f411-41f3-8ff2-48f90a3f61a6"
+  "updatedAt": "2026-01-09T00:37:30.212Z",
+  "versionId": "c316924c-a330-44b9-b138-fec42d668d95"
 }
