@@ -341,7 +341,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1984,
+        2000,
         -208
       ],
       "webhookId": "e061af9a-eae8-4388-95ef-4966afbac880",
@@ -393,6 +393,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-12-24T18:52:58.448Z",
-  "versionId": "228b43cb-4290-491d-a269-f9a48ea3f600"
+  "updatedAt": "2026-01-12T15:47:05.155Z",
+  "versionId": "0d1a80ba-82d1-420b-b24c-eab471922403"
 }
