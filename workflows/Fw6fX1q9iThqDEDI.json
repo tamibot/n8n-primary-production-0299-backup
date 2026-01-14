@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "Loop Over Items",
+            "node": "Filter",
             "type": "main",
             "index": 0
           }
@@ -56,6 +56,17 @@
           }
         ]
       ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-07-07T12:36:41.849Z",
@@ -69,14 +80,14 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "WITH visitas_limpias AS (\n  SELECT\n    REGEXP_REPLACE(\n      CASE\n        WHEN celular SIMILAR TO '9%' THEN '+51' || celular\n        WHEN celular SIMILAR TO '51%' THEN '+' || celular\n        ELSE celular\n      END,\n      '[^0-9+]',\n      '',\n      'g'\n    ) AS telefono_normalizado\n  FROM rentas_crm.visitas\n  WHERE estado = 'No realizado'\n    AND formulario = 'Inquilino interesado'\n    AND DATE(fecha_programada) = CURRENT_DATE - INTERVAL '1 day'\n),\nleads_match AS (\n  SELECT l.id, l.telefono_pre_inquilino\n  FROM crm.leads_pre_inquilinos l\n  INNER JOIN visitas_limpias v\n    ON REGEXP_REPLACE(l.telefono_pre_inquilino, '[^0-9+]', '', 'g') = v.telefono_normalizado\n)\nSELECT * FROM leads_match;",
+        "query": "WITH visitas_limpias AS (\n  SELECT\n    -- Normaliza a \"solo dígitos\" y fuerza prefijo 51 cuando aplica\n    CASE\n      WHEN REGEXP_REPLACE(celular, '[^0-9]', '', 'g') ~ '^9'   THEN '51' || REGEXP_REPLACE(celular, '[^0-9]', '', 'g')\n      WHEN REGEXP_REPLACE(celular, '[^0-9]', '', 'g') ~ '^51'  THEN REGEXP_REPLACE(celular, '[^0-9]', '', 'g')\n      ELSE REGEXP_REPLACE(celular, '[^0-9]', '', 'g')\n    END AS telefono_normalizado_digitos,\n    cliente_asistio\n  FROM rentas_crm.visitas\n  WHERE estado = 'No realizado'\n    AND formulario = 'Inquilino interesado'\n    AND DATE(fecha_programada) = CURRENT_DATE - INTERVAL '1 day'\n),\nleads_limpios AS (\n  SELECT\n    id,\n    telefono_pre_inquilino,\n    -- Normaliza el teléfono del lead a \"solo dígitos\" y fuerza prefijo 51 cuando aplica\n    CASE\n      WHEN REGEXP_REPLACE(telefono_pre_inquilino, '[^0-9]', '', 'g') ~ '^9'  THEN '51' || REGEXP_REPLACE(telefono_pre_inquilino, '[^0-9]', '', 'g')\n      WHEN REGEXP_REPLACE(telefono_pre_inquilino, '[^0-9]', '', 'g') ~ '^51' THEN REGEXP_REPLACE(telefono_pre_inquilino, '[^0-9]', '', 'g')\n      ELSE REGEXP_REPLACE(telefono_pre_inquilino, '[^0-9]', '', 'g')\n    END AS telefono_normalizado_digitos\n  FROM crm.leads_pre_inquilinos\n  WHERE telefono_pre_inquilino IS NOT NULL\n    AND REGEXP_REPLACE(telefono_pre_inquilino, '[^0-9]', '', 'g') <> ''\n),\nleads_match AS (\n  SELECT\n    l.id,\n    l.telefono_pre_inquilino,\n    v.cliente_asistio\n  FROM leads_limpios l\n  INNER JOIN visitas_limpias v\n    ON l.telefono_normalizado_digitos = v.telefono_normalizado_digitos\n)\nSELECT *\nFROM leads_match\n-- Opcional: filtrar por asistencia\n-- WHERE cliente_asistio = true\n-- WHERE cliente_asistio = false\n;",
         "options": {}
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -120,
-        -60
+        -80,
+        8
       ],
       "id": "30826364-a277-4d13-9943-c553a0c7877c",
       "name": "Postgres",
@@ -94,8 +105,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        100,
-        -60
+        368,
+        8
       ],
       "id": "bcb66921-cbb7-402a-ba79-25dc8b78b4fc",
       "name": "Loop Over Items"
@@ -114,8 +125,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        580,
-        -60
+        816,
+        8
       ],
       "id": "07309a2e-aadb-45ad-a086-b057b0c29d70",
       "name": "HTTP Request",
@@ -133,8 +144,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        340,
-        -20
+        592,
+        -64
       ],
       "id": "4474411b-fc4e-4cdf-9b0d-19515da4a606",
       "name": "Wait",
@@ -153,11 +164,45 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -300,
-        -60
+        -304,
+        8
       ],
       "id": "a57d7146-f547-4ab3-b972-673856656e3b",
       "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1d5887ae-c283-409f-b0cf-7f2d21b733fb",
+              "leftValue": "={{ $json.cliente_asistio }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        144,
+        8
+      ],
+      "id": "a7d8e7c5-557b-4bf7-963f-6e6871e13091",
+      "name": "Filter"
     }
   ],
   "pinData": {},
@@ -180,6 +225,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-07-07T13:09:55.136Z",
-  "versionId": "c0c2b31e-4e99-492b-91ff-90cf7e538ba7"
+  "updatedAt": "2026-01-13T13:21:32.560Z",
+  "versionId": "afd9f1ba-b781-45b0-ada6-71ec0c57a77a"
 }
