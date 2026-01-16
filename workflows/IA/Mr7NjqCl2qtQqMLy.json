@@ -377,19 +377,19 @@
             "content-length": "314",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "3a34133a-a9e9-43ae-9781-b7718d00686d",
+            "x-amocrm-requestid": "baf1d92e-2590-4b15-82de-2572e2a63975",
             "x-forwarded-for": "169.150.216.80",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "jegzfeCwRIKNVaF1ozsQ6Q",
+            "x-railway-request-id": "DEs5mt4-RAKpw-MrAax-fw",
             "x-real-ip": "169.150.216.80",
-            "x-request-start": "1767631532293"
+            "x-request-start": "1768428895833"
           },
           "params": {},
           "query": {},
           "body": {
-            "leads[status][0][id]": "22736198",
+            "leads[status][0][id]": "22800296",
             "leads[status][0][status_id]": "90801096",
             "leads[status][0][pipeline_id]": "11240224",
             "leads[status][0][old_status_id]": "90801076",
@@ -425,6 +425,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-01-05T18:05:30.084Z",
-  "versionId": "c3005248-e459-4412-8ee3-1d0563859e48"
+  "updatedAt": "2026-01-15T18:13:26.744Z",
+  "versionId": "d026c246-a358-4295-9650-607e16605f95"
 }
