@@ -74,6 +74,11 @@
             "node": "API: Crear Visita",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -85,6 +90,11 @@
             "node": "API: Asignar Responsable",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
           }
         ]
       ]
@@ -127,6 +137,33 @@
         [
           {
             "node": "API: Datos Interesado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API: Crear Visita1": {
+      "main": [
+        []
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "API: Crear Visita1",
             "type": "main",
             "index": 0
           }
@@ -425,6 +462,49 @@
       ],
       "id": "836867f8-fdfd-46df-9419-2a55770ee06d",
       "name": "API: Asignar Responsable2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hook.us1.make.com/awximsa3f1x9qvdx8ipftb4rb6kx0i9n",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"id_visita\": \"{{$('Merge').all()[1].json.id_visita}}\",\n  \"inmueble_homming\": \"{{$('Merge').all()[0].json.data.id_homming}}\",\n  \"codigo_inmueble\": \"{{$('Merge').all()[0].json.data.codigo}}\",\n  \"fecha_programada\": \"{{$node['Edit Fields1'].json.fechaMODO_formateada}}\",\n  \"formulario\": \"inquilino interesado\",\n  \"asistentes\": [\"edificio.modo@proper.com.pe\"],\n  \"color\": 5\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -272,
+        480
+      ],
+      "id": "8b5360e9-db3f-4dcc-a79f-4fbbb81939cb",
+      "name": "API: Crear Visita1",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -752,
+        480
+      ],
+      "id": "6bf3d59c-e881-47a2-810f-116063b35a19",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nreturn [\n  {\n    json: {\n      ...items[0].json,   // message + data\n      ...items[1].json,   // id_visita\n    },\n  },\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -512,
+        480
+      ],
+      "id": "86e3e019-332a-4c00-ad90-a97bf32876c1",
+      "name": "Code"
     }
   ],
   "pinData": {
@@ -491,6 +571,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-01-05T17:58:13.745Z",
-  "versionId": "c8f09ec5-857a-4453-82ac-639c41a1cbb9"
+  "updatedAt": "2026-01-16T20:32:24.983Z",
+  "versionId": "c8be8e32-dfe6-42f6-9ea3-1c8454f4c139"
 }
