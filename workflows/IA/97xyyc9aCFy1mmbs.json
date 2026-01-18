@@ -6337,28 +6337,100 @@
                     "value": "={{ $json.output.nombre }}"
                   },
                   {
-                    "data": "{\"id\":797875,\"type\":\"text\"}",
-                    "value": "={{ $('Information Extractor1').item.json.output.estatusEmbudo }}"
+                    "data": "{\"id\":799216,\"type\":\"text\"}",
+                    "value": "={{ $json.output.interes }}"
                   },
                   {
-                    "data": "{\"id\":798463,\"type\":\"text\"}",
-                    "value": "NUEVO"
-                  },
-                  {
-                    "data": "{\"id\":798815,\"type\":\"textarea\"}",
-                    "value": "={{ $json.output.detalle_caso_especial }}"
-                  },
-                  {
-                    "data": "{\"id\":799115,\"type\":\"select\"}",
+                    "data": "{\"id\":799218,\"type\":\"text\"}",
                     "value": "={{ $json.output.ingreso_promedio_mensual }}"
                   },
                   {
-                    "data": "{\"id\":799117,\"type\":\"select\"}",
+                    "data": "{\"id\":799220,\"type\":\"text\"}",
                     "value": "={{ $json.output.capital_inicial }}"
                   },
                   {
-                    "data": "{\"id\":799119,\"type\":\"text\"}",
+                    "data": "{\"id\":799222,\"type\":\"text\"}",
+                    "value": "={{ $json.output.egresos }}"
+                  },
+                  {
+                    "data": "{\"id\":799224,\"type\":\"text\"}",
+                    "value": "={{ $json.output.primera_vivienda }}"
+                  },
+                  {
+                    "data": "{\"id\":799226,\"type\":\"text\"}",
+                    "value": "={{ $json.output.edad }}"
+                  },
+                  {
+                    "data": "{\"id\":799228,\"type\":\"text\"}",
+                    "value": "={{ $json.output.dni }}"
+                  },
+                  {
+                    "data": "{\"id\":799230,\"type\":\"text\"}",
+                    "value": "={{ $json.output.tipo_ingreso }}"
+                  },
+                  {
+                    "data": "{\"id\":799232,\"type\":\"text\"}",
+                    "value": "={{ $json.output.cumple_ingresos }}"
+                  },
+                  {
+                    "data": "{\"id\":799234,\"type\":\"text\"}",
+                    "value": "={{ $json.output.cumple_inicial }}"
+                  },
+                  {
+                    "data": "{\"id\":798805,\"type\":\"text\"}",
+                    "value": "={{ $json.output.categoria_completa }}"
+                  },
+                  {
+                    "data": "{\"id\":799238,\"type\":\"text\"}",
+                    "value": "={{ $json.output.tiene_asesor }}"
+                  },
+                  {
+                    "data": "{\"id\":799240,\"type\":\"text\"}",
+                    "value": "={{ $json.output.nombre_asesor }}"
+                  },
+                  {
+                    "data": "{\"id\":799242,\"type\":\"text\"}",
+                    "value": "={{ $json.output.telefono_asesor }}"
+                  },
+                  {
+                    "data": "{\"id\":799244,\"type\":\"text\"}",
                     "value": "={{ $json.output.charla_elegida }}"
+                  },
+                  {
+                    "data": "{\"id\":799246,\"type\":\"text\"}",
+                    "value": "={{ $json.output.derivado_a }}"
+                  },
+                  {
+                    "data": "{\"id\":799248,\"type\":\"text\"}",
+                    "value": "={{ $json.output.tipo_cliente }}"
+                  },
+                  {
+                    "data": "{\"id\":799250,\"type\":\"text\"}",
+                    "value": "={{ $json.output.distrito_propiedad }}"
+                  },
+                  {
+                    "data": "{\"id\":799252,\"type\":\"text\"}",
+                    "value": "={{ $json.output.zona_interes }}"
+                  },
+                  {
+                    "data": "{\"id\":799254,\"type\":\"text\"}",
+                    "value": "={{ $json.output.edificio_actual }}"
+                  },
+                  {
+                    "data": "{\"id\":799256,\"type\":\"textarea\"}",
+                    "value": "={{ $json.output.resumen_conversacion }}"
+                  },
+                  {
+                    "data": "{\"id\":799258,\"type\":\"text\"}",
+                    "value": "={{ $json.output.caso_especial }}"
+                  },
+                  {
+                    "data": "{\"id\":799260,\"type\":\"textarea\"}",
+                    "value": "={{ $json.output.detalle_caso_especial }}"
+                  },
+                  {
+                    "data": "{\"id\":799262,\"type\":\"text\"}",
+                    "value": "={{ $json.output.estatusEmbudo }}"
                   }
                 ]
               }
@@ -6775,14 +6847,14 @@
             "content-length": "935",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "7fadfc75-4f99-4149-99a1-c194747c4869",
+            "x-amocrm-requestid": "ce7e3ff5-0ad7-4f6c-a67e-d89f71f10d89",
             "x-forwarded-for": "142.0.207.172",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "24OV583VQcOJswA5Aax-fw",
+            "x-railway-request-id": "U94Nqk7YRsuNL_dMwoOzXw",
             "x-real-ip": "142.0.207.172",
-            "x-request-start": "1768009925514"
+            "x-request-start": "1768649070265"
           },
           "params": {},
           "query": {},
@@ -6790,20 +6862,20 @@
             "account[subdomain]": "propertamibotcom",
             "account[id]": "30050693",
             "account[_links][self]": "https://propertamibotcom.amocrm.com",
-            "message[add][0][id]": "7ef5e7c0-9ec7-42e8-a6ad-a03ecb67f119",
-            "message[add][0][chat_id]": "47359485-2acc-44e4-8253-f54268d075ab",
-            "message[add][0][talk_id]": "235387",
-            "message[add][0][contact_id]": "25123670",
-            "message[add][0][text]": "73449936",
-            "message[add][0][created_at]": "1768009924",
+            "message[add][0][id]": "edc1a958-584d-4947-95a2-41a483295874",
+            "message[add][0][chat_id]": "afcd4397-01de-436e-90c1-ddc28789daa9",
+            "message[add][0][talk_id]": "237035",
+            "message[add][0][contact_id]": "25160698",
+            "message[add][0][text]": "Pershing",
+            "message[add][0][created_at]": "1768649069",
             "message[add][0][element_type]": "2",
             "message[add][0][entity_type]": "lead",
-            "message[add][0][element_id]": "22772752",
-            "message[add][0][entity_id]": "22772752",
+            "message[add][0][element_id]": "22813398",
+            "message[add][0][entity_id]": "22813398",
             "message[add][0][type]": "incoming",
-            "message[add][0][author][id]": "105f9329-f4d5-4bcd-96fb-01833b060467",
+            "message[add][0][author][id]": "6760b279-6cb5-489f-99c9-3230e853195f",
             "message[add][0][author][type]": "external",
-            "message[add][0][author][name]": "Eduardo Portaro",
+            "message[add][0][author][name]": "jacquita davila",
             "message[add][0][origin]": "waba"
           },
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/rentas",
@@ -6836,6 +6908,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-01-16T21:02:38.685Z",
-  "versionId": "3fa28157-2691-4b66-8097-6d8234a34509"
+  "updatedAt": "2026-01-17T14:18:08.175Z",
+  "versionId": "6f799a80-f1d6-4eb2-8c1e-dd86c230a726"
 }
