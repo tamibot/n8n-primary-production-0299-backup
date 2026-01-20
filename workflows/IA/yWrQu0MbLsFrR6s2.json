@@ -90,151 +90,18 @@
         ]
       ]
     },
-    "Split Out2": {
+    "If1": {
       "main": [
         [
           {
-            "node": "Filter2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Filter2": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields5": {
-      "main": [
-        [
-          {
-            "node": "Execute a SQL query3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get list of contacts2": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request4",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request4": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields6",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Loop Over Items2": {
-      "main": [
-        [],
-        [
-          {
-            "node": "Get list of contacts2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields6": {
-      "main": [
-        [
-          {
-            "node": "If",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Insert or update rows in a table2": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request5": {
-      "main": [
-        [
-          {
-            "node": "Split Out2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields7": {
-      "main": [
-        [
-          {
-            "node": "Insert or update rows in a table2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Execute a SQL query3": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields7",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields5",
+            "node": "Code1",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Loop Over Items2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If1": {
-      "main": [
-        [
-          {
-            "node": "Code1",
+            "node": "Loop Over Items",
             "type": "main",
             "index": 0
           }
@@ -650,6 +517,7 @@
       ],
       "id": "2c8ecad3-06b7-4f1b-914d-1142cbfd32cc",
       "name": "Get list of contacts",
+      "alwaysOutputData": true,
       "credentials": {
         "kommoLongLivedApi": {
           "id": "20bzHfzuZvuDPmtm",
@@ -691,7 +559,8 @@
         384
       ],
       "id": "7a80d4b8-60dc-4832-a1de-57982043ee9c",
-      "name": "Edit Fields1"
+      "name": "Edit Fields1",
+      "alwaysOutputData": true
     },
     {
       "parameters": {
@@ -1248,7 +1117,7 @@
             },
             {
               "name": "filter[created_at][from]",
-              "value": "1767243600"
+              "value": "1768021200"
             },
             {
               "name": "filter[created_at][to]",
@@ -1318,720 +1187,6 @@
     },
     {
       "parameters": {
-        "fieldToSplitOut": "=_embedded.leads",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitOut",
-      "typeVersion": 1,
-      "position": [
-        -752,
-        160
-      ],
-      "id": "15169c4f-5b2f-4d37-8239-9271f7e46bd4",
-      "name": "Split Out2"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "loose",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "2504f489-361c-447f-93c2-2e867ae0c54f",
-              "leftValue": "={{ $json._embedded.tags.toJsonString() }}",
-              "rightValue": "DIEGO",
-              "operator": {
-                "type": "string",
-                "operation": "contains"
-              }
-            },
-            {
-              "id": "7972cc23-970e-40a7-9973-5f70f5d42a25",
-              "leftValue": "={{ $json._embedded.contacts[0].id }}",
-              "rightValue": "",
-              "operator": {
-                "type": "number",
-                "operation": "exists",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "looseTypeValidation": true,
-        "options": {}
-      },
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2.2,
-      "position": [
-        -528,
-        160
-      ],
-      "id": "3f3f3ae9-6919-42e8-b570-eb1e87c54534",
-      "name": "Filter2"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "ed4e7330-076f-4bc8-a9fe-655965921e07",
-              "name": "nombre",
-              "value": "={{ $('Get list of contacts2').item.json._embedded.contacts[0].name }}",
-              "type": "string"
-            },
-            {
-              "id": "09d7ed93-7735-4993-b380-9e4529016f0d",
-              "name": "telefono",
-              "value": "={{ $('Get list of contacts2').item.json._embedded.contacts[0].custom_fields_values\n     .find(f => f.field_name === 'Phone')?.values?.[0]?.value || '' }}",
-              "type": "string"
-            },
-            {
-              "id": "830bdbe1-696d-4a85-9e28-7912409b356e",
-              "name": "fechaCreacion",
-              "value": "={{ $('Split Out2').item.json.created_at }}",
-              "type": "string"
-            },
-            {
-              "id": "90859fd1-3a39-4eba-89e5-47c1e46d998d",
-              "name": "statusID",
-              "value": "={{ $('Split Out2').item.json.status_id }}",
-              "type": "string"
-            },
-            {
-              "id": "921a1934-e048-4b53-b493-15ed624117d1",
-              "name": "idKommo",
-              "value": "={{ $('Split Out2').item.json.id }}",
-              "type": "string"
-            },
-            {
-              "id": "02b2ae1b-ec65-420d-88c7-f0edf9038110",
-              "name": "origen",
-              "value": "={{ \n  (()=>{\n    const lead = $('Split Out2').item.json;\n    const cf = (lead.custom_fields_values || []).find(x => x.field_name === 'n8n - diego - origen');\n    return (cf && cf.values && cf.values[0]) ? cf.values[0].value : '';\n  })()\n}}",
-              "type": "string"
-            },
-            {
-              "id": "1ffd7449-5232-40fd-8fe0-5b6520736d1f",
-              "name": "etapa",
-              "value": "={{ $('Edit Fields6').item.json.etapa }}",
-              "type": "string"
-            },
-            {
-              "id": "1d19dd78-6a98-45db-81d4-f21b72c4bff1",
-              "name": "fecha1",
-              "value": "={{   (()=>{     const lead = $('Split Out2').item.json;     const cf = (lead.custom_fields_values || []).find(x => x.field_name === 'n8n - diego - fecha1');     return (cf && cf.values && cf.values[0]) ? cf.values[0].value : '';   })() }}",
-              "type": "string"
-            },
-            {
-              "id": "e98d67b2-6626-41d7-9312-07ef8e399d31",
-              "name": "fecha2",
-              "value": "={{   (()=>{     const lead = $('Split Out2').item.json;     const cf = (lead.custom_fields_values || []).find(x => x.field_name === 'n8n - diego - fecha2');     return (cf && cf.values && cf.values[0]) ? cf.values[0].value : '';   })() }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        816,
-        16
-      ],
-      "id": "fe502faa-cfb4-4aa3-b5d3-b4623cedf787",
-      "name": "Edit Fields5"
-    },
-    {
-      "parameters": {
-        "authentication": "longLivedToken",
-        "resource": "contacts",
-        "filter": {
-          "id": "={{ $('Split Out2').item.json._embedded.contacts[0].id }}"
-        },
-        "options": {
-          "with": [
-            "leads"
-          ]
-        },
-        "limit": 1
-      },
-      "type": "n8n-nodes-kommo.kommo",
-      "typeVersion": 1,
-      "position": [
-        -80,
-        16
-      ],
-      "id": "eb090aea-c8e2-4966-8fb3-6a6725316a1f",
-      "name": "Get list of contacts2",
-      "credentials": {
-        "kommoLongLivedApi": {
-          "id": "20bzHfzuZvuDPmtm",
-          "name": "Kommo Long Lived Token account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "url": " https://propertamibotcom.kommo.com/api/v4/leads/pipelines/9165176/statuses",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "oAuth2Api",
-        "options": {
-          "response": {
-            "response": {
-              "responseFormat": "json"
-            }
-          }
-        }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        144,
-        16
-      ],
-      "id": "c69119fc-a134-4879-88af-131e3b478dcc",
-      "name": "HTTP Request4",
-      "credentials": {
-        "oAuth2Api": {
-          "id": "CUkAxEZkWpxNLUY2",
-          "name": "Proper"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 3,
-      "position": [
-        -304,
-        160
-      ],
-      "id": "4c1c2f05-8e1f-4529-a421-9fb1026221d2",
-      "name": "Loop Over Items2"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "9cd639ed-d911-486c-8770-5fbe6f7e9670",
-              "name": "etapa",
-              "value": "={{\n  (() => {\n    const statuses = $('HTTP Request4').item.json?._embedded?.statuses ?? [];\n    const statusId = $('Split Out2').item.json.status_id;\n    const hit = statuses.find(s => String(s.id) === String(statusId));\n    return hit?.name || '';\n  })()\n}}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        368,
-        16
-      ],
-      "id": "e915282a-6dc1-4a24-a41e-1223d827a864",
-      "name": "Edit Fields6"
-    },
-    {
-      "parameters": {
-        "operation": "upsert",
-        "schema": {
-          "__rl": true,
-          "value": "crm",
-          "mode": "list",
-          "cachedResultName": "crm"
-        },
-        "table": {
-          "__rl": true,
-          "value": "reporte_diego_ia",
-          "mode": "list",
-          "cachedResultName": "reporte_diego_ia"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "dio_horario": "={{ $json.dio_horario }}",
-            "agendo_llamada": "={{ $json.agendo_visita }}",
-            "realizo_llamada": "=0",
-            "id": "={{ $('Edit Fields5').item.json.idKommo }}",
-            "nombre": "={{ $('Edit Fields5').item.json.nombre }}",
-            "telefono": "={{ $('Edit Fields5').item.json.telefono }}",
-            "fecha_creacion": "={{ new Date($('Edit Fields5').item.json.fechaCreacion * 1000).toISOString().replace('T',' ').substring(0,19) }}",
-            "nc_order": 0,
-            "status_id": "={{ $('Edit Fields5').item.json.statusID }}",
-            "id_kommo": "={{ $('Edit Fields5').item.json.idKommo }}",
-            "origen": "={{ $('Edit Fields5').item.json.origen }}",
-            "etapa": "={{ $('Edit Fields6').item.json.etapa }}",
-            "fecha1": "={{ $('Edit Fields5').item.json.fecha1 }}",
-            "fecha2": "={{ $('Edit Fields5').item.json.fecha2 }}",
-            "caso_especial": "={{ $json.caso_especial }}",
-            "fecha_dia": "={{ $json.fecha_dia }}",
-            "fecha_mes": "={{ $json.fecha_mes }}",
-            "fecha_semana": "={{ $json.fecha_semana }}",
-            "es_nuevo": "={{ $json.es_nuevo }}",
-            "tipo_cliente": "={{ $json.tipo_cliente }}"
-          },
-          "matchingColumns": [
-            "id"
-          ],
-          "schema": [
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "created_at",
-              "displayName": "created_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "updated_at",
-              "displayName": "updated_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "created_by",
-              "displayName": "created_by",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "updated_by",
-              "displayName": "updated_by",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "nc_order",
-              "displayName": "nc_order",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "nombre",
-              "displayName": "nombre",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "telefono",
-              "displayName": "telefono",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "fecha_creacion",
-              "displayName": "fecha_creacion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "status_id",
-              "displayName": "status_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "id_kommo",
-              "displayName": "id_kommo",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "origen",
-              "displayName": "origen",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "etapa",
-              "displayName": "etapa",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "fecha1",
-              "displayName": "fecha1",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "fecha2",
-              "displayName": "fecha2",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "dio_horario",
-              "displayName": "dio_horario",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "agendo_llamada",
-              "displayName": "agendo_llamada",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "realizo_llamada",
-              "displayName": "realizo_llamada",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "fecha_dia",
-              "displayName": "fecha_dia",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "fecha_semana",
-              "displayName": "fecha_semana",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "fecha_mes",
-              "displayName": "fecha_mes",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "caso_especial",
-              "displayName": "caso_especial",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "tipo_cliente",
-              "displayName": "tipo_cliente",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": false,
-              "removed": false
-            },
-            {
-              "id": "es_nuevo",
-              "displayName": "es_nuevo",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": false,
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        1488,
-        96
-      ],
-      "id": "e2f9cd0e-cbdb-45af-9650-8c048784ea46",
-      "name": "Insert or update rows in a table2",
-      "alwaysOutputData": true,
-      "credentials": {
-        "postgres": {
-          "id": "fuKiWlAN9ojbRM9W",
-          "name": "Postgres account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "url": "https://propertamibotcom.kommo.com/api/v4/leads",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "oAuth2Api",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "with",
-              "value": "contacts"
-            },
-            {
-              "name": "filter[created_at][from]",
-              "value": "1756702800"
-            },
-            {
-              "name": "filter[created_at][to]",
-              "value": "={{ Math.floor(new Date(new Date($now).setHours(0,0,0,0) + 24*60*60*1000).getTime() / 1000) }}"
-            },
-            {
-              "name": "filter[pipeline_id][]",
-              "value": "9165176"
-            },
-            {
-              "name": "limit",
-              "value": "250"
-            },
-            {
-              "name": "page",
-              "value": "1"
-            }
-          ]
-        },
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "accept",
-              "value": "application/json"
-            }
-          ]
-        },
-        "options": {
-          "response": {
-            "response": {
-              "responseFormat": "json"
-            }
-          },
-          "pagination": {
-            "pagination": {
-              "parameters": {
-                "parameters": [
-                  {
-                    "name": "page",
-                    "value": "={{ $pageCount + 1 }}"
-                  }
-                ]
-              },
-              "paginationCompleteWhen": "other",
-              "completeExpression": "={{ !$response.body?._links?.next?.href }}",
-              "limitPagesFetched": true,
-              "maxRequests": 10
-            }
-          }
-        }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        -976,
-        160
-      ],
-      "id": "bb4b01a9-b4e4-4a90-a5c2-de1edf1a5d2a",
-      "name": "HTTP Request5",
-      "credentials": {
-        "oAuth2Api": {
-          "id": "CUkAxEZkWpxNLUY2",
-          "name": "Proper"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "5e1bb824-6e86-4bd3-9268-334c0aa98eb5",
-              "name": "dio_horario",
-              "value": "={{ ($('Edit Fields5').item.json.fecha1?.trim() || $('Edit Fields5').item.json.fecha2?.trim()) ? 1 : 0 }}",
-              "type": "string"
-            },
-            {
-              "id": "bd372d99-89ae-4496-bdbf-314005ef08e0",
-              "name": "agendo_visita",
-              "value": "={{ $('Execute a SQL query3').item.json.existe_en_visitas ? 1 : 0 }}",
-              "type": "boolean"
-            },
-            {
-              "id": "4f38fa84-0d64-4c5c-b21d-3dc7f6537c70",
-              "name": "fecha_dia",
-              "value": "={{ new Date($('Edit Fields5').item.json.fechaCreacion * 1000).toISOString().slice(0, 10) }}",
-              "type": "string"
-            },
-            {
-              "id": "2384ba2c-ab71-4a04-a800-2758c608a5c9",
-              "name": "fecha_mes",
-              "value": "={{ new Date($('Edit Fields5').item.json.fechaCreacion * 1000).toISOString().split('T')[0].slice(0,7) + \"-01\" }}",
-              "type": "string"
-            },
-            {
-              "id": "49900d16-c092-4124-99c9-45e066f7dcdb",
-              "name": "caso_especial",
-              "value": "={{ $('Edit Fields5').item.json.statusID === \"92821236\" ? 1 : 0 }}",
-              "type": "string"
-            },
-            {
-              "id": "297a8f5c-4972-4930-a9cd-71f9c66783d3",
-              "name": "fecha_semana",
-              "value": "={{\n  (() => {\n    const d = new Date($('Edit Fields5').item.json.fechaCreacion * 1000);\n    const day = d.getDay(); // domingo=0, lunes=1, ..., sábado=6\n    const diff = (day === 0 ? -6 : 1) - day; // retroceder hasta lunes\n    d.setDate(d.getDate() + diff);\n    d.setHours(0, 0, 0, 0);\n    return d.toISOString().split('T')[0]; // YYYY-MM-DD\n  })()\n}}",
-              "type": "string"
-            },
-            {
-              "id": "357bb785-faae-4baf-970b-bb883d9b668d",
-              "name": "tipo_cliente",
-              "value": "={{   (     ($('Split Out2').item.json.custom_fields_values || [])       .find(x => x.field_name === 'n8n - TipoCliente')       ?.values[0].value   ) || '' }}",
-              "type": "string"
-            },
-            {
-              "id": "610993e3-e67e-4189-8132-fdb92d517f0c",
-              "name": "es_nuevo",
-              "value": "={{   (     (       ($('Split Out2').item.json.custom_fields_values || [])         .find(x => x.field_name === 'n8n - TipoCliente')         ?.values[0].value     ) === 'NUEVO'   ) ? 1 : 0 }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1264,
-        16
-      ],
-      "id": "e8e58b78-1358-4cd9-9c6a-eb31f0bcda46",
-      "name": "Edit Fields7"
-    },
-    {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "WITH num AS (\n  -- Normaliza el número de entrada: solo dígitos y últimos 9\n  SELECT RIGHT(REGEXP_REPLACE($1, '\\D', '', 'g'), 9) AS n\n),\nvis AS (\n  -- Normaliza todos los celulares de la tabla\n  SELECT\n    v.*,\n    RIGHT(REGEXP_REPLACE(COALESCE(v.celular, ''), '\\D', '', 'g'), 9) AS cel9\n  FROM RENTAS_CRM.VISITAS v\n),\nhits AS (\n  -- Coincidencias por celular normalizado (evita vacíos)\n  SELECT 1\n  FROM vis\n  JOIN num ON vis.cel9 = num.n\n  WHERE vis.cel9 <> ''\n),\nhits_con_inicio AS (\n  SELECT 1\n  FROM vis\n  JOIN num ON vis.cel9 = num.n\n  WHERE vis.cel9 <> '' AND vis.inicio IS NOT NULL\n)\nSELECT\n  EXISTS(SELECT 1 FROM hits)           AS existe_en_visitas,\n  EXISTS(SELECT 1 FROM hits_con_inicio) AS tiene_inicio;",
-        "options": {
-          "queryReplacement": "={{ $('Edit Fields5').item.json.telefono }}"
-        }
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        1040,
-        16
-      ],
-      "id": "9c347da1-a0a2-4986-a2c2-12bf4515fece",
-      "name": "Execute a SQL query3",
-      "alwaysOutputData": true,
-      "credentials": {
-        "postgres": {
-          "id": "fuKiWlAN9ojbRM9W",
-          "name": "Postgres account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": false,
-            "leftValue": "",
-            "typeValidation": "loose",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "add02cca-2660-4c19-a042-f1a71ff7e63b",
-              "leftValue": "={{ $('Get list of contacts2').item.json._embedded.contacts[0].custom_fields_values\n     .find(f => f.field_name === 'Phone')?.values?.[0]?.value || '' }}",
-              "rightValue": "",
-              "operator": {
-                "type": "string",
-                "operation": "notEmpty",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "looseTypeValidation": true,
-        "options": {
-          "ignoreCase": true
-        }
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        592,
-        16
-      ],
-      "id": "fd180090-52e5-428a-afd3-34ee8ddba466",
-      "name": "If"
-    },
-    {
-      "parameters": {
         "conditions": {
           "options": {
             "caseSensitive": false,
@@ -2065,7 +1220,9 @@
         384
       ],
       "id": "7a44fce1-167a-41ae-a6cf-a59c5aa45a6f",
-      "name": "If1"
+      "name": "If1",
+      "alwaysOutputData": true,
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -2099,7 +1256,8 @@
         384
       ],
       "id": "dc7f8aea-a5a8-4c3e-abf4-bf419d62048b",
-      "name": "Code1"
+      "name": "Code1",
+      "alwaysOutputData": true
     },
     {
       "parameters": {
@@ -2150,7 +1308,7 @@
             {
               "id": "feb47888-9976-4733-9b03-bfc57fb9ac52",
               "name": "cod_propiedad",
-              "value": "={{ $json.cod_propiedad }}",
+              "value": "={{ ($json.cod_propiedad ?? '').toString().slice(0, 10) }}",
               "type": "string"
             },
             {
@@ -2368,7 +1526,8 @@
         384
       ],
       "id": "3b36cad6-1a8a-4487-934e-d16a8c471739",
-      "name": "Edit Fields9"
+      "name": "Edit Fields9",
+      "alwaysOutputData": true
     },
     {
       "parameters": {
@@ -3818,7 +2977,7 @@
   "settings": {
     "executionOrder": "v1",
     "callerPolicy": "workflowsFromSameOwner",
-    "executionTimeout": 900
+    "executionTimeout": 2700
   },
   "shared": [
     {
@@ -3849,6 +3008,6 @@
     }
   ],
   "triggerCount": 3,
-  "updatedAt": "2026-01-17T16:16:44.503Z",
-  "versionId": "2e5dc2d4-4ab4-4b18-ab8e-579571f0b66d"
+  "updatedAt": "2026-01-19T15:45:01.368Z",
+  "versionId": "3feb9439-54d6-42e9-b025-081120ed4efc"
 }
