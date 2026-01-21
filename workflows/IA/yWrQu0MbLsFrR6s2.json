@@ -126,17 +126,6 @@
         ]
       ]
     },
-    "Edit Fields9": {
-      "main": [
-        [
-          {
-            "node": "Insert or update rows in a table",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "HTTP Request Statuses": {
       "main": [
         [
@@ -417,11 +406,11 @@
         ]
       ]
     },
-    "When clicking ‘Execute workflow’": {
+    "Edit Fields9": {
       "main": [
         [
           {
-            "node": "Execute a SQL query7",
+            "node": "Insert or update rows in a table",
             "type": "main",
             "index": 0
           }
@@ -445,8 +434,8 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        -304,
-        528
+        -448,
+        560
       ],
       "id": "016e8895-6f3a-44cb-98e5-db27dd41fdf7",
       "name": "Split Out1"
@@ -489,8 +478,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        144,
-        528
+        0,
+        560
       ],
       "id": "73bb32d5-058b-41b9-ab8a-34a2fee7a7ff",
       "name": "Filter"
@@ -512,8 +501,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        592,
-        384
+        448,
+        400
       ],
       "id": "2c8ecad3-06b7-4f1b-914d-1142cbfd32cc",
       "name": "Get list of contacts",
@@ -532,8 +521,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        368,
-        528
+        224,
+        560
       ],
       "id": "f270d9f4-cbda-44c1-a100-6f3e18aa05ba",
       "name": "Loop Over Items"
@@ -555,8 +544,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        816,
-        384
+        672,
+        400
       ],
       "id": "7a80d4b8-60dc-4832-a1de-57982043ee9c",
       "name": "Edit Fields1",
@@ -1071,8 +1060,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1712,
-        464
+        1568,
+        480
       ],
       "id": "1a8576e0-7c93-404f-b24b-c2333a33c8fb",
       "name": "Insert or update rows in a table",
@@ -1097,8 +1086,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -976,
-        528
+        -1120,
+        560
       ],
       "id": "1182f8b0-7f44-4b99-bbfa-03684c311629",
       "name": "Schedule Trigger"
@@ -1173,8 +1162,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -528,
-        528
+        -672,
+        560
       ],
       "id": "cbf10df5-5cd6-4377-8603-473438f969c5",
       "name": "HTTP Request2",
@@ -1216,7 +1205,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1040,
+        896,
         384
       ],
       "id": "7a44fce1-167a-41ae-a6cf-a59c5aa45a6f",
@@ -1226,307 +1215,16 @@
     },
     {
       "parameters": {
-        "operation": "executeQuery",
-        "query": "-- Agregar campos de categorización\nALTER TABLE crm.bot_leads_inversiones \nADD COLUMN IF NOT EXISTS categoria_interes VARCHAR(50),\nADD COLUMN IF NOT EXISTS grupo_etapa VARCHAR(50),\nADD COLUMN IF NOT EXISTS orden_etapa INTEGER DEFAULT 0;\n\n-- Índices para reportes rápidos\nCREATE INDEX IF NOT EXISTS idx_inv_categoria_interes ON crm.bot_leads_inversiones(categoria_interes);\nCREATE INDEX IF NOT EXISTS idx_inv_grupo_etapa ON crm.bot_leads_inversiones(grupo_etapa);\nCREATE INDEX IF NOT EXISTS idx_inv_fecha_dia ON crm.bot_leads_inversiones(fecha_dia);",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        -832,
-        1888
-      ],
-      "id": "4866244e-5e41-4bce-9c38-cf59173e2f97",
-      "name": "Execute a SQL query7",
-      "credentials": {
-        "postgres": {
-          "id": "fuKiWlAN9ojbRM9W",
-          "name": "Postgres account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "jsCode": "// ========================================\n// TRANSFORMACIÓN DE LEAD KOMMO → POSTGRESQL\n// ========================================\n\n// Obtener datos de los nodos correctos de TU flujo\nconst lead = $('Split Out1').item.json;\nconst statuses = $('HTTP Request Statuses').first().json._embedded?.statuses || [];\nconst contactData = $('Get list of contacts').first().json._embedded?.contacts?.[0] || {};\n\n// Función helper para obtener custom field del LEAD\nfunction getCF(fieldName) {\n  const cf = (lead.custom_fields_values || []).find(x => x.field_name === fieldName);\n  return (cf && cf.values && cf.values[0]) ? cf.values[0].value : null;\n}\n\n// Función helper para campos booleanos (toggle/checkbox)\nfunction getCFBool(fieldName) {\n  const val = getCF(fieldName);\n  return (val === true || val === 1 || val === '1') ? 1 : 0;\n}\n\n// Función para obtener teléfono del contacto\nfunction getPhone() {\n  const phoneField = (contactData.custom_fields_values || []).find(f => f.field_name === 'Phone');\n  return phoneField?.values?.[0]?.value || null;\n}\n\n// Función para obtener nombre del status\nfunction getStatusName(statusId) {\n  const hit = statuses.find(s => String(s.id) === String(statusId));\n  return hit?.name || '';\n}\n\n// Función para parsear fecha Unix a ISO\nfunction unixToISO(unix) {\n  if (!unix) return null;\n  return new Date(unix * 1000).toISOString().replace('T', ' ').substring(0, 19);\n}\n\n// Función para calcular fecha del lunes de la semana\nfunction getMonday(date) {\n  const d = new Date(date);\n  const day = d.getDay();\n  const diff = (day === 0 ? -6 : 1) - day;\n  d.setDate(d.getDate() + diff);\n  return d.toISOString().split('T')[0];\n}\n\n// ========================================\n// EXTRACCIÓN DE CAMPOS\n// ========================================\n\n// Códigos de propiedad\nconst codInmueble = getCF('codigoInmueble');\nconst codPropiedad = getCF('n8n - CODPROPIEDAD');\n\n// Extraer el campo lógico\nconst codPropiedadLogico = getCF('n8n - codpropiedad logico');\n\n// Lógica de unificación:\n// Prioridad: 1. codInmueble, 2. codPropiedad, 3. codPropiedadLogico\nconst codUnificadoRaw = codInmueble || codPropiedad || codPropiedadLogico || null;\n\n// Normalizar MODO\nlet codUnificado = codUnificadoRaw;\nif (codUnificadoRaw && codUnificadoRaw.toString().toUpperCase().includes('MODO')) {\n  codUnificado = 'MODO';\n}\n\n// ========================================\n// LÓGICA DE ORIGEN - NUEVA IMPLEMENTACIÓN\n// ========================================\n\n// Extraer los campos individuales\nconst origenForm = getCF('n8n - origen - form');  // NUEVO campo\nconst origenOriginal = getCF('n8n - Origen');\nconst linkUrbania = getCF('LinkUrbania');\n\n// Lógica de priorización para origen_unificado:\n// 1. Si existe \"n8n - origen - form\", usar ese valor\n// 2. Si no, y existe LinkUrbania, usar 'URBANIA'\n// 3. Si no, usar \"n8n - Origen\"\n// 4. Por defecto: 'SIN_ORIGEN'\nlet origenUnificado;\nif (origenForm) {\n  origenUnificado = origenForm;\n} else if (linkUrbania) {\n  origenUnificado = 'URBANIA';\n} else {\n  origenUnificado = origenOriginal || 'SIN_ORIGEN';\n}\n\n// ========================================\n// CONTINUACIÓN - OTROS CAMPOS\n// ========================================\n\n// Fechas de horarios\nconst fecha1 = getCF('n8n - fecha1');\nconst fecha2 = getCF('n8n - fecha2');\nconst fechaModo = getCF('n8n - fechaMODO');\nconst dioHorario = (fecha1 || fecha2 || fechaModo) ? 1 : 0;\n\n// Fecha de creación y derivadas\nconst fechaCreacionUnix = lead.created_at;\nconst fechaCreacion = unixToISO(fechaCreacionUnix);\nconst fechaDia = fechaCreacion ? fechaCreacion.substring(0, 10) : null;\nconst fechaMes = fechaDia ? fechaDia.substring(0, 7) + '-01' : null;\nconst fechaSemana = fechaCreacionUnix ? getMonday(new Date(fechaCreacionUnix * 1000)) : null;\n\n// Tipo cliente\nconst tipoCliente = getCF('n8n - TipoCliente');\nconst esNuevo = (tipoCliente === 'NUEVO') ? 1 : 0;\n\n// Caso especial: por campo O por status_id\nconst casoEspecialCampo = getCFBool('n8n - supp - caso_especial');\nconst casoEspecialStatus = (lead.status_id === 90801084) ? 1 : 0;\nconst casoEspecial = (casoEspecialCampo || casoEspecialStatus) ? 1 : 0;\n\n// ========================================\n// OBJETO FINAL\n// ========================================\n\nreturn {\n  json: {\n    // Identificadores\n    id: lead.id,\n    \n    // Datos básicos\n    nombre: contactData.name || null,\n    telefono: getPhone(),\n    fecha_creacion: fechaCreacion,\n    status_id: lead.status_id,\n    etapa: getStatusName(lead.status_id),\n    \n    // Propiedad\n    cod_inmueble: codInmueble,\n    cod_propiedad: codPropiedad,\n    cod_propiedad_logico: codPropiedadLogico,\n    cod_propiedad_unificado: codUnificado,\n    inmueble_identificado: codUnificadoRaw ? 1 : 0,\n    link_urbania: linkUrbania,\n    \n    // Origen - CAMPOS INDIVIDUALES Y UNIFICADO\n    origen_form: origenForm,           // Campo individual del formulario\n    origen_original: origenOriginal,    // Campo original de n8n - Origen\n    origen: origenUnificado,            // Campo unificado con la lógica de priorización\n    \n    // Bot - Respuesta\n    bot_respondio: getCFBool('rentas_mensajeia_salio'),\n    bot_apagado_manual: getCFBool('rentas_bot_apagado_manual'),\n    bot_fecha_ult_msg: getCF('bot - fecha_ult_msg'),\n    \n    // Bot - Horarios\n    dio_horario: dioHorario,\n    genero_horario: getCFBool('rentas_ia_generohorario'),\n    horario_registrado: getCFBool('rentas_ia_generohorario_registrado'),\n    horario_notificado: getCFBool('rentas_ia_generohorario_notificado'),\n    fecha1: fecha1,\n    fecha2: fecha2,\n    fecha_modo: fechaModo,\n    \n    // Bot - Errores\n    tuvo_error: getCFBool('n8n - supp - es_error'),\n    detalle_error: getCF('n8n - supp - detalle_es_error'),\n    error_marcado: getCFBool('rentas_error_marcado'),\n    estado_correccion: getCF('n8n - corregido') || 'N/A',\n    detalle_correccion: getCF('n8n - detalle corregido'),\n    \n    // Bot - Caso especial\n    caso_especial: casoEspecial,\n    detalle_caso_especial: getCF('n8n - supp - detalle_caso_especial'),\n    \n    // Bot - Seguimiento\n    seg1: getCF('n8n - supp - seg1'),\n    seg2: getCF('n8n - supp - seg2'),\n    animo: getCF('n8n - animo') || getCF('n8n - supp - animo'),\n    tiene_solucion: getCFBool('n8n - supp - tiene_solucion'),\n    cliente_identificado: getCFBool('n8n - supp - clienteIdentificado'),\n    \n    // Cliente\n    tipo_cliente: tipoCliente,\n    es_nuevo: esNuevo,\n    \n    // Fechas calculadas\n    fecha_dia: fechaDia,\n    fecha_semana: fechaSemana,\n    fecha_mes: fechaMes\n  }\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1264,
-        384
+        1120,
+        400
       ],
       "id": "dc7f8aea-a5a8-4c3e-abf4-bf419d62048b",
       "name": "Code1",
-      "alwaysOutputData": true
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "684619f8-7dfd-4c90-b64b-8d2a55066558",
-              "name": "id",
-              "value": "={{ $json.id }}",
-              "type": "string"
-            },
-            {
-              "id": "4e33948c-ad41-4f01-931d-6f64e8d411e4",
-              "name": "nombre",
-              "value": "={{ $json.nombre }}",
-              "type": "string"
-            },
-            {
-              "id": "0ac7a1c7-d9c7-4632-a656-7169d83288eb",
-              "name": "telefono",
-              "value": "={{ $json.telefono }}",
-              "type": "string"
-            },
-            {
-              "id": "b0d63993-f0cb-4d3b-9dbd-b31cf93d5e5a",
-              "name": "fecha_creacion",
-              "value": "={{ $json.fecha_creacion }}",
-              "type": "string"
-            },
-            {
-              "id": "1c107fab-519a-4bd3-afbc-7a1f7429e56e",
-              "name": "status_id",
-              "value": "={{ $json.status_id }}",
-              "type": "string"
-            },
-            {
-              "id": "3ce235bd-c42b-49d4-851f-1b3b0e77f251",
-              "name": "etapa",
-              "value": "={{ $json.etapa }}",
-              "type": "string"
-            },
-            {
-              "id": "d57c59f8-feea-4dba-9a8f-f629bed113a1",
-              "name": "cod_inmueble",
-              "value": "={{ $json.cod_inmueble }}",
-              "type": "string"
-            },
-            {
-              "id": "feb47888-9976-4733-9b03-bfc57fb9ac52",
-              "name": "cod_propiedad",
-              "value": "={{ ($json.cod_propiedad ?? '').toString().slice(0, 10) }}",
-              "type": "string"
-            },
-            {
-              "id": "ad69a59b-e0ab-4c10-a47e-01df19f53c40",
-              "name": "cod_propiedad_unificado",
-              "value": "={{ $json.cod_propiedad_unificado }}",
-              "type": "string"
-            },
-            {
-              "id": "cdd9e426-b568-44d3-8f96-8d3ddd7ce34d",
-              "name": "inmueble_identificado",
-              "value": "={{ $json.inmueble_identificado }}",
-              "type": "string"
-            },
-            {
-              "id": "64fcbf61-bf6c-48f2-9a4a-df5d3bb34c2b",
-              "name": "link_urbania",
-              "value": "={{ $json.link_urbania }}",
-              "type": "string"
-            },
-            {
-              "id": "b78ced0a-e357-4f1d-9c12-dccd2d42c163",
-              "name": "origen",
-              "value": "={{ $json.origen }}",
-              "type": "string"
-            },
-            {
-              "id": "ee16cba7-0372-4e3e-b55b-5f6d447b69a2",
-              "name": "bot_respondio",
-              "value": "={{ $json.bot_respondio }}",
-              "type": "string"
-            },
-            {
-              "id": "12ff9ecf-4d4f-454d-9839-4ef27ae089a2",
-              "name": "bot_apagado_manual",
-              "value": "={{ $json.bot_apagado_manual }}",
-              "type": "string"
-            },
-            {
-              "id": "ae5a9ffb-4fbf-4c92-938c-313af3cb9f35",
-              "name": "bot_fecha_ult_msg",
-              "value": "={{ $json.bot_fecha_ult_msg }}",
-              "type": "string"
-            },
-            {
-              "id": "386d5051-f074-4442-9d01-73df73b6da6b",
-              "name": "dio_horario",
-              "value": "={{ $json.dio_horario }}",
-              "type": "string"
-            },
-            {
-              "id": "455db161-ae8b-4634-8d35-3bc10e0724b3",
-              "name": "genero_horario",
-              "value": "={{ $json.genero_horario }}",
-              "type": "string"
-            },
-            {
-              "id": "20059576-aa05-4651-b2aa-dd9fdd3b546d",
-              "name": "horario_registrado",
-              "value": "={{ $json.horario_registrado }}",
-              "type": "string"
-            },
-            {
-              "id": "ec6c3bd4-7dfa-453f-a0be-83a8abb69dd0",
-              "name": "horario_notificado",
-              "value": "={{ $json.horario_notificado }}",
-              "type": "string"
-            },
-            {
-              "id": "cc29702e-b4f3-4ca8-bf0b-6f88febc223b",
-              "name": "fecha1",
-              "value": "={{ $json.fecha1 }}",
-              "type": "string"
-            },
-            {
-              "id": "7e4b45b7-6726-4854-b3a0-70e67fadc2e0",
-              "name": "fecha2",
-              "value": "={{ $json.fecha2 }}",
-              "type": "string"
-            },
-            {
-              "id": "d2cb8fae-5b1c-4072-bd96-1124a59019bf",
-              "name": "fecha_modo",
-              "value": "={{ $json.fecha_modo }}",
-              "type": "string"
-            },
-            {
-              "id": "ba9056da-5a60-4fdf-a66e-888f6c766274",
-              "name": "tuvo_error",
-              "value": "={{ $json.tuvo_error }}",
-              "type": "string"
-            },
-            {
-              "id": "384adeb4-b38d-4bf4-84d0-1fbd43b2885f",
-              "name": "detalle_error",
-              "value": "={{ $json.detalle_error }}",
-              "type": "string"
-            },
-            {
-              "id": "931e51f9-4825-4291-8eeb-bb24350b0d14",
-              "name": "error_marcado",
-              "value": "={{ $json.error_marcado }}",
-              "type": "string"
-            },
-            {
-              "id": "4f25db73-b887-437b-9ece-d99898f6f7a7",
-              "name": "estado_correccion",
-              "value": "={{ $json.estado_correccion }}",
-              "type": "string"
-            },
-            {
-              "id": "45690012-e9ff-453c-8b33-6f57788827cf",
-              "name": "detalle_correccion",
-              "value": "={{ $json.detalle_correccion }}",
-              "type": "string"
-            },
-            {
-              "id": "a524d3ec-be12-4d9f-b763-f363a7a6885e",
-              "name": "caso_especial",
-              "value": "={{ $json.caso_especial }}",
-              "type": "string"
-            },
-            {
-              "id": "afb448ce-0e99-4009-918a-49698868011f",
-              "name": "detalle_caso_especial",
-              "value": "={{ $json.detalle_caso_especial }}",
-              "type": "string"
-            },
-            {
-              "id": "3c44a050-f13d-4ac7-9d4e-e71aa1e49e41",
-              "name": "seg1",
-              "value": "={{ $json.seg1 }}",
-              "type": "string"
-            },
-            {
-              "id": "b3c4cde2-c5d9-41a8-9c99-3ccc94c57a14",
-              "name": "seg2",
-              "value": "={{ $json.seg2 }}",
-              "type": "string"
-            },
-            {
-              "id": "2837259c-43dc-4d55-8087-745f3c3b616c",
-              "name": "animo",
-              "value": "={{ $json.animo }}",
-              "type": "string"
-            },
-            {
-              "id": "04d948d1-1bb5-4e7a-a0f4-30f9c51fe3e3",
-              "name": "tiene_solucion",
-              "value": "={{ $json.tiene_solucion }}",
-              "type": "string"
-            },
-            {
-              "id": "dca48ca0-d1b8-48b3-9b05-08c2956587f2",
-              "name": "cliente_identificado",
-              "value": "={{ $json.cliente_identificado }}",
-              "type": "string"
-            },
-            {
-              "id": "9afbb798-a43d-4e71-842c-eb444621df0a",
-              "name": "tipo_cliente",
-              "value": "={{ $json.tipo_cliente }}",
-              "type": "string"
-            },
-            {
-              "id": "0f3fe691-524d-4716-891b-886985396ef7",
-              "name": "es_nuevo",
-              "value": "={{ $json.es_nuevo }}",
-              "type": "string"
-            },
-            {
-              "id": "8f796153-62cc-4c5e-9bd6-2918542311b6",
-              "name": "fecha_dia",
-              "value": "={{ $json.fecha_dia }}",
-              "type": "string"
-            },
-            {
-              "id": "376dface-2d59-4cc5-ab61-9e5f937f8b7e",
-              "name": "fecha_semana",
-              "value": "={{ $json.fecha_semana }}",
-              "type": "string"
-            },
-            {
-              "id": "96e06c2d-1b5f-4ae4-b108-8eaf1fda30e9",
-              "name": "fecha_mes",
-              "value": "={{ $json.fecha_mes }}",
-              "type": "string"
-            },
-            {
-              "id": "de60abb9-33fa-4c32-b4f8-da51add27a3e",
-              "name": "cod_propiedad_logico",
-              "value": "={{ $json.cod_propiedad_logico }}",
-              "type": "string"
-            },
-            {
-              "id": "8f2f73f2-8d0b-4ea2-8aa9-6f9b479f5365",
-              "name": "origen_form",
-              "value": "={{ $json.origen_form }}",
-              "type": "string"
-            },
-            {
-              "id": "38ae88b4-13ca-400f-b9a4-717c60ff746f",
-              "name": "origen_original",
-              "value": "={{ $json.origen_original }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1488,
-        384
-      ],
-      "id": "3b36cad6-1a8a-4487-934e-d16a8c471739",
-      "name": "Edit Fields9",
       "alwaysOutputData": true
     },
     {
@@ -1545,8 +1243,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -752,
-        528
+        -896,
+        560
       ],
       "id": "a9a909b6-c353-486d-a2fd-bd20ba2c4eae",
       "name": "HTTP Request Statuses",
@@ -1572,8 +1270,8 @@
       "type": "n8n-nodes-base.sort",
       "typeVersion": 1,
       "position": [
-        -80,
-        528
+        -224,
+        560
       ],
       "id": "89389419-fc80-4d8a-b790-e878da0d8c20",
       "name": "Sort"
@@ -1586,8 +1284,8 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        -304,
-        896
+        -448,
+        928
       ],
       "id": "34bad1a3-6360-4503-a0c5-3e3589edbb59",
       "name": "Split Out"
@@ -1607,8 +1305,8 @@
       "type": "n8n-nodes-base.sort",
       "typeVersion": 1,
       "position": [
-        -80,
-        896
+        -224,
+        928
       ],
       "id": "45026a6e-25b0-44da-97ed-8c5a6099b516",
       "name": "Sort by Date"
@@ -1651,8 +1349,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        144,
-        896
+        0,
+        928
       ],
       "id": "6f166b73-a10b-4063-afd3-607164074b17",
       "name": "Filter DIEGO"
@@ -1674,8 +1372,8 @@
       "type": "n8n-nodes-kommo.kommo",
       "typeVersion": 1,
       "position": [
-        592,
-        752
+        448,
+        784
       ],
       "id": "3da811d4-8a3b-43b5-b15b-da810c8af03d",
       "name": "Get Contact",
@@ -1717,8 +1415,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        816,
-        752
+        672,
+        784
       ],
       "id": "849d617e-4f44-4ee3-8861-4a3c6b709ca5",
       "name": "If Phone Exists"
@@ -1730,8 +1428,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1040,
-        752
+        896,
+        784
       ],
       "id": "45fa1988-6c5f-4666-94ff-2d4beaef24d5",
       "name": "Code Diego"
@@ -1998,8 +1696,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1264,
-        832
+        1120,
+        856
       ],
       "id": "a7d2804f-04bc-4b30-815b-38f3c56ef3d5",
       "name": "Postgres Upsert",
@@ -2024,8 +1722,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -976,
-        896
+        -1120,
+        928
       ],
       "id": "7f6700b5-4c55-4a08-826f-0de45d58563b",
       "name": "Schedule Trigger1"
@@ -2046,8 +1744,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -752,
-        896
+        -896,
+        928
       ],
       "id": "5f159daa-e140-4357-8335-491cdd52caa7",
       "name": "HTTP Request Statuses1",
@@ -2065,8 +1763,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        368,
-        896
+        224,
+        928
       ],
       "id": "a31054ae-2457-49f5-98a4-79300ef2cb39",
       "name": "Loop Over Items1"
@@ -2141,8 +1839,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -528,
-        896
+        -672,
+        928
       ],
       "id": "69e0d06a-9434-49f7-81e3-c8c47d18241a",
       "name": "HTTP Request",
@@ -2224,7 +1922,7 @@
       "typeVersion": 4.2,
       "position": [
         -672,
-        1392
+        1296
       ],
       "id": "fc028897-7805-4fc1-b43a-959996a24a17",
       "name": "HTTP Request Leads",
@@ -2274,7 +1972,7 @@
       "typeVersion": 2.2,
       "position": [
         0,
-        1392
+        1296
       ],
       "id": "c8868188-59cc-49a2-83b3-5493b1c4e717",
       "name": "Filter INVERSIONES_IA"
@@ -2287,7 +1985,7 @@
       "typeVersion": 2,
       "position": [
         896,
-        1248
+        1152
       ],
       "id": "9f94c99a-068b-40b4-8691-7220bccb5bc5",
       "name": "Code Inversiones"
@@ -2306,7 +2004,7 @@
       "typeVersion": 1.2,
       "position": [
         -1120,
-        1392
+        1296
       ],
       "id": "32acfc82-4ec6-47ad-91d6-7f9560d7810d",
       "name": "Schedule Trigger2"
@@ -2328,7 +2026,7 @@
       "typeVersion": 4.2,
       "position": [
         -896,
-        1392
+        1296
       ],
       "id": "0d1db9b9-c739-4cf9-a817-c260a202e374",
       "name": "HTTP Request Statuses2",
@@ -2348,7 +2046,7 @@
       "typeVersion": 1,
       "position": [
         -448,
-        1392
+        1296
       ],
       "id": "1ee8f0aa-27ce-4f13-831e-2029c649e9d9",
       "name": "Split Out3"
@@ -2369,7 +2067,7 @@
       "typeVersion": 1,
       "position": [
         -224,
-        1392
+        1296
       ],
       "id": "56bbfc98-cb24-4ca2-a6b0-19f70c952060",
       "name": "Sort by Date1"
@@ -2382,7 +2080,7 @@
       "typeVersion": 3,
       "position": [
         224,
-        1392
+        1296
       ],
       "id": "2a32cefe-038c-498f-9f91-b3e99a229061",
       "name": "Loop Over Items3"
@@ -2405,7 +2103,7 @@
       "typeVersion": 1,
       "position": [
         448,
-        1248
+        1152
       ],
       "id": "f242d7ea-e666-4a36-9136-4646cf05f8ec",
       "name": "Get Contact1",
@@ -2448,7 +2146,7 @@
       "typeVersion": 2.2,
       "position": [
         672,
-        1248
+        1152
       ],
       "id": "20cbc50f-ce2e-4901-8255-52b9c50cfc9c",
       "name": "If Phone Exists1"
@@ -2949,7 +2647,7 @@
       "typeVersion": 2.6,
       "position": [
         1120,
-        1328
+        1224
       ],
       "id": "66707c8b-0c09-4ae0-b9c0-096370afea31",
       "name": "Postgres Upsert1",
@@ -2962,15 +2660,274 @@
       }
     },
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "684619f8-7dfd-4c90-b64b-8d2a55066558",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "4e33948c-ad41-4f01-931d-6f64e8d411e4",
+              "name": "nombre",
+              "value": "={{ $json.nombre }}",
+              "type": "string"
+            },
+            {
+              "id": "0ac7a1c7-d9c7-4632-a656-7169d83288eb",
+              "name": "telefono",
+              "value": "={{ $json.telefono }}",
+              "type": "string"
+            },
+            {
+              "id": "b0d63993-f0cb-4d3b-9dbd-b31cf93d5e5a",
+              "name": "fecha_creacion",
+              "value": "={{ $json.fecha_creacion }}",
+              "type": "string"
+            },
+            {
+              "id": "1c107fab-519a-4bd3-afbc-7a1f7429e56e",
+              "name": "status_id",
+              "value": "={{ $json.status_id }}",
+              "type": "string"
+            },
+            {
+              "id": "3ce235bd-c42b-49d4-851f-1b3b0e77f251",
+              "name": "etapa",
+              "value": "={{ $json.etapa }}",
+              "type": "string"
+            },
+            {
+              "id": "d57c59f8-feea-4dba-9a8f-f629bed113a1",
+              "name": "cod_inmueble",
+              "value": "={{ $json.cod_inmueble }}",
+              "type": "string"
+            },
+            {
+              "id": "feb47888-9976-4733-9b03-bfc57fb9ac52",
+              "name": "cod_propiedad",
+              "value": "={{ ($json.cod_propiedad ?? '').toString().slice(0, 10) }}",
+              "type": "string"
+            },
+            {
+              "id": "ad69a59b-e0ab-4c10-a47e-01df19f53c40",
+              "name": "cod_propiedad_unificado",
+              "value": "={{ $json.cod_propiedad_unificado }}",
+              "type": "string"
+            },
+            {
+              "id": "cdd9e426-b568-44d3-8f96-8d3ddd7ce34d",
+              "name": "inmueble_identificado",
+              "value": "={{ $json.inmueble_identificado }}",
+              "type": "string"
+            },
+            {
+              "id": "64fcbf61-bf6c-48f2-9a4a-df5d3bb34c2b",
+              "name": "link_urbania",
+              "value": "={{ $json.link_urbania }}",
+              "type": "string"
+            },
+            {
+              "id": "b78ced0a-e357-4f1d-9c12-dccd2d42c163",
+              "name": "origen",
+              "value": "={{ $json.origen }}",
+              "type": "string"
+            },
+            {
+              "id": "ee16cba7-0372-4e3e-b55b-5f6d447b69a2",
+              "name": "bot_respondio",
+              "value": "={{ $json.bot_respondio }}",
+              "type": "string"
+            },
+            {
+              "id": "12ff9ecf-4d4f-454d-9839-4ef27ae089a2",
+              "name": "bot_apagado_manual",
+              "value": "={{ $json.bot_apagado_manual }}",
+              "type": "string"
+            },
+            {
+              "id": "ae5a9ffb-4fbf-4c92-938c-313af3cb9f35",
+              "name": "bot_fecha_ult_msg",
+              "value": "={{ $json.bot_fecha_ult_msg }}",
+              "type": "string"
+            },
+            {
+              "id": "386d5051-f074-4442-9d01-73df73b6da6b",
+              "name": "dio_horario",
+              "value": "={{ $json.dio_horario }}",
+              "type": "string"
+            },
+            {
+              "id": "455db161-ae8b-4634-8d35-3bc10e0724b3",
+              "name": "genero_horario",
+              "value": "={{ $json.genero_horario }}",
+              "type": "string"
+            },
+            {
+              "id": "20059576-aa05-4651-b2aa-dd9fdd3b546d",
+              "name": "horario_registrado",
+              "value": "={{ $json.horario_registrado }}",
+              "type": "string"
+            },
+            {
+              "id": "ec6c3bd4-7dfa-453f-a0be-83a8abb69dd0",
+              "name": "horario_notificado",
+              "value": "={{ $json.horario_notificado }}",
+              "type": "string"
+            },
+            {
+              "id": "cc29702e-b4f3-4ca8-bf0b-6f88febc223b",
+              "name": "fecha1",
+              "value": "={{ $json.fecha1 }}",
+              "type": "string"
+            },
+            {
+              "id": "7e4b45b7-6726-4854-b3a0-70e67fadc2e0",
+              "name": "fecha2",
+              "value": "={{ $json.fecha2 }}",
+              "type": "string"
+            },
+            {
+              "id": "d2cb8fae-5b1c-4072-bd96-1124a59019bf",
+              "name": "fecha_modo",
+              "value": "={{ $json.fecha_modo }}",
+              "type": "string"
+            },
+            {
+              "id": "ba9056da-5a60-4fdf-a66e-888f6c766274",
+              "name": "tuvo_error",
+              "value": "={{ $json.tuvo_error }}",
+              "type": "string"
+            },
+            {
+              "id": "384adeb4-b38d-4bf4-84d0-1fbd43b2885f",
+              "name": "detalle_error",
+              "value": "={{ $json.detalle_error }}",
+              "type": "string"
+            },
+            {
+              "id": "931e51f9-4825-4291-8eeb-bb24350b0d14",
+              "name": "error_marcado",
+              "value": "={{ $json.error_marcado }}",
+              "type": "string"
+            },
+            {
+              "id": "4f25db73-b887-437b-9ece-d99898f6f7a7",
+              "name": "estado_correccion",
+              "value": "={{ $json.estado_correccion }}",
+              "type": "string"
+            },
+            {
+              "id": "45690012-e9ff-453c-8b33-6f57788827cf",
+              "name": "detalle_correccion",
+              "value": "={{ $json.detalle_correccion }}",
+              "type": "string"
+            },
+            {
+              "id": "a524d3ec-be12-4d9f-b763-f363a7a6885e",
+              "name": "caso_especial",
+              "value": "={{ $json.caso_especial }}",
+              "type": "string"
+            },
+            {
+              "id": "afb448ce-0e99-4009-918a-49698868011f",
+              "name": "detalle_caso_especial",
+              "value": "={{ $json.detalle_caso_especial }}",
+              "type": "string"
+            },
+            {
+              "id": "3c44a050-f13d-4ac7-9d4e-e71aa1e49e41",
+              "name": "seg1",
+              "value": "={{ $json.seg1 }}",
+              "type": "string"
+            },
+            {
+              "id": "b3c4cde2-c5d9-41a8-9c99-3ccc94c57a14",
+              "name": "seg2",
+              "value": "={{ $json.seg2 }}",
+              "type": "string"
+            },
+            {
+              "id": "2837259c-43dc-4d55-8087-745f3c3b616c",
+              "name": "animo",
+              "value": "={{ $json.animo }}",
+              "type": "string"
+            },
+            {
+              "id": "04d948d1-1bb5-4e7a-a0f4-30f9c51fe3e3",
+              "name": "tiene_solucion",
+              "value": "={{ $json.tiene_solucion }}",
+              "type": "string"
+            },
+            {
+              "id": "dca48ca0-d1b8-48b3-9b05-08c2956587f2",
+              "name": "cliente_identificado",
+              "value": "={{ $json.cliente_identificado }}",
+              "type": "string"
+            },
+            {
+              "id": "9afbb798-a43d-4e71-842c-eb444621df0a",
+              "name": "tipo_cliente",
+              "value": "={{ $json.tipo_cliente }}",
+              "type": "string"
+            },
+            {
+              "id": "0f3fe691-524d-4716-891b-886985396ef7",
+              "name": "es_nuevo",
+              "value": "={{ $json.es_nuevo }}",
+              "type": "string"
+            },
+            {
+              "id": "8f796153-62cc-4c5e-9bd6-2918542311b6",
+              "name": "fecha_dia",
+              "value": "={{ $json.fecha_dia }}",
+              "type": "string"
+            },
+            {
+              "id": "376dface-2d59-4cc5-ab61-9e5f937f8b7e",
+              "name": "fecha_semana",
+              "value": "={{ $json.fecha_semana }}",
+              "type": "string"
+            },
+            {
+              "id": "96e06c2d-1b5f-4ae4-b108-8eaf1fda30e9",
+              "name": "fecha_mes",
+              "value": "={{ $json.fecha_mes }}",
+              "type": "string"
+            },
+            {
+              "id": "de60abb9-33fa-4c32-b4f8-da51add27a3e",
+              "name": "cod_propiedad_logico",
+              "value": "={{ $json.cod_propiedad_logico }}",
+              "type": "string"
+            },
+            {
+              "id": "8f2f73f2-8d0b-4ea2-8aa9-6f9b479f5365",
+              "name": "origen_form",
+              "value": "={{ $json.origen_form }}",
+              "type": "string"
+            },
+            {
+              "id": "38ae88b4-13ca-400f-b9a4-717c60ff746f",
+              "name": "origen_original",
+              "value": "={{ $json.origen_original }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
       "position": [
-        -1168,
-        1856
+        1344,
+        400
       ],
-      "id": "3f11367f-573b-46c7-abaf-fa37e29af8e2",
-      "name": "When clicking ‘Execute workflow’"
+      "id": "3b36cad6-1a8a-4487-934e-d16a8c471739",
+      "name": "Edit Fields9",
+      "alwaysOutputData": true
     }
   ],
   "pinData": {},
@@ -3008,6 +2965,6 @@
     }
   ],
   "triggerCount": 3,
-  "updatedAt": "2026-01-19T15:45:01.368Z",
-  "versionId": "3feb9439-54d6-42e9-b025-081120ed4efc"
+  "updatedAt": "2026-01-20T13:08:02.443Z",
+  "versionId": "1078dfd4-187f-4a27-b3bb-08639b0a02bf"
 }
