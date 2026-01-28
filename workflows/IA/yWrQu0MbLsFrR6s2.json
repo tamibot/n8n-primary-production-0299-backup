@@ -1106,7 +1106,7 @@
             },
             {
               "name": "filter[created_at][from]",
-              "value": "1768021200"
+              "value": "={{ Math.floor((new Date(new Date($now).setHours(0,0,0,0)).getTime() - 15*24*60*60*1000) / 1000) }}"
             },
             {
               "name": "filter[created_at][to]",
@@ -1697,7 +1697,7 @@
       "typeVersion": 2.6,
       "position": [
         1120,
-        856
+        864
       ],
       "id": "a7d2804f-04bc-4b30-815b-38f3c56ef3d5",
       "name": "Postgres Upsert",
@@ -2647,7 +2647,7 @@
       "typeVersion": 2.6,
       "position": [
         1120,
-        1224
+        1232
       ],
       "id": "66707c8b-0c09-4ae0-b9c0-096370afea31",
       "name": "Postgres Upsert1",
@@ -2934,7 +2934,7 @@
   "settings": {
     "executionOrder": "v1",
     "callerPolicy": "workflowsFromSameOwner",
-    "executionTimeout": 2700
+    "executionTimeout": 3600
   },
   "shared": [
     {
@@ -2965,6 +2965,6 @@
     }
   ],
   "triggerCount": 3,
-  "updatedAt": "2026-01-20T13:08:02.443Z",
-  "versionId": "1078dfd4-187f-4a27-b3bb-08639b0a02bf"
+  "updatedAt": "2026-01-27T17:06:26.471Z",
+  "versionId": "90dda8a9-65bd-487b-a889-f57a5fd5b8fe"
 }
