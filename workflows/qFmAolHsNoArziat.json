@@ -198,7 +198,7 @@
     },
     {
       "parameters": {
-        "sendTo": "valeria.vega@proper.com.pe,|jorge.campos@cmcapital.in,leidy.sanchez@proper.com.pe,silvia.malca@proper.com.pe",
+        "sendTo": "valeria.vega@proper.com.pe,jorge.campos@cmcapital.in,leidy.sanchez@proper.com.pe,silvia.malca@proper.com.pe",
         "subject": "Reporte diario de inversiones",
         "message": "={{ $json.html }}",
         "options": {}
@@ -240,6 +240,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-02-02T19:53:58.585Z",
-  "versionId": "061709db-1e20-47ec-8f19-caca27ca77fc"
+  "updatedAt": "2026-02-03T21:06:40.454Z",
+  "versionId": "df07edf4-b8c8-4bf8-bdbe-d8368ee63315"
 }
