@@ -1,0 +1,771 @@
+{
+  "active": true,
+  "connections": {
+    "Existe Contacto?": {
+      "main": [
+        [
+          {
+            "node": "Insert or update rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Insert or update rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get list of leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list of leads": {
+      "main": [
+        [
+          {
+            "node": "Get list of contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list of contacts": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Buscar Contacto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Contacto": {
+      "main": [
+        [
+          {
+            "node": "Existe Contacto?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-02-02T17:58:44.853Z",
+  "id": "5P9zuW5NANY4qoby",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Derivacion - David - Bot IA",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "existe-contacto",
+              "leftValue": "={{ $json.result.CONTACT }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -896,
+        352
+      ],
+      "id": "97579838-4fa9-45a6-8910-62c61f65235b",
+      "name": "Existe Contacto?"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "derivacionbotiadavid",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -2016,
+        352
+      ],
+      "id": "19555e83-ba44-4f33-ad71-9ad95c6a3117",
+      "name": "Webhook",
+      "webhookId": "4dfbf71b-8b7e-49b1-9943-0feca9d4f103"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "filter": {
+          "id": "={{ $json.body['leads[status][0][id]'] }}"
+        },
+        "options": {
+          "with": [
+            "contacts"
+          ]
+        },
+        "limit": 1
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -1792,
+        352
+      ],
+      "id": "48a3817c-08a1-4be9-9f04-fa0758ca204a",
+      "name": "Get list of leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Xm12cHoxJw7jGGaV",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "longLivedToken",
+        "resource": "contacts",
+        "filter": {
+          "id": "={{ $json._embedded.leads[0]._embedded.contacts[0].id }}"
+        },
+        "options": {},
+        "limit": 1
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        -1568,
+        352
+      ],
+      "id": "8cac8f8b-95e9-4112-9739-8822d8bb54de",
+      "name": "Get list of contacts",
+      "credentials": {
+        "kommoLongLivedApi": {
+          "id": "20bzHfzuZvuDPmtm",
+          "name": "Kommo Long Lived Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "be18fb24-cf8a-4045-b785-e181e6590d99",
+              "name": "nombre",
+              "value": "={{ $json._embedded.contacts[0].name }}",
+              "type": "string"
+            },
+            {
+              "id": "e0093491-d60e-490c-8273-210fa5dab5eb",
+              "name": "telefono",
+              "value": "={{ $('Get list of contacts').first().json._embedded.contacts[0].custom_fields_values?.find(f => f.field_code === 'PHONE')?.values[0].value }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1344,
+        352
+      ],
+      "id": "a2c0d4a0-137f-4a04-964a-47299aec097a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "url": "https://proper.bitrix24.com/rest/8203/3s2f229t8qnjg1ig/crm.duplicate.findbycomm.json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "entity_type",
+              "value": "CONTACT"
+            },
+            {
+              "name": "type",
+              "value": "PHONE"
+            },
+            {
+              "name": "values[0]",
+              "value": "={{ $json.telefono }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1120,
+        352
+      ],
+      "id": "18c0596e-dbdf-4528-b83f-fd5fa3f4f949",
+      "name": "Buscar Contacto"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "value": "crm",
+          "mode": "list",
+          "cachedResultName": "crm"
+        },
+        "table": {
+          "__rl": true,
+          "value": "bot_leads_david",
+          "mode": "list",
+          "cachedResultName": "bot_leads_david"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Get list of leads').item.json._embedded.leads[0].id }}",
+            "origen_original": "BOT IA - DAVID",
+            "origen_form": "BOT IA - DAVID",
+            "origen": "BOT IA - DAVID",
+            "status_id": 0,
+            "inmueble_identificado": 0,
+            "bot_respondio": 0,
+            "bot_apagado_manual": 0,
+            "dio_horario": 0,
+            "genero_horario": 0,
+            "horario_registrado": 0,
+            "horario_notificado": 0,
+            "tuvo_error": 0,
+            "error_marcado": 0,
+            "caso_especial": 0,
+            "tiene_solucion": 0,
+            "cliente_identificado": 0,
+            "es_nuevo": 0,
+            "nombre": "={{ $('Edit Fields').item.json.nombre }}",
+            "telefono": "={{ $('Edit Fields').item.json.telefono }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha_creacion",
+              "displayName": "fecha_creacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "status_id",
+              "displayName": "status_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "etapa",
+              "displayName": "etapa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "cod_inmueble",
+              "displayName": "cod_inmueble",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "cod_propiedad",
+              "displayName": "cod_propiedad",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "cod_propiedad_unificado",
+              "displayName": "cod_propiedad_unificado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "inmueble_identificado",
+              "displayName": "inmueble_identificado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "link_urbania",
+              "displayName": "link_urbania",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "origen",
+              "displayName": "origen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "bot_respondio",
+              "displayName": "bot_respondio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "bot_apagado_manual",
+              "displayName": "bot_apagado_manual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "bot_fecha_ult_msg",
+              "displayName": "bot_fecha_ult_msg",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "dio_horario",
+              "displayName": "dio_horario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "genero_horario",
+              "displayName": "genero_horario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "horario_registrado",
+              "displayName": "horario_registrado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "horario_notificado",
+              "displayName": "horario_notificado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha1",
+              "displayName": "fecha1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha2",
+              "displayName": "fecha2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha_modo",
+              "displayName": "fecha_modo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tuvo_error",
+              "displayName": "tuvo_error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "detalle_error",
+              "displayName": "detalle_error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "error_marcado",
+              "displayName": "error_marcado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "estado_correccion",
+              "displayName": "estado_correccion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "detalle_correccion",
+              "displayName": "detalle_correccion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "caso_especial",
+              "displayName": "caso_especial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "detalle_caso_especial",
+              "displayName": "detalle_caso_especial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "seg1",
+              "displayName": "seg1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "seg2",
+              "displayName": "seg2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "animo",
+              "displayName": "animo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tiene_solucion",
+              "displayName": "tiene_solucion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "cliente_identificado",
+              "displayName": "cliente_identificado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "tipo_cliente",
+              "displayName": "tipo_cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "es_nuevo",
+              "displayName": "es_nuevo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha_dia",
+              "displayName": "fecha_dia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha_semana",
+              "displayName": "fecha_semana",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "fecha_mes",
+              "displayName": "fecha_mes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "codpropiedad_logico",
+              "displayName": "codpropiedad_logico",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "origen_form",
+              "displayName": "origen_form",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "origen_original",
+              "displayName": "origen_original",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -672,
+        352
+      ],
+      "id": "c0327bfa-e1da-41f5-a7b0-4bea3aa35d42",
+      "name": "Insert or update rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "primary-production-0299.up.railway.app",
+            "user-agent": "amoCRM-Webhooks/3.0",
+            "content-length": "312",
+            "accept-encoding": "gzip",
+            "content-type": "application/x-www-form-urlencoded",
+            "x-amocrm-requestid": "423d05ab-5cfe-4766-bf29-bd0b4ed034e6",
+            "x-forwarded-for": "142.0.207.172",
+            "x-forwarded-host": "primary-production-0299.up.railway.app",
+            "x-forwarded-proto": "https",
+            "x-railway-edge": "railway/us-east4-eqdc4a",
+            "x-railway-request-id": "C3jDoqWuQQib8_QZPvyhXg",
+            "x-real-ip": "142.0.207.172",
+            "x-request-start": "1770055505364"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "leads[status][0][id]": "22873384",
+            "leads[status][0][status_id]": "99685039",
+            "leads[status][0][pipeline_id]": "8874156",
+            "leads[status][0][old_status_id]": "99685043",
+            "leads[status][0][old_pipeline_id]": "8874156",
+            "account[id]": "30050693",
+            "account[subdomain]": "propertamibotcom"
+          },
+          "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/derivacionbotiadavid",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2026-02-02T17:58:44.853Z",
+      "updatedAt": "2026-02-02T17:58:44.853Z",
+      "role": "workflow:owner",
+      "workflowId": "5P9zuW5NANY4qoby",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-08-01T18:41:06.465Z",
+      "updatedAt": "2025-08-01T18:41:06.465Z",
+      "id": "94z6tcDoVU8DriEW",
+      "name": "IA"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-04T22:47:12.813Z",
+  "versionId": "b25b215c-a124-4e4b-8019-3804ddf4c7a8"
+}
