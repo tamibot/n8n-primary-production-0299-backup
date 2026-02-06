@@ -66,6 +66,17 @@
       "main": [
         [
           {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
             "node": "Insert or update rows in a table1",
             "type": "main",
             "index": 0
@@ -199,6 +210,12 @@
               "id": "e0093491-d60e-490c-8273-210fa5dab5eb",
               "name": "telefono",
               "value": "={{ $('Get list of contacts').first().json._embedded.contacts[0].custom_fields_values?.find(f => f.field_code === 'PHONE')?.values[0].value }}",
+              "type": "string"
+            },
+            {
+              "id": "c8f24d37-18ff-47dc-ab32-7bd594b904a9",
+              "name": "distrito",
+              "value": "={{ $('Get list of leads').first().json._embedded.leads[0].custom_fields_values?.find(f => f.field_id === 799250)?.values?.[0]?.value }}",
               "type": "string"
             }
           ]
@@ -407,12 +424,17 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "contacto_id": "={{ $json.id }}",
+            "contacto_id": "={{ $('Insert or update rows in a table').item.json.id }}",
             "kommo_id": "={{ $('Get list of leads').item.json._embedded.leads[0].id }}",
             "utm_campaign": "BOT IA - DIEGO",
             "utm_medium": "BOT IA - DIEGO",
             "utm_source": "BOT IA - DIEGO",
-            "id": "={{ $('Get list of leads').item.json._embedded.leads[0].id }}"
+            "id": "={{ $('Get list of leads').item.json._embedded.leads[0].id }}",
+            "funnel_id": "=7",
+            "etapa_inmueble": "C7:NEW",
+            "fecha_creacion": "={{ $now }}",
+            "asesor_id": "=3241",
+            "customFields": "={\n  \"UF_CRM_1692743302\": \"{{ $json.id }}\",\n  \"UF_CRM_1689155356\": \"1507\"\n}"
           },
           "matchingColumns": [
             "id"
@@ -535,11 +557,32 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        -848,
+        -640,
         352
       ],
       "id": "bfc55538-030a-442e-b7b7-d3a9a44c2a86",
       "name": "Insert or update rows in a table1",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select *\nfrom crm.custom_values cv \nwhere cv.field_id = 'UF_CRM_1692743302' and cv.value ilike '%{{ $('Edit Fields').item.json.distrito }}%'",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -928,
+        352
+      ],
+      "id": "e4f3567f-f9c8-4829-b8b1-1f941e9880f3",
+      "name": "Execute a SQL query",
       "credentials": {
         "postgres": {
           "id": "fuKiWlAN9ojbRM9W",
@@ -558,22 +601,22 @@
             "content-length": "312",
             "accept-encoding": "gzip",
             "content-type": "application/x-www-form-urlencoded",
-            "x-amocrm-requestid": "b2ef8a6c-e6aa-49b9-ac45-1803e800f8eb",
+            "x-amocrm-requestid": "dd5b6927-4e58-49d6-873b-930ab8dcd6db",
             "x-forwarded-for": "142.0.207.172",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
             "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "c4KmoCH2QaiWyM6yCx5-qw",
+            "x-railway-request-id": "78WsRbG5R2-lZRc1PvyhXg",
             "x-real-ip": "142.0.207.172",
-            "x-request-start": "1770245544080"
+            "x-request-start": "1770277314838"
           },
           "params": {},
           "query": {},
           "body": {
-            "leads[status][0][id]": "22897976",
+            "leads[status][0][id]": "22892228",
             "leads[status][0][status_id]": "99685047",
             "leads[status][0][pipeline_id]": "8874156",
-            "leads[status][0][old_status_id]": "99685051",
+            "leads[status][0][old_status_id]": "99685043",
             "leads[status][0][old_pipeline_id]": "8874156",
             "account[id]": "30050693",
             "account[subdomain]": "propertamibotcom"
@@ -606,6 +649,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-02-04T22:54:08.254Z",
-  "versionId": "25f0b3bf-fb17-4489-bdfd-3f3138465654"
+  "updatedAt": "2026-02-05T13:58:55.328Z",
+  "versionId": "ddbde4bd-440d-480a-abe3-de202cba425e"
 }
