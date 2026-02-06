@@ -307,14 +307,30 @@
       "main": [
         [
           {
-            "node": "Batch Leads",
+            "node": "Extract Lead Info",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Batch Leads": {
+    "Extract Lead Info": {
+      "main": [
+        [
+          {
+            "node": "Batch Contact IDs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge All",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Batch Contact IDs": {
       "main": [
         [
           {
@@ -329,14 +345,25 @@
       "main": [
         [
           {
-            "node": "Transform Data",
+            "node": "Extract Contact Info",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Transform Data": {
+    "Extract Contact Info": {
+      "main": [
+        [
+          {
+            "node": "Merge All",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge All": {
       "main": [
         [
           {
@@ -1752,10 +1779,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -1040,
-        432
+        -1168,
+        336
       ],
-      "id": "18c3a59d-b779-40f1-a1e2-0db47933ef56",
+      "id": "97da81a2-d734-4997-b7f1-0bc5538ee39f",
       "name": "Schedule Trigger"
     },
     {
@@ -1774,10 +1801,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -832,
-        432
+        -944,
+        336
       ],
-      "id": "718ca021-d4be-4ac6-a770-db55859c9af5",
+      "id": "61239bf4-7154-425e-96aa-f0ec0ebd0cf2",
       "name": "Get Statuses",
       "credentials": {
         "oAuth2Api": {
@@ -1847,10 +1874,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -640,
-        432
+        -720,
+        336
       ],
-      "id": "49c429b4-7e74-4689-a852-66e3185fa64c",
+      "id": "7bb058ed-9466-4a6c-be92-fbcac45268ac",
       "name": "Get Leads",
       "credentials": {
         "oAuth2Api": {
@@ -1861,16 +1888,16 @@
     },
     {
       "parameters": {
-        "fieldToSplitOut": "=_embedded.leads",
+        "fieldToSplitOut": "_embedded.leads",
         "options": {}
       },
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        -432,
-        432
+        -496,
+        336
       ],
-      "id": "a7cf1348-db2c-4df8-aa62-051e47880377",
+      "id": "9a5bece5-52c1-4fbd-93dc-6788f67f9aa9",
       "name": "Split Leads"
     },
     {
@@ -1884,7 +1911,7 @@
           },
           "conditions": [
             {
-              "leftValue": "={{ $json._embedded.tags.toJsonString() }}",
+              "leftValue": "={{ $json._embedded.tags.map(t => t.name).join(',') }}",
               "rightValue": "RENTAS",
               "operator": {
                 "type": "string",
@@ -1909,52 +1936,48 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        -240,
-        432
+        -272,
+        336
       ],
-      "id": "5bf84c47-ef5e-4f25-8e72-54520a388bff",
+      "id": "0f9cf196-06cf-4260-ae50-fee74259778a",
       "name": "Filter RENTAS"
     },
     {
       "parameters": {
-        "jsCode": "// Batching logic: Group leads into chunks of 50 to batch fetch contacts\nconst BATCH_SIZE = 50;\nconst allLeads = items.map(item => item.json);\n\nconst batches = [];\nfor (let i = 0; i < allLeads.length; i += BATCH_SIZE) {\n  const chunk = allLeads.slice(i, i + BATCH_SIZE);\n  \n  // Extract contact IDs for this batch\n  const contactIds = chunk\n    .map(lead => lead._embedded.contacts?.[0]?.id)\n    .filter(id => id); // Remove nulls\n  \n  // Create comma-separated string for API filter\n  // API Format: filter[id]=1,2,3\n  const contactIdsStr = contactIds.join(',');\n  \n  if (contactIdsStr) {\n    batches.push({\n      json: {\n        batch_index: batches.length,\n        contact_ids_query: contactIdsStr,\n        leads_in_batch: chunk\n      }\n    });\n  }\n}\n\nreturn batches;"
+        "jsCode": "// Transform Lead Data for matching and output\nconst statuses = $('Get Statuses').first().json._embedded?.statuses || [];\n\nfunction getCF(lead, fieldName) {\n  const cf = (lead.custom_fields_values || []).find(x => x.field_name === fieldName);\n  return (cf && cf.values && cf.values[0]) ? cf.values[0].value : null;\n}\nfunction getCFBool(lead, fieldName) {\n  const val = getCF(lead, fieldName);\n  return (val === true || val === 1 || val === '1') ? 1 : 0;\n}\nfunction getStatusName(statusId) {\n  const hit = statuses.find(s => String(s.id) === String(statusId));\n  return hit?.name || '';\n}\nfunction unixToISO(unix) {\n  if (!unix) return null;\n  return new Date(unix * 1000).toISOString().replace('T', ' ').substring(0, 19);\n}\nfunction getMonday(dateStr) {\n  const d = new Date(dateStr);\n  const day = d.getDay();\n  const diff = (day === 0 ? -6 : 1) - day;\n  d.setDate(d.getDate() + diff);\n  return d.toISOString().split('T')[0];\n}\nfunction truncate(str, maxLength) {\n  if (!str) return null;\n  const s = String(str);\n  return s.length <= maxLength ? s : s.substring(0, maxLength);\n}\n\nreturn items.map(item => {\n  const lead = item.json;\n  \n  const codInmueble = getCF(lead, 'codigoInmueble');\n  const codPropiedad = getCF(lead, 'n8n - CODPROPIEDAD');\n  const codPropiedadLogico = getCF(lead, 'n8n - codpropiedad logico');\n  const codUnificadoRaw = codInmueble || codPropiedad || codPropiedadLogico || null;\n  let codUnificado = codUnificadoRaw;\n  if (codUnificadoRaw && String(codUnificadoRaw).toUpperCase().includes('MODO')) {\n    codUnificado = 'MODO';\n  }\n\n  const origenForm = getCF(lead, 'n8n - origen - form');\n  const origenOriginal = getCF(lead, 'n8n - Origen');\n  const linkUrbania = getCF(lead, 'LinkUrbania');\n  let origenUnificado = origenForm ? origenForm : (linkUrbania ? 'URBANIA' : (origenOriginal || 'SIN_ORIGEN'));\n\n  const fecha1 = getCF(lead, 'n8n - fecha1');\n  const fecha2 = getCF(lead, 'n8n - fecha2');\n  const fechaModo = getCF(lead, 'n8n - fechaMODO');\n  const dioHorario = (fecha1 || fecha2 || fechaModo) ? 1 : 0;\n\n  const fechaCreacionUnix = lead.created_at;\n  const fechaCreacion = unixToISO(fechaCreacionUnix);\n  const fechaDia = fechaCreacion ? fechaCreacion.substring(0, 10) : null;\n  const fechaMes = fechaDia ? fechaDia.substring(0, 7) + '-01' : null;\n  const fechaSemana = fechaCreacion ? getMonday(fechaCreacion) : null;\n\n  const tipoCliente = getCF(lead, 'n8n - TipoCliente');\n  const esNuevo = (tipoCliente === 'NUEVO') ? 1 : 0;\n  \n  const casoEspecialCampo = getCFBool(lead, 'n8n - supp - caso_especial');\n  const casoEspecialStatus = (lead.status_id === 90801084) ? 1 : 0;\n  const casoEspecial = (casoEspecialCampo || casoEspecialStatus) ? 1 : 0;\n\n  return {\n    json: {\n      lead_id: lead.id,\n      id: lead.id,\n      status_id: lead.status_id,\n      etapa: truncate(getStatusName(lead.status_id), 50),\n      fecha_creacion: fechaCreacion,\n      cod_inmueble: truncate(codInmueble, 50),\n      cod_propiedad: truncate(codPropiedad, 50),\n      cod_propiedad_logico: truncate(codPropiedadLogico, 50),\n      cod_propiedad_unificado: truncate(codUnificado, 50),\n      inmueble_identificado: codUnificadoRaw ? 1 : 0,\n      link_urbania: truncate(linkUrbania, 255),\n      origen_form: truncate(origenForm, 50),\n      origen_original: truncate(origenOriginal, 50),\n      origen: truncate(origenUnificado, 50),\n      bot_respondio: getCFBool(lead, 'rentas_mensajeia_salio'),\n      bot_apagado_manual: getCFBool(lead, 'rentas_bot_apagado_manual'),\n      bot_fecha_ult_msg: getCF(lead, 'bot - fecha_ult_msg'),\n      dio_horario: dioHorario,\n      genero_horario: getCFBool(lead, 'rentas_ia_generohorario'),\n      horario_registrado: getCFBool(lead, 'rentas_ia_generohorario_registrado'),\n      horario_notificado: getCFBool(lead, 'rentas_ia_generohorario_notificado'),\n      fecha1: truncate(fecha1, 50),\n      fecha2: truncate(fecha2, 50),\n      fecha_modo: truncate(fechaModo, 50),\n      tuvo_error: getCFBool(lead, 'n8n - supp - es_error'),\n      detalle_error: truncate(getCF(lead, 'n8n - supp - detalle_es_error'), 255),\n      error_marcado: getCFBool(lead, 'rentas_error_marcado'),\n      estado_correccion: truncate(getCF(lead, 'n8n - corregido'), 50) || 'N/A',\n      detalle_correccion: truncate(getCF(lead, 'n8n - detalle corregido'), 255),\n      caso_especial: casoEspecial,\n      detalle_caso_especial: truncate(getCF(lead, 'n8n - supp - detalle_caso_especial'), 255),\n      seg1: truncate(getCF(lead, 'n8n - supp - seg1'), 50),\n      seg2: truncate(getCF(lead, 'n8n - supp - seg2'), 50),\n      animo: truncate(getCF(lead, 'n8n - animo') || getCF(lead, 'n8n - supp - animo'), 50),\n      tiene_solucion: getCFBool(lead, 'n8n - supp - tiene_solucion'),\n      cliente_identificado: getCFBool(lead, 'n8n - supp - clienteIdentificado'),\n      tipo_cliente: truncate(tipoCliente, 50),\n      es_nuevo: esNuevo,\n      fecha_dia: fechaDia,\n      fecha_semana: fechaSemana,\n      fecha_mes: fechaMes,\n      contact_id_ref: lead._embedded?.contacts?.[0]?.id\n    }\n  };\n});"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -32,
-        432
+        -48,
+        336
       ],
-      "id": "bd24d9f5-823a-4d29-82b6-a3d19f093d55",
-      "name": "Batch Leads"
+      "id": "ed58cbad-1171-4c37-a23c-e7a6bc772e4e",
+      "name": "Extract Lead Info"
     },
     {
       "parameters": {
-        "url": "https://propertamibotcom.kommo.com/api/v4/contacts",
+        "jsCode": "// Create batches of contact IDs to fetch\nconst BATCH_SIZE = 100;\nconst contactIds = [...new Set(items.map(item => item.json.contact_id_ref).filter(id => id))];\n\nconst batches = [];\nfor (let i = 0; i < contactIds.length; i += BATCH_SIZE) {\n  const chunk = contactIds.slice(i, i + BATCH_SIZE);\n  const contactIdsStr = chunk.map(id => `filter[id][]=${id}`).join('&');\n\n  if (contactIdsStr) {\n    batches.push({\n      json: {\n        batch_index: batches.length,\n        contact_ids_query: contactIdsStr\n      }\n    });\n  }\n}\n\nreturn batches;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        176,
+        416
+      ],
+      "id": "db0aa2fd-b75c-4113-b6d7-c05659f3ea40",
+      "name": "Batch Contact IDs"
+    },
+    {
+      "parameters": {
+        "url": "=https://propertamibotcom.kommo.com/api/v4/contacts?{{ $json.contact_ids_query }}&with=leads",
         "authentication": "genericCredentialType",
         "genericAuthType": "oAuth2Api",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "filter[id]",
-              "value": "={{ $json.contact_ids_query }}"
-            },
-            {
-              "name": "with",
-              "value": "leads"
-            },
-            {
-              "name": "limit",
-              "value": "250"
-            }
-          ]
-        },
         "options": {
           "batching": {
             "batch": {
               "batchSize": 1,
-              "batchInterval": 500
+              "batchInterval": 1500
             }
           },
           "response": {
@@ -1967,10 +1990,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        160,
-        432
+        400,
+        416
       ],
-      "id": "24ae336e-3e03-4145-9844-7fa595662dac",
+      "id": "8a23e1e0-2ef1-4a30-9270-ca507539c480",
       "name": "Get Contacts Batch",
       "credentials": {
         "oAuth2Api": {
@@ -1981,16 +2004,31 @@
     },
     {
       "parameters": {
-        "jsCode": "// Join Leads with their Contacts and Transform for DB\n// Iterates over ALL input items (responses from API)\n\nconst statuses = $('Get Statuses').first().json._embedded?.statuses || [];\nconst batchLeadsItems = $('Batch Leads').all();\nconst results = [];\n\n// --- HELPERS ---\nfunction getCF(lead, fieldName) {\n  const cf = (lead.custom_fields_values || []).find(x => x.field_name === fieldName);\n  return (cf && cf.values && cf.values[0]) ? cf.values[0].value : null;\n}\nfunction getCFBool(lead, fieldName) {\n  const val = getCF(lead, fieldName);\n  return (val === true || val === 1 || val === '1') ? 1 : 0;\n}\nfunction getPhone(contact) {\n  if (!contact) return null;\n  const fields = contact.custom_fields_values || [];\n  const phoneField = fields.find(f => f.field_code === 'PHONE');\n  return phoneField?.values?.[0]?.value || null;\n}\nfunction getContactName(contact) {\n  if (!contact) return null;\n  if (contact.name) return contact.name;\n  const firstName = contact.first_name || '';\n  const lastName = contact.last_name || '';\n  const fullName = [firstName, lastName].filter(Boolean).join(' ').trim();\n  return fullName || null;\n}\nfunction getStatusName(statusId) {\n  const hit = statuses.find(s => String(s.id) === String(statusId));\n  return hit?.name || '';\n}\nfunction unixToISO(unix) {\n  if (!unix) return null;\n  return new Date(unix * 1000).toISOString().replace('T', ' ').substring(0, 19);\n}\nfunction getMonday(dateStr) {\n  const d = new Date(dateStr);\n  const day = d.getDay();\n  const diff = (day === 0 ? -6 : 1) - day;\n  d.setDate(d.getDate() + diff);\n  return d.toISOString().split('T')[0];\n}\nfunction truncate(str, maxLength) {\n  if (!str) return null;\n  const s = String(str);\n  if (s.length <= maxLength) return s;\n  return s.substring(0, maxLength);\n}\n\n// --- CONSOLIDAR TODOS LOS CONTACTOS EN UN MAPA GLOBAL POR LEAD ID ---\n// Este mapa relaciona leadId -> contact\nconst leadIdToContactMap = {};\n\n// Iterar sobre TODAS las respuestas de contactos\nfor (const item of items) {\n  const contactsResponse = item.json;\n  const contactsList = contactsResponse._embedded?.contacts || [];\n  \n  // Para cada contacto, mapear todos sus leads asociados\n  for (const contact of contactsList) {\n    const associatedLeads = contact._embedded?.leads || [];\n    for (const leadRef of associatedLeads) {\n      // Usar el lead ID del contacto para crear el mapeo inverso\n      if (leadRef.id) {\n        leadIdToContactMap[leadRef.id] = contact;\n      }\n    }\n    \n    // También mantener el mapeo por contact ID como fallback\n    // (en caso de que el lead tenga el contact ID pero el contacto no tenga el lead en _embedded.leads)\n  }\n}\n\n// También crear un mapa por contact ID como fallback\nconst contactIdMap = {};\nfor (const item of items) {\n  const contactsResponse = item.json;\n  const contactsList = contactsResponse._embedded?.contacts || [];\n  for (const contact of contactsList) {\n    contactIdMap[contact.id] = contact;\n  }\n}\n\n// --- PROCESAR TODOS LOS LEADS ---\n// Obtener todos los leads de todos los batches\nconst allLeads = [];\nfor (const batchItem of batchLeadsItems) {\n  const leadsInBatch = batchItem.json.leads_in_batch || [];\n  allLeads.push(...leadsInBatch);\n}\n\n// Procesar cada lead\nfor (const lead of allLeads) {\n  // Intentar encontrar el contacto por lead ID primero (más confiable)\n  let contact = leadIdToContactMap[lead.id] || null;\n  \n  // Fallback: buscar por contact ID del lead\n  if (!contact) {\n    const contactId = lead._embedded?.contacts?.[0]?.id;\n    if (contactId) {\n      contact = contactIdMap[contactId] || null;\n    }\n  }\n\n  // Get phone and name FROM CONTACT\n  const phone = getPhone(contact);\n  const contactName = getContactName(contact);\n\n  const codInmueble = getCF(lead, 'codigoInmueble');\n  const codPropiedad = getCF(lead, 'n8n - CODPROPIEDAD');\n  const codPropiedadLogico = getCF(lead, 'n8n - codpropiedad logico');\n  const codUnificadoRaw = codInmueble || codPropiedad || codPropiedadLogico || null;\n  let codUnificado = codUnificadoRaw;\n  if (codUnificadoRaw && codUnificadoRaw.toString().toUpperCase().includes('MODO')) {\n    codUnificado = 'MODO';\n  }\n\n  const origenForm = getCF(lead, 'n8n - origen - form');\n  const origenOriginal = getCF(lead, 'n8n - Origen');\n  const linkUrbania = getCF(lead, 'LinkUrbania');\n  let origenUnificado;\n  if (origenForm) origenUnificado = origenForm;\n  else if (linkUrbania) origenUnificado = 'URBANIA';\n  else origenUnificado = origenOriginal || 'SIN_ORIGEN';\n\n  const fecha1 = getCF(lead, 'n8n - fecha1');\n  const fecha2 = getCF(lead, 'n8n - fecha2');\n  const fechaModo = getCF(lead, 'n8n - fechaMODO');\n  const dioHorario = (fecha1 || fecha2 || fechaModo) ? 1 : 0;\n\n  const fechaCreacionUnix = lead.created_at;\n  const fechaCreacion = unixToISO(fechaCreacionUnix);\n  const fechaDia = fechaCreacion ? fechaCreacion.substring(0, 10) : null;\n  const fechaMes = fechaDia ? fechaDia.substring(0, 7) + '-01' : null;\n  const fechaSemana = fechaCreacion ? getMonday(fechaCreacion) : null;\n\n  const tipoCliente = getCF(lead, 'n8n - TipoCliente');\n  const esNuevo = (tipoCliente === 'NUEVO') ? 1 : 0;\n  \n  const casoEspecialCampo = getCFBool(lead, 'n8n - supp - caso_especial');\n  const casoEspecialStatus = (lead.status_id === 90801084) ? 1 : 0;\n  const casoEspecial = (casoEspecialCampo || casoEspecialStatus) ? 1 : 0;\n\n  results.push({\n    json: {\n        id: lead.id,\n        nombre: truncate(contactName, 100), \n        telefono: truncate(phone, 25),\n        fecha_creacion: fechaCreacion,\n        status_id: lead.status_id,\n        etapa: truncate(getStatusName(lead.status_id), 50),\n        \n        cod_inmueble: truncate(codInmueble, 50),\n        cod_propiedad: truncate(codPropiedad, 50),\n        cod_propiedad_logico: truncate(codPropiedadLogico, 50),\n        cod_propiedad_unificado: truncate(codUnificado, 50),\n        inmueble_identificado: codUnificadoRaw ? 1 : 0,\n        link_urbania: truncate(linkUrbania, 255),\n        \n        origen_form: truncate(origenForm, 50),\n        origen_original: truncate(origenOriginal, 50),\n        origen: truncate(origenUnificado, 50),\n        \n        bot_respondio: getCFBool(lead, 'rentas_mensajeia_salio'),\n        bot_apagado_manual: getCFBool(lead, 'rentas_bot_apagado_manual'),\n        bot_fecha_ult_msg: getCF(lead, 'bot - fecha_ult_msg'),\n        \n        dio_horario: dioHorario,\n        genero_horario: getCFBool(lead, 'rentas_ia_generohorario'),\n        horario_registrado: getCFBool(lead, 'rentas_ia_generohorario_registrado'),\n        horario_notificado: getCFBool(lead, 'rentas_ia_generohorario_notificado'),\n        fecha1: truncate(fecha1, 50),\n        fecha2: truncate(fecha2, 50),\n        fecha_modo: truncate(fechaModo, 50),\n        \n        tuvo_error: getCFBool(lead, 'n8n - supp - es_error'),\n        detalle_error: truncate(getCF(lead, 'n8n - supp - detalle_es_error'), 255),\n        error_marcado: getCFBool(lead, 'rentas_error_marcado'),\n        estado_correccion: truncate(getCF(lead, 'n8n - corregido'), 50) || 'N/A',\n        detalle_correccion: truncate(getCF(lead, 'n8n - detalle corregido'), 255),\n        \n        caso_especial: casoEspecial,\n        detalle_caso_especial: truncate(getCF(lead, 'n8n - supp - detalle_caso_especial'), 255),\n        \n        seg1: truncate(getCF(lead, 'n8n - supp - seg1'), 50),\n        seg2: truncate(getCF(lead, 'n8n - supp - seg2'), 50),\n        animo: truncate(getCF(lead, 'n8n - animo') || getCF(lead, 'n8n - supp - animo'), 50),\n        tiene_solucion: getCFBool(lead, 'n8n - supp - tiene_solucion'),\n        cliente_identificado: getCFBool(lead, 'n8n - supp - clienteIdentificado'),\n        \n        tipo_cliente: truncate(tipoCliente, 50),\n        es_nuevo: esNuevo,\n        \n        fecha_dia: fechaDia,\n        fecha_semana: fechaSemana,\n        fecha_mes: fechaMes\n    }\n  });\n}\n\nreturn results;"
+        "jsCode": "const results = [];\n\nfor (const item of items) {\n  const contacts = item.json._embedded?.contacts || [];\n  for (const contact of contacts) {\n    let contactName = contact.name || null;\n    if (!contactName) {\n      const firstName = contact.first_name || '';\n      const lastName = contact.last_name || '';\n      contactName = [firstName, lastName].filter(Boolean).join(' ').trim() || null;\n    }\n    \n    const fields = contact.custom_fields_values || [];\n    const phoneField = fields.find(f => f.field_code === 'PHONE');\n    const phone = phoneField?.values?.[0]?.value || null;\n    \n    const associatedLeads = contact._embedded?.leads || [];\n    for (const leadRef of associatedLeads) {\n      results.push({\n        json: {\n          lead_id: leadRef.id,\n          nombre: contactName,\n          telefono: phone\n        }\n      });\n    }\n  }\n}\n\nreturn results;"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        368,
-        432
+        624,
+        416
       ],
-      "id": "a6f6f075-19eb-489f-8762-f462e02cfeb1",
-      "name": "Transform Data"
+      "id": "c7e0925f-ba74-4000-b4d0-d4427e941077",
+      "name": "Extract Contact Info"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "lead_id",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        848,
+        336
+      ],
+      "id": "28acef8b-abbc-4485-8c8b-006e021d1158",
+      "name": "Merge All"
     },
     {
       "parameters": {
@@ -2046,7 +2084,6 @@
             "estado_correccion": "={{ $json.estado_correccion }}",
             "detalle_correccion": "={{ $json.detalle_correccion }}",
             "detalle_caso_especial": "={{ $json.detalle_caso_especial }}",
-            "seg1": "={{ $json.seg1 }}",
             "seg2": "={{ $json.seg2 }}",
             "animo": "={{ $json.animo }}",
             "codpropiedad_logico": "={{ $json.cod_propiedad_logico }}",
@@ -2064,8 +2101,7 @@
               "defaultMatch": true,
               "display": true,
               "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": false
+              "canBeUsedToMatch": true
             },
             {
               "id": "nombre",
@@ -2326,7 +2362,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": false
+              "canBeUsedToMatch": false,
+              "removed": false
             },
             {
               "id": "seg2",
@@ -2465,10 +2502,10 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        560,
-        432
+        1072,
+        336
       ],
-      "id": "64518dcd-1dc3-4afa-a65c-9fce3e633dc2",
+      "id": "a3168777-3905-4551-9bac-a6ed79f0ebe7",
       "name": "Upsert Postgres",
       "credentials": {
         "postgres": {
@@ -2513,6 +2550,6 @@
     }
   ],
   "triggerCount": 3,
-  "updatedAt": "2026-02-03T23:36:39.347Z",
-  "versionId": "f23debc7-9c8d-4a87-b69a-13ff944a9661"
+  "updatedAt": "2026-02-05T16:04:38.541Z",
+  "versionId": "961b6991-6cf2-45c3-88e5-5d0dd570bec0"
 }
