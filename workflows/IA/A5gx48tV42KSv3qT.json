@@ -1,5 +1,600 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-12T00:15:49.238Z",
+    "createdAt": "2026-02-12T00:15:49.237Z",
+    "versionId": "ddbde4bd-440d-480a-abe3-de202cba425e",
+    "workflowId": "A5gx48tV42KSv3qT",
+    "nodes": [
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "existe-contacto",
+                "leftValue": "={{ $json.result.CONTACT }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "array",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -912,
+          112
+        ],
+        "id": "a52fbc13-95ff-4d0c-973d-605b6012d5f8",
+        "name": "Existe Contacto?"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "derivacionbotiadiego",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -2016,
+          352
+        ],
+        "id": "29839851-4884-4e1b-b4df-60ae73c93429",
+        "name": "Webhook",
+        "webhookId": "574bb8a2-bc58-4cc7-ae04-e96a0421badb"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "filter": {
+            "id": "={{ $json.body['leads[status][0][id]'] }}"
+          },
+          "options": {
+            "with": [
+              "contacts"
+            ]
+          },
+          "limit": 1
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          -1792,
+          352
+        ],
+        "id": "c74cf6de-85c6-4b40-a9d5-487f3188c42e",
+        "name": "Get list of leads",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "Xm12cHoxJw7jGGaV",
+            "name": "Proper"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "authentication": "longLivedToken",
+          "resource": "contacts",
+          "filter": {
+            "id": "={{ $json._embedded.leads[0]._embedded.contacts[0].id }}"
+          },
+          "options": {},
+          "limit": 1
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          -1568,
+          352
+        ],
+        "id": "e8c872a8-7161-484c-9f6a-a4cb9259c7c2",
+        "name": "Get list of contacts",
+        "credentials": {
+          "kommoLongLivedApi": {
+            "id": "20bzHfzuZvuDPmtm",
+            "name": "Kommo Long Lived Token account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "be18fb24-cf8a-4045-b785-e181e6590d99",
+                "name": "nombre",
+                "value": "={{ $json._embedded.contacts[0].name }}",
+                "type": "string"
+              },
+              {
+                "id": "e0093491-d60e-490c-8273-210fa5dab5eb",
+                "name": "telefono",
+                "value": "={{ $('Get list of contacts').first().json._embedded.contacts[0].custom_fields_values?.find(f => f.field_code === 'PHONE')?.values[0].value }}",
+                "type": "string"
+              },
+              {
+                "id": "c8f24d37-18ff-47dc-ab32-7bd594b904a9",
+                "name": "distrito",
+                "value": "={{ $('Get list of leads').first().json._embedded.leads[0].custom_fields_values?.find(f => f.field_id === 799250)?.values?.[0]?.value }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -1344,
+          352
+        ],
+        "id": "39af22c0-e437-4b64-89d6-6021d07458d2",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "url": "https://proper.bitrix24.com/rest/8203/3s2f229t8qnjg1ig/crm.duplicate.findbycomm.json",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "entity_type",
+                "value": "CONTACT"
+              },
+              {
+                "name": "type",
+                "value": "PHONE"
+              },
+              {
+                "name": "values[0]",
+                "value": "={{ $json.telefono }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -1136,
+          160
+        ],
+        "id": "8b7cb3ee-777c-4cbe-818b-ebdbd5149677",
+        "name": "Buscar Contacto"
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "schema": {
+            "__rl": true,
+            "value": "crm",
+            "mode": "list",
+            "cachedResultName": "crm"
+          },
+          "table": {
+            "__rl": true,
+            "value": "contactos",
+            "mode": "list",
+            "cachedResultName": "contactos"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "id": "={{ $('Get list of contacts').item.json._embedded.contacts[0].id }}",
+              "nombre": "={{ $('Edit Fields').item.json.nombre }}",
+              "telefono": "={{ $('Edit Fields').item.json.telefono }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "apellido_paterno",
+                "displayName": "apellido_paterno",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false,
+                "removed": false
+              },
+              {
+                "id": "apellido_materno",
+                "displayName": "apellido_materno",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false,
+                "removed": false
+              },
+              {
+                "id": "tipo_documento",
+                "displayName": "tipo_documento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false,
+                "removed": false
+              },
+              {
+                "id": "nro_documento",
+                "displayName": "nro_documento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false,
+                "removed": false
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false,
+                "removed": false
+              },
+              {
+                "id": "fecha_creacion",
+                "displayName": "fecha_creacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "id_propietario",
+                "displayName": "id_propietario",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -1136,
+          352
+        ],
+        "id": "d1a1f707-fe91-4290-9e3d-d06e5e24ddf5",
+        "name": "Insert or update rows in a table",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "schema": {
+            "__rl": true,
+            "value": "crm",
+            "mode": "list",
+            "cachedResultName": "crm"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "contacto_id": "={{ $('Insert or update rows in a table').item.json.id }}",
+              "kommo_id": "={{ $('Get list of leads').item.json._embedded.leads[0].id }}",
+              "utm_campaign": "BOT IA - DIEGO",
+              "utm_medium": "BOT IA - DIEGO",
+              "utm_source": "BOT IA - DIEGO",
+              "id": "={{ $('Get list of leads').item.json._embedded.leads[0].id }}",
+              "funnel_id": "=7",
+              "etapa_inmueble": "C7:NEW",
+              "fecha_creacion": "={{ $now }}",
+              "asesor_id": "=3241",
+              "customFields": "={\n  \"UF_CRM_1692743302\": \"{{ $json.id }}\",\n  \"UF_CRM_1689155356\": \"1507\"\n}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "fecha_creacion",
+                "displayName": "fecha_creacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "etapa_inmueble",
+                "displayName": "etapa_inmueble",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "customFields",
+                "displayName": "customFields",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "asesor_id",
+                "displayName": "asesor_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "contacto_id",
+                "displayName": "contacto_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "funnel_id",
+                "displayName": "funnel_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "utm_campaign",
+                "displayName": "utm_campaign",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "utm_medium",
+                "displayName": "utm_medium",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "utm_source",
+                "displayName": "utm_source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "kommo_id",
+                "displayName": "kommo_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "id_inmueble",
+                "displayName": "id_inmueble",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -640,
+          352
+        ],
+        "id": "bfc55538-030a-442e-b7b7-d3a9a44c2a86",
+        "name": "Insert or update rows in a table1",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "select *\nfrom crm.custom_values cv \nwhere cv.field_id = 'UF_CRM_1692743302' and cv.value ilike '%{{ $('Edit Fields').item.json.distrito }}%'",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -928,
+          352
+        ],
+        "id": "e4f3567f-f9c8-4829-b8b1-1f941e9880f3",
+        "name": "Execute a SQL query",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Existe Contacto?": {
+        "main": [
+          [],
+          []
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Get list of leads",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get list of leads": {
+        "main": [
+          [
+            {
+              "node": "Get list of contacts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get list of contacts": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Insert or update rows in a table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Contacto": {
+        "main": [
+          [
+            {
+              "node": "Existe Contacto?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert or update rows in a table": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query": {
+        "main": [
+          [
+            {
+              "node": "Insert or update rows in a table1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "ddbde4bd-440d-480a-abe3-de202cba425e",
   "connections": {
     "Existe Contacto?": {
       "main": [
@@ -632,8 +1227,8 @@
   },
   "shared": [
     {
-      "createdAt": "2026-02-04T22:47:00.168Z",
       "updatedAt": "2026-02-04T22:47:00.168Z",
+      "createdAt": "2026-02-04T22:47:00.168Z",
       "role": "workflow:owner",
       "workflowId": "A5gx48tV42KSv3qT",
       "projectId": "tpSonpyzopDOYZNA"
@@ -642,8 +1237,8 @@
   "staticData": null,
   "tags": [
     {
-      "createdAt": "2025-08-01T18:41:06.465Z",
       "updatedAt": "2025-08-01T18:41:06.465Z",
+      "createdAt": "2025-08-01T18:41:06.465Z",
       "id": "94z6tcDoVU8DriEW",
       "name": "IA"
     }
