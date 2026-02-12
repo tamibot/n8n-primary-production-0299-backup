@@ -1,5 +1,692 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-12T00:15:49.238Z",
+    "createdAt": "2026-02-12T00:15:49.237Z",
+    "versionId": "60e35b52-661c-4cc9-9290-5a9956b0f60d",
+    "workflowId": "FF4Js81gFtPjrYXv",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "credito-hipotecario-final",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "cb2fa50e-ea8c-4b04-9457-3932a9b810fb",
+        "name": "Webhook",
+        "webhookId": "e6990a70-5015-4ec2-804e-ef143154a1ef"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "body.data.rows",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          208,
+          0
+        ],
+        "id": "2f53a0af-b5eb-4996-83ff-44d200d53f1c",
+        "name": "Split Out"
+      },
+      {
+        "parameters": {
+          "operation": "select",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "registro_web_usuario",
+            "mode": "list",
+            "cachedResultName": "registro_web_usuario"
+          },
+          "limit": 10,
+          "where": {
+            "values": [
+              {
+                "column": "id",
+                "value": "={{ $json.dimensionValues[1].value }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          416,
+          0
+        ],
+        "id": "90fc3aef-24a5-4f53-88fc-27addff0d516",
+        "name": "Select rows from a table",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "authentication": "bitrixWebhookApi",
+          "operation": "list",
+          "parameters": {
+            "filter": {
+              "property": [
+                {
+                  "field": "ID",
+                  "value": "={{ $json.id_deal_web }}"
+                }
+              ]
+            }
+          }
+        },
+        "type": "n8n-nodes-bitrix.bitrix",
+        "typeVersion": 1,
+        "position": [
+          800,
+          0
+        ],
+        "id": "207b95e6-11da-419f-8f95-5954ceba428c",
+        "name": "List records",
+        "credentials": {
+          "bitrixWebhookApi": {
+            "id": "ROP1MNW41IyhXNQY",
+            "name": "BitrixCuentaEdu"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "b45e9d40-d0ac-4f7f-9c09-4ef8933b63a7",
+                "leftValue": "={{ $json.id }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              },
+              {
+                "id": "04bb0139-2ce5-46f6-9d3b-bc559041334e",
+                "leftValue": "={{ $json.id_deal_web }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "number",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              },
+              {
+                "id": "60579032-0caa-40d7-8c67-197fc4eb69ca",
+                "leftValue": "={{ $json.id_contacto }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "number",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          624,
+          0
+        ],
+        "id": "a38b24dd-f4cc-4d5e-94f9-d73df7c50a3b",
+        "name": "Filter"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "cc7af743-10bb-4d91-a485-eda6e9cbfdd8",
+                "leftValue": "={{ Number($json.result[0].ID) }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "number",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          1008,
+          0
+        ],
+        "id": "7ee74c60-9b3b-4ff2-b983-1e3ae445b344",
+        "name": "Filter1"
+      },
+      {
+        "parameters": {
+          "authentication": "bitrixWebhookApi",
+          "operation": "get",
+          "id": "={{ Number($json.result[0].ID) }}"
+        },
+        "type": "n8n-nodes-bitrix.bitrix",
+        "typeVersion": 1,
+        "position": [
+          1216,
+          0
+        ],
+        "id": "8bdc1114-9d4e-41e7-b61d-e32c0b581ec4",
+        "name": "Get a record",
+        "credentials": {
+          "bitrixWebhookApi": {
+            "id": "ROP1MNW41IyhXNQY",
+            "name": "BitrixCuentaEdu"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "afeebfa4-12bc-4e46-b415-923c997ee348",
+                "leftValue": "={{ Number($json.result.ASSIGNED_BY_ID) }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "number",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          1424,
+          0
+        ],
+        "id": "e4f293a4-eb19-40b3-9233-3646e974de5a",
+        "name": "Filter2"
+      },
+      {
+        "parameters": {
+          "operation": "select",
+          "schema": {
+            "__rl": true,
+            "value": "bitrix",
+            "mode": "list",
+            "cachedResultName": "bitrix"
+          },
+          "table": {
+            "__rl": true,
+            "value": "asesor",
+            "mode": "list",
+            "cachedResultName": "asesor"
+          },
+          "where": {
+            "values": [
+              {
+                "column": "id",
+                "value": "={{ Number($json.result.ASSIGNED_BY_ID) }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1632,
+          0
+        ],
+        "id": "62356be6-e614-412b-9fef-93d64b72b2a8",
+        "name": "Select rows from a table1",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "960fc10f-79f7-42f5-8b39-d194f4d749a2",
+                "leftValue": "={{ $('Get a record').item.json.result.STAGE_ID }}",
+                "rightValue": "C5:UC_GFZ3OE",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEquals"
+                }
+              },
+              {
+                "id": "4b69a178-b13b-4751-9d46-53d0ca71db83",
+                "leftValue": "={{ $('Get a record').item.json.result.STAGE_ID }}",
+                "rightValue": "C5:LOSE",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEquals"
+                }
+              },
+              {
+                "id": "88dcf1df-9bf6-4ced-9dab-f1178760b4a8",
+                "leftValue": "={{ $('Get a record').item.json.result.STAGE_ID }}",
+                "rightValue": "C5:APOLOGY",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEquals"
+                }
+              },
+              {
+                "id": "db8846e9-b4d2-4865-bbd2-48247f982309",
+                "leftValue": "={{ $('Get a record').item.json.result.STAGE_ID }}",
+                "rightValue": "C5:WON",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEquals"
+                }
+              },
+              {
+                "id": "d578447e-70dd-44e9-94da-b5e883c2721e",
+                "leftValue": "={{ $('Get a record').item.json.result.ID }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              },
+              {
+                "id": "3bfb9e87-9699-4b00-8711-03bbbc7ddda8",
+                "leftValue": "={{ Number($json.id) }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "number",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          1824,
+          0
+        ],
+        "id": "bf1c42cb-a67f-4100-b7e1-7befcb4fbe76",
+        "name": "Filter3"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "1YOHspTg0VUMQSX_4jteym-67vrrCZbuGJcEpUhCbZfg",
+            "mode": "list",
+            "cachedResultName": "CONSOLIDADOEVENTOS",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YOHspTg0VUMQSX_4jteym-67vrrCZbuGJcEpUhCbZfg/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Hoja 1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1YOHspTg0VUMQSX_4jteym-67vrrCZbuGJcEpUhCbZfg/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "asesor": "={{ $('Select rows from a table1').item.json.correo }}",
+              "Fecha": "={{ $('Split Out').item.json.dimensionValues[3].value.replace(/(\\d{4})(\\d{2})(\\d{2})/, '$1-$2-$3') }}",
+              "Nombre": "={{ $('Select rows from a table').item.json.nombre }}",
+              "Apellido": "={{ $('Select rows from a table').item.json.apellido_materno }} {{ $('Select rows from a table').item.json.apellido_paterno }}",
+              "Correo": "={{ $('Select rows from a table').item.json.correo }}",
+              "Celular": "={{ $('Select rows from a table').item.json.celular }}",
+              "Tipo Evento": "crédito Hipotecario",
+              "Proyecto Simuló": "={{ $('Split Out').item.json.dimensionValues[2].value }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "asesor",
+                "displayName": "asesor",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Fecha",
+                "displayName": "Fecha",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Nombre",
+                "displayName": "Nombre",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Apellido",
+                "displayName": "Apellido",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Correo",
+                "displayName": "Correo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Celular",
+                "displayName": "Celular",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Tipo Evento",
+                "displayName": "Tipo Evento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Proyecto Favorito",
+                "displayName": "Proyecto Favorito",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Proyecto Simuló",
+                "displayName": "Proyecto Simuló",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Proyecto Analizó",
+                "displayName": "Proyecto Analizó",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Residencia",
+                "displayName": "Residencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Ingresos",
+                "displayName": "Ingresos",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Monto Inicial",
+                "displayName": "Monto Inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Tiene un crédito hipotecario",
+                "displayName": "Tiene un crédito hipotecario",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Modalidad de Trabajo",
+                "displayName": "Modalidad de Trabajo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Meses de Continuidad Laboral",
+                "displayName": "Meses de Continuidad Laboral",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          2016,
+          0
+        ],
+        "id": "f7f14dcd-632f-43f9-8224-e15bdda128b1",
+        "name": "Append row in sheet",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "WQy7dRpZDtSa20hj",
+            "name": "n8n - Agosto 25"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out": {
+        "main": [
+          [
+            {
+              "node": "Select rows from a table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Select rows from a table": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          [
+            {
+              "node": "List records",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "List records": {
+        "main": [
+          [
+            {
+              "node": "Filter1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter1": {
+        "main": [
+          [
+            {
+              "node": "Get a record",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get a record": {
+        "main": [
+          [
+            {
+              "node": "Filter2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter2": {
+        "main": [
+          [
+            {
+              "node": "Select rows from a table1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Select rows from a table1": {
+        "main": [
+          [
+            {
+              "node": "Filter3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter3": {
+        "main": [
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "60e35b52-661c-4cc9-9290-5a9956b0f60d",
   "connections": {
     "Webhook": {
       "main": [
@@ -1972,8 +2659,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-09-04T19:39:54.369Z",
       "updatedAt": "2025-09-04T19:39:54.369Z",
+      "createdAt": "2025-09-04T19:39:54.369Z",
       "role": "workflow:owner",
       "workflowId": "FF4Js81gFtPjrYXv",
       "projectId": "tpSonpyzopDOYZNA"
