@@ -1,5 +1,135 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-12T00:15:49.238Z",
+    "createdAt": "2026-02-12T00:15:49.237Z",
+    "versionId": "ca028b71-f3ff-4afc-bf83-36d4b7f83d28",
+    "workflowId": "7yJq3Cmwq8aoawVP",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "etapa",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -420,
+          -20
+        ],
+        "id": "5430cf7d-fdde-47c8-b3a3-cd32123103bb",
+        "name": "Webhook",
+        "webhookId": "d6b0d5ff-15ce-48f8-ae6f-31acff6b6f0b"
+      },
+      {
+        "parameters": {
+          "method": "PATCH",
+          "url": "=https://propertamibotcom.kommo.com/api/v4/leads/{{ $('Webhook').item.json.body.kommo_id }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "oAuth2Api",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"status_id\": {{ $json.kommo }}\n\n}",
+          "options": {
+            "response": {
+              "response": {
+                "responseFormat": "json"
+              }
+            }
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          100,
+          -20
+        ],
+        "id": "0af3c5e5-7d91-420a-94d8-383f7530970b",
+        "name": "HTTP Request",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "CUkAxEZkWpxNLUY2",
+            "name": "Proper"
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "operation": "select",
+          "schema": {
+            "__rl": true,
+            "value": "crm",
+            "mode": "list",
+            "cachedResultName": "crm"
+          },
+          "table": {
+            "__rl": true,
+            "value": "etapas_leads",
+            "mode": "list",
+            "cachedResultName": "etapas_leads"
+          },
+          "where": {
+            "values": [
+              {
+                "column": "codigo",
+                "value": "={{ $json.body.etapa_inmueble }}"
+              },
+              {
+                "column": "funnel_id",
+                "value": "={{ $json.body.funnel_id }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -200,
+          -20
+        ],
+        "id": "14bf77ac-c17c-479e-930e-e0ee561b3e93",
+        "name": "Postgres",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Postgres",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "ca028b71-f3ff-4afc-bf83-36d4b7f83d28",
   "connections": {
     "Webhook": {
       "main": [
@@ -173,8 +303,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-08-18T16:02:46.199Z",
       "updatedAt": "2025-08-18T16:02:46.199Z",
+      "createdAt": "2025-08-18T16:02:46.199Z",
       "role": "workflow:owner",
       "workflowId": "7yJq3Cmwq8aoawVP",
       "projectId": "tpSonpyzopDOYZNA"
