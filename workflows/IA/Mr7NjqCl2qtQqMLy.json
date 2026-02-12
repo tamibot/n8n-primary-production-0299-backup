@@ -1,5 +1,370 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-11T14:35:49.378Z",
+    "createdAt": "2026-02-11T14:35:49.378Z",
+    "versionId": "1e1e8ba1-c2d3-4c17-8470-bc113dbc16e7",
+    "workflowId": "Mr7NjqCl2qtQqMLy",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "rentas-registro-horario",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -1760,
+          192
+        ],
+        "id": "8e443315-c770-4bf4-9ead-80c63c9a1d57",
+        "name": "Webhook",
+        "webhookId": "76ef197b-58cb-47ef-95b6-75724e34d176"
+      },
+      {
+        "parameters": {
+          "authentication": "longLivedToken",
+          "resource": "leads",
+          "filter": {
+            "id": "={{ $json.body?.['leads[add][0][id]'] ?? $json.body?.['leads[status][0][id]'] }}"
+          },
+          "options": {
+            "with": [
+              "contacts"
+            ]
+          },
+          "limit": 1
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          -1312,
+          192
+        ],
+        "id": "a89cd47e-c6ae-4f89-9c0b-32e884f44175",
+        "name": "Kommo API Node",
+        "credentials": {
+          "kommoLongLivedApi": {
+            "id": "20bzHfzuZvuDPmtm",
+            "name": "Kommo Long Lived Token account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "21f0faaf-ceb5-4138-91cd-6c288f47ab96",
+                "name": "telefono",
+                "value": "={{$json._embedded.contacts[0].custom_fields_values.find(f => f.field_code === \"PHONE\").values[0].value}}",
+                "type": "string"
+              },
+              {
+                "id": "1552d482-8a09-4b3d-a951-228e45f81903",
+                "name": "fecha1",
+                "value": "={{ ($('Kommo API Node').item.json._embedded.leads[0].custom_fields_values || []).find(f => (f.field_name || '').trim() === 'n8n - fecha1')?.values?.[0]?.value || '' }}",
+                "type": "string"
+              },
+              {
+                "id": "c5934f19-e3c5-4af7-8e92-5ae02ba80d20",
+                "name": "fecha2",
+                "value": "={{ ($('Kommo API Node').item.json._embedded.leads[0].custom_fields_values || []).find(f => (f.field_name || '').trim() === 'n8n - fecha2')?.values?.[0]?.value || '' }}",
+                "type": "string"
+              },
+              {
+                "id": "d74b2a87-23f5-4801-a3c9-425412a71f6a",
+                "name": "utm_source",
+                "value": "BOT IA",
+                "type": "string"
+              },
+              {
+                "id": "95ca3575-16ff-4f0f-aaed-fc5dfaf2f610",
+                "name": "n8n - CODPROPIEDAD",
+                "value": "={{ ($('Kommo API Node').item.json._embedded.leads[0].custom_fields_values || []).find(f => (f.field_name || '').trim() === 'n8n - CODPROPIEDAD')?.values?.[0]?.value || '' }}",
+                "type": "string"
+              },
+              {
+                "id": "8df4fa99-b80f-4730-9f08-4c74363ee87a",
+                "name": "codigoInmueble",
+                "value": "={{ ($('Kommo API Node').item.json._embedded.leads[0].custom_fields_values || []).find(f => (f.field_name || '').trim() === 'codigoInmueble')?.values?.[0]?.value || '' }}",
+                "type": "string"
+              },
+              {
+                "id": "1d3624eb-5a05-4140-a729-42714ccc456c",
+                "name": "nombre",
+                "value": "={{ $json._embedded.contacts[0].name }}",
+                "type": "string"
+              },
+              {
+                "id": "94d252b8-05fa-41ab-816c-d6924f421e47",
+                "name": "codpropiedad_logico",
+                "value": "={{ ($('Kommo API Node').item.json._embedded.leads[0].custom_fields_values || []).find(f => (f.field_name || '').trim() === 'n8n - codpropiedad logico')?.values?.[0]?.value || '' }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -880,
+          192
+        ],
+        "id": "788e60d9-6cf4-4700-a83a-8b395d8a7267",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "authentication": "longLivedToken",
+          "resource": "contacts",
+          "filter": {
+            "id": "={{ $json._embedded.leads[0]._embedded.contacts[0].id }}"
+          },
+          "options": {},
+          "limit": 1
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          -1088,
+          192
+        ],
+        "id": "d5963366-215e-40ef-8e51-7edeff415d2f",
+        "name": "Kommo API Node1",
+        "credentials": {
+          "kommoLongLivedApi": {
+            "id": "20bzHfzuZvuDPmtm",
+            "name": "Kommo Long Lived Token account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "8645f397-dcc0-42c2-a93e-39ce5084ea6a",
+                "name": "fecha_programada",
+                "value": "={{ $json.fecha2 ? DateTime.fromFormat($json.fecha2, 'dd/LL/yyyy HH:mm', { zone: 'America/Lima' }).toFormat(\"yyyy-LL-dd'T'HH:mm:ss\") : DateTime.fromFormat($json.fecha1, 'dd/LL/yyyy HH:mm', { zone: 'America/Lima' }).toFormat(\"yyyy-LL-dd'T'HH:mm:ss\") }}",
+                "type": "string"
+              },
+              {
+                "id": "dcbfb20d-6144-43fd-ba15-b3ae6d3a51c7",
+                "name": "telefono_formateado",
+                "value": "={{ String($json.telefono).replace(/^\\+?51/, '') }}",
+                "type": "string"
+              },
+              {
+                "id": "ee37e207-4dfe-4ba0-a965-e289d11a4270",
+                "name": "cod_inmueble",
+                "value": "={{ ($json.codpropiedad_logico || $json.codigoInmueble || $json['n8n - CODPROPIEDAD'] || '').split(',')[0].trim() }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -656,
+          192
+        ],
+        "id": "60cd49c1-b84c-4b8c-98a9-4f2f663e7b84",
+        "name": "Edit Fields1"
+      },
+      {
+        "parameters": {
+          "amount": 3
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -1536,
+          192
+        ],
+        "id": "9928a347-2ce3-433c-84b3-008508042492",
+        "name": "Wait",
+        "webhookId": "01c98600-2c60-41dc-a906-2c95863c2125"
+      },
+      {
+        "parameters": {
+          "url": "=https://b9ugijtcz4.execute-api.us-east-2.amazonaws.com/prod/inmuebles/get_inmueble_codigo/{{ $json.cod_inmueble }}/",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -432,
+          192
+        ],
+        "id": "ca0eda74-6cef-4147-b565-46d92d0007b3",
+        "name": "API: Get Inmueble ID"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://b9ugijtcz4.execute-api.us-east-2.amazonaws.com/prod/visitas/",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"codigo_inmueble\": \"{{ $node[\"Edit Fields1\"].json.cod_inmueble }}\",\n  \"fecha_programada\": \"{{ $node[\"Edit Fields1\"].json.fecha_programada }}\",\n  \"inmueble\": \"{{ $json.data.id }}\",\n  \"formulario\": \"Inquilino interesado\",\n  \"tiempo_reunion\": \"00:30\",\n  \"agregar_alquileres\": false,\n  \"cliente_asistio\": false,\n  \"celular\": \"{{ $node[\"Edit Fields\"].json.telefono }}\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -208,
+          192
+        ],
+        "id": "e19f5109-8d3e-42b9-b50e-2955a0fc9b0c",
+        "name": "API: Crear Visita"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://b9ugijtcz4.execute-api.us-east-2.amazonaws.com/prod/visitas/responsables/",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"visita\": \"{{ $json.id_visita }}\",\n  \"email\": \"alquileres@proper.com.pe\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          16,
+          192
+        ],
+        "id": "d117a0f3-b94d-4b14-920d-d8af4565e76c",
+        "name": "API: Asignar Responsable"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://b9ugijtcz4.execute-api.us-east-2.amazonaws.com/prod/visitas/{{ $node[\"API: Crear Visita\"].json.id_visita }}/interesado/",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"nombre\": \"{{ $node[\"Edit Fields\"].json.nombre }}\",\n  \"nacionalidad\": \"peruano\",\n  \"hijos\": false,\n  \"nro_personas_depto\": 1,\n  \"mascotas\": false,\n  \"nro_mascotas\": 0,\n  \"fecha_toma_departamento\": \"\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          240,
+          192
+        ],
+        "id": "54d6818f-2e4c-48c4-b060-c13303f8b3c3",
+        "name": "API: Datos Interesado"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Kommo API Node",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Kommo API Node": {
+        "main": [
+          [
+            {
+              "node": "Kommo API Node1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Kommo API Node1": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields1": {
+        "main": [
+          []
+        ]
+      },
+      "API: Get Inmueble ID": {
+        "main": [
+          [
+            {
+              "node": "API: Crear Visita",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "API: Crear Visita": {
+        "main": [
+          [
+            {
+              "node": "API: Asignar Responsable",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "API: Asignar Responsable": {
+        "main": [
+          [
+            {
+              "node": "API: Datos Interesado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "API: Datos Interesado": {
+        "main": [
+          []
+        ]
+      }
+    },
+    "authors": "Martin Velasco",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "1e1e8ba1-c2d3-4c17-8470-bc113dbc16e7",
   "connections": {
     "Webhook": {
       "main": [
@@ -58,13 +423,7 @@
     },
     "Edit Fields1": {
       "main": [
-        [
-          {
-            "node": "API: Get Inmueble ID",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "API: Get Inmueble ID": {
@@ -408,8 +767,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-08-20T13:24:52.577Z",
       "updatedAt": "2025-08-20T13:24:52.577Z",
+      "createdAt": "2025-08-20T13:24:52.577Z",
       "role": "workflow:owner",
       "workflowId": "Mr7NjqCl2qtQqMLy",
       "projectId": "tpSonpyzopDOYZNA"
@@ -418,13 +777,13 @@
   "staticData": null,
   "tags": [
     {
-      "createdAt": "2025-08-01T18:41:06.465Z",
       "updatedAt": "2025-08-01T18:41:06.465Z",
+      "createdAt": "2025-08-01T18:41:06.465Z",
       "id": "94z6tcDoVU8DriEW",
       "name": "IA"
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-01-15T18:13:26.744Z",
-  "versionId": "d026c246-a358-4295-9650-607e16605f95"
+  "updatedAt": "2026-02-11T14:35:49.043Z",
+  "versionId": "1e1e8ba1-c2d3-4c17-8470-bc113dbc16e7"
 }
