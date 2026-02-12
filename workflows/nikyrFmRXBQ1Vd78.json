@@ -1,5 +1,543 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-12T00:15:49.238Z",
+    "createdAt": "2026-02-12T00:15:49.237Z",
+    "versionId": "7b6d58f2-1b1f-4adc-a969-3ce10532d1cf",
+    "workflowId": "nikyrFmRXBQ1Vd78",
+    "nodes": [
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "nombre",
+                "name": "nombre",
+                "value": "={{ $('Webhook').item.json.body.data.fields[0].value }}",
+                "type": "string"
+              },
+              {
+                "id": "telefono",
+                "name": "telefono",
+                "value": "={{ $('Webhook').item.json.body.data.fields[1].value }}",
+                "type": "string"
+              },
+              {
+                "id": "servicio",
+                "name": "servicio",
+                "value": "={{ $json.servicio }}",
+                "type": "string"
+              },
+              {
+                "id": "propiedad",
+                "name": "propiedad",
+                "value": "={{ $json.propiedad }}",
+                "type": "string"
+              },
+              {
+                "id": "nota",
+                "name": "nota",
+                "value": "={{ $json.NOTA }}",
+                "type": "string"
+              },
+              {
+                "id": "8caba4a8-8c6e-4485-aec1-e61ce9bff1ec",
+                "name": "origen",
+                "value": "={{ $json.fuente }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          240,
+          512
+        ],
+        "id": "ff400fa6-d7fe-49a0-87d5-914fbffc3be8",
+        "name": "Formatear Datos"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.servicio }}",
+                      "rightValue": "RENTAS - INQUILINO",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Inquilino"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.servicio }}",
+                      "rightValue": "INVERSIONES",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Inversiones"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.servicio }}",
+                      "rightValue": "RENTAS - PROPIETARIO",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Propietario"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          464,
+          496
+        ],
+        "id": "529df35f-4cc5-4420-b524-d2c4e3bcd9c0",
+        "name": "Switch Servicio"
+      },
+      {
+        "parameters": {
+          "resource": "contacts",
+          "operation": "createContacts",
+          "collection": {
+            "contact": [
+              {
+                "name": "={{ $json.nombre }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":522504,\"type\":\"multitext\"}",
+                      "value": "={{ $json.telefono }}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          688,
+          320
+        ],
+        "id": "5ef64ed1-99f6-4ac8-8164-03704bc157a4",
+        "name": "Create new contacts",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "Xm12cHoxJw7jGGaV",
+            "name": "Proper"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "contacts",
+          "operation": "createContacts",
+          "collection": {
+            "contact": [
+              {
+                "name": "={{ $json.nombre }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":522504,\"type\":\"multitext\"}",
+                      "value": "={{ $json.telefono }}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          688,
+          512
+        ],
+        "id": "b81d8230-579b-4942-b604-881be90d6817",
+        "name": "Create new contacts1",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "Xm12cHoxJw7jGGaV",
+            "name": "Proper"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "contacts",
+          "operation": "createContacts",
+          "collection": {
+            "contact": [
+              {
+                "name": "={{ $json.nombre }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":522504,\"type\":\"multitext\"}",
+                      "value": "={{ $json.telefono }}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          688,
+          704
+        ],
+        "id": "289498f2-5b61-42a4-bd4f-cabf4e80b13b",
+        "name": "Create new contacts2",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "Xm12cHoxJw7jGGaV",
+            "name": "Proper"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "createLeads",
+          "collection": {
+            "lead": [
+              {
+                "pipeline_id": 11240224,
+                "status_id": 97996236,
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":798355,\"type\":\"text\"}",
+                      "value": "={{ $('Switch Servicio').item.json.propiedad }}"
+                    },
+                    {
+                      "data": "{\"id\":797051,\"type\":\"textarea\"}",
+                      "value": "={{ $('Switch Servicio').item.json.propiedad }}"
+                    },
+                    {
+                      "data": "{\"id\":798801,\"type\":\"text\"}",
+                      "value": "={{ $('Switch Servicio').item.json.propiedad }}"
+                    },
+                    {
+                      "data": "{\"id\":799148,\"type\":\"text\"}",
+                      "value": "={{ $('Switch Servicio').item.json.origen }}"
+                    }
+                  ]
+                },
+                "_embedded": {
+                  "contacts": [
+                    {
+                      "id": {
+                        "contact": [
+                          {
+                            "id": "={{ $json._embedded.contacts[0].id }}"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          912,
+          320
+        ],
+        "id": "0e41b851-f4a5-4fa1-a03c-c11e8b10e790",
+        "name": "Create new leads",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "Xm12cHoxJw7jGGaV",
+            "name": "Proper"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "createLeads",
+          "collection": {
+            "lead": [
+              {
+                "pipeline_id": 8874156,
+                "status_id": 96388008,
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":799148,\"type\":\"text\"}",
+                      "value": "={{ $('Switch Servicio').item.json.origen }}"
+                    }
+                  ]
+                },
+                "_embedded": {
+                  "contacts": [
+                    {
+                      "id": {
+                        "contact": [
+                          {
+                            "id": "={{ $json._embedded.contacts[0].id }}"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          912,
+          512
+        ],
+        "id": "dde07f21-4622-402f-a2e6-44339075a956",
+        "name": "Create new leads1",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "Xm12cHoxJw7jGGaV",
+            "name": "Proper"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "createLeads",
+          "collection": {
+            "lead": [
+              {
+                "pipeline_id": 9165176,
+                "status_id": 90694444,
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":799148,\"type\":\"text\"}",
+                      "value": "={{ $('Switch Servicio').item.json.origen }}"
+                    }
+                  ]
+                },
+                "_embedded": {
+                  "contacts": [
+                    {
+                      "id": {
+                        "contact": [
+                          {
+                            "id": "={{ $json._embedded.contacts[0].id }}"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          912,
+          704
+        ],
+        "id": "04c11f96-a1e2-46c0-8c4e-c8ee6502966d",
+        "name": "Create new leads2",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "Xm12cHoxJw7jGGaV",
+            "name": "Proper"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "gestcomercial",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -208,
+          512
+        ],
+        "id": "09bf05a7-3b5f-4b54-b995-9130135621eb",
+        "name": "Webhook",
+        "webhookId": "80a9f035-c360-4a02-9b33-2d798bcb37f2"
+      },
+      {
+        "parameters": {
+          "jsCode": "const payload = $json; // tu webhook completo\nconst fields = payload.body.data.fields;\n\nfunction selectedTexts(questionKey) {\n  const f = fields.find(x => x.key === questionKey);\n  if (!f) return null;\n\n  const values = Array.isArray(f.value) ? f.value : (f.value ? [f.value] : []);\n  const optMap = new Map((f.options || []).map(o => [o.id, o.text]));\n\n  return values.map(v => optMap.get(v)).filter(Boolean); // array de textos\n}\n\n// Ejemplos con tus keys:\nreturn [{\n  servicio: selectedTexts(\"question_ZNJ9aB\")?.[0] ?? null,     // si esperas 1 selección\n  propiedad: selectedTexts(\"question_N60qoj\")?.[0] ?? null,\n  fuente: selectedTexts(\"question_qdP5V9\")?.[0] ?? null,\n\n  // si quieres todos (por si marcan más de uno):\n  servicio_all: selectedTexts(\"question_ZNJ9aB\") ?? [],\n  propiedad_all: selectedTexts(\"question_N60qoj\") ?? [],\n  fuente_all: selectedTexts(\"question_qdP5V9\") ?? [],\n}];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          16,
+          512
+        ],
+        "id": "4bb7ed61-e8fb-4bfa-b7e2-72b52bc65b13",
+        "name": "Code"
+      }
+    ],
+    "connections": {
+      "Formatear Datos": {
+        "main": [
+          [
+            {
+              "node": "Switch Servicio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch Servicio": {
+        "main": [
+          [
+            {
+              "node": "Create new contacts",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Create new contacts1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Create new contacts2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create new contacts": {
+        "main": [
+          [
+            {
+              "node": "Create new leads",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create new contacts1": {
+        "main": [
+          [
+            {
+              "node": "Create new leads1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create new contacts2": {
+        "main": [
+          [
+            {
+              "node": "Create new leads2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "Formatear Datos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "7b6d58f2-1b1f-4adc-a969-3ce10532d1cf",
   "connections": {
     "Formatear Datos": {
       "main": [
@@ -540,8 +1078,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-12-11T14:16:57.061Z",
       "updatedAt": "2025-12-11T14:16:57.061Z",
+      "createdAt": "2025-12-11T14:16:57.061Z",
       "role": "workflow:owner",
       "workflowId": "nikyrFmRXBQ1Vd78",
       "projectId": "tpSonpyzopDOYZNA"
