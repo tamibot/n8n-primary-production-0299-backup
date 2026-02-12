@@ -1,5 +1,266 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-12T00:15:49.238Z",
+    "createdAt": "2026-02-12T00:15:49.237Z",
+    "versionId": "7bc88ff6-774f-4b23-bdab-dcde907d6da2",
+    "workflowId": "QmtJb76HmI7T81pC",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 8 * * 1"
+              }
+            ]
+          }
+        },
+        "id": "dce43514-9561-455c-b5e0-f96b051758e4",
+        "name": "Lunes 8am",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -80,
+          384
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH contratos_hab AS (\n    SELECT\n        c.id AS contrato_id,\n        c.habitacion_id,\n        c.inmueble_id,\n        c.fecha_fin,\n        ROW_NUMBER() OVER (PARTITION BY c.habitacion_id ORDER BY c.fecha_fin DESC) AS rn\n    FROM rentas_crm.contratos c\n    WHERE c.habitacion_id IS NOT NULL\n),\nultimos_contratos_hab AS (\n    SELECT * FROM contratos_hab WHERE rn = 1\n),\nsalidas_hab AS (\n    SELECT\n        s.inmueble_id,\n        s.contrato_id,\n        s.categoria,\n        s.id AS salida_id,\n        ROW_NUMBER() OVER (PARTITION BY s.contrato_id ORDER BY s.fecha_salida DESC) AS rn\n    FROM rentas_crm.salida_inmueble s\n),\nultimas_salidas_hab AS (\n    SELECT * FROM salidas_hab WHERE rn = 1\n),\ntareas_salida_hab AS (\n    SELECT\n        salida_id,\n        COUNT(*) AS tareas_pendientes\n    FROM rentas_crm.tareas\n    WHERE status IN ('Pendiente', 'En proceso')\n    GROUP BY salida_id\n),\nrecepcion_modo_tareas AS (\n    SELECT\n        r.inmueble_id,\n        r.id AS recepcion_id,\n        r.categoria,\n        COUNT(t.id) AS tareas_pendientes\n    FROM rentas_crm.recepcion_modo_inmueble r\n    LEFT JOIN rentas_crm.tareas t ON t.recepcion_modo_id = r.id\n    WHERE t.status IN ('Pendiente', 'En proceso')\n    GROUP BY r.inmueble_id, r.id, r.categoria\n),\nestado_habitaciones AS (\n    SELECT\n        h.inmueble_id,\n        h.id AS habitacion_id,\n        CASE\n            WHEN s.categoria IN ('requiere mantenimiento menor', 'requiere mantenimiento mayor') AND ts.tareas_pendientes > 0\n                THEN REPLACE(s.categoria, ' ', '_')\n            WHEN uc.fecha_fin >= CURRENT_DATE AND s.salida_id IS NULL\n                THEN 'vigente'\n            WHEN uc.fecha_fin < CURRENT_DATE AND s.salida_id IS NULL\n                THEN 'vencido'\n            WHEN rm.tareas_pendientes > 0 AND rm.categoria IN ('requiere mantenimiento menor', 'requiere mantenimiento mayor')\n                THEN REPLACE(rm.categoria, ' ', '_')\n            ELSE 'disponible'\n        END AS estado\n    FROM rentas_crm.habitaciones h\n    LEFT JOIN ultimos_contratos_hab uc ON uc.habitacion_id = h.id\n    LEFT JOIN ultimas_salidas_hab s ON s.contrato_id = uc.contrato_id\n    LEFT JOIN tareas_salida_hab ts ON ts.salida_id = s.salida_id\n    LEFT JOIN recepcion_modo_tareas rm ON rm.inmueble_id = h.inmueble_id\n),\nconteo_estados AS (\n    SELECT\n        inmueble_id,\n        COUNT(*) FILTER (WHERE estado = 'vigente') AS total_vigente,\n        COUNT(*) FILTER (WHERE estado = 'vencido') AS total_vencido,\n        COUNT(*) FILTER (WHERE estado = 'requiere_mantenimiento_menor') AS mantenimiento_menor,\n        COUNT(*) FILTER (WHERE estado = 'requiere_mantenimiento_mayor') AS mantenimiento_mayor,\n        COUNT(*) FILTER (WHERE estado = 'disponible') AS total_disponible,\n        COUNT(*) AS total_habitaciones\n    FROM estado_habitaciones\n    GROUP BY inmueble_id\n),\ncontratos_simple AS (\n    SELECT\n        c.id AS contrato_id,\n        c.inmueble_id,\n        c.fecha_fin,\n        ROW_NUMBER() OVER (PARTITION BY c.inmueble_id ORDER BY c.fecha_fin DESC) AS rn\n    FROM rentas_crm.contratos c\n    WHERE c.habitacion_id IS NULL\n),\nultimo_contrato_simple AS (\n    SELECT * FROM contratos_simple WHERE rn = 1\n),\nsalidas_simple AS (\n    SELECT\n        s.inmueble_id,\n        s.contrato_id,\n        s.categoria,\n        s.id AS salida_id,\n        ROW_NUMBER() OVER (PARTITION BY s.contrato_id ORDER BY s.fecha_salida DESC) AS rn\n    FROM rentas_crm.salida_inmueble s\n),\nultima_salida_simple AS (\n    SELECT * FROM salidas_simple WHERE rn = 1\n),\ntareas_salida_simple AS (\n    SELECT\n        salida_id,\n        COUNT(*) AS tareas_pendientes\n    FROM rentas_crm.tareas\n    WHERE status IN ('Pendiente', 'En proceso')\n    GROUP BY salida_id\n),\nrecepcion_modo_simple AS (\n    SELECT\n        r.inmueble_id,\n        r.categoria,\n        COUNT(t.id) AS tareas_pendientes\n    FROM rentas_crm.recepcion_modo_inmueble r\n    LEFT JOIN rentas_crm.tareas t ON t.recepcion_modo_id = r.id AND t.status IN ('Pendiente', 'En proceso')\n    GROUP BY r.inmueble_id, r.categoria\n),\nrecepcionados_simple AS (\n    SELECT DISTINCT inmueble_id FROM rentas_crm.recepcion_inmueble\n),\nvisitas_recepcion_simple AS (\n    SELECT DISTINCT inmueble_id FROM rentas_crm.visitas\n    WHERE formulario = 'Recepcion'\n)\nSELECT\n    t.fecha_fin,\n\tt.codigo,\n    CASE\n        WHEN t.detalle_estado LIKE 'OCUPADO%' THEN 'OCUPADO'\n        ELSE 'VACIO'\n    END AS ocupacion,\n\tt.detalle_estado\nFROM (\n    SELECT\n        i.id AS inmueble_id,\n        i.codigo,\n        i.tipo_negocio,\n        i.tipo_inmueble,\n        i.tipo_habitacion,\n        c2.fecha_fin,\n        CASE\n            WHEN i.tipo_habitacion IN ('por habitaciones', 'por camarotes') THEN\n                CASE\n                    WHEN (COALESCE(c.total_vigente, 0) + COALESCE(c.total_vencido, 0)) = c.total_habitaciones\n                        THEN 'OCUPADO TOTAL'\n                    WHEN (COALESCE(c.total_vigente, 0) + COALESCE(c.total_vencido, 0)) > 0\n                         AND (COALESCE(c.total_vigente, 0) + COALESCE(c.total_vencido, 0)) < c.total_habitaciones\n                        THEN 'OCUPADO PARCIAL'\n                    WHEN COALESCE(c.mantenimiento_mayor, 0) > 0\n                        THEN 'VACIO - REQUIERE MANTENIMIENTO MAYOR'\n                    WHEN COALESCE(c.mantenimiento_menor, 0) > 0\n                        THEN 'VACIO - REQUIERE MANTENIMIENTO MENOR'\n                    WHEN COALESCE(c.total_disponible, 0) = c.total_habitaciones\n                        THEN 'DISPONIBLE - SIN TAREAS DE MANTENIMIENTO'\n                    ELSE 'DISPONIBLE'\n                END\n            ELSE\n\t\t\t\tCASE\n\t\t\t\t    WHEN c2.fecha_fin IS NOT NULL AND c2.fecha_fin >= CURRENT_DATE AND s.salida_id IS NULL\n\t\t\t\t        THEN 'OCUPADO TOTAL - CONTRATO VIGENTE'\n\t\t\t\t    WHEN c2.fecha_fin IS NOT NULL AND c2.fecha_fin < CURRENT_DATE AND s.salida_id IS NULL\n\t\t\t\t        THEN 'OCUPADO - CONTRATO VENCIDO'\n\t\t\t\t    WHEN s.categoria IN ('requiere mantenimiento menor', 'requiere mantenimiento mayor') AND ts.tareas_pendientes > 0\n\t\t\t\t        THEN 'VACIO - ' || UPPER(s.categoria)\n\t\t\t\t    WHEN s.categoria = 'no requiere mantenimiento'\n\t\t\t\t        THEN 'DISPONIBLE - SIN TAREAS DE MANTENIMIENTO'\n\t\t\t\t    WHEN rm2.tareas_pendientes > 0 AND rm2.categoria IN ('requiere mantenimiento menor', 'requiere mantenimiento mayor')\n\t\t\t\t        THEN 'VACIO - ' || UPPER(rm2.categoria)\n\t\t\t\t    WHEN vr.inmueble_id IS NOT NULL AND rcp.inmueble_id IS NULL AND c2.fecha_fin IS NULL\n\t\t\t\t        THEN 'POR RECIBIR'\n\t\t\t\t    WHEN rcp.inmueble_id IS NOT NULL AND c2.fecha_fin IS NULL\n\t\t\t\t        THEN 'EN CORRETAJE POR RECEPCION'\n\t\t\t\t    WHEN c2.fecha_fin IS NULL AND rcp.inmueble_id IS NULL AND CURRENT_DATE - i.fecha_creacion <= 60\n\t\t\t\t        THEN 'EN FIRMA DE CONTRATO'\n\t\t\t\t    ELSE 'EN PAUSA'\n\t\t\t\tEND\n        END AS detalle_estado\n    FROM rentas_crm.inmuebles i\n    LEFT JOIN conteo_estados c ON c.inmueble_id = i.id\n    LEFT JOIN ultimo_contrato_simple c2 ON c2.inmueble_id = i.id\n    LEFT JOIN ultima_salida_simple s ON s.contrato_id = c2.contrato_id\n    LEFT JOIN tareas_salida_simple ts ON ts.salida_id = s.salida_id\n    LEFT JOIN recepcion_modo_simple rm2 ON rm2.inmueble_id = i.id\n    LEFT JOIN recepcionados_simple rcp ON rcp.inmueble_id = i.id\n    LEFT JOIN visitas_recepcion_simple vr ON vr.inmueble_id = i.id\n    WHERE i.codigo NOT ILIKE '%TEST%'\n      AND i.codigo NOT ILIKE '%PRUEBA%'\n      AND i.estado1 <> 'baja'\n) t\nWHERE DETALLE_ESTADO ILIKE '%VENCIDO%'\nORDER BY detalle_estado DESC",
+          "options": {}
+        },
+        "id": "b400b2ab-e377-423a-a07b-5a31f92d0520",
+        "name": "Query_Tabla_1",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.5,
+        "position": [
+          224,
+          128
+        ],
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH lead_base AS (\n    SELECT\n        a.id AS lead_id,\n        a.fecha_creacion AS lead_fecha_creacion,\n        a.funnel_id,\n        a.\"customFields\",\n        b.id AS contacto_id,\n        b.nombre,\n        b.apellido_paterno,\n        b.telefono,\n        b.email,\n        b.nro_documento,\n        e.nombre AS etapa_funnel\n    FROM crm.leads a\n    LEFT JOIN crm.contactos b ON a.contacto_id = b.id\n    LEFT JOIN crm.etapas_leads e ON a.etapa_inmueble = e.codigo\n    WHERE a.funnel_id = 7\n),\nkv AS (\n    SELECT\n        lb.lead_id,\n        lb.contacto_id,\n        lb.nombre,\n        lb.apellido_paterno,\n        lb.telefono,\n        lb.nro_documento,\n        lb.email,\n        lb.lead_fecha_creacion,\n        lb.funnel_id,\n        lb.etapa_funnel,\n        k.key   AS field_id,\n        k.value AS raw_value\n    FROM lead_base lb\n    LEFT JOIN LATERAL jsonb_each(lb.\"customFields\"::jsonb) AS k(key, value) ON true\n),\nkv_norm AS (\n    SELECT\n        kv.*,\n        trim(both '\"' from kv.raw_value::text) AS raw_text,\n        CASE\n            WHEN jsonb_typeof(kv.raw_value) IN ('number','string')\n             AND (trim(both '\"' from kv.raw_value::text) ~ '^\\d+$')\n            THEN (trim(both '\"' from kv.raw_value::text))::int\n            ELSE NULL\n        END AS raw_id\n    FROM kv\n),\nresolved AS (\n    SELECT\n        kvn.lead_id,\n        kvn.contacto_id,\n        kvn.nombre,\n        kvn.apellido_paterno,\n        kvn.telefono,\n        kvn.nro_documento,\n        kvn.email,\n        kvn.lead_fecha_creacion,\n        kvn.etapa_funnel,\n        cf.name AS field_name,\n        COALESCE(cv.value, NULLIF(kvn.raw_text,'null')) AS field_value\n    FROM kv_norm kvn\n    LEFT JOIN crm.custom_fields cf ON cf.id = kvn.field_id\n    LEFT JOIN crm.custom_values cv\n        ON cv.field_id = cf.id AND cv.id = kvn.raw_id\n    WHERE cf.funnel_id = 7\n),\nleads_v1 AS (\n    SELECT\n        r.lead_id,\n        r.contacto_id,\n        r.nombre,\n        r.apellido_paterno,\n        r.telefono,\n        r.email,\n        r.nro_documento,\n        r.lead_fecha_creacion,\n        r.etapa_funnel,\n        MAX(CASE WHEN r.field_name = '¿En que departamento se encuentra tu inmueble?' THEN r.field_value END) AS departamento,\n        MAX(CASE WHEN r.field_name = '¿En qué distrito se encuentra tu inmueble?' THEN r.field_value END) AS distrito,\n        MAX(CASE WHEN r.field_name = '¿Tu departamento está listo para alquilar o está en construcción?' THEN r.field_value END) AS listo_alquilar\n    FROM resolved r\n    GROUP BY 1,2,3,4,5,6,7,8,9\n),\nleads_final AS (\n    SELECT\n        date_trunc('month', lead_fecha_creacion::date)::date AS mes,\n        lead_fecha_creacion::date AS fechacreacion,\n        nombre,\n        apellido_paterno,\n        nro_documento AS nrodoc,\n        telefono,\n        email,\n        distrito,\n        CASE\n            WHEN distrito IN (\n               'Miraflores', 'San Miguel', 'Magdalena', 'Lince', 'Jesús María', 'Pueblo Libre',\n                             'La Victoria', 'Breña', 'Barranco', 'San Borja', 'San Isidro', 'Surquillo',\n                             'Chorrillos', 'Santa Beatriz', 'Surco'\n            ) THEN 'SI' ELSE 'NO'\n        END AS con_cobertura,\n        listo_alquilar\n    FROM leads_v1 B\n\tWHERE 1=1\n\tAND B.NOMBRE NOT ILIKE '%TEST%'\n\tAND B.NOMBRE NOT ILIKE '%PRUEBA%'\n\tAND B.APELLIDO_PATERNO NOT ILIKE '%Mendoza Mattos%'\n\tAND B.APELLIDO_PATERNO NOT ILIKE '%PRUEBA%'\n\tAND B.APELLIDO_PATERNO NOT ILIKE '%TEST%'\n\tAND (B.nro_documento <> '75946464' OR B.nro_documento IS NULL)\t\n),\nleads as (\nselect mes,\n\tcount(distinct telefono) leads_totales,\n\tcount(distinct case when con_cobertura ='SI' then telefono else null end) leads_en_cobertura\n\tfrom leads_final\n\tgroup by 1\n),\nllamadas_agendadas as (\nSELECT DISTINCT \n    DATE_TRUNC('MONTH', FECHA_PROGRAMADA)::DATE AS MES, \n\tCOUNT(DISTINCT RIGHT(REGEXP_REPLACE(CELULAR, '[^0-9]', '', 'g'), 9)) AS CANTIDAD_LLAMADAS_AGENDADAS\nFROM RENTAS_CRM.VISITAS\nWHERE FORMULARIO = 'Propietario interesado'\nGROUP BY 1\n)\n,contratos_admin as (\nSELECT MES_FIRMA MES, ROUND(AVG(DIAS_CONVERSION),0) DIAS_PROM_CONVERSION FROM (\nSELECT DISTINCT DATE_TRUNC('MONTH', A.FECHA_FIRMADO)::DATE MES_FIRMA,D.NRO_DOCUMENTO,  A.FECHA_FIRMADO::DATE, F.FECHACREACION::DATE, \nCASE WHEN A.FECHA_FIRMADO::DATE - F.FECHACREACION::DATE >= 0 THEN A.FECHA_FIRMADO::DATE - F.FECHACREACION::DATE ELSE NULL END AS DIAS_CONVERSION\nFROM RENTAS_CRM.CONTRATOS_GESTION A\nLEFT JOIN RENTAS_CRM.INMUEBLES B ON A.INMUEBLE_ID=B.ID\nLEFT JOIN RENTAS_CRM.INMUEBLE_PROPIETARIO C ON B.ID=C.INMUEBLE_ID\nLEFT JOIN RENTAS_CRM.PROPIETARIOS D ON C.PROPIETARIO_ID=D.ID\nLEFT JOIN BITRIX.HS_CLIENTE E ON D.NRO_DOCUMENTO::VARCHAR=E.NRODOC::VARCHAR\nLEFT JOIN (SELECT IDCLIENTE, MAX(FECHACREACION) FECHACREACION FROM RENTAS.HS_RENTAS GROUP BY 1) F ON E.ID=F.IDCLIENTE\nWHERE 1=1\nAND A.FECHA_FIRMADO IS NOT NULL\nAND F.FECHACREACION IS NOT NULL\nAND D.NRO_DOCUMENTO IS NOT NULL AND D.NRO_DOCUMENTO NOT IN ('') AND D.NRO_DOCUMENTO NOT IN ('75946464', '42455988') ORDER BY MES_FIRMA DESC\n)\nWHERE DIAS_CONVERSION > 0 AND DIAS_CONVERSION < 360\nGROUP BY 1\nORDER BY 1 DESC\n)\n,recepciones AS (\nSELECT DATE_TRUNC('MONTH', FECHA_INGRESO)::DATE MES, \nCOUNT(DISTINCT B.CODIGO) INMUEBLES_RECEPCIONADOS,\nCOUNT(DISTINCT CASE WHEN E.NRO_DOCUMENTO IS NOT NULL THEN B.CODIGO ELSE NULL END) INMUEBLES_RECEPCIONADOS_CLIENTES_PROPER,\nCOUNT(DISTINCT CASE WHEN E.NRO_DOCUMENTO IS NULL THEN B.CODIGO ELSE NULL END) INMUEBLES_RECEPCIONADOS_CLIENTES_EXTERNOS\nFROM RENTAS_CRM.RECEPCION_INMUEBLE A\nLEFT JOIN RENTAS_CRM.INMUEBLES B ON A.INMUEBLE_ID=B.ID\nLEFT JOIN RENTAS_CRM.INMUEBLE_PROPIETARIO C ON B.ID=C.INMUEBLE_ID\nLEFT JOIN RENTAS_CRM.PROPIETARIOS D ON C.PROPIETARIO_ID=D.ID\nLEFT JOIN public.separaciones_separacion E ON D.NRO_DOCUMENTO::VARCHAR=E.NRO_DOCUMENTO::VARCHAR\nWHERE 1=1\nAND B.CODIGO NOT ILIKE '%TEST%'\nAND B.CODIGO NOT ILIKE '%MOD%'\nAND B.CODIGO NOT ILIKE '%PRUEBA%'\nAND A.FECHA_INGRESO IS NOT NULL\nGROUP BY 1\nORDER BY 1 DESC\n),\nentregas AS (\nSELECT \nDATE_TRUNC('MONTH', FECHA_ENTREGA)::DATE MES,\nCOUNT(DISTINCT B.CODIGO) CANT_ENTREGAS\nFROM RENTAS_CRM.ENTREGA_INMUEBLE A\nLEFT JOIN RENTAS_CRM.INMUEBLES B ON A.INMUEBLE_ID=B.ID\nWHERE 1=1\nAND B.CODIGO NOT ILIKE '%MOD%'\nAND B.CODIGO NOT ILIKE '%TEST%'\nAND B.CODIGO NOT ILIKE '%PRUEBA%'\nGROUP BY 1\nORDER BY 1 DESC\n),\nsalidas AS (\nSELECT DISTINCT\nDATE_TRUNC('MONTH', FECHA_SALIDA)::DATE MES,\nCOUNT(DISTINCT B.CODIGO) CANT_SALIDAS\nFROM RENTAS_CRM.SALIDA_INMUEBLE A\nLEFT JOIN RENTAS_CRM.INMUEBLES B ON A.INMUEBLE_ID=B.ID\nWHERE 1=1\nAND B.CODIGO NOT ILIKE '%MOD%'\nAND B.CODIGO NOT ILIKE '%TEST%'\nAND B.CODIGO NOT ILIKE '%PRUEBA%'\nGROUP BY 1\nORDER BY 1 DESC\n),\nALQUILERES AS (\nWITH \ncontratos_alquiler as (\n SELECT \n date_trunc('month', a.fecha_inicio)::date mes_inicio_contrato,\n a.fecha_inicio fecha_inicio_contrato, \n a.fecha_fin fecha_fin_contrato, \n a.id id_contrato, \n case \n when d.codigo ilike '%MODO%' then 'MODO'\n when d.codigo ilike '%MODC%' then 'MODO COCHERA'\n else 'RETAIL' end as tipo,\n d.codigo, \n case \n when d.codigo ilike '%MODC%' then 'COCHERA'\n when a.habitacion_id is null and right(d.codigo_pago,2)='LF' then 'LOFT'\n when a.habitacion_id is null and right(d.codigo_pago,2)='TW' then 'TWIN'\n when a.habitacion_id is not null and right(e.codigo_pago,2) in ('A1', 'A2', 'B1', 'B2') then 'CAMAROTES'\n when a.habitacion_id is not null and right(e.codigo_pago,1) in ('A', 'B') then 'HABITACIONES'\n end as tipo_departamento,\n case when a.habitacion_id is null then d.codigo_pago else e.codigo_pago end as codigo_pago,\n coalesce(c.nombre, c.representante_legal) nombre, c.apellido_paterno, \n c.apellido_materno, \n coalesce(c.nro_documento,c.ruc) nro_documento, a.renta,\n a.tipo_contrato_alquiler,\n row_number() over (partition by coalesce(c.nombre, c.representante_legal),d.codigo order by a.fecha_inicio asc) conteo_contrato_por_nrodoc\n FROM rentas_crm.contratos a\n left join rentas_crm.contrato_inquilino b on a.id=b.contrato_id\n LEFT JOIN rentas_crm.inquilinos c on b.inquilino_id=c.id\n left join rentas_crm.inmuebles d on a.inmueble_id=d.id\n left join rentas_crm.habitaciones e on e.inmueble_id=d.id and e.id=a.habitacion_id\n order by fecha_inicio desc\n )\n \n select DATE_TRUNC('MONTH', FECHA_INICIO_CONTRATO)::DATE MES,\n COUNT(DISTINCT CODIGO) CANT_CONTRATOS\n from contratos_alquiler a\n where 1=1\n and codigo NOT ilike '%TEST%'\n AND CODIGO NOT ILIKE '%PRUEBA%'\n AND CODIGO NOT ILIKE '%MOD%'\n AND CONTEO_CONTRATO_POR_NRODOC=1\n AND (TIPO_CONTRATO_ALQUILER='1' OR TIPO_CONTRATO_ALQUILER IS NULL)\n GROUP BY 1\n ORDER BY 1 DESC\n)\nSELECT \n    a.mes,  \n    a.leads_totales leads_totales,\n    COALESCE(a.leads_en_cobertura, 0) AS leads_con_cobertura,\n    ROUND(100.0 * COALESCE(a.leads_en_cobertura, 0) / NULLIF(a.leads_totales, 0), 2) AS porcentaje_cobertura,\n    COALESCE(r.inmuebles_recepcionados, 0) AS nuevos_inmuebles_recepcionados_propietario,\n    COALESCE(d.CANT_CONTRATOS, 0) AS nuevos_contratos_alquiler,\n    COALESCE(e.CANT_ENTREGAS, 0) AS inmuebles_entregados_a_inquilino,\n    COALESCE(s.CANT_SALIDAS, 0) AS inmuebles_salida_inquilino\nFROM leads a\nLEFT JOIN llamadas_agendadas l ON a.mes=l.mes\nLEFT JOIN recepciones r ON a.mes = r.mes\nLEFT JOIN alquileres d ON a.mes = d.mes\nLEFT JOIN entregas e ON a.mes = e.mes\nLEFT JOIN salidas s ON a.mes = s.mes\nLEFT JOIN contratos_admin f ON a.mes=f.mes\nWHERE a.mes >= CURRENT_DATE - 180\nORDER BY a.mes DESC",
+          "options": {}
+        },
+        "id": "aae6ffe3-624c-41a7-b896-969484a83e70",
+        "name": "Query_Tabla_2",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.5,
+        "position": [
+          224,
+          304
+        ],
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "-- ESTADOS\n\n-- OCUPADO (CON CONTRATO DE ALQUILER VIGENTE, CON CONTRATO DE ALQUILER VENCIDO)\n-- VACIO (SIN RECEPCION, EN CORRETAJE)\n\nWITH BASE_INMUEBLES_RETAIL AS (\n\tSELECT ID, CODIGO, FECHA_CREACION, ESTADO1\n\tFROM RENTAS_CRM.INMUEBLES\n\tWHERE 1=1\n\tAND CODIGO NOT ILIKE '%MOD%'\n\tAND CODIGO NOT ILIKE '%PRUEBA%'\n\tAND CODIGO NOT ILIKE '%TEST%'\n\tAND (ESTADO1 NOT ILIKE '%BAJA%' OR ESTADO1 IS NULL)\n),\nCORRETAJE AS (\n\tSELECT CODIGO CODIGO_CORRETAJE, SEPARACION\n\tFROM CRM.DEPARTAMENTOS_URBANIA\n)\n,RECEPCION AS (\n\tSELECT A.FECHA_INGRESO, A.INMUEBLE_ID, B.CODIGO\n\tFROM RENTAS_CRM.RECEPCION_INMUEBLE A\n\tLEFT JOIN RENTAS_CRM.INMUEBLES B ON A.INMUEBLE_ID=B.ID\n\tORDER BY A.FECHA_INGRESO DESC\n)\n,CONTRATOS_ALQUILER AS (\n\tSELECT A.ID CONTRATO_ID, A.INMUEBLE_ID, A.FECHA_INICIO, A.FECHA_FIN, \n\tCASE \n\tWHEN A.FECHA_FIN < CURRENT_DATE THEN 'VENCIDO'\n\tWHEN A.FECHA_INICIO<= CURRENT_DATE AND A.FECHA_FIN>= CURRENT_DATE THEN 'ACTIVO' ELSE 'NO ACTIVO' END AS ESTADO,\n\tCASE WHEN B.CONTRATO_ID IS NOT NULL THEN 'SI' ELSE 'NO' END AS SALIDA\n\tFROM  (SELECT *, ROW_NUMBER() OVER (PARTITION BY INMUEBLE_ID ORDER BY FECHA_FIN DESC) AS rn FROM RENTAS_CRM.CONTRATOS) A\n\tLEFT JOIN RENTAS_CRM.SALIDA_INMUEBLE B ON A.ID=B.CONTRATO_ID\n\tWHERE A.RN=1\n\tORDER BY ESTADO DESC\n\n),\nFINAL AS (\nSELECT A.*,\nCASE \nWHEN D.ESTADO='VENCIDO' AND D.SALIDA='NO' THEN 'OCUPADO' \nWHEN B.CODIGO_CORRETAJE IS NOT NULL THEN 'VACIO'\nWHEN D.ESTADO='ACTIVO' THEN 'OCUPADO' \nWHEN C.INMUEBLE_ID IS NULL THEN 'VACIO'\nWHEN D.INMUEBLE_ID IS NULL THEN 'VACIO'\nWHEN D.INMUEBLE_ID IS NOT NULL THEN 'VACIO'\nEND AS ESTADO,\nCASE \nWHEN D.ESTADO='VENCIDO' AND D.SALIDA='NO' THEN 'OCUPADO - CONTRATO VENCIDO' \nWHEN B.CODIGO_CORRETAJE IS NOT NULL THEN 'VACIO - EN CORRETAJE'\nWHEN D.ESTADO='ACTIVO' THEN 'OCUPADO - CONTRATO ACTIVO' \nWHEN C.INMUEBLE_ID IS NULL OR C.FECHA_INGRESO='2024-12-11' THEN 'VACIO - SIN RECEPCION'\nWHEN D.INMUEBLE_ID IS NULL THEN 'VACIO'\nWHEN D.INMUEBLE_ID IS NOT NULL THEN 'VACIO'\nEND AS DETALLE_ESTADO\nFROM BASE_INMUEBLES_RETAIL A \nLEFT JOIN CORRETAJE B ON A.CODIGO=TRIM(B.CODIGO_CORRETAJE)\nLEFT JOIN RECEPCION C ON A.ID=C.INMUEBLE_ID\nLEFT JOIN CONTRATOS_ALQUILER D ON A.ID=D.INMUEBLE_ID\nORDER BY 5 DESC, 6 DESC\n)\n-- SELECT 'RETAIL' AS TIPO, CODIGO, ESTADO, DETALLE_ESTADO\n-- FROM FINAL\n\nSELECT ESTADO, DETALLE_ESTADO, COUNT(DISTINCT CODIGO) CANTIDAD\nFROM FINAL\nGROUP BY 1,2\nORDER BY 1,3 DESC\n\n\n\n\n",
+          "options": {}
+        },
+        "id": "b5663d73-605a-4fec-ab9c-abf939541738",
+        "name": "Query_Tabla_3",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.5,
+        "position": [
+          224,
+          464
+        ],
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH base AS (\n    WITH contratos_hab AS (\n        SELECT\n            c.id AS contrato_id,\n            c.habitacion_id,\n            c.inmueble_id,\n            c.fecha_fin,\n            ROW_NUMBER() OVER (PARTITION BY c.habitacion_id ORDER BY c.fecha_fin DESC) AS rn\n        FROM rentas_crm.contratos c\n        WHERE c.habitacion_id IS NOT NULL\n    ),\n    ultimos_contratos_hab AS (\n        SELECT * FROM contratos_hab WHERE rn = 1\n    ),\n    salidas_hab AS (\n        SELECT\n            s.inmueble_id,\n            s.contrato_id,\n            s.categoria,\n            s.id AS salida_id,\n            ROW_NUMBER() OVER (PARTITION BY s.contrato_id ORDER BY s.fecha_salida DESC) AS rn\n        FROM rentas_crm.salida_inmueble s\n    ),\n    ultimas_salidas_hab AS (\n        SELECT * FROM salidas_hab WHERE rn = 1\n    ),\n    tareas_salida_hab AS (\n        SELECT\n            salida_id,\n            COUNT(*) AS tareas_pendientes\n        FROM rentas_crm.tareas\n        WHERE status IN ('Pendiente', 'En proceso')\n        GROUP BY salida_id\n    ),\n    recepcion_modo_tareas AS (\n        SELECT\n            r.inmueble_id,\n            r.id AS recepcion_id,\n            r.categoria,\n            COUNT(t.id) AS tareas_pendientes\n        FROM rentas_crm.recepcion_modo_inmueble r\n        LEFT JOIN rentas_crm.tareas t ON t.recepcion_modo_id = r.id\n        WHERE t.status IN ('Pendiente', 'En proceso')\n        GROUP BY r.inmueble_id, r.id, r.categoria\n    ),\n    estado_habitaciones AS (\n        SELECT \n            h.inmueble_id,\n            h.id AS habitacion_id,\n            CASE\n                WHEN s.categoria IN ('requiere mantenimiento menor', 'requiere mantenimiento mayor') AND ts.tareas_pendientes > 0\n                    THEN REPLACE(s.categoria, ' ', '_')\n                WHEN uc.fecha_fin >= CURRENT_DATE AND s.salida_id IS NULL\n                    THEN 'vigente'\n                WHEN uc.fecha_fin < CURRENT_DATE AND s.salida_id IS NULL\n                    THEN 'vencido'\n                WHEN rm.tareas_pendientes > 0 AND rm.categoria IN ('requiere mantenimiento menor', 'requiere mantenimiento mayor')\n                    THEN REPLACE(rm.categoria, ' ', '_')\n                ELSE 'disponible'\n            END AS estado\n        FROM rentas_crm.habitaciones h\n        LEFT JOIN ultimos_contratos_hab uc ON uc.habitacion_id = h.id\n        LEFT JOIN ultimas_salidas_hab s ON s.contrato_id = uc.contrato_id\n        LEFT JOIN tareas_salida_hab ts ON ts.salida_id = s.salida_id\n        LEFT JOIN recepcion_modo_tareas rm ON rm.inmueble_id = h.inmueble_id\n    ),\n\t-- \tselect * from estado_habitaciones where codigo_pago ='MODO909B'\t\n    conteo_estados AS (\n        SELECT\n            A.inmueble_id,\n\t\t\tB.CODIGO,\n            COUNT(*) FILTER (WHERE estado = 'vigente') AS total_vigente,\n            COUNT(*) FILTER (WHERE estado = 'vencido') AS total_vencido,\n            COUNT(*) FILTER (WHERE estado = 'requiere_mantenimiento_menor') AS mantenimiento_menor,\n            COUNT(*) FILTER (WHERE estado = 'requiere_mantenimiento_mayor') AS mantenimiento_mayor,\n            COUNT(*) FILTER (WHERE estado = 'disponible') AS total_disponible,\n            COUNT(*) AS total_habitaciones\n        FROM estado_habitaciones A\n\t\tLEFT JOIN RENTAS_CRM.INMUEBLES B ON A.INMUEBLE_ID=B.ID\n        GROUP BY 1,2\n    )\n-- \tSELECT * FROM CONTEO_ESTADOS WHERE CODIGO ILIKE '%MODO909%'\t\n\t\n    ,contratos_simple AS (\n        SELECT\n            c.id AS contrato_id,\n            c.inmueble_id,\n            c.fecha_fin,\n            ROW_NUMBER() OVER (PARTITION BY c.inmueble_id ORDER BY c.fecha_fin DESC) AS rn\n        FROM rentas_crm.contratos c\n        WHERE c.habitacion_id IS NULL\n    ),\n    ultimo_contrato_simple AS (\n        SELECT * FROM contratos_simple WHERE rn = 1\n    ),\n    salidas_simple AS (\n        SELECT\n            s.inmueble_id,\n            s.contrato_id,\n            s.categoria,\n            s.id AS salida_id,\n            ROW_NUMBER() OVER (PARTITION BY s.contrato_id ORDER BY s.fecha_salida DESC) AS rn\n        FROM rentas_crm.salida_inmueble s\n    ),\n    ultima_salida_simple AS (\n        SELECT * FROM salidas_simple WHERE rn = 1\n    ),\n    tareas_salida_simple AS (\n        SELECT\n            salida_id,\n            COUNT(*) AS tareas_pendientes\n        FROM rentas_crm.tareas\n        WHERE status IN ('Pendiente', 'En proceso')\n        GROUP BY salida_id\n    ),\n    recepcion_modo_simple AS (\n        SELECT\n            r.inmueble_id,\n            r.categoria,\n            COUNT(t.id) AS tareas_pendientes\n        FROM rentas_crm.recepcion_modo_inmueble r\n        LEFT JOIN rentas_crm.tareas t ON t.recepcion_modo_id = r.id AND t.status IN ('Pendiente', 'En proceso')\n        GROUP BY r.inmueble_id, r.categoria\n    ),\n    recepcionados_simple AS (\n        SELECT DISTINCT inmueble_id FROM rentas_crm.recepcion_inmueble\n    ),\n    visitas_recepcion_simple AS (\n        SELECT DISTINCT inmueble_id FROM rentas_crm.visitas\n        WHERE formulario = 'Recepcion'\n    )\n    SELECT\n        t.*,\n        CASE\n            WHEN t.detalle_estado LIKE 'OCUPADO%' THEN 'OCUPADO'\n            ELSE 'VACIO'\n        END AS ocupacion\n    FROM (\n        SELECT\n            i.id AS inmueble_id,\n            i.codigo,\n            i.tipo_negocio,\n            i.tipo_inmueble,\n            i.tipo_habitacion,\n            c2.fecha_fin,\n            CASE\n                WHEN i.tipo_habitacion IN ('por habitaciones', 'por camarotes') THEN\n                    CASE\n\t\t\t\t\t\tWHEN i.listo_para_alquilar = true then 'LISTO PARA ALQUILAR'\n                        WHEN (COALESCE(c.total_vigente, 0) + COALESCE(c.total_vencido, 0)) = c.total_habitaciones\n                            THEN 'OCUPADO TOTAL'\n                        WHEN (COALESCE(c.total_vigente, 0) + COALESCE(c.total_vencido, 0)) > 0\n                             AND (COALESCE(c.total_vigente, 0) + COALESCE(c.total_vencido, 0)) < c.total_habitaciones\n                            THEN 'OCUPADO PARCIAL'\n\t\t                WHEN COALESCE(c.mantenimiento_menor, 0) > 0\n                        THEN 'VACIO - REQUIERE MANTENIMIENTO MENOR'\n                        WHEN COALESCE(c.mantenimiento_mayor, 0) > 0\n                            THEN 'VACIO - REQUIERE MANTENIMIENTO MAYOR'\n                        WHEN COALESCE(c.total_disponible, 0) = c.total_habitaciones\n                            THEN 'DISPONIBLE'\n                        ELSE 'DISPONIBLE'\n                    END\n                ELSE\n                    CASE\n                        WHEN i.listo_para_alquilar = true then 'LISTO PARA ALQUILAR'\n\t\t\t\t\t\tWHEN c2.fecha_fin IS NOT NULL AND c2.fecha_fin >= CURRENT_DATE AND s.salida_id IS NULL\n                            THEN 'OCUPADO TOTAL'\n                        WHEN s.categoria IN ('requiere mantenimiento menor', 'requiere mantenimiento mayor') AND ts.tareas_pendientes > 0\n                            THEN 'VACIO - ' || UPPER(s.categoria)\n                        WHEN s.categoria = 'no requiere mantenimiento'\n                            THEN 'DISPONIBLE'\n                        WHEN rm2.tareas_pendientes > 0 AND rm2.categoria IN ('requiere mantenimiento menor', 'requiere mantenimiento mayor')\n                            THEN 'VACIO - ' || UPPER(rm2.categoria)\n\t\t\t\t\t\tWHEN ts.tareas_pendientes = 0 THEN 'DISPONIBLE'\n                        ELSE 'DISPONIBLE'\n                    END\n            END AS detalle_estado\n        FROM rentas_crm.inmuebles i\n        LEFT JOIN conteo_estados c ON c.inmueble_id = i.id\n        LEFT JOIN ultimo_contrato_simple c2 ON c2.inmueble_id = i.id\n        LEFT JOIN ultima_salida_simple s ON s.contrato_id = c2.contrato_id\n        LEFT JOIN tareas_salida_simple ts ON ts.salida_id = s.salida_id\n        LEFT JOIN recepcion_modo_simple rm2 ON rm2.inmueble_id = i.id\n        LEFT JOIN recepcionados_simple rcp ON rcp.inmueble_id = i.id\n        LEFT JOIN visitas_recepcion_simple vr ON vr.inmueble_id = i.id\n        WHERE i.codigo NOT ILIKE '%TEST%'\n          AND i.codigo NOT ILIKE '%PRUEBA%'\n          AND i.estado1 <> 'baja'\n\t\t  AND i.codigo ILIKE '%MODO%'\n    ) t\n    ORDER BY detalle_estado DESC\n)\n\nSELECT \nOCUPACION ESTADO,\nDETALLE_ESTADO,\nCOUNT(DISTINCT CODIGO) CANTIDAD\nFROM BASE\nGROUP BY 1,2\nORDER BY 1,3 DESC\n\n\n\n\n\n\n\n\n",
+          "options": {}
+        },
+        "id": "20102526-2cef-47c2-8e20-2ca9d6365a44",
+        "name": "Query_Tabla_4",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.5,
+        "position": [
+          224,
+          640
+        ],
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "chooseBranch",
+          "numberInputs": 4
+        },
+        "id": "32c93625-6053-4c0a-91a6-cb5ad41e047c",
+        "name": "Merge_Wait",
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3,
+        "position": [
+          528,
+          384
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "function generateTable(nodeName, title) {\n    let items = [];\n    try {\n        items = $(nodeName).all();\n    } catch (e) {}\n\n    if (!items || items.length === 0) {\n        return `<h2 style=\"font-family: Arial, sans-serif; color: #004a99; border-bottom: 2px solid #004a99; padding-bottom: 5px; margin-top: 30px;\">${title}</h2>\n                <p style=\"font-family: Arial, sans-serif; color: #666; font-style: italic;\">Sin resultados.</p>`;\n    }\n\n    const data = items.map(i => i.json);\n    const headers = Object.keys(data[0]);\n\n    let html = `<h2 style=\"font-family: Arial, sans-serif; color: #004a99; border-bottom: 2px solid #004a99; padding-bottom: 5px; margin-top: 30px;\">${title}</h2>`;\n    html += `<table style=\"width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 13px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);\">\n                <thead>\n                    <tr style=\"background-color: #004a99; color: white; text-align: left;\">`;\n    \n    headers.forEach(h => {\n        const cleanHeader = h.replace(/_/g, ' ').toUpperCase();\n        html += `<th style=\"padding: 12px; border: 1px solid #ddd;\">${cleanHeader}</th>`;\n    });\n    \n    html += `</tr></thead><tbody>`;\n\n    data.forEach((row, index) => {\n        const bgColor = index % 2 === 0 ? '#ffffff' : '#f9f9f9';\n        html += `<tr style=\"background-color: ${bgColor};\">`;\n        headers.forEach(h => {\n            let val = row[h];\n            if ((h.toLowerCase() === 'mes' || h.toLowerCase() === 'fechacreacion' || h.toLowerCase() === 'fecha_fin') && val) {\n                try {\n                    val = new Date(val).toISOString().split('T')[0];\n                } catch(e) {}\n            }\n            html += `<td style=\"padding: 10px; border: 1px solid #ddd; color: #444;\">${val === null || val === undefined ? '' : val}</td>`;\n        });\n        html += `</tr>`;\n    });\n\n    html += `</tbody></table>`;\n    return html;\n}\n\nlet finalHtml = `<html><body style=\"padding: 20px; background-color: #f4f7f9;\">`;\nfinalHtml += `<p style=\"font-family: Arial, sans-serif; font-size: 16px;\">Buenos días, se envía el reporte semanal de rentas:</p>`;\nfinalHtml += generateTable('Query_Tabla_1', 'Inmuebles ocupados con contrato vencido');\nfinalHtml += generateTable('Query_Tabla_2', 'Reporte mensual de gestión');\nfinalHtml += generateTable('Query_Tabla_3', 'Status inmuebles RETAIL');\nfinalHtml += generateTable('Query_Tabla_4', 'Status inmuebles MODO');\nfinalHtml += `<p style=\"font-family: Arial, sans-serif; font-size: 16px;\">Ver el detalle de inmuebles en la hoja INMUEBLES y TD INMUEBLES de este excel: https://docs.google.com/spreadsheets/d/1y6nygnKw613yMbja3gbRjn0x4Rc19bWy8xvMgJ-ZMC4/edit?gid=1952608265#gid=1952608265</p>`;\nfinalHtml += `<br><p style=\"color: #999; font-size: 11px; font-family: Arial, sans-serif;\">Este es un reporte automático generado por n8n.</p></body></html>`;\n\nreturn [{ html: finalHtml }];"
+        },
+        "id": "01a9c546-26e7-4718-af61-7f5dcc45cd7d",
+        "name": "Build_HTML_Email",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          784,
+          384
+        ]
+      },
+      {
+        "parameters": {
+          "sendTo": "valeria.vega@proper.com.pe,\ngiomar.lopez@proper.com.pe,\nalquileres@proper.com.pe,\nedificio.modo@proper.com.pe,\nadministracion.modo@proper.com.pe,\nsoporte.corretaje@proper.com.pe,\njorge.campos@cmcapital.in,\ndiego.sanchez@proper.com.pe",
+          "subject": "Reporte semanal de rentas",
+          "message": "={{ $json.html }}",
+          "options": {}
+        },
+        "id": "37048764-f9a6-486b-8a24-72d7d22a2522",
+        "name": "Gmail",
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          1024,
+          384
+        ],
+        "webhookId": "02883911-840f-4969-86e8-5bef32f7ed35",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "SPurZ4Z9pGQy8MKJ",
+            "name": "Gmail account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Lunes 8am": {
+        "main": [
+          [
+            {
+              "node": "Query_Tabla_1",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Query_Tabla_2",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Query_Tabla_3",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Query_Tabla_4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Query_Tabla_1": {
+        "main": [
+          [
+            {
+              "node": "Merge_Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Query_Tabla_2": {
+        "main": [
+          [
+            {
+              "node": "Merge_Wait",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Merge_Wait": {
+        "main": [
+          [
+            {
+              "node": "Build_HTML_Email",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build_HTML_Email": {
+        "main": [
+          [
+            {
+              "node": "Gmail",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Query_Tabla_3": {
+        "main": [
+          [
+            {
+              "node": "Merge_Wait",
+              "type": "main",
+              "index": 2
+            }
+          ]
+        ]
+      },
+      "Query_Tabla_4": {
+        "main": [
+          [
+            {
+              "node": "Merge_Wait",
+              "type": "main",
+              "index": 3
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "7bc88ff6-774f-4b23-bdab-dcde907d6da2",
   "connections": {
     "Lunes 8am": {
       "main": [
@@ -263,8 +524,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-12-30T20:04:24.184Z",
       "updatedAt": "2025-12-30T20:04:24.184Z",
+      "createdAt": "2025-12-30T20:04:24.184Z",
       "role": "workflow:owner",
       "workflowId": "QmtJb76HmI7T81pC",
       "projectId": "tpSonpyzopDOYZNA"
