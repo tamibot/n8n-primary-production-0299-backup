@@ -1,5 +1,322 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-12T00:15:49.238Z",
+    "createdAt": "2026-02-12T00:15:49.237Z",
+    "versionId": "1afb875b-00c8-4317-9e87-c076af13f6f7",
+    "workflowId": "wYmpWFfhOtCztar9",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "participanteszoom",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          -16
+        ],
+        "id": "0419e2d8-3a7d-48ee-9178-0b0d41a62d82",
+        "name": "Webhook",
+        "webhookId": "adbe6404-9b46-4555-9518-2d8571ec7b8f"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "body.zoom_data.participants",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          224,
+          -16
+        ],
+        "id": "4ae04678-05a6-48f7-8e02-9f52e3f3b227",
+        "name": "Split Out"
+      },
+      {
+        "parameters": {
+          "operation": "select",
+          "schema": {
+            "__rl": true,
+            "value": "bitrix",
+            "mode": "list",
+            "cachedResultName": "bitrix"
+          },
+          "table": {
+            "__rl": true,
+            "value": "participantes",
+            "mode": "list",
+            "cachedResultName": "participantes"
+          },
+          "where": {
+            "values": [
+              {
+                "column": "id",
+                "value": "={{ new Date($('Split Out').item.json.join_time).toISOString().split('T')[0] + $('Split Out').item.json.user_email.toLowerCase() }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          672,
+          -16
+        ],
+        "id": "ce73fadc-377d-48e7-a3e6-7630591fc218",
+        "name": "Select rows from a table",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "4b0ea8e6-2c88-4b73-8fe1-45d9fec29096",
+                "leftValue": "={{ $json.status }}",
+                "rightValue": "in_meeting",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              },
+              {
+                "id": "96a9a3e3-228e-4bfd-bfbd-9784c24843cc",
+                "leftValue": "={{ $json.user_email }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          448,
+          -16
+        ],
+        "id": "679ac445-a021-4df1-a700-dd803aea8c27",
+        "name": "Filter"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "f60b9b83-19e9-4caf-b26b-7e72f1fc935e",
+                "leftValue": "={{ $json.id }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          896,
+          -16
+        ],
+        "id": "93d088e8-c67a-46f3-a998-c1eb5ae66b89",
+        "name": "Filter1"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "value": "bitrix",
+            "mode": "list",
+            "cachedResultName": "bitrix"
+          },
+          "table": {
+            "__rl": true,
+            "value": "participantes",
+            "mode": "list",
+            "cachedResultName": "participantes"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "id": "0"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "fecha",
+                "displayName": "fecha",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "estanciatotal",
+                "displayName": "estanciatotal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": true,
+                "defaultMatch": true,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "tipo_reunion",
+                "displayName": "tipo_reunion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1120,
+          -16
+        ],
+        "id": "926e7a5d-1a81-4e9a-8c9b-da3b875923d6",
+        "name": "Insert rows in a table",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          [
+            {
+              "node": "Select rows from a table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Select rows from a table": {
+        "main": [
+          [
+            {
+              "node": "Filter1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter1": {
+        "main": [
+          [
+            {
+              "node": "Insert rows in a table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "1afb875b-00c8-4317-9e87-c076af13f6f7",
   "connections": {
     "Webhook": {
       "main": [
@@ -389,8 +706,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-09-10T15:08:50.441Z",
       "updatedAt": "2025-09-10T15:08:50.441Z",
+      "createdAt": "2025-09-10T15:08:50.441Z",
       "role": "workflow:owner",
       "workflowId": "wYmpWFfhOtCztar9",
       "projectId": "tpSonpyzopDOYZNA"
