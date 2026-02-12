@@ -1,5 +1,1048 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-12T00:15:49.238Z",
+    "createdAt": "2026-02-12T00:15:49.237Z",
+    "versionId": "44230b58-01d2-4ccd-ae9b-f2c0f1075c32",
+    "workflowId": "M5yuxAPpVF3OlhHu",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "kommo-stage-changed",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -2200,
+          100
+        ],
+        "id": "5bc6c6f9-798f-4c64-9219-e7ca89da3717",
+        "name": "Webhook",
+        "webhookId": "7ab5b969-f434-4599-9844-6fe45f4eed3b"
+      },
+      {
+        "parameters": {
+          "url": "=https://propertamibotcom.kommo.com/api/v4/leads/{{ $json.lead_id }}?with=contacts",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "oAuth2Api",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -1540,
+          100
+        ],
+        "id": "52b64bee-8d0f-4be6-a9be-6528ab28e309",
+        "name": "HTTP Request",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "CUkAxEZkWpxNLUY2",
+            "name": "IntegracionKommo"
+          }
+        },
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "url": "=https://propertamibotcom.kommo.com/api/v4/contacts/{{ $json.contacto_id }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "oAuth2Api",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -660,
+          100
+        ],
+        "id": "53bf52a7-c573-4077-ab1f-57262a56bcf3",
+        "name": "HTTP Request1",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "CUkAxEZkWpxNLUY2",
+            "name": "IntegracionKommo"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const results = [];\n\nfor (const item of $input.all()) {\n  const raw = item.json.data;\n  const parsed = JSON.parse(raw);\n\n  const diccionario = new Map();\n\n  if (parsed.custom_fields_values) {\n    for (const campo of parsed.custom_fields_values) {\n      const name = String(campo.field_name);\n      const value = campo.values?.[0]?.value || null;\n      diccionario.set(name, value);\n    }\n  }\n\n  const contacto = parsed._embedded?.contacts?.[0];\n\n  results.push({\n    json: {\n      id: parsed.id,\n      numero: parsed.id,\n      lead_title: parsed.name,\n      lead_stage: parsed.status_id,\n      pipeline: parsed.pipeline_id,\n      date_created: parsed.created_at,\n      last_modified: parsed.updated_at,\n      lead_tags: null,\n      categoria: diccionario.get(\"categoria\") || null,\n      tipo_cliente: diccionario.get(\"tipoCliente\") || null,\n      fecha_creacion: diccionario.get(\"fechaCreacion\") || null,\n      fecha_primera_atencion: diccionario.get(\"fechaPrimeraAtencion\") || null,\n      fecha_resolucion: diccionario.get(\"fechaResolucion\") || null,\n      fecha_urgente: diccionario.get(\"fechaUrgente\") || null,\n      fecha_en_espera: diccionario.get(\"fechaEnEspera\") || null,\n      calificacion_cliente: diccionario.get(\"sePudoResolver\") || null,\n      puntaje_atencion: diccionario.get(\"puntajeAtencion\") || null,\n      fecha_cerrado: diccionario.get(\"fechaCerrado\") || null,\n      codigo_inmueble: diccionario.get(\"codigoInmueble\") || null,\n      nombre_cliente: diccionario.get(\"nombreCliente\") || null,\n      status_integracion: diccionario.get(\"statusIntegracion\") || null,\n      codigoInmueble:diccionario.get(\"codigoInmueble\") || null,\n      solicitaVisita:diccionario.get(\"solicitaVisita\") || null,\n      fechaSolicitaVisita:diccionario.get(\"fechaSolicitaVisita\") || null,\n      fechaSeguimientoInicial:diccionario.get(\"fechaSeguimientoInicial\") || null,\n      visitaAgendada:diccionario.get(\"visitaAgendada\") || null,\n      fechaVisitaAgendada:diccionario.get(\"fechaVisitaAgendada\") || null,\n      visitaRealizada:diccionario.get(\"visitaRealizada\") || null,\n      fechaVisitaRealizada:diccionario.get(\"fechaVisitaRealizada\") || null,\n      caliente:diccionario.get(\"caliente\") || null,\n      fechaCaliente:diccionario.get(\"fechaCaliente\") || null,\n      separoDepa:diccionario.get(\"separoDepa\") || null,\n      fechaSeparoDepa:diccionario.get(\"fechaSeparoDepa\") || null,\n      firmaContrato:diccionario.get(\"firmaContrato\") || null,\n      fechaInicioContrato:diccionario.get(\"fechaInicioContrato\") || null,\n      enAtencion:diccionario.get(\"enAtencion\") || null,\n      fechaEnAtencion:diccionario.get(\"fechaEnAtencion\") || null,\n      tiempo_primera_respuesta_min: null,\n      tiempo_total_min: null,\n      llamada_tickets_kommo: null,\n      contacto_id: contacto?.id || null,\n      contacto_url: contacto?._links?.self?.href || null\n    }\n  });\n}\n\nreturn results;\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1320,
+          100
+        ],
+        "id": "3ecb9699-8d49-4516-87a8-6bf86b1122ac",
+        "name": "Code1",
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "const raw = $json.data;\nconst contacto = JSON.parse(raw);\n\nlet telefono = null;\nlet email = null;\n\n\nif (contacto.custom_fields_values) {\n  for (const campo of contacto.custom_fields_values) {\n    if (campo.field_name.toLowerCase().includes(\"phone\")) {\n      telefono = campo.values?.[0]?.value || null;\n    } else if (campo.field_name.toLowerCase().includes(\"email\")){\n      email = campo.values?.[0]?.value || null;\n    }\n  }\n}\n\nreturn {\n    \"contacto_id\": contacto.id,\n    \"nombre_contacto\": contacto.name,\n    \"telefono\": telefono,\n  \"email\":email\n  }\n;\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -440,
+          100
+        ],
+        "id": "734170f7-9637-4494-98be-21ea9d43edc6",
+        "name": "Code2"
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "schema": {
+            "__rl": true,
+            "value": "rentas_crm",
+            "mode": "list",
+            "cachedResultName": "rentas_crm"
+          },
+          "table": {
+            "__rl": true,
+            "value": "tickets_kommo",
+            "mode": "list",
+            "cachedResultName": "tickets_kommo"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "date_created": "={{ $('Code1').item.json.date_created }}",
+              "last_modified": "={{ $('Code1').item.json.last_modified }}",
+              "fecha_creacion": "={{ $('Code1').item.json.fecha_creacion }}",
+              "fecha_primera_atencion": "={{ $('Code1').item.json.fecha_primera_atencion }}",
+              "fecha_resolucion": "={{ $('Code1').item.json.fecha_resolucion }}",
+              "fecha_urgente": "={{ $('Code1').item.json.fecha_urgente }}",
+              "fecha_en_espera": "={{ $('Code1').item.json.fecha_en_espera }}",
+              "fecha_cerrado": "={{ $('Code1').item.json.fecha_cerrado }}",
+              "tiempo_primera_respuesta_min": "={{ $('Code1').item.json.tiempo_primera_respuesta_min }}",
+              "tiempo_total_min": "={{ $('Code1').item.json.tiempo_total_min }}",
+              "id": "={{ $('Code1').item.json.id }}",
+              "numero": "={{ $('Code1').item.json.id }}",
+              "lead_title": "={{ $('Code1').item.json.lead_title }}",
+              "lead_stage": "={{ $('Code1').item.json.lead_stage }}",
+              "pipeline": "={{ $('Code1').item.json.pipeline }}",
+              "categoria": "={{ $('Code1').item.json.categoria }}",
+              "tipocliente": "={{ $('Code1').item.json.tipo_cliente }}",
+              "calificacion_cliente": "={{ $('Code1').item.json.calificacion_cliente }}",
+              "puntaje_atencion": "={{ $('Code1').item.json.puntaje_atencion }}",
+              "codigo_inmueble": "={{ $('Code1').item.json.codigo_inmueble }}",
+              "nombre_cliente": "={{ $('Code1').item.json.nombre_cliente }}",
+              "status_integracion": "={{ $('Code1').item.json.status_integracion }}",
+              "llamada_tickets_kommo": "={{ $('Code1').item.json.llamada_tickets_kommo }}",
+              "main_contact": "={{ $json.nombre_contacto }}",
+              "phone": "={{ $json.telefono }}",
+              "work_email_contact": "={{ $json.email }}",
+              "contact_id": "={{ $json.contacto_id }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "numero",
+                "displayName": "numero",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "lead_title",
+                "displayName": "lead_title",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "main_contact",
+                "displayName": "main_contact",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "lead_stage",
+                "displayName": "lead_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "pipeline",
+                "displayName": "pipeline",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "date_created",
+                "displayName": "date_created",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "last_modified",
+                "displayName": "last_modified",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "lead_tags",
+                "displayName": "lead_tags",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "categoria",
+                "displayName": "categoria",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "tipocliente",
+                "displayName": "tipocliente",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_creacion",
+                "displayName": "fecha_creacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_primera_atencion",
+                "displayName": "fecha_primera_atencion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_resolucion",
+                "displayName": "fecha_resolucion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_urgente",
+                "displayName": "fecha_urgente",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_en_espera",
+                "displayName": "fecha_en_espera",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "calificacion_cliente",
+                "displayName": "calificacion_cliente",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "puntaje_atencion",
+                "displayName": "puntaje_atencion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_cerrado",
+                "displayName": "fecha_cerrado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "codigo_inmueble",
+                "displayName": "codigo_inmueble",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "nombre_cliente",
+                "displayName": "nombre_cliente",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "status_integracion",
+                "displayName": "status_integracion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "work_email_contact",
+                "displayName": "work_email_contact",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "tiempo_primera_respuesta_min",
+                "displayName": "tiempo_primera_respuesta_min",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "tiempo_total_min",
+                "displayName": "tiempo_total_min",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "llamada_tickets_kommo",
+                "displayName": "llamada_tickets_kommo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "phone",
+                "displayName": "phone",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "contact_id",
+                "displayName": "contact_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          0,
+          0
+        ],
+        "id": "be550a34-c4a6-4b22-be7b-31c5ac231df3",
+        "name": "Postgres",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "amount": 1
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -1980,
+          100
+        ],
+        "id": "6152f8d5-bab0-4dcb-88de-60879e982456",
+        "name": "Wait",
+        "webhookId": "ea7b0f85-14e8-4a84-8c8e-e7e8446e034d"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "5c4140ce-264d-469b-a4cd-3a7e3bd26f03",
+                "leftValue": "={{ $json.contacto_id }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "number",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          -1100,
+          100
+        ],
+        "id": "3b8f9fdf-1ce8-401d-b44e-1805e036ca4d",
+        "name": "Filter",
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "8c6d990e-d4c0-4824-b479-3ab443f7e516",
+                "leftValue": "={{ $json.pipeline }}",
+                "rightValue": 10231420,
+                "operator": {
+                  "type": "number",
+                  "operation": "equals"
+                }
+              },
+              {
+                "id": "d1288ad0-97fb-4535-8649-d95dfa7f04bf",
+                "leftValue": "={{ $json.pipeline }}",
+                "rightValue": 11251596,
+                "operator": {
+                  "type": "number",
+                  "operation": "equals"
+                }
+              },
+              {
+                "id": "8ff06f71-fe0d-40e0-b480-0c9eada1be92",
+                "leftValue": "={{ $json.pipeline }}",
+                "rightValue": 11240224,
+                "operator": {
+                  "type": "number",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "or"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          -880,
+          100
+        ],
+        "id": "f4520989-08f5-47f5-80e7-8fabe85eec9c",
+        "name": "Filter1"
+      },
+      {
+        "parameters": {
+          "jsCode": "let leadId = null;\n\ntry {\n  const item = $input.first().json;\n\n  // Detectar si estamos en test o producción\n  const isTest = Array.isArray(item.body);\n\n  if (isTest) {\n    // Test mode: accedemos al primer item dentro del array body\n    leadId =\n      item.body?.[0]?.body?.[\"leads[update][0][id]\"] ||\n      item.body?.[0]?.body?.[\"leads[status][0][id]\"] ||\n      item.body?.[0]?.body?.[\"leads[add][0][id]\"];\n  } else {\n    // Producción: body ya está plano\n    leadId =\n      item.body?.[\"leads[update][0][id]\"] ||\n      item.body?.[\"leads[status][0][id]\"] ||\n      item.body?.[\"leads[add][0][id]\"];\n  }\n} catch (e) {\n  leadId = null;\n}\n\nreturn [\n  {\n    json: {\n      lead_id: leadId\n    }\n  }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1760,
+          100
+        ],
+        "id": "2d3af2e5-ae4d-4c8b-820a-fce9a46d382a",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $('Filter1').item.json.pipeline }}",
+                      "rightValue": 11240224,
+                      "operator": {
+                        "type": "number",
+                        "operation": "notEquals"
+                      },
+                      "id": "fe99cb17-e990-4a0e-952d-31d3960f8c55"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "c88f5b7f-1bd5-4e6a-9bb0-4dada598f121",
+                      "leftValue": "={{ $('Filter1').item.json.pipeline }}",
+                      "rightValue": 11240224,
+                      "operator": {
+                        "type": "number",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          -220,
+          100
+        ],
+        "id": "9db778ff-3a53-4f2b-9fb0-639fa076dd83",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "action": "generate",
+          "dataPropertyName": "id"
+        },
+        "type": "n8n-nodes-base.crypto",
+        "typeVersion": 1,
+        "position": [
+          0,
+          200
+        ],
+        "id": "31f5521f-4a27-49cd-97fe-5664aa2b1a03",
+        "name": "Crypto"
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "schema": {
+            "__rl": true,
+            "value": "crm",
+            "mode": "list",
+            "cachedResultName": "crm"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads_pre_inquilinos",
+            "mode": "list",
+            "cachedResultName": "leads_pre_inquilinos"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "visita_agendada": "={{$if($('Code1').item.json.visitaAgendada === \"Si\",true,false)  }}",
+              "visita_realizada": "={{$if( $('Code1').item.json.visitaRealizada=== \"Si\",true,false)  }}",
+              "caliente": "={{$if($('Code1').item.json.caliente === \"Si\",true,false)  }}",
+              "depa_separado": "={{$if($('Code1').item.json.separoDepa === \"Si\",true,false)  }}",
+              "id": "={{ $('Code1').item.json.id }}",
+              "id_pre_inquilino_kommo": "={{ $json.contacto_id }}",
+              "fecha_creacion": "={{ $('Code1').item.json.date_created }}",
+              "fecha_ultima_modificacion": "={{ $('Code1').item.json.last_modified }}",
+              "fecha_solicita_visita": "={{ $('Code1').item.json.fechaSolicitaVisita }}",
+              "fecha_seguimient_inicial": "={{ $('Code1').item.json.fechaSeguimientoInicial }}",
+              "fecha_visita_agendada": "={{ $('Code1').item.json.fechaVisitaAgendada }}",
+              "fecha_visita_realizada": "={{ $('Code1').item.json.fechaVisitaRealizada }}",
+              "fecha_caliente": "={{ $('Code1').item.json.fechaCaliente }}",
+              "fecha_separacion_departamento": "={{ $('Code1').item.json.fechaSeparoDepa }}",
+              "fecha_inicio_contrato": "={{ $('Code1').item.json.fechaInicioContrato }}",
+              "fecha_en_atencion": "={{ $('Code1').item.json.fechaEnAtencion }}",
+              "codigo_inmueble": "={{ $('Code1').item.json.codigoInmueble }}",
+              "stage": "={{ $('Code1').item.json.lead_stage }}",
+              "en_atencion": "={{$if( $('Code1').item.json.enAtencion=== \"Si\",true,false)  }}",
+              "solicito_visita": "={{$if($('Code1').item.json.solicitaVisita === \"Si\",true,false)  }}",
+              "telefono_pre_inquilino": "={{ $json.telefono }}",
+              "estado": "={{ $('Code1').item.json.lead_stage }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": true,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "id_pre_inquilino_kommo",
+                "displayName": "id_pre_inquilino_kommo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "codigo_inmueble",
+                "displayName": "codigo_inmueble",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "stage",
+                "displayName": "stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_creacion",
+                "displayName": "fecha_creacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_ultima_modificacion",
+                "displayName": "fecha_ultima_modificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_solicita_visita",
+                "displayName": "fecha_solicita_visita",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_seguimient_inicial",
+                "displayName": "fecha_seguimient_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_visita_agendada",
+                "displayName": "fecha_visita_agendada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_visita_realizada",
+                "displayName": "fecha_visita_realizada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_caliente",
+                "displayName": "fecha_caliente",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_separacion_departamento",
+                "displayName": "fecha_separacion_departamento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_inicio_contrato",
+                "displayName": "fecha_inicio_contrato",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_en_atencion",
+                "displayName": "fecha_en_atencion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "solicito_visita",
+                "displayName": "solicito_visita",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": false,
+                "removed": false
+              },
+              {
+                "id": "en_atencion",
+                "displayName": "en_atencion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": false,
+                "removed": false
+              },
+              {
+                "id": "visita_agendada",
+                "displayName": "visita_agendada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "visita_realizada",
+                "displayName": "visita_realizada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "caliente",
+                "displayName": "caliente",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "depa_separado",
+                "displayName": "depa_separado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "contrato_creado",
+                "displayName": "contrato_creado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": false,
+                "removed": true
+              },
+              {
+                "id": "contrato_firmado",
+                "displayName": "contrato_firmado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": false,
+                "removed": true
+              },
+              {
+                "id": "depa_entregado",
+                "displayName": "depa_entregado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": false,
+                "removed": true
+              },
+              {
+                "id": "telefono_pre_inquilino",
+                "displayName": "telefono_pre_inquilino",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "estado",
+                "displayName": "estado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          220,
+          200
+        ],
+        "id": "134997c9-5bc3-4707-b9c2-0fddd1ab5836",
+        "name": "Postgres3",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Code1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code1": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request1": {
+        "main": [
+          [
+            {
+              "node": "Code2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code2": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          [
+            {
+              "node": "Filter1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter1": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Postgres",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Crypto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Crypto": {
+        "main": [
+          [
+            {
+              "node": "Postgres3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "44230b58-01d2-4ccd-ae9b-f2c0f1075c32",
   "connections": {
     "Webhook": {
       "main": [
@@ -1120,8 +2163,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-06-20T03:38:15.543Z",
       "updatedAt": "2025-06-20T03:38:15.543Z",
+      "createdAt": "2025-06-20T03:38:15.543Z",
       "role": "workflow:owner",
       "workflowId": "M5yuxAPpVF3OlhHu",
       "projectId": "tpSonpyzopDOYZNA"
