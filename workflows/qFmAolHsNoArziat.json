@@ -1,5 +1,229 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-12T00:15:49.238Z",
+    "createdAt": "2026-02-12T00:15:49.237Z",
+    "versionId": "df07edf4-b8c8-4bf8-bdbe-d8368ee63315",
+    "workflowId": "qFmAolHsNoArziat",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "triggerAtHour": 8
+              }
+            ]
+          }
+        },
+        "id": "45203e12-bcaa-4c44-94cc-fa064bcdb087",
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -352,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH\n--COTIZACIONES\ncotizaciones as ( \nSELECT\nfecha,\ncount(distinct dni) cant_cotizados\nFROM cotizaciones_proyectos\nGROUP BY 1\norder by 1 desc\n),\n--SIMUALCIONES\nsimulaciones as (\nSELECT \nfecha,\ncount(distinct fecha) cant_simulados\nfrom financiamiento_cliente \ngroup by 1\norder by 1 desc\n)\n,\n--ASISTENCIA\nPARTICIPANTES AS (\nSELECT DISTINCT A.*, B.NOMBRE NOMBRE_1, B.APELLIDO, RIGHT(REGEXP_REPLACE(B.PHONE, '[^0-9]', '', 'g'),9) PHONE\nFROM BITRIX.PARTICIPANTES A\nLEFT JOIN (SELECT DISTINCT NOMBRE, APELLIDO, EMAIL, PHONE FROM BITRIX.INSCRITOS) B ON A.EMAIL=B.EMAIL\nLEFT JOIN (SELECT DISTINCT ID FROM BITRIX.INSCRITOS) C ON A.ID=C.ID\nWHERE C.ID IS NULL\n)\n,PARTICIPANTES_V2 AS (\nSELECT \nP.FECHA, \nP.NOMBRE, \nP.APELLIDO,\nP.EMAIL, \nP.PHONE,\nNULL AS REGISTRATIONTIME,\n'SI' AS ASISTIO,\nP.ESTANCIATOTAL DURACION,\nCASE WHEN DE.NOMBRE_ASESOR IS NOT NULL THEN DE.NOMBRE_ASESOR ELSE 'NO ASIGNADO' END AS NOMBREASESOR,\nCASE WHEN DE.CATEGORIACLIENTE IS NOT NULL THEN DE.CATEGORIACLIENTE ELSE 'NO ASIGNADO' END AS CATEGORIACLIENTE,\nP.TIPO_REUNION\nFROM PARTICIPANTES P\nLEFT JOIN BITRIX.HS_CLIENTE CLI ON LOWER(P.EMAIL) = LOWER(CLI.EMAIL) OR right(P.PHONE,9) = right(CLI.nrocelular,9)\nLEFT JOIN (\n    SELECT\n        *,\n        ROW_NUMBER() OVER (PARTITION BY IDCLIENTE ORDER BY FECHACREACION DESC) AS rn\n    FROM\n        bitrix.HS_DEALS\n    WHERE\n        LOWER(STAGE) != 'deal lost'\n\n) DE ON CLI.ID = DE.IDCLIENTE AND DE.rn = 1\n\nWHERE 1=1\nAND P.EMAIL NOT ILIKE '%PROPER%'\nORDER BY P.FECHA DESC\n)\n\n,reuniones_total AS (\nSELECT \nFECHA,\nNOMBRE,\nAPELLIDO,\nEMAIL,\nPHONE,\nREGISTRATIONTIME,\nASISTIO,\nDURACION,\nNOMBREASESOR,\nCATEGORIACLIENTE,\nTIPO_REUNION\nFROM BITRIX.TEMP_REUNIONES_SEMANALES\nWHERE EMAIL NOT ILIKE '%PROPER%'\nUNION \nSELECT *\nFROM PARTICIPANTES_V2\nWHERE EMAIL NOT ILIKE '%PROPER%'\n)\n\n,reuniones as ( \nselect \nfecha,\ncount(distinct email) cant_asistentes\nfrom reuniones_total\nwhere asistio='SI'\ngroup by 1\norder by 1 desc\n)\n\n,bitrix_final as (\nselect a.*,\ncase when a.stage in ('INFLUENCERS') then 'APROBADOS' else a.stage end as etapa_vf,\nCASE \n            WHEN a.residencia IS NULL THEN 'Falta'\n            WHEN a.residencia IN ('LIMA', 'Lima', 'PROVINCIA', 'Provincia','PerÃº','Perú') THEN 'Nacional' \n            ELSE 'Internacional'\n        END AS residencia_general,\n\nCASE\n\t\tWHEN a.residencia NOT IN ('LIMA', 'Lima', 'PROVINCIA', 'Provincia','PerÃº','Perú') \n\t\tand a.inicial in ('Más de S/100,000', 'Entre S/120,000 y S/200,000', 'Entre S/200,000 y S/350,000') THEN 'APROBADO INTERNACIONAL'\n\t\tWHEN a.web_residencia='extranjero' AND a.web_monto_inicial::INT>=100000 THEN 'APROBADO INTERNACIONAL'\n\t\tWHEN a.residencia NOT IN ('LIMA', 'Lima', 'PROVINCIA', 'Provincia','PerÃº','Perú') \n\t\tand a.inicial not in ('Más de S/100,000', 'Entre S/120,000 y S/200,000', 'Entre S/200,000 y S/350,000') AND a.categoriacliente is null THEN 'NO APROBADO INTERNACIONAL'\n\t\tWHEN a.web_residencia='extranjero' AND a.web_monto_inicial::INT<100000 THEN 'NO APROBADO INTERNACIONAL'\n\t\tWHEN a.web_residencia='perú' AND a.web_ingresos::INT>=9000 AND a.web_monto_inicial::INT>=25000 THEN 'ALTO'\n\t\tWHEN (a.ingmensual in ('Entre S/9,000 y S/12,000', 'Entre S/12,000 y S/15,000', 'Entre S/15,000 y S/20,000', 'Más de S/20,000') and a.inicial not in ('Menos de S/25,000'))\n\t\tOR a.categoriacliente ILIKE 'ALTO' THEN 'ALTO'\n\t\tWHEN a.web_residencia='perú' AND a.web_ingresos::INT>=4000 AND a.web_monto_inicial::INT>=25000 THEN 'MEDIO'\n\t\tWHEN (a.ingmensual in ('Entre S/4,000 y S/6,000', 'Entre S/6,000 y S/9,000') and a.inicial not in ('Menos de S/25,000')) OR a.categoriacliente ='MEDIO' THEN 'MEDIO'\n\t\tWHEN a.web_residencia='perú' AND a.web_ingresos::INT>=3000 AND a.web_monto_inicial::INT>=25000 THEN 'EMPUJE'\n\t\tWHEN (a.ingmensual in ('Entre S/3,000 y S/4,000') and a.inicial not in ('Menos de S/25,000')) OR a.categoriacliente ='EMPUJE' THEN 'EMPUJE'\n\t\tWHEN a.ingmensual in ('Menos de S/3,000') THEN 'NO APROBADO'\n\t\tWHEN a.web_residencia='perú' AND a.web_monto_inicial::INT<25000 THEN 'NO APROBADO'\n\t\tWHEN a.web_residencia='perú' AND a.web_ingresos::INT<3000 THEN 'NO APROBADO'\n\t\tWHEN a.categoriacliente='NO APROBADO NACIONAL' then 'NO APROBADO'\n\t\tEND AS categoria_cliente_vf,\t\n\t\nlower(a.utm_source) utm_source_vf,\ncase \nwhen a.utm_source in ('web_home_workshop', 'web_home', 'web_edu', 'web_internacional') then 'organico'\nwhen a.utm_source ilike '%instagram%' then 'social'\nwhen a.utm_source ilike '%vendedores%' then 'asesores_proper'\nwhen a.utm_source ilike '%juan_huerta%' then 'influencer'\nwhen a.utm_source ilike '%intalks%' then 'evento'\nwhen a.utm_source ilike '%entel%' then 'B2B'\nwhen a.utm_source ilike '%pwc%' then 'B2B'\nwhen a.utm_source ilike '%dp_world%' and a.fechacreacion='2024-07-10' then 'evento'\nelse utm_medium\nend as utm_medium_vf,\ncase \nwhen a.utm_source ilike '%pwc%' and utm_medium='evento_pwc' then 'evento_presencial'\nwhen a.utm_source ilike '%pwc%' and utm_medium ilike '%webinar%' then 'webinar'\nwhen a.utm_source ilike '%pwc%' and utm_medium ilike '%B2B%' then 'evento_presencial'\nwhen a.utm_source ilike '%hapag%' and utm_medium ilike '%B2B%' and fechacreacion='2024-11-06' then 'charla_presencial'\nelse utm_campaign \nend as utm_campaign_vf\nFROM bitrix.hs_deals a \norder by fechacreacion desc\n)\n,leads as ( \nselect \ndistinct \na.fechacreacion fecha,\ncount(distinct a.id) leads,\ncount(distinct case when (a.ingmensual NOT IN ('Menos de S/3,000') OR a.ingmensual is NULL) and (a.inicial NOT IN ('Menos de S/25,000','2391') OR a.inicial is NULL) then a.id else null end) leads_aprobados,\ncount(distinct case when (a.ingmensual NOT IN ('Menos de S/3,000', 'Entre S/3,000 y S/4,000') OR a.ingmensual is NULL) then a.id else null end) leads_altos_medios\t\nfrom bitrix_final a -- deals \ngroup by 1\norder by 1 desc\n),\nreuniones_agendadas AS (\n  SELECT\n    fecha_reunion::date fecha,\n    COUNT(DISTINCT RIGHT(REGEXP_REPLACE(telefono, '[^0-9]', '', 'g'), 9)) AS cant_reuniones_agendadas\n  FROM reuniones_agendadas\n  WHERE 1=1\n  AND ASESOR IS NOT NULL\n  GROUP BY 1\n  order by 1 desc)\n\nselect \na.fecha,\ncoalesce(a.leads,0) leads,\ncoalesce(a.leads_aprobados,0) leads_aprobados,\ncoalesce(a.leads_altos_medios,0) leads_altos_medios,\ncoalesce(b.cant_asistentes,0) cant_asistentes,\ncoalesce(c.cant_simulados,0) cant_simulados,\ncoalesce(d.cant_cotizados,0) cant_cotizados,\ncoalesce(e.cant_reuniones_agendadas,0) cant_reuniones_agendadas\nfrom leads a \nleft join reuniones b on a.fecha=b.fecha\nleft join simulaciones c on a.fecha=c.fecha\nleft join cotizaciones d on a.fecha=d.fecha\nleft join reuniones_agendadas e on a.fecha=e.fecha\nwhere 1=1\nand a.fecha = current_date - 1",
+          "options": {}
+        },
+        "id": "4952a4f1-f4ef-4d84-a92b-af6a68141958",
+        "name": "Query Diario",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.4,
+        "position": [
+          -128,
+          0
+        ],
+        "executeOnce": true,
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH\n--COTIZACIONES\ncotizaciones as ( \nSELECT\ndate_trunc('month', fecha)::date mes,\ncount(distinct dni) cant_cotizados\nFROM cotizaciones_proyectos\nGROUP BY 1\norder by 1 desc\n),\n--SIMUALCIONES\nsimulaciones as (\nSELECT \ndate_trunc('month', fecha)::date mes,\ncount(distinct fecha) cant_simulados\nfrom financiamiento_cliente \ngroup by 1\norder by 1 desc\n)\n,\n--ASISTENCIA\nPARTICIPANTES AS (\nSELECT DISTINCT A.*, B.NOMBRE NOMBRE_1, B.APELLIDO, RIGHT(REGEXP_REPLACE(B.PHONE, '[^0-9]', '', 'g'),9) PHONE\nFROM BITRIX.PARTICIPANTES A\nLEFT JOIN (SELECT DISTINCT NOMBRE, APELLIDO, EMAIL, PHONE FROM BITRIX.INSCRITOS) B ON A.EMAIL=B.EMAIL\nLEFT JOIN (SELECT DISTINCT ID FROM BITRIX.INSCRITOS) C ON A.ID=C.ID\nWHERE C.ID IS NULL\n)\n,PARTICIPANTES_V2 AS (\nSELECT \nP.FECHA, \nP.NOMBRE, \nP.APELLIDO,\nP.EMAIL, \nP.PHONE,\nNULL AS REGISTRATIONTIME,\n'SI' AS ASISTIO,\nP.ESTANCIATOTAL DURACION,\nCASE WHEN DE.NOMBRE_ASESOR IS NOT NULL THEN DE.NOMBRE_ASESOR ELSE 'NO ASIGNADO' END AS NOMBREASESOR,\nCASE WHEN DE.CATEGORIACLIENTE IS NOT NULL THEN DE.CATEGORIACLIENTE ELSE 'NO ASIGNADO' END AS CATEGORIACLIENTE,\nP.TIPO_REUNION\nFROM PARTICIPANTES P\nLEFT JOIN BITRIX.HS_CLIENTE CLI ON LOWER(P.EMAIL) = LOWER(CLI.EMAIL) OR right(P.PHONE,9) = right(CLI.nrocelular,9)\nLEFT JOIN (\n    SELECT\n        *,\n        ROW_NUMBER() OVER (PARTITION BY IDCLIENTE ORDER BY FECHACREACION DESC) AS rn\n    FROM\n        bitrix.HS_DEALS\n    WHERE\n        LOWER(STAGE) != 'deal lost'\n\n) DE ON CLI.ID = DE.IDCLIENTE AND DE.rn = 1\n\nWHERE 1=1\nAND P.EMAIL NOT ILIKE '%PROPER%'\nORDER BY P.FECHA DESC\n)\n\n,reuniones_total AS (\nSELECT \nFECHA,\nNOMBRE,\nAPELLIDO,\nEMAIL,\nPHONE,\nREGISTRATIONTIME,\nASISTIO,\nDURACION,\nNOMBREASESOR,\nCATEGORIACLIENTE,\nTIPO_REUNION\nFROM BITRIX.TEMP_REUNIONES_SEMANALES\nWHERE EMAIL NOT ILIKE '%PROPER%'\nUNION \nSELECT *\nFROM PARTICIPANTES_V2\nWHERE EMAIL NOT ILIKE '%PROPER%'\n)\n\n,reuniones as ( \nselect \ndate_trunc('month', fecha)::date mes,\ncount(distinct email) cant_asistentes\nfrom reuniones_total\nwhere asistio='SI'\ngroup by 1\norder by 1 desc\n)\n\n,bitrix_final as (\nselect a.*,\ncase when a.stage in ('INFLUENCERS') then 'APROBADOS' else a.stage end as etapa_vf,\nCASE \n            WHEN a.residencia IS NULL THEN 'Falta'\n            WHEN a.residencia IN ('LIMA', 'Lima', 'PROVINCIA', 'Provincia','PerÃº','Perú') THEN 'Nacional' \n            ELSE 'Internacional'\n        END AS residencia_general,\n\nCASE\n\t\tWHEN a.residencia NOT IN ('LIMA', 'Lima', 'PROVINCIA', 'Provincia','PerÃº','Perú') \n\t\tand a.inicial in ('Más de S/100,000', 'Entre S/120,000 y S/200,000', 'Entre S/200,000 y S/350,000') THEN 'APROBADO INTERNACIONAL'\n\t\tWHEN a.web_residencia='extranjero' AND a.web_monto_inicial::INT>=100000 THEN 'APROBADO INTERNACIONAL'\n\t\tWHEN a.residencia NOT IN ('LIMA', 'Lima', 'PROVINCIA', 'Provincia','PerÃº','Perú') \n\t\tand a.inicial not in ('Más de S/100,000', 'Entre S/120,000 y S/200,000', 'Entre S/200,000 y S/350,000') AND a.categoriacliente is null THEN 'NO APROBADO INTERNACIONAL'\n\t\tWHEN a.web_residencia='extranjero' AND a.web_monto_inicial::INT<100000 THEN 'NO APROBADO INTERNACIONAL'\n\t\tWHEN a.web_residencia='perú' AND a.web_ingresos::INT>=9000 AND a.web_monto_inicial::INT>=25000 THEN 'ALTO'\n\t\tWHEN (a.ingmensual in ('Entre S/9,000 y S/12,000', 'Entre S/12,000 y S/15,000', 'Entre S/15,000 y S/20,000', 'Más de S/20,000') and a.inicial not in ('Menos de S/25,000'))\n\t\tOR a.categoriacliente ILIKE 'ALTO' THEN 'ALTO'\n\t\tWHEN a.web_residencia='perú' AND a.web_ingresos::INT>=4000 AND a.web_monto_inicial::INT>=25000 THEN 'MEDIO'\n\t\tWHEN (a.ingmensual in ('Entre S/4,000 y S/6,000', 'Entre S/6,000 y S/9,000') and a.inicial not in ('Menos de S/25,000')) OR a.categoriacliente ='MEDIO' THEN 'MEDIO'\n\t\tWHEN a.web_residencia='perú' AND a.web_ingresos::INT>=3000 AND a.web_monto_inicial::INT>=25000 THEN 'EMPUJE'\n\t\tWHEN (a.ingmensual in ('Entre S/3,000 y S/4,000') and a.inicial not in ('Menos de S/25,000')) OR a.categoriacliente ='EMPUJE' THEN 'EMPUJE'\n\t\tWHEN a.ingmensual in ('Menos de S/3,000') THEN 'NO APROBADO'\n\t\tWHEN a.web_residencia='perú' AND a.web_monto_inicial::INT<25000 THEN 'NO APROBADO'\n\t\tWHEN a.web_residencia='perú' AND a.web_ingresos::INT<3000 THEN 'NO APROBADO'\n\t\tWHEN a.categoriacliente='NO APROBADO NACIONAL' then 'NO APROBADO'\n\t\tEND AS categoria_cliente_vf,\t\n\t\nlower(a.utm_source) utm_source_vf,\ncase \nwhen a.utm_source in ('web_home_workshop', 'web_home', 'web_edu', 'web_internacional') then 'organico'\nwhen a.utm_source ilike '%instagram%' then 'social'\nwhen a.utm_source ilike '%vendedores%' then 'asesores_proper'\nwhen a.utm_source ilike '%juan_huerta%' then 'influencer'\nwhen a.utm_source ilike '%intalks%' then 'evento'\nwhen a.utm_source ilike '%entel%' then 'B2B'\nwhen a.utm_source ilike '%pwc%' then 'B2B'\nwhen a.utm_source ilike '%dp_world%' and a.fechacreacion='2024-07-10' then 'evento'\nelse utm_medium\nend as utm_medium_vf,\ncase \nwhen a.utm_source ilike '%pwc%' and utm_medium='evento_pwc' then 'evento_presencial'\nwhen a.utm_source ilike '%pwc%' and utm_medium ilike '%webinar%' then 'webinar'\nwhen a.utm_source ilike '%pwc%' and utm_medium ilike '%B2B%' then 'evento_presencial'\nwhen a.utm_source ilike '%hapag%' and utm_medium ilike '%B2B%' and fechacreacion='2024-11-06' then 'charla_presencial'\nelse utm_campaign \nend as utm_campaign_vf\nFROM bitrix.hs_deals a \norder by fechacreacion desc\n)\n,leads as ( \nselect \ndistinct \ndate_trunc('month', a.fechacreacion)::date mes,\ncount(distinct a.id) leads,\ncount(distinct case when (a.ingmensual NOT IN ('Menos de S/3,000') OR a.ingmensual is NULL) and (a.inicial NOT IN ('Menos de S/25,000','2391') OR a.inicial is NULL) then a.id else null end) leads_aprobados,\ncount(distinct case when (a.ingmensual NOT IN ('Menos de S/3,000', 'Entre S/3,000 y S/4,000') OR a.ingmensual is NULL) then a.id else null end) leads_altos_medios\t\nfrom bitrix_final a -- deals \ngroup by 1\norder by 1 desc\n),\nreuniones_agendadas AS (\n  SELECT\n    date_trunc('month', fecha_reunion)::date mes,\n    COUNT(DISTINCT RIGHT(REGEXP_REPLACE(telefono, '[^0-9]', '', 'g'), 9)) AS cant_reuniones_agendadas\n  FROM reuniones_agendadas\n  WHERE 1=1\n  AND ASESOR IS NOT NULL\n  GROUP BY 1\n  order by 1 desc)\n\nselect \na.mes,\ncoalesce(a.leads,0) leads,\ncoalesce(a.leads_aprobados,0) leads_aprobados,\ncoalesce(round(1.0*a.leads_aprobados/a.leads,2),0) porc_aprobados,\ncoalesce(a.leads_altos_medios,0) leads_altos_medios,\ncoalesce(round(1.0*a.leads_altos_medios/a.leads,2),0) porc_altos_medios,\ncoalesce(b.cant_asistentes,0) cant_asistentes,\ncoalesce(round(1.0*b.cant_asistentes/a.leads_aprobados,2),0) porc_asistencia,\ncoalesce(c.cant_simulados,0) cant_simulados,\ncoalesce(d.cant_cotizados,0) cant_cotizados,\ncoalesce(round(1.0*d.cant_cotizados/a.leads_aprobados,2),0) porc_cotizados,\ncoalesce(e.cant_reuniones_agendadas,0) cant_reuniones_agendadas\nfrom leads a \nleft join reuniones b on a.mes=b.mes\nleft join simulaciones c on a.mes=c.mes\nleft join cotizaciones d on a.mes=d.mes\nleft join reuniones_agendadas e on a.mes=e.mes\nwhere 1=1\nand a.mes = date_trunc('month', current_date)\norder by a.mes desc",
+          "options": {}
+        },
+        "id": "dbd64e71-b760-45d0-bf12-e411734b3774",
+        "name": "Query Acumulado",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.4,
+        "position": [
+          96,
+          0
+        ],
+        "executeOnce": true,
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH\n--COTIZACIONES\ncotizaciones as ( \nSELECT\ndate_trunc('month', fecha)::date mes,\ncase \nwhen asesor='yanery.champi@proper.com.pe' then 'Yanery Champi'\nwhen asesor='eleana.mesia@proper.com.pe' then 'Eleana Mesia'\nwhen asesor='leidy.sanchez@proper.com.pe' then 'Leidy Sanchez'\nwhen asesor='elena.aranibar@proper.com.pe' then 'Elena Aranibar'\nwhen asesor='dz.diaz@proper.com.pe' then 'Dzonhatan Diaz'\nwhen asesor='germain.pasapera@proper.com.pe' then 'Germain Pasapera'\nwhen asesor='joaquin.jarama@proper.com.pe' then 'Joaquin Jarama'\nwhen asesor='luis.campos@proper.com.pe' then 'Luis Campos'\nwhen asesor='sharon.caceres@proper.com.pe' then 'Sharon Caceres'\nwhen asesor='marcos.uribe@proper.com.pe' then 'Marcos Uribe'\nwhen asesor='jean.muro@proper.com.pe' then 'Jean Muro'\nwhen asesor='sebastian.llontop@proper.com.pe' then 'Sebastian Llontop'\nelse asesor\nend as asesor,\ncount(distinct dni) cant_cotizados\nFROM cotizaciones_proyectos\nGROUP BY 1,2\norder by 1 desc\n),\n--SIMUALCIONES\nsimulaciones as (\nSELECT \ndate_trunc('month', fecha)::date mes,\ncase \nwhen asesor='yanery.champi@proper.com.pe' then 'Yanery Champi'\nwhen asesor='eleana.mesia@proper.com.pe' then 'Eleana Mesia'\nwhen asesor='leidy.sanchez@proper.com.pe' then 'Leidy Sanchez'\nwhen asesor='elena.aranibar@proper.com.pe' then 'Elena Aranibar'\nwhen asesor='dz.diaz@proper.com.pe' then 'Dzonhatan Diaz'\nwhen asesor='germain.pasapera@proper.com.pe' then 'Germain Pasapera'\nwhen asesor='joaquin.jarama@proper.com.pe' then 'Joaquin Jarama'\nwhen asesor='luis.campos@proper.com.pe' then 'Luis Campos'\nwhen asesor='sharon.caceres@proper.com.pe' then 'Sharon Caceres'\nwhen asesor='marcos.uribe@proper.com.pe' then 'Marcos Uribe'\nwhen asesor='jean.muro@proper.com.pe' then 'Jean Muro'\nwhen asesor='sebastian.llontop@proper.com.pe' then 'Sebastian Llontop'\nelse asesor\nend as asesor,\ncount(distinct fecha) cant_simulados\nfrom financiamiento_cliente \ngroup by 1,2\norder by 1 desc\n)\n,\n--ASISTENCIA\nPARTICIPANTES AS (\nSELECT DISTINCT A.*, B.NOMBRE NOMBRE_1, B.APELLIDO, RIGHT(REGEXP_REPLACE(B.PHONE, '[^0-9]', '', 'g'),9) PHONE\nFROM BITRIX.PARTICIPANTES A\nLEFT JOIN (SELECT DISTINCT NOMBRE, APELLIDO, EMAIL, PHONE FROM BITRIX.INSCRITOS) B ON A.EMAIL=B.EMAIL\nLEFT JOIN (SELECT DISTINCT ID FROM BITRIX.INSCRITOS) C ON A.ID=C.ID\nWHERE C.ID IS NULL\n)\n,PARTICIPANTES_V2 AS (\nSELECT \nP.FECHA, \nP.NOMBRE, \nP.APELLIDO,\nP.EMAIL, \nP.PHONE,\nNULL AS REGISTRATIONTIME,\n'SI' AS ASISTIO,\nP.ESTANCIATOTAL DURACION,\nCASE WHEN DE.NOMBRE_ASESOR IS NOT NULL THEN DE.NOMBRE_ASESOR ELSE 'NO ASIGNADO' END AS NOMBREASESOR,\nCASE WHEN DE.CATEGORIACLIENTE IS NOT NULL THEN DE.CATEGORIACLIENTE ELSE 'NO ASIGNADO' END AS CATEGORIACLIENTE,\nP.TIPO_REUNION\nFROM PARTICIPANTES P\nLEFT JOIN BITRIX.HS_CLIENTE CLI ON LOWER(P.EMAIL) = LOWER(CLI.EMAIL) OR right(P.PHONE,9) = right(CLI.nrocelular,9)\nLEFT JOIN (\n    SELECT\n        *,\n        ROW_NUMBER() OVER (PARTITION BY IDCLIENTE ORDER BY FECHACREACION DESC) AS rn\n    FROM\n        bitrix.HS_DEALS\n    WHERE\n        LOWER(STAGE) != 'deal lost'\n\n) DE ON CLI.ID = DE.IDCLIENTE AND DE.rn = 1\n\nWHERE 1=1\nAND P.EMAIL NOT ILIKE '%PROPER%'\nORDER BY P.FECHA DESC\n)\n\n,reuniones_total AS (\nSELECT \nFECHA,\nNOMBRE,\nAPELLIDO,\nEMAIL,\nPHONE,\nREGISTRATIONTIME,\nASISTIO,\nDURACION,\nNOMBREASESOR,\nCATEGORIACLIENTE,\nTIPO_REUNION\nFROM BITRIX.TEMP_REUNIONES_SEMANALES\nWHERE EMAIL NOT ILIKE '%PROPER%'\nUNION \nSELECT *\nFROM PARTICIPANTES_V2\nWHERE EMAIL NOT ILIKE '%PROPER%'\n)\n\n,reuniones as ( \nselect \ndate_trunc('month', fecha)::date mes,\nnombreasesor asesor,\ncount(distinct email) cant_asistentes\nfrom reuniones_total\nwhere asistio='SI'\ngroup by 1,2\norder by 1 desc\n)\n\n,bitrix_final as (\nselect a.*,\ncase when a.stage in ('INFLUENCERS') then 'APROBADOS' else a.stage end as etapa_vf,\nCASE \n            WHEN a.residencia IS NULL THEN 'Falta'\n            WHEN a.residencia IN ('LIMA', 'Lima', 'PROVINCIA', 'Provincia','PerÃº','Perú') THEN 'Nacional' \n            ELSE 'Internacional'\n        END AS residencia_general,\n\nCASE\n\t\tWHEN a.residencia NOT IN ('LIMA', 'Lima', 'PROVINCIA', 'Provincia','PerÃº','Perú') \n\t\tand a.inicial in ('Más de S/100,000', 'Entre S/120,000 y S/200,000', 'Entre S/200,000 y S/350,000') THEN 'APROBADO INTERNACIONAL'\n\t\tWHEN a.web_residencia='extranjero' AND a.web_monto_inicial::INT>=100000 THEN 'APROBADO INTERNACIONAL'\n\t\tWHEN a.residencia NOT IN ('LIMA', 'Lima', 'PROVINCIA', 'Provincia','PerÃº','Perú') \n\t\tand a.inicial not in ('Más de S/100,000', 'Entre S/120,000 y S/200,000', 'Entre S/200,000 y S/350,000') AND a.categoriacliente is null THEN 'NO APROBADO INTERNACIONAL'\n\t\tWHEN a.web_residencia='extranjero' AND a.web_monto_inicial::INT<100000 THEN 'NO APROBADO INTERNACIONAL'\n\t\tWHEN a.web_residencia='perú' AND a.web_ingresos::INT>=9000 AND a.web_monto_inicial::INT>=25000 THEN 'ALTO'\n\t\tWHEN (a.ingmensual in ('Entre S/9,000 y S/12,000', 'Entre S/12,000 y S/15,000', 'Entre S/15,000 y S/20,000', 'Más de S/20,000') and a.inicial not in ('Menos de S/25,000'))\n\t\tOR a.categoriacliente ILIKE 'ALTO' THEN 'ALTO'\n\t\tWHEN a.web_residencia='perú' AND a.web_ingresos::INT>=4000 AND a.web_monto_inicial::INT>=25000 THEN 'MEDIO'\n\t\tWHEN (a.ingmensual in ('Entre S/4,000 y S/6,000', 'Entre S/6,000 y S/9,000') and a.inicial not in ('Menos de S/25,000')) OR a.categoriacliente ='MEDIO' THEN 'MEDIO'\n\t\tWHEN a.web_residencia='perú' AND a.web_ingresos::INT>=3000 AND a.web_monto_inicial::INT>=25000 THEN 'EMPUJE'\n\t\tWHEN (a.ingmensual in ('Entre S/3,000 y S/4,000') and a.inicial not in ('Menos de S/25,000')) OR a.categoriacliente ='EMPUJE' THEN 'EMPUJE'\n\t\tWHEN a.ingmensual in ('Menos de S/3,000') THEN 'NO APROBADO'\n\t\tWHEN a.web_residencia='perú' AND a.web_monto_inicial::INT<25000 THEN 'NO APROBADO'\n\t\tWHEN a.web_residencia='perú' AND a.web_ingresos::INT<3000 THEN 'NO APROBADO'\n\t\tWHEN a.categoriacliente='NO APROBADO NACIONAL' then 'NO APROBADO'\n\t\tEND AS categoria_cliente_vf,\t\n\t\nlower(a.utm_source) utm_source_vf,\ncase \nwhen a.utm_source in ('web_home_workshop', 'web_home', 'web_edu', 'web_internacional') then 'organico'\nwhen a.utm_source ilike '%instagram%' then 'social'\nwhen a.utm_source ilike '%vendedores%' then 'asesores_proper'\nwhen a.utm_source ilike '%juan_huerta%' then 'influencer'\nwhen a.utm_source ilike '%intalks%' then 'evento'\nwhen a.utm_source ilike '%entel%' then 'B2B'\nwhen a.utm_source ilike '%pwc%' then 'B2B'\nwhen a.utm_source ilike '%dp_world%' and a.fechacreacion='2024-07-10' then 'evento'\nelse utm_medium\nend as utm_medium_vf,\ncase \nwhen a.utm_source ilike '%pwc%' and utm_medium='evento_pwc' then 'evento_presencial'\nwhen a.utm_source ilike '%pwc%' and utm_medium ilike '%webinar%' then 'webinar'\nwhen a.utm_source ilike '%pwc%' and utm_medium ilike '%B2B%' then 'evento_presencial'\nwhen a.utm_source ilike '%hapag%' and utm_medium ilike '%B2B%' and fechacreacion='2024-11-06' then 'charla_presencial'\nelse utm_campaign \nend as utm_campaign_vf\nFROM bitrix.hs_deals a \norder by fechacreacion desc\n)\n\n,leads as ( \nselect \ndistinct \ndate_trunc('month', a.fechacreacion)::date mes,\nnombre_asesor asesor,\ncount(distinct a.id) leads,\ncount(distinct case when (a.ingmensual NOT IN ('Menos de S/3,000') OR a.ingmensual is NULL) and (a.inicial NOT IN ('Menos de S/25,000','2391') OR a.inicial is NULL) then a.id else null end) leads_aprobados,\ncount(distinct case when (a.ingmensual NOT IN ('Menos de S/3,000', 'Entre S/3,000 y S/4,000') OR a.ingmensual is NULL) then a.id else null end) leads_altos_medios\t\nfrom bitrix_final a -- deals \ngroup by 1,2\norder by 1 desc\n),\n\nreuniones_agendadas AS (\n  SELECT\n    date_trunc('month', fecha_reunion)::date mes,\n    case \n    when asesor='yanery.champi@proper.com.pe' then 'Yanery Champi'\n    when asesor='eleana.mesia@proper.com.pe' then 'Eleana Mesia'\n    when asesor='leidy.sanchez@proper.com.pe' then 'Leidy Sanchez'\n    when asesor='elena.aranibar@proper.com.pe' then 'Elena Aranibar'\n    when asesor='dz.diaz@proper.com.pe' then 'Dzonhatan Diaz'\n    when asesor='sebastian.llontop@proper.com.pe' then 'Sebastian Llontop'\n    when asesor='germain.pasapera@proper.com.pe' then 'Germain Pasapera'\n    when asesor='joaquin.jarama@proper.com.pe' then 'Joaquin Jarama'\n    when asesor='luis.campos@proper.com.pe' then 'Luis Campos'\n    when asesor='sharon.caceres@proper.com.pe' then 'Sharon Caceres'\n    when asesor='marcos.uribe@proper.com.pe' then 'Marcos Uribe'\n    when asesor='jean.muro@proper.com.pe' then 'Jean Muro'\n    else asesor\n    end as asesor,\n    COUNT(DISTINCT RIGHT(REGEXP_REPLACE(telefono, '[^0-9]', '', 'g'), 9)) AS cant_reuniones_agendadas\n  FROM reuniones_agendadas\n  WHERE 1=1\n  AND ASESOR IS NOT NULL\n  GROUP BY 1,2\n  order by 1 desc\n  )\nselect \na.mes,\na.asesor,\ncoalesce(a.leads,0) leads,\ncoalesce(a.leads_aprobados,0) leads_aprobados,\ncoalesce(round(1.0*a.leads_aprobados/a.leads,2),0) porc_aprobados,\ncoalesce(a.leads_altos_medios,0) leads_altos_medios,\ncoalesce(round(1.0*a.leads_altos_medios/a.leads,2),0) porc_altos_medios,\ncoalesce(b.cant_asistentes,0) cant_asistentes,\ncoalesce(round(1.0*b.cant_asistentes/a.leads_aprobados,2),0) porc_asistencia,\ncoalesce(c.cant_simulados,0) cant_simulados,\ncoalesce(d.cant_cotizados,0) cant_cotizados,\ncoalesce(round(1.0*d.cant_cotizados/a.leads_aprobados,2),0) porc_cotizados,\ncoalesce(e.cant_reuniones_agendadas,0) cant_reuniones_agendadas\nfrom leads a \nleft join reuniones b on a.mes=b.mes and a.asesor=b.asesor\nleft join simulaciones c on a.mes=c.mes and a.asesor=c.asesor\nleft join cotizaciones d on a.mes=d.mes and a.asesor=d.asesor\nleft join reuniones_agendadas e on a.mes=e.mes and a.asesor=e.asesor\n\nwhere 1=1\nand a.mes = date_trunc('month', current_date)\norder by a.mes, a.leads desc",
+          "options": {}
+        },
+        "id": "15ac8453-f941-4a1a-a704-9fbe4211b7a1",
+        "name": "Query Asesor",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.4,
+        "position": [
+          320,
+          0
+        ],
+        "executeOnce": true,
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "   with leads_bitrix as (\n   SELECT \n        a.*,\n        CASE WHEN a.stage IN ('INFLUENCERS') THEN 'APROBADOS' ELSE a.stage END AS etapa_vf,\n        CASE \n            WHEN a.residencia IS NULL THEN 'Falta'\n            WHEN a.residencia IN ('LIMA','Lima','PROVINCIA','Provincia','PerÃº','Perú') THEN 'Nacional'\n            ELSE 'Internacional'\n        END AS residencia_general,\n        CASE\n            WHEN a.residencia NOT IN ('LIMA','Lima','PROVINCIA','Provincia','PerÃº','Perú')\n                 AND a.inicial IN ('Más de S/100,000','Entre S/120,000 y S/200,000','Entre S/200,000 y S/350,000')\n                THEN 'APROBADO INTERNACIONAL'\n            WHEN a.web_residencia = 'extranjero' AND a.web_monto_inicial::INT >= 100000\n                THEN 'APROBADO INTERNACIONAL'\n            WHEN a.residencia NOT IN ('LIMA','Lima','PROVINCIA','Provincia','PerÃº','Perú')\n                 AND a.inicial NOT IN ('Más de S/100,000','Entre S/120,000 y S/200,000','Entre S/200,000 y S/350,000')\n                 AND a.categoriacliente IS NULL\n                THEN 'NO APROBADO INTERNACIONAL'\n            WHEN a.web_residencia = 'extranjero' AND a.web_monto_inicial::INT < 100000\n                THEN 'NO APROBADO INTERNACIONAL'\n            WHEN a.web_residencia = 'perú' AND a.web_ingresos::INT >= 9000 AND a.web_monto_inicial::INT >= 25000\n                THEN 'ALTO'\n            WHEN (a.ingmensual IN ('Entre S/9,000 y S/12,000','Entre S/12,000 y S/15,000','Entre S/15,000 y S/20,000','Más de S/20,000')\n                  AND a.inicial NOT IN ('Menos de S/25,000'))\n                 OR a.categoriacliente ILIKE 'ALTO'\n                THEN 'ALTO'\n            WHEN a.web_residencia = 'perú' AND a.web_ingresos::INT >= 4000 AND a.web_monto_inicial::INT >= 25000\n                THEN 'MEDIO'\n            WHEN (a.ingmensual IN ('Entre S/4,000 y S/6,000','Entre S/6,000 y S/9,000')\n                  AND a.inicial NOT IN ('Menos de S/25,000'))\n                 OR a.categoriacliente = 'MEDIO'\n                THEN 'MEDIO'\n            WHEN a.web_residencia = 'perú' AND a.web_ingresos::INT >= 3000 AND a.web_monto_inicial::INT >= 25000\n                THEN 'EMPUJE'\n            WHEN (a.ingmensual IN ('Entre S/3,000 y S/4,000')\n                  AND a.inicial NOT IN ('Menos de S/25,000'))\n                 OR a.categoriacliente = 'EMPUJE'\n                THEN 'EMPUJE'\n            ELSE 'NO APROBADO'\n        END AS categoria_cliente_vf\n    FROM bitrix.hs_deals a)\n\t\n\tselect fechacreacion::date fecha, utm_source canal, count(distinct id) leads \n\tfrom leads_bitrix\n\twhere fechacreacion = current_date -1\n\tgroup by 1,2\n\torder by 3 desc",
+          "options": {}
+        },
+        "id": "04863f72-dac3-4668-b50d-9912a4fee026",
+        "name": "Query Canales",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.4,
+        "position": [
+          528,
+          0
+        ],
+        "executeOnce": true,
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// CONFIGURACIÓN DE OBJETIVOS (GOALS)\n// Las claves deben coincidir con los nombres de columnas transformados (Mayúsculas, sin guiones)\nconst GOALS = {\n    daily: {\n        'LEADS': 42,\n        'LEADS APROBADOS': 17,\n        'LEADS ALTOS MEDIOS': 14,\n        'CANT ASISTENTES': 12,\n        'CANT SIMULADOS': 7,\n        'CANT COTIZADOS': 6\n    },\n    monthly: {\n        'LEADS': 1250,\n        'LEADS APROBADOS': 500,\n        'LEADS ALTOS MEDIOS': 417,\n        'CANT ASISTENTES': 357,\n        'CANT SIMULADOS': 208,\n        'CANT COTIZADOS': 167\n    },\n    // Meta mensual dividido entre 5 asesores\n    advisor: {\n        'LEADS': 250,\n        'LEADS APROBADOS': 100,\n        'LEADS ALTOS MEDIOS': 83.4,\n        'CANT ASISTENTES': 71.4,\n        'CANT SIMULADOS': 41.6,\n        'CANT COTIZADOS': 33.4\n    }\n};\n\n// Colores de fondo para el cumplimiento\nconst COLORS = {\n    GREEN: '#C6EFCE', // >= 100%\n    YELLOW: '#FFEB9C', // 80% - 99%\n    RED: '#FFC7CE',   // < 80%\n    DEFAULT: 'transparent'\n};\n\n// Helper para obtener color basado en valor y meta\nfunction getCellColor(colName, value, goalType) {\n    if (!goalType || !GOALS[goalType]) return null;\n    \n    const target = GOALS[goalType][colName];\n    if (target === undefined) return null;\n\n    const numVal = parseFloat(value);\n    if (isNaN(numVal)) return null;\n\n    if (numVal >= target) {\n        return COLORS.GREEN;\n    } else if (numVal >= (target * 0.8)) {\n        // Mayor o igual al 80% de la meta (pero menor que la meta)\n        return COLORS.YELLOW;\n    } else {\n        // Menor al 80%\n        return COLORS.RED;\n    }\n}\n\n// Helper para formatear encabezados\nfunction formatHeader(key) {\n    return key.replace(/_/g, ' ').toUpperCase().replace('PORC', '%');\n}\n\n// Helper para formatear fechas a YYYY-MM-DD\nfunction formatDate(val) {\n    if (val === null || val === undefined) return '';\n    if (val instanceof Date) return val.toISOString().split('T')[0];\n    if (typeof val === 'string' && val.match(/^\\d{4}-\\d{2}-\\d{2}/)) return val.split('T')[0];\n    return val;\n}\n\n// Helper para formatear valores en las celdas\nfunction formatValue(key, val) {\n    if (val === null || val === undefined) return '';\n    if (key.toLowerCase().includes('porc')) {\n        const num = parseFloat(val);\n        if (!isNaN(num)) return Math.round(num * 100) + '%';\n    }\n    return formatDate(val);\n}\n\n// Función helper para construir tabla HTML\nfunction buildTable(title, items, goalType = null) {\n    if (!items || items.length === 0) return `<p><strong>${title}:</strong> No hay datos para mostrar.</p>`;\n\n    const headers = Object.keys(items[0]);\n\n    let html = `<h3 style=\"font-family: Arial, sans-serif; color: #333;\">${title}</h3>`;\n    html += '<table border=\"1\" cellpadding=\"8\" cellspacing=\"0\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 14px; border: 1px solid #ddd;\">';\n    \n    // Headers\n    html += '<thead style=\"background-color: #003366; color: white;\"><tr>';\n    headers.forEach(h => {\n        const label = formatHeader(h);\n        let thStyle = \"text-align: left;\";\n        if (h.toLowerCase() === 'mes' || label === 'MES') {\n            thStyle += \" min-width: 120px; white-space: nowrap;\";\n        }\n        html += `<th style=\"${thStyle}\">${label}</th>`;\n    });\n    html += '</tr></thead>';\n\n    // Rows\n    html += '<tbody>';\n    items.forEach((item, index) => {\n        // Striping default\n        const defaultBg = index % 2 === 0 ? '#ffffff' : '#f9f9f9';\n        html += `<tr style=\"background-color: ${defaultBg};\">`;\n        \n        headers.forEach(h => {\n            const val = item[h];\n            const formattedVal = formatValue(h, val);\n            const headerLabel = formatHeader(h);\n            \n            // Determinar color de celda si hay meta\n            const cellColor = getCellColor(headerLabel, val, goalType);\n            const bgStyle = cellColor ? `background-color: ${cellColor};` : '';\n            \n            html += `<td style=\"border: 1px solid #ddd; ${bgStyle}\">${formattedVal}</td>`;\n        });\n        html += '</tr>';\n    });\n    html += '</tbody></table><br/>';\n    return html;\n}\n\n// Nueva Función: Construir Tabla de Objetivos (Metas)\nfunction buildGoalsTable() {\n    // Usamos las claves del objeto monthly como referencia de KPIs\n    const kpis = Object.keys(GOALS.monthly);\n\n    let html = '<h3 style=\"font-family: Arial, sans-serif; color: #333;\">Tabla de Objetivos (Metas)</h3>';\n    html += '<table border=\"1\" cellpadding=\"8\" cellspacing=\"0\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 14px; border: 1px solid #ddd;\">';\n    \n    // Header de la tabla de metas (Gris oscuro para diferenciar)\n    html += '<thead style=\"background-color: #444; color: white;\"><tr>';\n    html += '<th style=\"text-align: left;\">INDICADOR</th>';\n    html += '<th style=\"text-align: center;\">META DIARIA</th>';\n    html += '<th style=\"text-align: center;\">META MENSUAL</th>';\n    html += '<th style=\"text-align: center;\">META POR ASESOR (Mensual/5)</th>';\n    html += '</tr></thead>';\n\n    // Cuerpo de la tabla\n    html += '<tbody>';\n    kpis.forEach((kpi, index) => {\n         const bgColor = index % 2 === 0 ? '#ffffff' : '#f9f9f9';\n         html += `<tr style=\"background-color: ${bgColor};\">`;\n         html += `<td style=\"border: 1px solid #ddd;\"><strong>${kpi}</strong></td>`;\n         \n         // Meta Diaria\n         html += `<td style=\"border: 1px solid #ddd; text-align: center;\">${GOALS.daily[kpi] || '-'}</td>`;\n         \n         // Meta Mensual\n         html += `<td style=\"border: 1px solid #ddd; text-align: center;\">${GOALS.monthly[kpi] || '-'}</td>`;\n         \n         // Meta Asesor (formateo a 1 decimal si es necesario)\n         let advGoal = GOALS.advisor[kpi];\n         if(typeof advGoal === 'number') advGoal = Math.round(advGoal * 10) / 10;\n         html += `<td style=\"border: 1px solid #ddd; text-align: center;\">${advGoal || '-'}</td>`;\n         \n         html += '</tr>';\n    });\n    html += '</tbody></table><br/>';\n\n    return html;\n}\n\n// Leyenda de colores\nconst legendHTML = `\n<div style=\"font-family: Arial, sans-serif; font-size: 12px; margin-top: 20px; border: 1px solid #ddd; padding: 10px; width: fit-content;\">\n    <strong>Leyenda de Cumplimiento:</strong><br/><br/>\n    <span style=\"display:inline-block; width: 15px; height: 15px; background-color: ${COLORS.GREEN}; border: 1px solid #999; vertical-align: middle; margin-right: 5px;\"></span> Cumplimiento Meta (≥ 100%)<br/>\n    <span style=\"display:inline-block; width: 15px; height: 15px; background-color: ${COLORS.YELLOW}; border: 1px solid #999; vertical-align: middle; margin-right: 5px; margin-top: 5px;\"></span> Alerta (80% - 99%)<br/>\n    <span style=\"display:inline-block; width: 15px; height: 15px; background-color: ${COLORS.RED}; border: 1px solid #999; vertical-align: middle; margin-right: 5px; margin-top: 5px;\"></span> Crítico (< 80%)\n</div>\n`;\n\n// Obtener datos\nconst data1 = $('Query Diario').all().map(i => i.json);\nconst data2 = $('Query Acumulado').all().map(i => i.json);\nconst data3 = $('Query Asesor').all().map(i => i.json);\nconst data4 = $('Query Canales').all().map(i => i.json);\n\n// Construir correo\nlet emailBody = '<div style=\"font-family: Arial, sans-serif;\">';\nemailBody += '<h2 style=\"color: #003366;\">Reporte Diario de Inversiones</h2>';\n\nconst hoy = new Date().toISOString().split('T')[0];\nemailBody += `<p>Fecha del reporte: ${hoy}</p>`;\nemailBody += '<hr/>';\n\n// Generar tablas con sus respectivos tipos de meta\nemailBody += buildTable('Tabla 1: Diario (Ayer)', data1, 'daily');\nemailBody += buildTable('Tabla 2: Acumulado Mes', data2, 'monthly');\nemailBody += buildTable('Tabla 3: Acumulado por Asesor', data3, 'advisor');\nemailBody += buildTable('Tabla 4: Leads por Canales (Ayer)', data4, null); // Sin metas\n\nemailBody += legendHTML;\nemailBody += '<br/>';\n\n// Agregar la tabla de referencia de objetivos al final\nemailBody += buildGoalsTable();\n\nemailBody += '</div>';\n\nreturn [{ json: { html: emailBody } }];"
+        },
+        "id": "c6821aee-f3aa-4a73-ba95-c9ebdd3fca29",
+        "name": "Formatear HTML",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          752,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "sendTo": "valeria.vega@proper.com.pe,jorge.campos@cmcapital.in,leidy.sanchez@proper.com.pe,silvia.malca@proper.com.pe",
+          "subject": "Reporte diario de inversiones",
+          "message": "={{ $json.html }}",
+          "options": {}
+        },
+        "id": "9c50ae80-a617-47f6-9d5f-b4a3da620c1f",
+        "name": "Enviar Email (Gmail)",
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          976,
+          0
+        ],
+        "webhookId": "644092a3-8e16-44b3-9802-2310658754b8",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "SPurZ4Z9pGQy8MKJ",
+            "name": "Gmail account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Query Diario",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Query Diario": {
+        "main": [
+          [
+            {
+              "node": "Query Acumulado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Query Acumulado": {
+        "main": [
+          [
+            {
+              "node": "Query Asesor",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Query Asesor": {
+        "main": [
+          [
+            {
+              "node": "Query Canales",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Query Canales": {
+        "main": [
+          [
+            {
+              "node": "Formatear HTML",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Formatear HTML": {
+        "main": [
+          [
+            {
+              "node": "Enviar Email (Gmail)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "df07edf4-b8c8-4bf8-bdbe-d8368ee63315",
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -226,8 +450,8 @@
   },
   "shared": [
     {
-      "createdAt": "2026-01-23T13:16:40.286Z",
       "updatedAt": "2026-01-23T13:16:40.286Z",
+      "createdAt": "2026-01-23T13:16:40.286Z",
       "role": "workflow:owner",
       "workflowId": "qFmAolHsNoArziat",
       "projectId": "tpSonpyzopDOYZNA"
