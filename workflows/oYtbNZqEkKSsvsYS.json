@@ -1,5 +1,248 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-12T00:15:49.238Z",
+    "createdAt": "2026-02-12T00:15:49.237Z",
+    "versionId": "06656952-1e18-4301-a063-0b210a1b8f07",
+    "workflowId": "oYtbNZqEkKSsvsYS",
+    "nodes": [
+      {
+        "parameters": {},
+        "id": "10ee299e-8755-4cd9-b31e-ea38e6aaa6f6",
+        "name": "Al hacer clic en Ejecutar",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -256,
+          -144
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT\ndate_trunc('week', fecha_dia)::date AS semana,\nCOUNT(DISTINCT telefono) AS cant_leads,\nCOUNT(DISTINCT CASE WHEN inmueble_identificado = 1 THEN telefono END) AS cant_leads_inmueble_identificado,\nROUND( COUNT(DISTINCT CASE WHEN inmueble_identificado = 1 THEN telefono END)::numeric / NULLIF(COUNT(DISTINCT telefono), 0), 2 ) AS porc_identificado,\nCOUNT(DISTINCT CASE WHEN dio_horario = 1 THEN telefono END) AS cant_leads_dieron_horario,\nROUND( COUNT(DISTINCT CASE WHEN dio_horario = 1 THEN telefono END)::numeric / NULLIF(COUNT(DISTINCT telefono), 0), 2 ) AS porc_dio_horario,\nCOUNT(DISTINCT CASE WHEN tuvo_error = 1 THEN telefono END) AS cant_leads_con_error,\nROUND( COUNT(DISTINCT CASE WHEN tuvo_error = 1 THEN telefono END)::numeric / NULLIF(COUNT(DISTINCT telefono), 0), 2 ) AS porc_con_error,\nCOUNT(DISTINCT CASE WHEN COD_PROPIEDAD_UNIFICADO ILIKE '%MODO%' THEN TELEFONO END) CANT_LEADS_MODO,\nCOUNT(DISTINCT CASE WHEN COD_PROPIEDAD_UNIFICADO NOT ILIKE '%MODO%' THEN TELEFONO END) CANT_LEADS_RETAIL\nFROM crm.bot_leads_david\nWHERE es_nuevo = 1\nAND fecha_dia >= current_date - 30\nGROUP BY 1 ORDER BY 1 DESC;",
+          "additionalFields": {}
+        },
+        "id": "724b76f3-6a96-47a5-952b-070eac55fb7a",
+        "name": "1. General Semanal",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 1,
+        "position": [
+          -32,
+          -144
+        ],
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH parametros AS (\nSELECT\nMIN(semana) AS fecha_min,\nMAX(semana) AS fecha_max\nFROM (\nSELECT date_trunc('week', fecha_dia)::date AS semana\nFROM crm.bot_leads_david\nWHERE cod_propiedad_unificado ILIKE '%MODO%'\nAND es_nuevo = 1\nUNION\n\n    SELECT date_trunc('week',fecha_programada)::date AS semana\n    FROM rentas_crm.visitas\n    WHERE formulario ILIKE '%Inquilino interesado%'\n      AND codigo_inmueble ILIKE '%MODO%'\n) t\n),\ncalendario AS (\nSELECT generate_series(fecha_min, fecha_max, interval '7 day')::date AS semana\nFROM parametros\n),\nleads AS (\nSELECT\ndate_trunc('week',fecha_dia)::date AS semana,\nCOUNT(DISTINCT telefono) AS cant_leads\nFROM crm.bot_leads_david\nWHERE cod_propiedad_unificado ILIKE '%MODO%'\nAND es_nuevo = 1\nGROUP BY 1\n),\nvisitas AS (\nSELECT\ndate_trunc('week',fecha_programada)::date AS semana,\nCOUNT(DISTINCT CELULAR) AS cant_visitas_agendadas_real,\nCOUNT(DISTINCT CASE\nWHEN estado NOT IN ('No realizado', 'Cliente no asistió')\nTHEN CELULAR\nEND) AS cant_visitas_realizadas\nFROM rentas_crm.visitas\nWHERE formulario ILIKE '%Inquilino interesado%'\nAND codigo_inmueble ILIKE '%MODO%'\nGROUP BY 1\n)\n,nuevos_ingresos as (\nSELECT DISTINCT\nDATE_TRUNC('WEEK',A.FECHA_INGRESO)::DATE SEMANA,\nCOUNT(DISTINCT CASE WHEN E.ID IS NOT NULL THEN E.CODIGO_PAGO ELSE D.CODIGO END) AS nuevos_ingresos\nFROM RENTAS_CRM.INGRESOS A\nLEFT JOIN RENTAS_CRM.CONCEPTO_INGRESO B ON A.ID=B.INGRESOS_ID\nLEFT JOIN RENTAS_CRM.CONTRATOS C ON A.CONTRATO_ID=C.ID\nLEFT JOIN RENTAS_CRM.INMUEBLES D ON C.INMUEBLE_ID=D.ID\nLEFT JOIN RENTAS_CRM.HABITACIONES E ON E.ID=C.HABITACION_ID\nLEFT JOIN RENTAS_CRM.INQUILINOS F ON A.INQUILINO_ID=F.ID\nLEFT JOIN RENTAS_CRM.ENTREGA_INMUEBLE H ON A.CONTRATO_ID=H.CONTRATO_ID\nWHERE 1=1\nAND TIPO='generado'\nAND (B.VOUCHERS IS NOT NULL OR B.OBSERVACIONES IS NOT NULL OR A.BANCO_TRANSFERENCIA IS NOT NULL OR A.CUENTA_TRANSFERENCIA IS NOT NULL)\nAND D.CODIGO ILIKE '%MOD%'\nGROUP BY 1\nORDER BY 1 DESC)\nSELECT\nc.semana,\nCOALESCE(l.cant_leads, 0)                                          AS cant_leads_real,\n117\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tAS cant_leads_target,\nCOALESCE(l.cant_leads, 0) - 117                     \t\t\t\t\tAS diff_cant_leads_target,\nCOALESCE(v.cant_visitas_agendadas_real, 0)                          AS cant_visitas_agendadas_real,\n23                                                                   AS cant_visitas_agendadas_target,\nCOALESCE(v.cant_visitas_agendadas_real, 0) - 23                     AS diff_cant_visitas_agendadas_target,\nCOALESCE(v.cant_visitas_realizadas, 0)                              AS cant_visitas_realizadas,\n10                                                                   AS cant_visitas_realizadas_target,\nCOALESCE(v.cant_visitas_realizadas, 0) - 10                          AS diff_cant_visitas_realizadas_target,\nCOALESCE(i.nuevos_ingresos,0) AS CANT_NUEVOS_INGRESOS_REAL,\n3 AS NUEVOS_INGRESOS_TARGET,\nCOALESCE(i.nuevos_ingresos,0) - 3 DIFF_NUEVOS_INGRESOS_TARGET\nFROM calendario c\nLEFT JOIN leads   l ON c.semana = l.semana\nLEFT JOIN visitas v ON c.semana = v.semana\nLEFT JOIN nuevos_ingresos i ON c.semana=i.semana\nWHERE 1=1\nAND C.SEMANA >= CURRENT_DATE - 30 AND C.SEMANA < CURRENT_DATE\nORDER BY c.semana DESC",
+          "additionalFields": {}
+        },
+        "id": "1a5d9d60-65c6-4193-a5dc-e4448a94ffb9",
+        "name": "2. Modo Semanal",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 1,
+        "position": [
+          192,
+          -144
+        ],
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH parametros AS (\nSELECT\nMIN(semana) AS fecha_min,\nMAX(semana) AS fecha_max\nFROM (\nSELECT date_trunc('week',fecha_dia)::date AS semana\nFROM crm.bot_leads_david\nWHERE cod_propiedad_unificado NOT ILIKE '%MODO%'\nAND es_nuevo = 1\nUNION\n\n    SELECT date_trunc('week',fecha_programada)::date AS semana\n    FROM rentas_crm.visitas\n    WHERE formulario ILIKE '%Inquilino interesado%'\n      AND codigo_inmueble NOT ILIKE '%MODO%'\n) t\n),\ncalendario AS (\nSELECT generate_series(fecha_min, fecha_max, interval '7 day')::date AS semana\nFROM parametros\n),\nleads AS (\nSELECT\ndate_trunc('week',fecha_dia)::date AS semana,\nCOUNT(DISTINCT telefono) AS cant_leads\nFROM crm.bot_leads_david\nWHERE cod_propiedad_unificado NOT ILIKE '%MODO%'\nAND es_nuevo = 1\nGROUP BY 1\n),\nvisitas AS (\nSELECT\ndate_trunc('week',fecha_programada)::date AS semana,\nCOUNT(DISTINCT celular) AS cant_visitas_agendadas_real,\nCOUNT(DISTINCT CASE\nWHEN estado NOT IN ('No realizado', 'Cliente no asistió')\nTHEN celular\nEND) AS cant_visitas_realizadas\nFROM rentas_crm.visitas\nWHERE FORMULARIO ilike '%Inquilino interesado%'\nAND CODIGO_INMUEBLE NOT ILIKE '%TEST%'\nAND CODIGO_INMUEBLE NOT ILIKE '%PRUEBA%'\nAND CODIGO_INMUEBLE NOT ILIKE '%MODO%'\nGROUP BY 1\n)\n,nuevos_ingresos as (\nSELECT DISTINCT\nDATE_TRUNC('WEEK',A.FECHA_INGRESO)::DATE SEMANA,\nCOUNT(DISTINCT CASE WHEN E.ID IS NOT NULL THEN E.CODIGO_PAGO ELSE D.CODIGO END) AS nuevos_ingresos\nFROM RENTAS_CRM.INGRESOS A\nLEFT JOIN RENTAS_CRM.CONCEPTO_INGRESO B ON A.ID=B.INGRESOS_ID\nLEFT JOIN RENTAS_CRM.CONTRATOS C ON A.CONTRATO_ID=C.ID\nLEFT JOIN RENTAS_CRM.INMUEBLES D ON C.INMUEBLE_ID=D.ID\nLEFT JOIN RENTAS_CRM.HABITACIONES E ON E.ID=C.HABITACION_ID\nLEFT JOIN RENTAS_CRM.INQUILINOS F ON A.INQUILINO_ID=F.ID\nLEFT JOIN RENTAS_CRM.ENTREGA_INMUEBLE H ON A.CONTRATO_ID=H.CONTRATO_ID\nWHERE 1=1\nAND TIPO='generado'\nAND (B.VOUCHERS IS NOT NULL OR B.OBSERVACIONES IS NOT NULL OR A.BANCO_TRANSFERENCIA IS NOT NULL OR A.CUENTA_TRANSFERENCIA IS NOT NULL)\nAND D.CODIGO NOT ILIKE '%MOD%'\nGROUP BY 1\nORDER BY 1 DESC)\nSELECT\nc.semana,\nCOALESCE(l.cant_leads, 0)                                          AS cant_leads_real,\n175 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tAS cant_leads_target,\nCOALESCE(l.cant_leads, 0) - 175                     \t\t\t\t\tAS diff_cant_leads_target,\nCOALESCE(v.cant_visitas_agendadas_real, 0)                          AS cant_visitas_agendadas_real,\n58                                                                   AS cant_visitas_agendadas_target,\nCOALESCE(v.cant_visitas_agendadas_real, 0) - 58                     AS diff_cant_visitas_agendadas_target,\nCOALESCE(v.cant_visitas_realizadas, 0)                              AS cant_visitas_realizadas,\n50                                                                   AS cant_visitas_realizadas_target,\nCOALESCE(v.cant_visitas_realizadas, 0) - 50                          AS diff_cant_visitas_realizadas_target,\nCOALESCE(i.nuevos_ingresos,0) AS CANT_NUEVOS_INGRESOS_REAL,\n8 AS NUEVOS_INGRESOS_TARGET,\nCOALESCE(i.nuevos_ingresos,0) - 8 DIFF_NUEVOS_INGRESOS_TARGET\nFROM calendario c\nLEFT JOIN leads   l ON c.semana = l.semana\nLEFT JOIN visitas v ON c.semana = v.semana\nLEFT JOIN nuevos_ingresos i ON c.semana=i.semana\nWHERE 1=1\nAND C.SEMANA >= CURRENT_DATE - 30 AND C.SEMANA < CURRENT_DATE\nORDER BY c.semana DESC;",
+          "additionalFields": {}
+        },
+        "id": "32490373-dc41-425a-873e-a5106b01f4a2",
+        "name": "3. Retail Semanal",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 1,
+        "position": [
+          416,
+          -144
+        ],
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH lead_base AS (\nSELECT a.id AS lead_id,\na.fecha_creacion AS lead_fecha_creacion,\na.funnel_id,\na.\"customFields\",\nb.id AS contacto_id,\nb.nombre,\nb.apellido_paterno,\nb.telefono,\nb.email,\nb.nro_documento,\ne.nombre AS etapa_funnel\nFROM crm.leads a\nLEFT JOIN crm.contactos b ON a.contacto_id = b.id\nLEFT JOIN crm.etapas_leads e ON a.etapa_inmueble = e.codigo\nWHERE a.funnel_id = 7\n),\nkv AS (\nSELECT lb.lead_id,\nlb.contacto_id,\nlb.nombre,\nlb.apellido_paterno,\nlb.telefono,\nlb.nro_documento,\nlb.email,\nlb.lead_fecha_creacion,\nlb.funnel_id,\nlb.etapa_funnel,\nk.key   AS field_id,\nk.value AS raw_value\nFROM lead_base lb\nLEFT JOIN LATERAL jsonb_each(lb.\"customFields\"::jsonb) AS k(key, value) ON true\n),\nkv_norm AS (\nSELECT\nkv.*,\ntrim(both '\"' from kv.raw_value::text) AS raw_text,\nCASE\nWHEN jsonb_typeof(kv.raw_value) IN ('number','string')\nAND (trim(both '\"' from kv.raw_value::text) ~ '^\\d+$')\nTHEN (trim(both '\"' from kv.raw_value::text))::int\nELSE NULL\nEND AS raw_id\nFROM kv\n),\nresolved AS (\nSELECT\nkvn.lead_id,\nkvn.contacto_id,\nkvn.nombre,\nkvn.apellido_paterno,\nkvn.telefono,\nkvn.nro_documento,\nkvn.email,\nkvn.lead_fecha_creacion,\nkvn.etapa_funnel,\ncf.name AS field_name,\nCOALESCE(cv.value, NULLIF(kvn.raw_text,'null')) AS field_value\nFROM kv_norm kvn\nLEFT JOIN crm.custom_fields cf ON cf.id = kvn.field_id\nLEFT JOIN crm.custom_values cv\nON cv.field_id = cf.id AND cv.id = kvn.raw_id\nWHERE cf.funnel_id = 7\n),\nleads_v1 AS (\nSELECT\nr.lead_id,\nr.contacto_id,\nr.nombre,\nr.apellido_paterno,\nr.telefono,\nr.email,\nr.nro_documento,\nr.lead_fecha_creacion,\nr.etapa_funnel,\nMAX(CASE WHEN r.field_name = '¿En que departamento se encuentra tu inmueble?' THEN r.field_value END) AS departamento,\nMAX(CASE WHEN r.field_name = '¿En qué distrito se encuentra tu inmueble?' THEN r.field_value END) AS distrito,\nMAX(CASE WHEN r.field_name = '¿Tu departamento está listo para alquilar o está en construcción?' THEN r.field_value END) AS listo_alquilar\nFROM resolved r\nGROUP BY 1,2,3,4,5,6,7,8,9\n),\nleads_final AS (\nSELECT\ndate_trunc('month', lead_fecha_creacion::date)::date AS mes,\ndate_trunc('week',  lead_fecha_creacion::date)::date AS semana,\nlead_fecha_creacion::date AS fechacreacion,\nnombre,\napellido_paterno,\nnro_documento AS nrodoc,\ntelefono,\nemail,\ndistrito,\nCASE WHEN distrito IN (\n'Miraflores', 'San Miguel', 'Magdalena', 'Lince', 'Jesús María',\n'Pueblo Libre', 'La Victoria', 'Breña', 'Barranco', 'San Borja',\n'San Isidro', 'Surquillo', 'Chorrillos', 'Santa Beatriz', 'Surco'\n)\nTHEN 'SI' ELSE 'NO'\nEND AS con_cobertura,\nlisto_alquilar\nFROM leads_v1\n),\nREPORTE_LEADS AS (\nSELECT\nsemana,\nCOUNT(DISTINCT telefono) AS cant_leads_real,\n36 AS cant_leads_target,\nCOUNT(DISTINCT telefono) - 36 AS diferencia_leads_target,\nCOUNT(DISTINCT CASE WHEN con_cobertura = 'SI' THEN telefono ELSE NULL END) AS cant_leads_cobertura_real,\n28 AS cant_leads_cobertura_target,\nCOUNT(DISTINCT CASE WHEN con_cobertura = 'SI' THEN telefono ELSE NULL END) - 28 AS diferencia_cobertura_target\nFROM leads_final A\nWHERE 1 = 1\nAND A.nombre NOT ILIKE '%TEST%'\nAND A.nombre NOT ILIKE '%PRUEBA%'\nAND A.apellido_paterno NOT ILIKE '%Mendoza Mattos%'\nAND A.apellido_paterno NOT ILIKE '%PRUEBA%'\nAND A.apellido_paterno NOT ILIKE '%TEST%'\nAND (A.nrodoc <> '75946464' OR A.nrodoc IS NULL)\nGROUP BY 1\n),\nLLAMADAS AS (\nSELECT\ndate_trunc('week',fecha_programada::date)::date AS semana,\nCOUNT(DISTINCT RIGHT(REGEXP_REPLACE(celular, '[^0-9]', '', 'g'), 9)) AS cant_llamadas_agendadas_real\nFROM rentas_crm.visitas\nWHERE 1 = 1\nAND formulario = 'Propietario interesado'\nAND RIGHT(REGEXP_REPLACE(celular, '[^0-9]', '', 'g'), 9) NOT IN ('959264957')\nGROUP BY 1\n),\nREPORTE_LLAMADAS AS (\nSELECT\na.semana,\na.cant_llamadas_agendadas_real,\n35 AS cant_llamadas_agendadas_target,\na.cant_llamadas_agendadas_real - 35 AS dif_cant_llamadas_agendadas_target\nFROM llamadas a\n)\n,recepciones AS (\nSELECT DATE_TRUNC('WEEK', FECHA_INGRESO)::DATE SEMANA,\nCOUNT(DISTINCT B.CODIGO) INMUEBLES_RECEPCIONADOS,\nCOUNT(DISTINCT CASE WHEN E.NRO_DOCUMENTO IS NOT NULL THEN B.CODIGO ELSE NULL END) INMUEBLES_RECEPCIONADOS_CLIENTES_PROPER,\nCOUNT(DISTINCT CASE WHEN E.NRO_DOCUMENTO IS NULL THEN B.CODIGO ELSE NULL END) INMUEBLES_RECEPCIONADOS_CLIENTES_EXTERNOS\nFROM RENTAS_CRM.RECEPCION_INMUEBLE A\nLEFT JOIN RENTAS_CRM.INMUEBLES B ON A.INMUEBLE_ID=B.ID\nLEFT JOIN RENTAS_CRM.INMUEBLE_PROPIETARIO C ON B.ID=C.INMUEBLE_ID\nLEFT JOIN RENTAS_CRM.PROPIETARIOS D ON C.PROPIETARIO_ID=D.ID\nLEFT JOIN public.separaciones_separacion E ON D.NRO_DOCUMENTO::VARCHAR=E.NRO_DOCUMENTO::VARCHAR\nWHERE 1=1\nAND B.CODIGO NOT ILIKE '%TEST%'\nAND B.CODIGO NOT ILIKE '%MOD%'\nAND B.CODIGO NOT ILIKE '%PRUEBA%'\nAND A.FECHA_INGRESO IS NOT NULL\nGROUP BY 1\nORDER BY 1 DESC\n),\nlimites AS (\nSELECT\nMIN(semana) AS fecha_min,\nMAX(semana) AS fecha_max\nFROM (\nSELECT semana FROM REPORTE_LEADS\nUNION\nSELECT semana FROM REPORTE_LLAMADAS\n) x\n),\ncalendario AS (\nSELECT generate_series(fecha_min, fecha_max, interval '7 day')::date AS semana\nFROM limites\n)\nSELECT\nc.semana,\nCOALESCE(rl.cant_leads_real, 0)                       AS cant_leads_real,\n36                                                     AS cant_leads_target,\nCOALESCE(rl.cant_leads_real, 0) - 36                   AS diferencia_leads_target,\nCOALESCE(rl.cant_leads_cobertura_real, 0)             AS cant_leads_cobertura_real,\n28                                                     AS cant_leads_cobertura_target,\nCOALESCE(rl.cant_leads_cobertura_real, 0) - 28         AS diferencia_cobertura_target,\nCOALESCE(rl2.cant_llamadas_agendadas_real, 0)         AS cant_llamadas_agendadas_real,\n35                                                     AS cant_llamadas_agendadas_target,\nCOALESCE(rl2.cant_llamadas_agendadas_real, 0) - 35     AS dif_cant_llamadas_agendadas_target,\nCOALESCE(r.inmuebles_recepcionados, 0) AS nuevos_inmuebles_recepcionados_propietario,\n8 AS RECEPCIONES_TARGET,\nCOALESCE(r.inmuebles_recepcionados, 0) - 8 DIFF_RECEPCIONES_TARGET\nFROM calendario c\nLEFT JOIN REPORTE_LEADS    rl  ON c.semana = rl.semana\nLEFT JOIN REPORTE_LLAMADAS rl2 ON c.semana = rl2.semana\nLEFT JOIN RECEPCIONES R ON C.SEMANA=R.SEMANA\nWHERE C.semana >= CURRENT_DATE- 30 AND C.SEMANA < CURRENT_DATE\nORDER BY c.semana DESC;",
+          "additionalFields": {}
+        },
+        "id": "7ef2ec04-98e9-402a-b8de-69980f417fdb",
+        "name": "4. Inventario Semanal",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 1,
+        "position": [
+          624,
+          -144
+        ],
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Recopilar datos crudos (pueden venir duplicados por la cadena de nodos)\nconst q1Raw = $('1. General Semanal').all().map(i => i.json);\nconst q2Raw = $('2. Modo Semanal').all().map(i => i.json);\nconst q3Raw = $('3. Retail Semanal').all().map(i => i.json);\nconst q4Raw = $('4. Inventario Semanal').all().map(i => i.json);\n\n// --- FUNCIÓN PARA ELIMINAR DUPLICADOS ---\nfunction dedupe(data) {\n    const unique = [];\n    const seen = new Set();\n    for (const row of data) {\n        // Usamos la fecha como clave única\n        const key = row.semana ? new Date(row.semana).toISOString().split('T')[0] : 'N/A';\n        if (!seen.has(key)) {\n            seen.add(key);\n            unique.push(row);\n        }\n    }\n    return unique;\n}\n\n// Aplicamos la limpieza\nconst q1Data = dedupe(q1Raw);\nconst q2Data = dedupe(q2Raw);\nconst q3Data = dedupe(q3Raw);\nconst q4Data = dedupe(q4Raw);\n\n// --- ESTILOS COMPARTIDOS (DISEÑO UNIFICADO) ---\nconst headerStyle = 'background-color: #ecf0f1; border: 1px solid #bdc3c7; padding: 6px; color: #2c3e50; text-align: center; font-weight: bold; font-family: Arial, sans-serif; font-size: 12px;';\nconst cellStyle = 'border: 1px solid #bdc3c7; padding: 6px; text-align: center; font-family: Arial, sans-serif; font-size: 12px;';\nconst titleStyle = 'font-family: Arial, sans-serif; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; margin-top: 20px;';\n\n// Helper de color\nconst getBgColor = (val) => {\n    val = parseInt(val) || 0;\n    if (val < 0) return '#ffcccc'; // Rojo\n    if (val > 0) return '#ccffcc'; // Verde\n    return '#fff5cc'; // Amarillo\n};\n\n\n// --- Tabla 1: Resumen General ---\nfunction buildGeneralTable(data, title) {\n  let html = `<h3 style=\"${titleStyle}\">${title}</h3>`;\n  if (!data || data.length === 0) return html + \"<p style='font-family:Arial; font-size:12px'>No se encontraron datos.</p>\";\n\n  html += '<table style=\"width: 100%; border-collapse: collapse; margin-bottom: 10px;\">';\n  html += '<thead><tr>';\n  // ACTUALIZADO: Títulos con nuevas columnas\n  const headers = ['Semana', 'Total Leads', 'Identif.', '%', 'Horario', '%', 'Error', '%', 'Leads Modo', 'Leads Retail'];\n  headers.forEach(h => html += `<th style=\"${headerStyle}\">${h}</th>`);\n  html += '</tr></thead><tbody>';\n\n  for (const row of data) {\n    const dateStr = row.semana ? new Date(row.semana).toISOString().split('T')[0] : 'N/A';\n    const pctIdent = row.porc_identificado ? Math.round(row.porc_identificado * 100) + '%' : '0%';\n    const pctHorario = row.porc_dio_horario ? Math.round(row.porc_dio_horario * 100) + '%' : '0%';\n    const pctError = row.porc_con_error ? Math.round(row.porc_con_error * 100) + '%' : '0%';\n    \n    html += '<tr>';\n    html += `<td style=\"${cellStyle}\"><strong>${dateStr}</strong></td>`;\n    html += `<td style=\"${cellStyle}\">${row.cant_leads || 0}</td>`;\n    html += `<td style=\"${cellStyle}\">${row.cant_leads_inmueble_identificado || 0}</td>`;\n    html += `<td style=\"${cellStyle}\">${pctIdent}</td>`;\n    html += `<td style=\"${cellStyle}\">${row.cant_leads_dieron_horario || 0}</td>`;\n    html += `<td style=\"${cellStyle}\">${pctHorario}</td>`;\n    html += `<td style=\"${cellStyle}\">${row.cant_leads_con_error || 0}</td>`;\n    html += `<td style=\"${cellStyle}\">${pctError}</td>`;\n    html += `<td style=\"${cellStyle}\">${row.cant_leads_modo || 0}</td>`;\n    html += `<td style=\"${cellStyle}\">${row.cant_leads_retail || 0}</td>`;\n    html += '</tr>';\n  }\n  html += '</tbody></table>';\n  return html;\n}\n\n// --- Tabla 2 y 3: Operativa (Modo/Retail) ---\nfunction buildTargetTable(data, title) {\n  let html = `<h3 style=\"${titleStyle}\">${title}</h3>`;\n  if (!data || data.length === 0) return html + \"<p style='font-family:Arial; font-size:12px'>No se encontraron datos.</p>\";\n\n  html += '<table style=\"width: 100%; border-collapse: collapse; margin-bottom: 10px;\">';\n  html += '<thead><tr>';\n  // ACTUALIZADO: Incluye Nuevos Ingresos\n  const headers = ['Semana', 'Leads Real', 'Target', 'Dif', 'Visitas Agendadas', 'Target', 'Dif', 'Visitas Realizadas', 'Target', 'Dif', 'Nuevos Ingresos', 'Target', 'Dif'];\n  headers.forEach(h => html += `<th style=\"${headerStyle}\">${h}</th>`);\n  html += '</tr></thead><tbody>';\n\n  for (const row of data) {\n    const dateStr = row.semana ? new Date(row.semana).toISOString().split('T')[0] : 'N/A';\n    const colLead = getBgColor(row.diff_cant_leads_target);\n    const colAgen = getBgColor(row.diff_cant_visitas_agendadas_target);\n    const colReal = getBgColor(row.diff_cant_visitas_realizadas_target);\n    const colIngreso = getBgColor(row.diff_nuevos_ingresos_target);\n\n    html += '<tr>';\n    html += `<td style=\"${cellStyle}\"><strong>${dateStr}</strong></td>`;\n    // Leads\n    html += `<td style=\"${cellStyle}\">${row.cant_leads_real || 0}</td>`;\n    html += `<td style=\"${cellStyle} color: #7f8c8d;\">${row.cant_leads_target || 0}</td>`;\n    html += `<td style=\"${cellStyle} background-color: ${colLead};\">${row.diff_cant_leads_target || 0}</td>`;\n    // Visitas Agendadas\n    html += `<td style=\"${cellStyle}\">${row.cant_visitas_agendadas_real || 0}</td>`;\n    html += `<td style=\"${cellStyle} color: #7f8c8d;\">${row.cant_visitas_agendadas_target || 0}</td>`;\n    html += `<td style=\"${cellStyle} background-color: ${colAgen};\">${row.diff_cant_visitas_agendadas_target || 0}</td>`;\n    // Visitas Realizadas\n    html += `<td style=\"${cellStyle}\">${row.cant_visitas_realizadas || 0}</td>`;\n    html += `<td style=\"${cellStyle} color: #7f8c8d;\">${row.cant_visitas_realizadas_target || 0}</td>`;\n    html += `<td style=\"${cellStyle} background-color: ${colReal};\">${row.diff_cant_visitas_realizadas_target || 0}</td>`;\n    // Nuevos Ingresos\n    html += `<td style=\"${cellStyle}\">${row.cant_nuevos_ingresos_real || 0}</td>`;\n    html += `<td style=\"${cellStyle} color: #7f8c8d;\">${row.nuevos_ingresos_target || 0}</td>`;\n    html += `<td style=\"${cellStyle} background-color: ${colIngreso};\">${row.diff_nuevos_ingresos_target || 0}</td>`;\n\n    html += '</tr>';\n  }\n  html += '</tbody></table>';\n  return html;\n}\n\n// --- Tabla 4: Inventario ---\nfunction buildInventarioTable(data, title) {\n  let html = `<h3 style=\"${titleStyle}\">${title}</h3>`;\n  if (!data || data.length === 0) return html + \"<p style='font-family:Arial; font-size:12px'>No se encontraron datos.</p>\";\n\n  html += '<table style=\"width: 100%; border-collapse: collapse; margin-bottom: 10px;\">';\n  html += '<thead><tr>';\n  // ACTUALIZADO: Incluye Recepciones\n  const headers = ['Semana', 'Leads Real', 'Target', 'Dif', 'Leads Cobertura', 'Target', 'Dif', 'Llamadas', 'Target', 'Dif', 'Recepciones', 'Target', 'Dif'];\n  headers.forEach(h => html += `<th style=\"${headerStyle}\">${h}</th>`);\n  html += '</tr></thead><tbody>';\n\n  for (const row of data) {\n    const dateStr = row.semana ? new Date(row.semana).toISOString().split('T')[0] : 'N/A';\n    const colLead = getBgColor(row.diferencia_leads_target);\n    const colCob = getBgColor(row.diferencia_cobertura_target);\n    const colLlam = getBgColor(row.dif_cant_llamadas_agendadas_target);\n    const colRec = getBgColor(row.diff_recepciones_target);\n\n    html += '<tr>';\n    html += `<td style=\"${cellStyle}\"><strong>${dateStr}</strong></td>`;\n    // Leads\n    html += `<td style=\"${cellStyle}\">${row.cant_leads_real || 0}</td>`;\n    html += `<td style=\"${cellStyle} color: #7f8c8d;\">${row.cant_leads_target || 0}</td>`;\n    html += `<td style=\"${cellStyle} background-color: ${colLead};\">${row.diferencia_leads_target || 0}</td>`;\n    // Cobertura\n    html += `<td style=\"${cellStyle}\">${row.cant_leads_cobertura_real || 0}</td>`;\n    html += `<td style=\"${cellStyle} color: #7f8c8d;\">${row.cant_leads_cobertura_target || 0}</td>`;\n    html += `<td style=\"${cellStyle} background-color: ${colCob};\">${row.diferencia_cobertura_target || 0}</td>`;\n    // Llamadas\n    html += `<td style=\"${cellStyle}\">${row.cant_llamadas_agendadas_real || 0}</td>`;\n    html += `<td style=\"${cellStyle} color: #7f8c8d;\">${row.cant_llamadas_agendadas_target || 0}</td>`;\n    html += `<td style=\"${cellStyle} background-color: ${colLlam};\">${row.dif_cant_llamadas_agendadas_target || 0}</td>`;\n    // Recepciones\n    html += `<td style=\"${cellStyle}\">${row.nuevos_inmuebles_recepcionados_propietario || 0}</td>`;\n    html += `<td style=\"${cellStyle} color: #7f8c8d;\">${row.recepciones_target || 0}</td>`;\n    html += `<td style=\"${cellStyle} background-color: ${colRec};\">${row.diff_recepciones_target || 0}</td>`;\n    \n    html += '</tr>';\n  }\n  html += '</tbody></table>';\n  return html;\n}\n\nlet finalHtml = \"\";\n\n// 1. Resumen General\nfinalHtml += buildGeneralTable(q1Data, \"1. Agente Corretaje (Semanal - Últimos 30 días)\");\n\n// 2. MODO\nfinalHtml += buildTargetTable(q2Data, \"2. Modo: Operativo Semanal (Últimos 30 días)\");\n\n// 3. RETAIL\nfinalHtml += buildTargetTable(q3Data, \"3. Retail: Operativo Semanal (Últimos 30 días)\");\n\n// 4. INVENTARIO\nfinalHtml += buildInventarioTable(q4Data, \"4. Inventario: Operativo Semanal (Últimos 30 días)\");\n\nreturn [{ json: { html_final: finalHtml } }];"
+        },
+        "id": "1e93b36a-026d-4a63-b76f-ede649ac9662",
+        "name": "Formatear HTML",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 1,
+        "position": [
+          848,
+          -144
+        ]
+      },
+      {
+        "parameters": {
+          "sendTo": "valeria.vega@proper.com.pe, jorge.campos@cmcapital.in",
+          "subject": "Reporte Semanal de Leads y Visitas Rentas",
+          "message": "={{ $json.html_final }}",
+          "options": {}
+        },
+        "id": "2a99f38f-23e4-4efa-888d-33a35f036505",
+        "name": "Gmail",
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          1072,
+          -144
+        ],
+        "webhookId": "e061af9a-eae8-4388-95ef-4966afbac880",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "SPurZ4Z9pGQy8MKJ",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 8 * * 1"
+              }
+            ]
+          }
+        },
+        "id": "ec74c409-125a-4942-83d4-7894ee59465d",
+        "name": "Programado Lunes 8AM",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -256,
+          64
+        ]
+      }
+    ],
+    "connections": {
+      "Al hacer clic en Ejecutar": {
+        "main": [
+          [
+            {
+              "node": "1. General Semanal",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "1. General Semanal": {
+        "main": [
+          [
+            {
+              "node": "2. Modo Semanal",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "2. Modo Semanal": {
+        "main": [
+          [
+            {
+              "node": "3. Retail Semanal",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "3. Retail Semanal": {
+        "main": [
+          [
+            {
+              "node": "4. Inventario Semanal",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "4. Inventario Semanal": {
+        "main": [
+          [
+            {
+              "node": "Formatear HTML",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Formatear HTML": {
+        "main": [
+          [
+            {
+              "node": "Gmail",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Programado Lunes 8AM": {
+        "main": [
+          [
+            {
+              "node": "1. General Semanal",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "06656952-1e18-4301-a063-0b210a1b8f07",
   "connections": {
     "Al hacer clic en Ejecutar": {
       "main": [
@@ -243,8 +486,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-12-17T20:11:33.457Z",
       "updatedAt": "2025-12-17T20:11:33.457Z",
+      "createdAt": "2025-12-17T20:11:33.457Z",
       "role": "workflow:owner",
       "workflowId": "oYtbNZqEkKSsvsYS",
       "projectId": "tpSonpyzopDOYZNA"
