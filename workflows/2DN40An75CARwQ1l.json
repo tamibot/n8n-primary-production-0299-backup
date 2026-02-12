@@ -1,0 +1,1872 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-12T00:15:49.238Z",
+    "createdAt": "2026-02-12T00:15:49.237Z",
+    "versionId": "fadabab0-7b01-471d-ab7e-4e22c2ad2b6c",
+    "workflowId": "2DN40An75CARwQ1l",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "telefono"
+              },
+              {
+                "name": "nombre"
+              },
+              {
+                "name": "inicial"
+              },
+              {
+                "name": "ingresos"
+              }
+            ]
+          }
+        },
+        "id": "666beb41-198c-4ad6-8eab-2d774e2a189b",
+        "typeVersion": 1.1,
+        "name": "When Executed by Another Workflow",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "position": [
+          -1200,
+          -48
+        ]
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-4.1-mini",
+            "mode": "list",
+            "cachedResultName": "gpt-4.1-mini"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          -912,
+          192
+        ],
+        "id": "b2ab2451-f286-410a-a009-fc30af3375f4",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "LZHR7cL6uCBXIyJd",
+            "name": "Proper - Oct 2025"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "text": "=Analiza los siguientes datos y devuelve los IDs correspondientes de Bitrix:\n\nINGRESOS DEL CLIENTE: {{ $json.ingresos }}\nINICIAL DEL CLIENTE: {{ $json.inicial }}\n\nMAPEO DE INGRESOS (campo UF_CRM_1690486180):\n- Si es menos de 3000 o menciona \"menos de 3000\" → ID: 2379\n- Si está entre 3000 y 4000 → ID: 2381\n- Si está entre 4000 y 6000 → ID: 2383\n- Si está entre 6000 y 9000 → ID: 2385\n- Si está entre 9000 y 12000 → ID: 2387\n- Si está entre 12000 y 15000 → ID: 2389\n- Si está entre 15000 y 20000 → ID: 3479\n- Si es más de 20000 → ID: 3481\n- Si no se puede determinar o está vacío → ID: 2379\n\nMAPEO DE INICIAL (campo UF_CRM_1690486307):\n- Si es menos de 25000 o menciona \"menos de 25000\" → ID: 2391\n- Si está entre 25000 y 35000 → ID: 2393\n- Si está entre 35000 y 50000 → ID: 2395\n- Si está entre 50000 y 70000 → ID: 2399\n- Si está entre 70000 y 100000 → ID: 2401\n- Si es más de 100000 → ID: 2397\n- Si no se puede determinar o está vacío → ID: 2391\n\nNOTAS IMPORTANTES:\n- Si el valor viene en dólares, multiplica por 3.7 para convertir a soles\n- Extrae el número del texto aunque venga con palabras como \"gano\", \"tengo\", \"aproximadamente\", etc.\n- Si dice \"mil\" considera que son miles (ej: \"5 mil\" = 5000)\n- Siempre devuelve un ID numérico, nunca texto",
+          "attributes": {
+            "attributes": [
+              {
+                "name": "ingresos_id",
+                "type": "number",
+                "description": "ID numérico de Bitrix para el rango de ingresos. Solo el número, sin comillas.",
+                "required": true
+              },
+              {
+                "name": "inicial_id",
+                "type": "number",
+                "description": "ID numérico de Bitrix para el rango de inicial. Solo el número, sin comillas.",
+                "required": true
+              },
+              {
+                "name": "ingresos_valor",
+                "type": "number",
+                "description": "Valor numérico interpretado de los ingresos en soles",
+                "required": true
+              },
+              {
+                "name": "inicial_valor",
+                "type": "number",
+                "description": "Valor numérico interpretado de la inicial en soles",
+                "required": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+        "typeVersion": 1.1,
+        "position": [
+          -976,
+          -48
+        ],
+        "id": "250dbb63-849d-4eac-a325-95c77169cbcd",
+        "name": "Extraer IDs Bitrix"
+      },
+      {
+        "parameters": {
+          "jsCode": "const input = $('When Executed by Another Workflow').first().json;\nconst extracted = $input.first().json.output;\n\n// Formatear teléfono\nconst telefonoLimpio = input.telefono ? input.telefono.replace(/[^0-9]/g, '').slice(-9) : '';\nconst telefonoFormateado = telefonoLimpio ? '+51' + telefonoLimpio : '';\n\nreturn {\n  json: {\n    telefono: input.telefono,\n    telefono_formateado: telefonoFormateado,\n    nombre: input.nombre || '',\n    ingresos: input.ingresos,\n    inicial: input.inicial,\n    ingresos_id: extracted.ingresos_id || 2379,\n    inicial_id: extracted.inicial_id || 2391,\n    ingresos_valor: extracted.ingresos_valor || 0,\n    inicial_valor: extracted.inicial_valor || 0\n  }\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -624,
+          -48
+        ],
+        "id": "4228fade-94a3-4ccc-9489-4775430c5b62",
+        "name": "Preparar Datos"
+      },
+      {
+        "parameters": {
+          "url": "https://proper.bitrix24.com/rest/8203/3s2f229t8qnjg1ig/crm.duplicate.findbycomm.json",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "entity_type",
+                "value": "CONTACT"
+              },
+              {
+                "name": "type",
+                "value": "PHONE"
+              },
+              {
+                "name": "values[0]",
+                "value": "={{ $json.telefono_formateado }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -400,
+          -48
+        ],
+        "id": "984cb1f3-0e5d-489e-88ad-8733abd1abc1",
+        "name": "Buscar Contacto"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "existe-contacto",
+                "leftValue": "={{ $json.result.CONTACT }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "array",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -176,
+          -48
+        ],
+        "id": "27e15464-107a-4064-bcf3-8fb71d62e17d",
+        "name": "Existe Contacto?"
+      },
+      {
+        "parameters": {
+          "jsCode": "const contactIds = $input.first().json.result.CONTACT || [];\nconst datosPreparados = $('Preparar Datos').first().json;\n\nreturn contactIds.map(id => ({\n  contactId: id,\n  ...datosPreparados\n}));"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          48,
+          -288
+        ],
+        "id": "59f0d8c8-80d0-4138-bc2f-96bb3fbcf558",
+        "name": "Preparar Loop"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          272,
+          -288
+        ],
+        "id": "02faf32d-5d31-4c01-a1d0-f6429a32c467",
+        "name": "Loop Contactos"
+      },
+      {
+        "parameters": {
+          "url": "https://proper.bitrix24.com/rest/8203/3s2f229t8qnjg1ig/crm.deal.list.json",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "FILTER[CONTACT_ID]",
+                "value": "={{ $json.contactId }}"
+              },
+              {
+                "name": "FILTER[CATEGORY_ID]",
+                "value": "5"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          496,
+          -400
+        ],
+        "id": "2bed8a06-3054-41c1-b6df-64356f2f8bfd",
+        "name": "Buscar Deals C5"
+      },
+      {
+        "parameters": {
+          "jsCode": "const deals = $input.first().json.result || [];\nconst loopItem = $('Loop Contactos').item.json;\n\nconst dealsC5 = deals.filter(d => d.STAGE_ID && d.STAGE_ID.startsWith('C5'));\n\nreturn {\n  json: {\n    ...loopItem,\n    tieneDealsC5: dealsC5.length > 0,\n    cod_asesor: dealsC5.length > 0 ? dealsC5[0].ASSIGNED_BY_ID : null,\n    deal_id: dealsC5.length > 0 ? dealsC5[0].ID : null\n  }\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          720,
+          -400
+        ],
+        "id": "69780299-6ca7-4099-9586-40a3f944664a",
+        "name": "Filtrar Deals C5"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "tiene-deal",
+                "leftValue": "={{ $json.tieneDealsC5 }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          944,
+          -384
+        ],
+        "id": "58bd0409-a850-4160-8642-0842f86171c5",
+        "name": "Tiene Deal C5?"
+      },
+      {
+        "parameters": {
+          "operation": "select",
+          "schema": {
+            "__rl": true,
+            "value": "bitrix",
+            "mode": "list",
+            "cachedResultName": "bitrix"
+          },
+          "table": {
+            "__rl": true,
+            "value": "asesor",
+            "mode": "list",
+            "cachedResultName": "asesor"
+          },
+          "limit": 1,
+          "where": {
+            "values": [
+              {
+                "column": "id",
+                "value": "={{ $json.cod_asesor }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1168,
+          -384
+        ],
+        "id": "353ae367-9720-4e13-bf63-60d15e5e9bd4",
+        "name": "Obtener Asesor",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const asesor = $input.first().json || {};\nconst datos = $('Tiene Deal C5?').item.json;\n\nreturn {\n  json: {\n    tiene_asesor: asesor.nombre ? true : false,\n    asesor_nombre: asesor.nombre || '',\n    asesor_telefono: asesor.telefono || '',\n    asesor_correo: asesor.correo || '',\n    asesor_codigo: datos.cod_asesor || '',\n    contacto_id: datos.contactId,\n    deal_id: datos.deal_id,\n    cliente_nombre: datos.nombre,\n    cliente_telefono: datos.telefono_formateado,\n    es_contacto_nuevo: false,\n    es_deal_nuevo: false\n  }\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1392,
+          -384
+        ],
+        "id": "5eee5612-e1c5-46cc-8615-a862d025f6dc",
+        "name": "Respuesta Con Asesor"
+      },
+      {
+        "parameters": {
+          "authentication": "bitrixWebhookApi",
+          "fields": {
+            "values": [
+              {
+                "name": "TITLE",
+                "value": "=Bot IA - {{ $('Preparar Datos').first().json.nombre }}"
+              },
+              {
+                "name": "CONTACT_ID",
+                "value": "={{ $('Preparar Loop').first().json.contactId }}"
+              },
+              {
+                "name": "CATEGORY_ID",
+                "value": "5"
+              },
+              {
+                "name": "STAGE_ID",
+                "value": "C5:UC_SBLKBK"
+              },
+              {
+                "name": "SOURCE_ID",
+                "value": "UC_XBCL96"
+              },
+              {
+                "name": "UF_CRM_1690486180",
+                "value": "={{ $('Preparar Datos').first().json.ingresos_id }}"
+              },
+              {
+                "name": "UF_CRM_1690486307",
+                "value": "={{ $('Preparar Datos').first().json.inicial_id }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-bitrix.bitrix",
+        "typeVersion": 1,
+        "position": [
+          496,
+          -208
+        ],
+        "id": "752972dd-5a53-448e-a42e-30a1bc3d276a",
+        "name": "Crear Deal Contacto Existente",
+        "credentials": {
+          "bitrixWebhookApi": {
+            "id": "ROP1MNW41IyhXNQY",
+            "name": "BitrixCuentaEdu"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "https://proper.bitrix24.com/rest/8203/3s2f229t8qnjg1ig/crm.deal.get.json",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "ID",
+                "value": "={{ $json.result }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          944,
+          -192
+        ],
+        "id": "dcfa4380-87ed-42ff-ac3c-15f99b06f33e",
+        "name": "Obtener Deal"
+      },
+      {
+        "parameters": {
+          "operation": "select",
+          "schema": {
+            "__rl": true,
+            "value": "bitrix",
+            "mode": "list",
+            "cachedResultName": "bitrix"
+          },
+          "table": {
+            "__rl": true,
+            "value": "asesor",
+            "mode": "list",
+            "cachedResultName": "asesor"
+          },
+          "limit": 1,
+          "where": {
+            "values": [
+              {
+                "column": "id",
+                "value": "={{ $json.result.ASSIGNED_BY_ID }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1168,
+          -192
+        ],
+        "id": "2d209ef2-d7df-444d-9792-62e4215b943c",
+        "name": "Obtener Asesor Deal Nuevo",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const asesor = $input.first().json || {};\nconst deal = $('Obtener Deal').first().json.result;\nconst datos = $('Preparar Datos').first().json;\n\nreturn {\n  json: {\n    tiene_asesor: asesor.nombre ? true : false,\n    asesor_nombre: asesor.nombre || '',\n    asesor_telefono: asesor.telefono || '',\n    asesor_correo: asesor.correo || '',\n    asesor_codigo: deal.ASSIGNED_BY_ID || '',\n    contacto_id: deal.CONTACT_ID,\n    deal_id: deal.ID,\n    cliente_nombre: datos.nombre,\n    cliente_telefono: datos.telefono_formateado,\n    es_contacto_nuevo: false,\n    es_deal_nuevo: true\n  }\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1392,
+          -192
+        ],
+        "id": "b8e65279-f093-41a4-ab34-1951967cbcba",
+        "name": "Respuesta Deal Nuevo"
+      },
+      {
+        "parameters": {
+          "url": "https://proper.bitrix24.com/rest/8203/3s2f229t8qnjg1ig/crm.deal.get.json",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "ID",
+                "value": "={{ $json.result }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          720,
+          112
+        ],
+        "id": "27ce1652-f63d-46a0-96c5-07159c4f70e8",
+        "name": "Obtener Deal Nuevo"
+      },
+      {
+        "parameters": {
+          "operation": "select",
+          "schema": {
+            "__rl": true,
+            "value": "bitrix",
+            "mode": "list",
+            "cachedResultName": "bitrix"
+          },
+          "table": {
+            "__rl": true,
+            "value": "asesor",
+            "mode": "list",
+            "cachedResultName": "asesor"
+          },
+          "limit": 1,
+          "where": {
+            "values": [
+              {
+                "column": "id",
+                "value": "={{ $json.result.ASSIGNED_BY_ID }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          944,
+          112
+        ],
+        "id": "709e3e48-7ce6-4c48-8e04-f38b6a2efffa",
+        "name": "Obtener Asesor Nuevo",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const asesor = $input.first().json || {};\nconst deal = $('Obtener Deal Nuevo').first().json.result;\nconst datos = $('Preparar Datos').first().json;\n\nreturn {\n  json: {\n    tiene_asesor: asesor.nombre ? true : false,\n    asesor_nombre: asesor.nombre || '',\n    asesor_telefono: asesor.telefono || '',\n    asesor_correo: asesor.correo || '',\n    asesor_codigo: deal.ASSIGNED_BY_ID || '',\n    contacto_id: deal.CONTACT_ID,\n    deal_id: deal.ID,\n    cliente_nombre: datos.nombre,\n    cliente_telefono: datos.telefono_formateado,\n    es_contacto_nuevo: true,\n    es_deal_nuevo: true\n  }\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1168,
+          112
+        ],
+        "id": "c95101f3-b969-44e4-a993-efa150f2317c",
+        "name": "Respuesta Contacto Nuevo"
+      },
+      {
+        "parameters": {
+          "amount": 2
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          496,
+          112
+        ],
+        "id": "32e89644-9c7b-4730-9f8e-fd6da0235d12",
+        "name": "Wait",
+        "webhookId": "0ad3cdba-90d5-47f0-af6f-19327d70373b"
+      },
+      {
+        "parameters": {
+          "amount": 2
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          720,
+          -208
+        ],
+        "id": "639488f5-64d8-4103-be70-c3068123d8e5",
+        "name": "Wait1",
+        "webhookId": "0ad3cdba-90d5-47f0-af6f-19327d70373b"
+      },
+      {
+        "parameters": {
+          "authentication": "bitrixWebhookApi",
+          "resource": "crm.contact",
+          "fields": {
+            "values": [
+              {
+                "name": "NAME",
+                "value": "={{ $('Preparar Datos').item.json.nombre }}"
+              },
+              {
+                "name": "PHONE",
+                "value": "={{ $('Preparar Datos').item.json.telefono_formateado }}"
+              },
+              {
+                "name": "SOURCE_ID",
+                "value": "UC_XBCL96"
+              },
+              {
+                "name": "UTM_SOURCE",
+                "value": "BOT IA - WHATASPP WEB"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-bitrix.bitrix",
+        "typeVersion": 1,
+        "position": [
+          48,
+          112
+        ],
+        "id": "70a2c62c-4897-4ce3-8d6b-02c8c35ee680",
+        "name": "Crear Contacto",
+        "credentials": {
+          "bitrixWebhookApi": {
+            "id": "ROP1MNW41IyhXNQY",
+            "name": "BitrixCuentaEdu"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "authentication": "bitrixWebhookApi",
+          "fields": {
+            "values": [
+              {
+                "name": "TITLE",
+                "value": "=Bot IA - {{ $('Preparar Datos').item.json.nombre }}"
+              },
+              {
+                "name": "CONTACT_ID",
+                "value": "={{ $json.result }}"
+              },
+              {
+                "name": "CATEGORY_ID",
+                "value": "5"
+              },
+              {
+                "name": "STAGE_ID",
+                "value": "C5:UC_SBLKBK"
+              },
+              {
+                "name": "SOURCE_ID",
+                "value": "UC_XBCL96"
+              },
+              {
+                "name": "UF_CRM_1690486180",
+                "value": "={{ $('Preparar Datos').item.json.ingresos_id }}"
+              },
+              {
+                "name": "UF_CRM_1690486307",
+                "value": "={{ $('Preparar Datos').item.json.inicial_id }}"
+              },
+              {
+                "name": "UTM_SOURCE",
+                "value": "BOT IA - WHATASPP WEB"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-bitrix.bitrix",
+        "typeVersion": 1,
+        "position": [
+          272,
+          112
+        ],
+        "id": "19177745-04c2-4343-8615-71c696ee12d6",
+        "name": "Crear Deal Nuevo",
+        "credentials": {
+          "bitrixWebhookApi": {
+            "id": "ROP1MNW41IyhXNQY",
+            "name": "BitrixCuentaEdu"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Extraer IDs Bitrix",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Extraer IDs Bitrix",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extraer IDs Bitrix": {
+        "main": [
+          [
+            {
+              "node": "Preparar Datos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preparar Datos": {
+        "main": [
+          [
+            {
+              "node": "Buscar Contacto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Contacto": {
+        "main": [
+          [
+            {
+              "node": "Existe Contacto?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Existe Contacto?": {
+        "main": [
+          [
+            {
+              "node": "Preparar Loop",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Crear Contacto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preparar Loop": {
+        "main": [
+          [
+            {
+              "node": "Loop Contactos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Contactos": {
+        "main": [
+          [
+            {
+              "node": "Crear Deal Contacto Existente",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Buscar Deals C5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Deals C5": {
+        "main": [
+          [
+            {
+              "node": "Filtrar Deals C5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filtrar Deals C5": {
+        "main": [
+          [
+            {
+              "node": "Tiene Deal C5?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Tiene Deal C5?": {
+        "main": [
+          [
+            {
+              "node": "Obtener Asesor",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Loop Contactos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Obtener Asesor": {
+        "main": [
+          [
+            {
+              "node": "Respuesta Con Asesor",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Crear Deal Contacto Existente": {
+        "main": [
+          [
+            {
+              "node": "Wait1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait1": {
+        "main": [
+          [
+            {
+              "node": "Obtener Deal",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Obtener Deal": {
+        "main": [
+          [
+            {
+              "node": "Obtener Asesor Deal Nuevo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Obtener Asesor Deal Nuevo": {
+        "main": [
+          [
+            {
+              "node": "Respuesta Deal Nuevo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Crear Contacto": {
+        "main": [
+          [
+            {
+              "node": "Crear Deal Nuevo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Crear Deal Nuevo": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Obtener Deal Nuevo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Obtener Deal Nuevo": {
+        "main": [
+          [
+            {
+              "node": "Obtener Asesor Nuevo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Obtener Asesor Nuevo": {
+        "main": [
+          [
+            {
+              "node": "Respuesta Contacto Nuevo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "fadabab0-7b01-471d-ab7e-4e22c2ad2b6c",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Extraer IDs Bitrix",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Extraer IDs Bitrix",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer IDs Bitrix": {
+      "main": [
+        [
+          {
+            "node": "Preparar Datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Datos": {
+      "main": [
+        [
+          {
+            "node": "Buscar Contacto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Contacto": {
+      "main": [
+        [
+          {
+            "node": "Existe Contacto?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Existe Contacto?": {
+      "main": [
+        [
+          {
+            "node": "Preparar Loop",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Crear Contacto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Loop": {
+      "main": [
+        [
+          {
+            "node": "Loop Contactos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Contactos": {
+      "main": [
+        [
+          {
+            "node": "Crear Deal Contacto Existente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar Deals C5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Deals C5": {
+      "main": [
+        [
+          {
+            "node": "Filtrar Deals C5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtrar Deals C5": {
+      "main": [
+        [
+          {
+            "node": "Tiene Deal C5?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tiene Deal C5?": {
+      "main": [
+        [
+          {
+            "node": "Obtener Asesor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Contactos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Asesor": {
+      "main": [
+        [
+          {
+            "node": "Respuesta Con Asesor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear Deal Contacto Existente": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Obtener Deal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Deal": {
+      "main": [
+        [
+          {
+            "node": "Obtener Asesor Deal Nuevo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Asesor Deal Nuevo": {
+      "main": [
+        [
+          {
+            "node": "Respuesta Deal Nuevo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear Contacto": {
+      "main": [
+        [
+          {
+            "node": "Crear Deal Nuevo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear Deal Nuevo": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Obtener Deal Nuevo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Deal Nuevo": {
+      "main": [
+        [
+          {
+            "node": "Obtener Asesor Nuevo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Asesor Nuevo": {
+      "main": [
+        [
+          {
+            "node": "Respuesta Contacto Nuevo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-27T15:51:53.707Z",
+  "id": "2DN40An75CARwQ1l",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "BUSQUEDA_CONTACTO",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "telefono"
+            },
+            {
+              "name": "nombre"
+            },
+            {
+              "name": "inicial"
+            },
+            {
+              "name": "ingresos"
+            }
+          ]
+        }
+      },
+      "id": "666beb41-198c-4ad6-8eab-2d774e2a189b",
+      "typeVersion": 1.1,
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -1200,
+        -48
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -912,
+        192
+      ],
+      "id": "b2ab2451-f286-410a-a009-fc30af3375f4",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "LZHR7cL6uCBXIyJd",
+          "name": "Proper - Oct 2025"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "=Analiza los siguientes datos y devuelve los IDs correspondientes de Bitrix:\n\nINGRESOS DEL CLIENTE: {{ $json.ingresos }}\nINICIAL DEL CLIENTE: {{ $json.inicial }}\n\nMAPEO DE INGRESOS (campo UF_CRM_1690486180):\n- Si es menos de 3000 o menciona \"menos de 3000\" → ID: 2379\n- Si está entre 3000 y 4000 → ID: 2381\n- Si está entre 4000 y 6000 → ID: 2383\n- Si está entre 6000 y 9000 → ID: 2385\n- Si está entre 9000 y 12000 → ID: 2387\n- Si está entre 12000 y 15000 → ID: 2389\n- Si está entre 15000 y 20000 → ID: 3479\n- Si es más de 20000 → ID: 3481\n- Si no se puede determinar o está vacío → ID: 2379\n\nMAPEO DE INICIAL (campo UF_CRM_1690486307):\n- Si es menos de 25000 o menciona \"menos de 25000\" → ID: 2391\n- Si está entre 25000 y 35000 → ID: 2393\n- Si está entre 35000 y 50000 → ID: 2395\n- Si está entre 50000 y 70000 → ID: 2399\n- Si está entre 70000 y 100000 → ID: 2401\n- Si es más de 100000 → ID: 2397\n- Si no se puede determinar o está vacío → ID: 2391\n\nNOTAS IMPORTANTES:\n- Si el valor viene en dólares, multiplica por 3.7 para convertir a soles\n- Extrae el número del texto aunque venga con palabras como \"gano\", \"tengo\", \"aproximadamente\", etc.\n- Si dice \"mil\" considera que son miles (ej: \"5 mil\" = 5000)\n- Siempre devuelve un ID numérico, nunca texto",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "ingresos_id",
+              "type": "number",
+              "description": "ID numérico de Bitrix para el rango de ingresos. Solo el número, sin comillas.",
+              "required": true
+            },
+            {
+              "name": "inicial_id",
+              "type": "number",
+              "description": "ID numérico de Bitrix para el rango de inicial. Solo el número, sin comillas.",
+              "required": true
+            },
+            {
+              "name": "ingresos_valor",
+              "type": "number",
+              "description": "Valor numérico interpretado de los ingresos en soles",
+              "required": true
+            },
+            {
+              "name": "inicial_valor",
+              "type": "number",
+              "description": "Valor numérico interpretado de la inicial en soles",
+              "required": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.1,
+      "position": [
+        -976,
+        -48
+      ],
+      "id": "250dbb63-849d-4eac-a325-95c77169cbcd",
+      "name": "Extraer IDs Bitrix"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $('When Executed by Another Workflow').first().json;\nconst extracted = $input.first().json.output;\n\n// Formatear teléfono\nconst telefonoLimpio = input.telefono ? input.telefono.replace(/[^0-9]/g, '').slice(-9) : '';\nconst telefonoFormateado = telefonoLimpio ? '+51' + telefonoLimpio : '';\n\nreturn {\n  json: {\n    telefono: input.telefono,\n    telefono_formateado: telefonoFormateado,\n    nombre: input.nombre || '',\n    ingresos: input.ingresos,\n    inicial: input.inicial,\n    ingresos_id: extracted.ingresos_id || 2379,\n    inicial_id: extracted.inicial_id || 2391,\n    ingresos_valor: extracted.ingresos_valor || 0,\n    inicial_valor: extracted.inicial_valor || 0\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -624,
+        -48
+      ],
+      "id": "4228fade-94a3-4ccc-9489-4775430c5b62",
+      "name": "Preparar Datos"
+    },
+    {
+      "parameters": {
+        "url": "https://proper.bitrix24.com/rest/8203/3s2f229t8qnjg1ig/crm.duplicate.findbycomm.json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "entity_type",
+              "value": "CONTACT"
+            },
+            {
+              "name": "type",
+              "value": "PHONE"
+            },
+            {
+              "name": "values[0]",
+              "value": "={{ $json.telefono_formateado }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -400,
+        -48
+      ],
+      "id": "984cb1f3-0e5d-489e-88ad-8733abd1abc1",
+      "name": "Buscar Contacto"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "existe-contacto",
+              "leftValue": "={{ $json.result.CONTACT }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -176,
+        -48
+      ],
+      "id": "27e15464-107a-4064-bcf3-8fb71d62e17d",
+      "name": "Existe Contacto?"
+    },
+    {
+      "parameters": {
+        "jsCode": "const contactIds = $input.first().json.result.CONTACT || [];\nconst datosPreparados = $('Preparar Datos').first().json;\n\nreturn contactIds.map(id => ({\n  contactId: id,\n  ...datosPreparados\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        48,
+        -288
+      ],
+      "id": "59f0d8c8-80d0-4138-bc2f-96bb3fbcf558",
+      "name": "Preparar Loop"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        272,
+        -288
+      ],
+      "id": "02faf32d-5d31-4c01-a1d0-f6429a32c467",
+      "name": "Loop Contactos"
+    },
+    {
+      "parameters": {
+        "url": "https://proper.bitrix24.com/rest/8203/3s2f229t8qnjg1ig/crm.deal.list.json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "FILTER[CONTACT_ID]",
+              "value": "={{ $json.contactId }}"
+            },
+            {
+              "name": "FILTER[CATEGORY_ID]",
+              "value": "5"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        496,
+        -400
+      ],
+      "id": "2bed8a06-3054-41c1-b6df-64356f2f8bfd",
+      "name": "Buscar Deals C5"
+    },
+    {
+      "parameters": {
+        "jsCode": "const deals = $input.first().json.result || [];\nconst loopItem = $('Loop Contactos').item.json;\n\nconst dealsC5 = deals.filter(d => d.STAGE_ID && d.STAGE_ID.startsWith('C5'));\n\nreturn {\n  json: {\n    ...loopItem,\n    tieneDealsC5: dealsC5.length > 0,\n    cod_asesor: dealsC5.length > 0 ? dealsC5[0].ASSIGNED_BY_ID : null,\n    deal_id: dealsC5.length > 0 ? dealsC5[0].ID : null\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        -400
+      ],
+      "id": "69780299-6ca7-4099-9586-40a3f944664a",
+      "name": "Filtrar Deals C5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "tiene-deal",
+              "leftValue": "={{ $json.tieneDealsC5 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        944,
+        -384
+      ],
+      "id": "58bd0409-a850-4160-8642-0842f86171c5",
+      "name": "Tiene Deal C5?"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "bitrix",
+          "mode": "list",
+          "cachedResultName": "bitrix"
+        },
+        "table": {
+          "__rl": true,
+          "value": "asesor",
+          "mode": "list",
+          "cachedResultName": "asesor"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $json.cod_asesor }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1168,
+        -384
+      ],
+      "id": "353ae367-9720-4e13-bf63-60d15e5e9bd4",
+      "name": "Obtener Asesor",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const asesor = $input.first().json || {};\nconst datos = $('Tiene Deal C5?').item.json;\n\nreturn {\n  json: {\n    tiene_asesor: asesor.nombre ? true : false,\n    asesor_nombre: asesor.nombre || '',\n    asesor_telefono: asesor.telefono || '',\n    asesor_correo: asesor.correo || '',\n    asesor_codigo: datos.cod_asesor || '',\n    contacto_id: datos.contactId,\n    deal_id: datos.deal_id,\n    cliente_nombre: datos.nombre,\n    cliente_telefono: datos.telefono_formateado,\n    es_contacto_nuevo: false,\n    es_deal_nuevo: false\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1392,
+        -384
+      ],
+      "id": "5eee5612-e1c5-46cc-8615-a862d025f6dc",
+      "name": "Respuesta Con Asesor"
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "fields": {
+          "values": [
+            {
+              "name": "TITLE",
+              "value": "=Bot IA - {{ $('Preparar Datos').first().json.nombre }}"
+            },
+            {
+              "name": "CONTACT_ID",
+              "value": "={{ $('Preparar Loop').first().json.contactId }}"
+            },
+            {
+              "name": "CATEGORY_ID",
+              "value": "5"
+            },
+            {
+              "name": "STAGE_ID",
+              "value": "C5:UC_SBLKBK"
+            },
+            {
+              "name": "SOURCE_ID",
+              "value": "UC_XBCL96"
+            },
+            {
+              "name": "UF_CRM_1690486180",
+              "value": "={{ $('Preparar Datos').first().json.ingresos_id }}"
+            },
+            {
+              "name": "UF_CRM_1690486307",
+              "value": "={{ $('Preparar Datos').first().json.inicial_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        496,
+        -208
+      ],
+      "id": "752972dd-5a53-448e-a42e-30a1bc3d276a",
+      "name": "Crear Deal Contacto Existente",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://proper.bitrix24.com/rest/8203/3s2f229t8qnjg1ig/crm.deal.get.json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "ID",
+              "value": "={{ $json.result }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        944,
+        -192
+      ],
+      "id": "dcfa4380-87ed-42ff-ac3c-15f99b06f33e",
+      "name": "Obtener Deal"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "bitrix",
+          "mode": "list",
+          "cachedResultName": "bitrix"
+        },
+        "table": {
+          "__rl": true,
+          "value": "asesor",
+          "mode": "list",
+          "cachedResultName": "asesor"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $json.result.ASSIGNED_BY_ID }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1168,
+        -192
+      ],
+      "id": "2d209ef2-d7df-444d-9792-62e4215b943c",
+      "name": "Obtener Asesor Deal Nuevo",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const asesor = $input.first().json || {};\nconst deal = $('Obtener Deal').first().json.result;\nconst datos = $('Preparar Datos').first().json;\n\nreturn {\n  json: {\n    tiene_asesor: asesor.nombre ? true : false,\n    asesor_nombre: asesor.nombre || '',\n    asesor_telefono: asesor.telefono || '',\n    asesor_correo: asesor.correo || '',\n    asesor_codigo: deal.ASSIGNED_BY_ID || '',\n    contacto_id: deal.CONTACT_ID,\n    deal_id: deal.ID,\n    cliente_nombre: datos.nombre,\n    cliente_telefono: datos.telefono_formateado,\n    es_contacto_nuevo: false,\n    es_deal_nuevo: true\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1392,
+        -192
+      ],
+      "id": "b8e65279-f093-41a4-ab34-1951967cbcba",
+      "name": "Respuesta Deal Nuevo"
+    },
+    {
+      "parameters": {
+        "url": "https://proper.bitrix24.com/rest/8203/3s2f229t8qnjg1ig/crm.deal.get.json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "ID",
+              "value": "={{ $json.result }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        112
+      ],
+      "id": "27ce1652-f63d-46a0-96c5-07159c4f70e8",
+      "name": "Obtener Deal Nuevo"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "bitrix",
+          "mode": "list",
+          "cachedResultName": "bitrix"
+        },
+        "table": {
+          "__rl": true,
+          "value": "asesor",
+          "mode": "list",
+          "cachedResultName": "asesor"
+        },
+        "limit": 1,
+        "where": {
+          "values": [
+            {
+              "column": "id",
+              "value": "={{ $json.result.ASSIGNED_BY_ID }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        944,
+        112
+      ],
+      "id": "709e3e48-7ce6-4c48-8e04-f38b6a2efffa",
+      "name": "Obtener Asesor Nuevo",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const asesor = $input.first().json || {};\nconst deal = $('Obtener Deal Nuevo').first().json.result;\nconst datos = $('Preparar Datos').first().json;\n\nreturn {\n  json: {\n    tiene_asesor: asesor.nombre ? true : false,\n    asesor_nombre: asesor.nombre || '',\n    asesor_telefono: asesor.telefono || '',\n    asesor_correo: asesor.correo || '',\n    asesor_codigo: deal.ASSIGNED_BY_ID || '',\n    contacto_id: deal.CONTACT_ID,\n    deal_id: deal.ID,\n    cliente_nombre: datos.nombre,\n    cliente_telefono: datos.telefono_formateado,\n    es_contacto_nuevo: true,\n    es_deal_nuevo: true\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1168,
+        112
+      ],
+      "id": "c95101f3-b969-44e4-a993-efa150f2317c",
+      "name": "Respuesta Contacto Nuevo"
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        496,
+        112
+      ],
+      "id": "32e89644-9c7b-4730-9f8e-fd6da0235d12",
+      "name": "Wait",
+      "webhookId": "0ad3cdba-90d5-47f0-af6f-19327d70373b"
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        -208
+      ],
+      "id": "639488f5-64d8-4103-be70-c3068123d8e5",
+      "name": "Wait1",
+      "webhookId": "0ad3cdba-90d5-47f0-af6f-19327d70373b"
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "resource": "crm.contact",
+        "fields": {
+          "values": [
+            {
+              "name": "NAME",
+              "value": "={{ $('Preparar Datos').item.json.nombre }}"
+            },
+            {
+              "name": "PHONE",
+              "value": "={{ $('Preparar Datos').item.json.telefono_formateado }}"
+            },
+            {
+              "name": "SOURCE_ID",
+              "value": "UC_XBCL96"
+            },
+            {
+              "name": "UTM_SOURCE",
+              "value": "BOT IA - WHATASPP WEB"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        48,
+        112
+      ],
+      "id": "70a2c62c-4897-4ce3-8d6b-02c8c35ee680",
+      "name": "Crear Contacto",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "bitrixWebhookApi",
+        "fields": {
+          "values": [
+            {
+              "name": "TITLE",
+              "value": "=Bot IA - {{ $('Preparar Datos').item.json.nombre }}"
+            },
+            {
+              "name": "CONTACT_ID",
+              "value": "={{ $json.result }}"
+            },
+            {
+              "name": "CATEGORY_ID",
+              "value": "5"
+            },
+            {
+              "name": "STAGE_ID",
+              "value": "C5:UC_SBLKBK"
+            },
+            {
+              "name": "SOURCE_ID",
+              "value": "UC_XBCL96"
+            },
+            {
+              "name": "UF_CRM_1690486180",
+              "value": "={{ $('Preparar Datos').item.json.ingresos_id }}"
+            },
+            {
+              "name": "UF_CRM_1690486307",
+              "value": "={{ $('Preparar Datos').item.json.inicial_id }}"
+            },
+            {
+              "name": "UTM_SOURCE",
+              "value": "BOT IA - WHATASPP WEB"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-bitrix.bitrix",
+      "typeVersion": 1,
+      "position": [
+        272,
+        112
+      ],
+      "id": "19177745-04c2-4343-8615-71c696ee12d6",
+      "name": "Crear Deal Nuevo",
+      "credentials": {
+        "bitrixWebhookApi": {
+          "id": "ROP1MNW41IyhXNQY",
+          "name": "BitrixCuentaEdu"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "telefono": "+51941817931",
+          "nombre": "Fidel bayona",
+          "inicial": "Entre S/25,000 y S/35,000",
+          "ingresos": "Entre S/4,000 y S/6,000"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-27T15:51:53.707Z",
+      "createdAt": "2025-11-27T15:51:53.707Z",
+      "role": "workflow:owner",
+      "workflowId": "2DN40An75CARwQ1l",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-10T15:04:31.260Z",
+  "versionId": "fadabab0-7b01-471d-ab7e-4e22c2ad2b6c"
+}
