@@ -1,5 +1,403 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-12T00:15:49.238Z",
+    "createdAt": "2026-02-12T00:15:49.237Z",
+    "versionId": "0fe8e421-6fa4-40b1-99b8-ca7deb1844e0",
+    "workflowId": "TBR9EPCkRB2mvFOP",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "horarioLlamadaPropietarios",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "07f8b792-0b0e-4c4e-a407-0a77bad025d4",
+        "name": "Webhook",
+        "webhookId": "2171d65f-867e-4340-9530-a048c2c99f38"
+      },
+      {
+        "parameters": {
+          "authentication": "longLivedToken",
+          "resource": "leads",
+          "filter": {
+            "id": "={{ $json.body['leads[status][0][id]'] }}"
+          },
+          "options": {
+            "with": [
+              "contacts"
+            ]
+          },
+          "limit": 1
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          208,
+          0
+        ],
+        "id": "4cd43131-9a3d-4138-a28b-a53dacbd29d4",
+        "name": "Get list of leads",
+        "credentials": {
+          "kommoLongLivedApi": {
+            "id": "20bzHfzuZvuDPmtm",
+            "name": "Kommo Long Lived Token account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "authentication": "longLivedToken",
+          "resource": "contacts",
+          "filter": {
+            "id": "={{ $json._embedded.leads[0]._embedded.contacts[0].id }}"
+          },
+          "options": {},
+          "limit": 1
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          416,
+          0
+        ],
+        "id": "d96f14d1-ac5f-46a7-aa45-c83aaaa1e407",
+        "name": "Get list of contacts",
+        "credentials": {
+          "kommoLongLivedApi": {
+            "id": "20bzHfzuZvuDPmtm",
+            "name": "Kommo Long Lived Token account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "c2499975-cb86-4638-a297-5d6cba45b460",
+                "name": "telefono",
+                "value": "={{ \n  $json._embedded.contacts[0].custom_fields_values.find(f => f.field_code === \"PHONE\").values[0].value \n}}",
+                "type": "string"
+              },
+              {
+                "id": "4dc70069-d8ce-4872-b972-0e467d464f39",
+                "name": "idKommo",
+                "value": "={{ $('Get list of leads').item.json._embedded.leads[0].id }}",
+                "type": "string"
+              },
+              {
+                "id": "7587d086-f9a8-48cd-802b-34a79615e9ab",
+                "name": "fecha1",
+                "value": "={{ \n  $('Get list of leads').item.json._embedded.leads[0].custom_fields_values.find(f => f.field_name === \"n8n - diego - fecha1\").values[0].value \n}}",
+                "type": "string"
+              },
+              {
+                "id": "2473c05b-58aa-462f-b07b-55ae4c2aced1",
+                "name": "fecha2",
+                "value": "={{    $('Get list of leads').item.json._embedded.leads[0].custom_fields_values.find(f => f.field_name === \"n8n - diego - fecha2\").values[0].value  }}",
+                "type": "string"
+              },
+              {
+                "id": "ccf389ba-a32a-47f9-9dcb-f4ad12047eb5",
+                "name": "correo",
+                "value": "={{    $json._embedded.contacts[0].custom_fields_values.find(f => f.field_code === \"EMAIL\").values[0].value  }}",
+                "type": "string"
+              },
+              {
+                "id": "541d4325-ca72-4c2d-9b26-4ebaa2d6219a",
+                "name": "nombre",
+                "value": "={{ $json._embedded.contacts[0].name }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          624,
+          0
+        ],
+        "id": "ef688223-4c77-4e14-9a35-eaf7fd5fe618",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "fromEmail": "tamibotperu@gmail.com",
+          "toEmail": "=mvelascoo@tamibot.com, valeria.vega@proper.com.pe, diego.sanchez@proper.com.pe",
+          "subject": "=Tami - Nuevo Propietario agendo llamada - {{ $json.telefono }}",
+          "emailFormat": "text",
+          "text": "=Nuevo Propietario a agendado una llamada\nNombre: {{ $json.nombre }}\nTelefono: {{ $json.telefono }}\nfecha1: {{ $json.fecha1 }}\nfecha2: {{ $json.fecha2 }}\nURL Kommo: https://propertamibotcom.kommo.com/leads/detail/{{ $json.idKommo }}\n\nFavor contactarlo a la brevedad para confirmar su horario de llamada.",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.emailSend",
+        "typeVersion": 2.1,
+        "position": [
+          800,
+          0
+        ],
+        "id": "884bfc5c-4bd6-4216-8f5a-7cdfc1664e0f",
+        "name": "Send email",
+        "webhookId": "2893b846-2791-41d5-8d5e-124ac6e1826d",
+        "credentials": {
+          "smtp": {
+            "id": "1VmOAxpSVwjt9JAy",
+            "name": "SMTP account 2"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "schema": {
+            "__rl": true,
+            "value": "crm",
+            "mode": "list",
+            "cachedResultName": "crm"
+          },
+          "table": {
+            "__rl": true,
+            "value": "registro_horarios_propietarios",
+            "mode": "list",
+            "cachedResultName": "registro_horarios_propietarios"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "nc_order": 0,
+              "id": "={{ $('Edit Fields').item.json.idKommo }}",
+              "fecha_registro": "={{ new Date($now).toISOString().replace('T',' ').slice(0,19) }}",
+              "idKommo": "={{ $('Edit Fields').item.json.idKommo }}",
+              "nombre_cliente": "={{ $('Edit Fields').item.json.nombre }}",
+              "telefono_cliente": "={{ $('Edit Fields').item.json.telefono }}",
+              "correo_cliente": "={{ $('Edit Fields').item.json.correo }}",
+              "fecha_llamada1": "={{\n  (() => {\n    const raw = $('Edit Fields').item.json.fecha1; // \"22/09/2025 10:00\"\n    if (!raw) return null;    // si viene vacío\n    const [d, m, yAndHour] = raw.split('/');\n    const [y, hm] = yAndHour.split(' ');\n    const [h, min] = hm.split(':');\n    const dte = new Date(`${y}-${m}-${d}T${h}:${min}:00`);\n    return dte.toISOString().replace('T',' ').slice(0,19);\n  })()\n}}",
+              "fecha_llamada2": "={{\n  (() => {\n    const raw = $('Edit Fields').item.json.fecha2; // \"20/09/2025 09:18\"\n    if (!raw) return null;\n    const [d, m, yAndHour] = raw.split('/');\n    const [y, hm] = yAndHour.split(' ');\n    const [h, min] = hm.split(':');\n    const dte = new Date(`${y}-${m}-${d}T${h}:${min}:00`);\n    return dte.toISOString().replace('T',' ').slice(0,19);\n  })()\n}}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "created_at",
+                "displayName": "created_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "updated_at",
+                "displayName": "updated_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "created_by",
+                "displayName": "created_by",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "updated_by",
+                "displayName": "updated_by",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "nc_order",
+                "displayName": "nc_order",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_registro",
+                "displayName": "fecha_registro",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "idKommo",
+                "displayName": "idKommo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "nombre_cliente",
+                "displayName": "nombre_cliente",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "telefono_cliente",
+                "displayName": "telefono_cliente",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "correo_cliente",
+                "displayName": "correo_cliente",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_llamada1",
+                "displayName": "fecha_llamada1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "estatus",
+                "displayName": "estatus",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "fecha_llamada2",
+                "displayName": "fecha_llamada2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1040,
+          0
+        ],
+        "id": "766c0eb8-3fb1-4724-81b7-d9cafa5ac84f",
+        "name": "Insert or update rows in a table",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Get list of leads",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get list of leads": {
+        "main": [
+          [
+            {
+              "node": "Get list of contacts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get list of contacts": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Send email",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Send email": {
+        "main": [
+          [
+            {
+              "node": "Insert or update rows in a table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "0fe8e421-6fa4-40b1-99b8-ca7deb1844e0",
   "connections": {
     "Webhook": {
       "main": [
@@ -435,8 +833,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-09-20T13:52:50.808Z",
       "updatedAt": "2025-09-20T13:52:50.808Z",
+      "createdAt": "2025-09-20T13:52:50.808Z",
       "role": "workflow:owner",
       "workflowId": "TBR9EPCkRB2mvFOP",
       "projectId": "tpSonpyzopDOYZNA"
