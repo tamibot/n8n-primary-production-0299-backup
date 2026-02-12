@@ -1,5 +1,351 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-12T00:15:49.238Z",
+    "createdAt": "2026-02-12T00:15:49.237Z",
+    "versionId": "fe9d82b8-2b39-4534-81ca-7c79e215a380",
+    "workflowId": "qfbgdd0NbT4PCRO7",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "KOMMO-CRM-PROD",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ],
+        "id": "69560366-b615-4623-93e1-6e0eab4029ff",
+        "name": "Webhook",
+        "webhookId": "231243ab-b385-4917-b35a-a6adf1287572"
+      },
+      {
+        "parameters": {
+          "operation": "select",
+          "schema": {
+            "__rl": true,
+            "value": "crm",
+            "mode": "list",
+            "cachedResultName": "crm"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "where": {
+            "values": [
+              {
+                "column": "kommo_id",
+                "value": "={{$json.body[\"leads[status][0][id]\"]}}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          520,
+          0
+        ],
+        "id": "0bd6623e-8080-4c09-aa9c-7de63b72239c",
+        "name": "Select rows from a table",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "40e756f3-008f-4115-bb94-6bf20e465a2c",
+                "leftValue": "={{$json.body['leads[status][0][pipeline_id]']}}",
+                "rightValue": "9165176",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          260,
+          0
+        ],
+        "id": "4478b954-986d-46ba-b2d0-d22d12dd25ff",
+        "name": "Filter"
+      },
+      {
+        "parameters": {
+          "operation": "select",
+          "schema": {
+            "__rl": true,
+            "value": "crm",
+            "mode": "list",
+            "cachedResultName": "crm"
+          },
+          "table": {
+            "__rl": true,
+            "value": "etapas",
+            "mode": "list",
+            "cachedResultName": "etapas"
+          },
+          "limit": null,
+          "where": {
+            "values": [
+              {
+                "column": "kommo",
+                "value": "={{ $('Webhook').item.json.body['leads[status][0][status_id]'] }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          740,
+          0
+        ],
+        "id": "cffe2c8a-1e15-44e2-ab33-504fde34e989",
+        "name": "Select rows from a table1",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "value": "crm",
+            "mode": "list",
+            "cachedResultName": "crm"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "id": "={{ $('Select rows from a table').item.json.id }}",
+              "etapa_inmueble": "={{ $json.id }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "fecha_creacion",
+                "displayName": "fecha_creacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "etapa_inmueble",
+                "displayName": "etapa_inmueble",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "customFields",
+                "displayName": "customFields",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "asesor_id",
+                "displayName": "asesor_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "contacto_id",
+                "displayName": "contacto_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "funnel_id",
+                "displayName": "funnel_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "utm_campaign",
+                "displayName": "utm_campaign",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "utm_medium",
+                "displayName": "utm_medium",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "utm_source",
+                "displayName": "utm_source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "kommo_id",
+                "displayName": "kommo_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          960,
+          0
+        ],
+        "id": "a95c0587-52ab-4aa8-a3af-2fe5bf8a5afd",
+        "name": "Update rows in a table",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          [
+            {
+              "node": "Select rows from a table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Select rows from a table": {
+        "main": [
+          [
+            {
+              "node": "Select rows from a table1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Select rows from a table1": {
+        "main": [
+          [
+            {
+              "node": "Update rows in a table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "fe9d82b8-2b39-4534-81ca-7c79e215a380",
   "connections": {
     "Webhook": {
       "main": [
@@ -348,8 +694,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-07-21T16:36:16.752Z",
       "updatedAt": "2025-07-21T16:36:16.752Z",
+      "createdAt": "2025-07-21T16:36:16.752Z",
       "role": "workflow:owner",
       "workflowId": "qfbgdd0NbT4PCRO7",
       "projectId": "tpSonpyzopDOYZNA"
