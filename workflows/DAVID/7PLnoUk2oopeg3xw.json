@@ -1,5 +1,516 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-12T00:15:49.238Z",
+    "createdAt": "2026-02-12T00:15:49.237Z",
+    "versionId": "c8be8e32-dfe6-42f6-9ea3-1c8454f4c139",
+    "workflowId": "7PLnoUk2oopeg3xw",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "david-modo",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          -2368,
+          208
+        ],
+        "id": "1d7334c2-87e0-4ee0-8e17-534caf7fd137",
+        "name": "Webhook",
+        "webhookId": "2f43721a-6e19-4cf6-8b45-6300420cb2ed"
+      },
+      {
+        "parameters": {
+          "authentication": "longLivedToken",
+          "resource": "leads",
+          "filter": {
+            "id": "={{ $json.body?.['leads[add][0][id]'] ?? $json.body?.['leads[status][0][id]'] }}"
+          },
+          "options": {
+            "with": [
+              "contacts"
+            ]
+          },
+          "limit": 1
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          -1920,
+          208
+        ],
+        "id": "9ed9414b-80c8-4c4f-939b-60f13ea41f68",
+        "name": "Kommo API Node",
+        "credentials": {
+          "kommoLongLivedApi": {
+            "id": "20bzHfzuZvuDPmtm",
+            "name": "Kommo Long Lived Token account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "21f0faaf-ceb5-4138-91cd-6c288f47ab96",
+                "name": "telefono",
+                "value": "={{$json._embedded.contacts[0].custom_fields_values.find(f => f.field_code === \"PHONE\").values[0].value}}",
+                "type": "string"
+              },
+              {
+                "id": "1552d482-8a09-4b3d-a951-228e45f81903",
+                "name": "fechaMODO",
+                "value": "={{ ($('Kommo API Node').item.json._embedded.leads[0].custom_fields_values || []).find(f => (f.field_name || '').trim() === 'n8n - fechaMODO')?.values?.[0]?.value || '' }}",
+                "type": "string"
+              },
+              {
+                "id": "d74b2a87-23f5-4801-a3c9-425412a71f6a",
+                "name": "utm_source",
+                "value": "BOT IA - MODO",
+                "type": "string"
+              },
+              {
+                "id": "5e1431e7-a9f8-4001-8b01-a20d75a8e23f",
+                "name": "nombre",
+                "value": "={{ $json._embedded.contacts[0].name }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -1472,
+          208
+        ],
+        "id": "38a801ca-a386-46dd-b127-bcf0b628adaa",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "authentication": "longLivedToken",
+          "resource": "contacts",
+          "filter": {
+            "id": "={{ $json._embedded.leads[0]._embedded.contacts[0].id }}"
+          },
+          "options": {},
+          "limit": 1
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          -1696,
+          208
+        ],
+        "id": "9401ebe6-d655-4f18-b87a-dc5792092aff",
+        "name": "Kommo API Node1",
+        "credentials": {
+          "kommoLongLivedApi": {
+            "id": "20bzHfzuZvuDPmtm",
+            "name": "Kommo Long Lived Token account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "8645f397-dcc0-42c2-a93e-39ce5084ea6a",
+                "name": "fechaMODO_formateada",
+                "value": "={{ DateTime.fromFormat($json.fechaMODO, 'dd/LL/yyyy HH:mm', { zone: 'America/Lima' }).toFormat(\"yyyy-LL-dd'T'HH:mm:ss\") }}",
+                "type": "string"
+              },
+              {
+                "id": "dcbfb20d-6144-43fd-ba15-b3ae6d3a51c7",
+                "name": "telefono_formateado",
+                "value": "={{ String($json.telefono).replace(/^\\+?51/, '') }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -1248,
+          208
+        ],
+        "id": "3f1a2689-add5-48b5-b70b-9ceabb858306",
+        "name": "Edit Fields1"
+      },
+      {
+        "parameters": {
+          "amount": 3
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -2144,
+          208
+        ],
+        "id": "6b9fac96-d38b-4c0c-bc54-4cc9518d099b",
+        "name": "Wait",
+        "webhookId": "132d3155-21b5-4ebf-8d42-780e167774f9"
+      },
+      {
+        "parameters": {
+          "url": "https://b9ugijtcz4.execute-api.us-east-2.amazonaws.com/prod/inmuebles/get_inmueble_codigo/MODOEDIF/",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -1024,
+          208
+        ],
+        "id": "b400be68-6484-4e39-a3b6-2a477c5d7d94",
+        "name": "API: Get Inmueble ID"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://b9ugijtcz4.execute-api.us-east-2.amazonaws.com/prod/visitas/",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"codigo_inmueble\": \"MODO\",\n  \"fecha_programada\": \"{{ $node[\"Edit Fields1\"].json.fechaMODO_formateada }}\",\n  \"inmueble\": \"{{ $json.data.id }}\",\n  \"formulario\": \"Inquilino interesado\",\n  \"tiempo_reunion\": \"00:30\",\n  \"agregar_alquileres\": false,\n  \"cliente_asistio\": false,\n  \"celular\": \"{{ $node[\"Edit Fields\"].json.telefono }}\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -800,
+          208
+        ],
+        "id": "30748d5c-b194-43c5-a573-df2cf9b89703",
+        "name": "API: Crear Visita"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://b9ugijtcz4.execute-api.us-east-2.amazonaws.com/prod/visitas/responsables/",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"visita\": \"{{ $('API: Crear Visita').item.json.id_visita }}\",\n  \"email\": \"edificio.modo@proper.com.pe\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -576,
+          208
+        ],
+        "id": "1387ca65-4525-4efd-98cc-aaba9b2f81e2",
+        "name": "API: Asignar Responsable"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://b9ugijtcz4.execute-api.us-east-2.amazonaws.com/prod/visitas/{{ $node[\"API: Crear Visita\"].json.id_visita }}/interesado/",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"nombre\": \"{{ $node[\"Edit Fields\"].json.nombre }}\",\n  \"nacionalidad\": \"peruano\",\n  \"hijos\": false,\n  \"nro_personas_depto\": 1,\n  \"mascotas\": false,\n  \"nro_mascotas\": 0,\n  \"fecha_toma_departamento\": \"\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          96,
+          208
+        ],
+        "id": "2f147f13-27cc-4ed0-95ae-a00376d9c1a9",
+        "name": "API: Datos Interesado"
+      },
+      {
+        "parameters": {
+          "sendTo": "soporte.corretaje@proper.com.pe, valeria.vega@proper.com.pe",
+          "subject": "=TamiBot - MODO - Nueva Visita - {{ $node[\"Edit Fields\"].json.telefono }}",
+          "emailType": "text",
+          "message": "=Se registra nueva solicitud de visita:\n\nNombre: {{ $node[\"Edit Fields\"].json.nombre }}\nTelefono: {{ $node[\"Edit Fields\"].json.telefono }}\nFecha: {{ $node[\"Edit Fields\"].json.fechaMODO }}\nURL: https://propertamibotcom.kommo.com/leads/detail/{{ $node[\"Kommo API Node\"].json._embedded.leads[0].id }}",
+          "options": {
+            "senderName": "TamiBot - MODO"
+          }
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          320,
+          208
+        ],
+        "id": "9b16e6a9-4a26-4615-be5b-91fa0ea34ecf",
+        "name": "Send Email",
+        "webhookId": "03cbdab2-d1d1-484b-92df-1c510fb10b49",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "SPurZ4Z9pGQy8MKJ",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://b9ugijtcz4.execute-api.us-east-2.amazonaws.com/prod/visitas/responsables/",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"visita\": \"{{ $('API: Crear Visita').item.json.id_visita }}\",\n  \"email\": \"soporte.corretaje@proper.com.pe\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -352,
+          208
+        ],
+        "id": "cd8a301d-3173-4113-8c57-de9cf6dc35a8",
+        "name": "API: Asignar Responsable1"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://b9ugijtcz4.execute-api.us-east-2.amazonaws.com/prod/visitas/responsables/",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"visita\": \"{{ $('API: Crear Visita').item.json.id_visita }}\",\n  \"email\": \"administracion.modo@proper.com.pe\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -128,
+          208
+        ],
+        "id": "836867f8-fdfd-46df-9419-2a55770ee06d",
+        "name": "API: Asignar Responsable2"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://hook.us1.make.com/awximsa3f1x9qvdx8ipftb4rb6kx0i9n",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"id_visita\": \"{{$('Merge').all()[1].json.id_visita}}\",\n  \"inmueble_homming\": \"{{$('Merge').all()[0].json.data.id_homming}}\",\n  \"codigo_inmueble\": \"{{$('Merge').all()[0].json.data.codigo}}\",\n  \"fecha_programada\": \"{{$node['Edit Fields1'].json.fechaMODO_formateada}}\",\n  \"formulario\": \"inquilino interesado\",\n  \"asistentes\": [\"edificio.modo@proper.com.pe\"],\n  \"color\": 5\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -272,
+          480
+        ],
+        "id": "8b5360e9-db3f-4dcc-a79f-4fbbb81939cb",
+        "name": "API: Crear Visita1",
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          -752,
+          480
+        ],
+        "id": "6bf3d59c-e881-47a2-810f-116063b35a19",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "jsCode": "const items = $input.all();\n\nreturn [\n  {\n    json: {\n      ...items[0].json,   // message + data\n      ...items[1].json,   // id_visita\n    },\n  },\n];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -512,
+          480
+        ],
+        "id": "86e3e019-332a-4c00-ad90-a97bf32876c1",
+        "name": "Code"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Kommo API Node",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Kommo API Node": {
+        "main": [
+          [
+            {
+              "node": "Kommo API Node1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Kommo API Node1": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields1": {
+        "main": [
+          [
+            {
+              "node": "API: Get Inmueble ID",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "API: Get Inmueble ID": {
+        "main": [
+          [
+            {
+              "node": "API: Crear Visita",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "API: Crear Visita": {
+        "main": [
+          [
+            {
+              "node": "API: Asignar Responsable",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "API: Asignar Responsable": {
+        "main": [
+          [
+            {
+              "node": "API: Asignar Responsable1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "API: Datos Interesado": {
+        "main": [
+          [
+            {
+              "node": "Send Email",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "API: Asignar Responsable1": {
+        "main": [
+          [
+            {
+              "node": "API: Asignar Responsable2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "API: Asignar Responsable2": {
+        "main": [
+          [
+            {
+              "node": "API: Datos Interesado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "API: Crear Visita1": {
+        "main": [
+          []
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "API: Crear Visita1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "c8be8e32-dfe6-42f6-9ea3-1c8454f4c139",
   "connections": {
     "Webhook": {
       "main": [
@@ -548,8 +1059,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-09-22T06:25:15.789Z",
       "updatedAt": "2025-09-22T06:25:15.789Z",
+      "createdAt": "2025-09-22T06:25:15.789Z",
       "role": "workflow:owner",
       "workflowId": "7PLnoUk2oopeg3xw",
       "projectId": "tpSonpyzopDOYZNA"
@@ -558,14 +1069,14 @@
   "staticData": null,
   "tags": [
     {
-      "createdAt": "2025-09-22T06:25:14.306Z",
       "updatedAt": "2025-09-22T06:25:14.306Z",
+      "createdAt": "2025-09-22T06:25:14.306Z",
       "id": "SAC5Y0KRuxIFToZ4",
       "name": "DAVID"
     },
     {
-      "createdAt": "2025-08-01T18:41:06.465Z",
       "updatedAt": "2025-08-01T18:41:06.465Z",
+      "createdAt": "2025-08-01T18:41:06.465Z",
       "id": "94z6tcDoVU8DriEW",
       "name": "IA"
     }
