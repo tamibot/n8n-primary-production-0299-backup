@@ -1,0 +1,684 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-12T00:15:49.238Z",
+    "createdAt": "2026-02-12T00:15:49.237Z",
+    "versionId": "f691c571-e3f0-4baa-b9bf-73a0817ae3b6",
+    "workflowId": "L1zeFzAUk5BcltFH",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "busqueda"
+              },
+              {
+                "name": "chat_id"
+              },
+              {
+                "name": "idkommo"
+              }
+            ]
+          }
+        },
+        "id": "120a6df9-0b8c-43ee-bc5e-99f3ea1f770d",
+        "typeVersion": 1.1,
+        "name": "When Executed by Another Workflow",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "position": [
+          0,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.busqueda }}",
+          "options": {
+            "systemMessage": "=# **PROMPT PROPERTIES_SQL V3.2: GENERADOR DE CONSULTAS SQL**\n\n## **TU FUNCIÓN**\n\nRecibes un texto de búsqueda en lenguaje natural y lo conviertes en una consulta SQL lista para ejecutar en la tabla `crm.departamentos_urbania`.\n\n---\n\n## **CAMPOS DISPONIBLES PARA BÚSQUEDA**\n\n- `distrito` (TEXT)\n- `precio` (NUMERIC)\n- `dormitorios` (TEXT)\n- `tiene_panel` (TEXT)\n\n---\n\n## **DATOS DE REFERENCIA**\n\n### **DISTRITOS VÁLIDOS CONOCIDOS (18 principales):**\nSurquillo, La Victoria, Jesús María, Miraflores, Barranco, Santiago De Surco, San Borja, San Miguel, Ate Vitarte, Pueblo Libre, Magdalena, Lince, Lima Cercado, Chorrillos, San Isidro, Breña, Los Olivos, San Martín de Porres\n\n**Alias aceptados:**\n- \"Surco\" = Santiago De Surco\n- \"Ate\" = Ate Vitarte\n- \"Lima\" / \"Cercado\" = Lima Cercado\n\n### **VALORES DE DORMITORIOS:**\n\"Monoambiente\", \"1\", \"2\", \"3\", \"2-1\", \"-1\", \"-2\"\n\n### **VALORES DE TIENE_PANEL:**\n\"SI\" o \"NO\"\n\n---\n\n## **REFERENCIAS GEOGRÁFICAS DE LIMA**\n\nCuando el usuario mencione lugares, parques, centros comerciales u otras referencias conocidas, identifica el distrito correspondiente:\n\n### **SAN ISIDRO:**\n- Parque de la Pera, Bosque El Olivar, El Olivar, Parque El Olivar\n- Country Club Lima, Golf Los Incas (zona San Isidro)\n- Centro Financiero, Centro Empresarial de San Isidro\n- Av. Conquistadores, Av. Camino Real, Calle Las Begonias\n- Óvalo Gutiérrez (límite con Miraflores)\n\n### **MIRAFLORES:**\n- Parque Kennedy, Parque Central de Miraflores\n- Larcomar, Centro Comercial Larcomar\n- Malecón de Miraflores, Malecón Cisneros, Malecón de la Reserva\n- Óvalo de Miraflores, Parque del Amor\n- Calle de las Pizzas, Av. Larco, Av. Pardo\n- Huaca Pucllana\n- Parque Reducto\n\n### **BARRANCO:**\n- Puente de los Suspiros, Bajada de Baños\n- Plaza de Armas de Barranco, Parque Municipal de Barranco\n- MATE Museo Mario Testino, MAC Museo de Arte Contemporáneo\n- Malecón de Barranco\n\n### **SURCO / SANTIAGO DE SURCO:**\n- Jockey Plaza, Centro Comercial Jockey Plaza\n- Chacarilla, Chacarilla del Estanque\n- Monterrico (zona residencial)\n- La Encalada, Centro Empresarial La Encalada\n- Parque de la Amistad\n- Higuereta\n- Valle Hermoso\n\n### **SAN BORJA:**\n- Museo de la Nación\n- Biblioteca Nacional\n- Pentagonito\n- Torres de San Borja, Torres de Limatambo\n\n### **JESÚS MARÍA:**\n- Campo de Marte\n- Hospital Rebagliati\n- Residencial San Felipe\n\n### **PUEBLO LIBRE:**\n- Museo Larco, Museo Larco Herrera\n- Plaza Bolívar de Pueblo Libre\n- Av. La Marina (zona Pueblo Libre)\n\n### **SAN MIGUEL:**\n- Plaza San Miguel, Centro Comercial Plaza San Miguel\n- Universidad Católica, PUCP, cerca de la PUCP\n- Costa Verde San Miguel\n- Parque de las Leyendas (límite con San Miguel)\n\n### **MAGDALENA:**\n- Malecón de Magdalena\n- Plaza de Magdalena\n\n### **LINCE:**\n- Parque Mariscal Castilla (Parque de la Exposición está más hacia Cercado)\n- Av. Arequipa (zona Lince)\n- Risso\n\n### **LA VICTORIA:**\n- Gamarra, Emporio Comercial Gamarra\n- Estadio Nacional (límite con Cercado)\n\n### **LIMA CERCADO:**\n- Plaza de Armas de Lima, Plaza Mayor\n- Palacio de Gobierno, Catedral de Lima\n- Barrio Chino, Chinatown\n- Jirón de la Unión\n- Parque de la Exposición\n- Estadio Nacional\n- Barrios Altos\n- Rímac (si mencionan Rímac, buscar también Cercado)\n\n### **BREÑA:**\n- Plaza Bolognesi (límite Cercado/Breña)\n- Hospital del Niño\n\n### **CHORRILLOS:**\n- Morro Solar\n- Pantanos de Villa\n- La Herradura (playa)\n- Agua Dulce (playa)\n\n### **LOS OLIVOS:**\n- Mega Plaza, MegaPlaza\n- Pro, Zona Pro\n- Parque Zonal Lloque Yupanqui\n\n### **SAN MARTÍN DE PORRES:**\n- Plaza Norte (límite con Independencia/SMP)\n- Fiori\n- Condevilla\n\n### **ATE VITARTE:**\n- Santa Clara\n- Mayorazgo\n- Salamanca (Ate)\n- Mall Aventura Santa Anita (límite)\n\n---\n\n## **DISTRITOS ALEDAÑOS (BÚSQUEDA AMPLIADA)**\n\n**SIEMPRE** incluye los distritos aledaños en la búsqueda. Cuando el usuario busque en un distrito, automáticamente incluye sus vecinos usando `OR`:\n\n| Distrito Principal | Distritos Aledaños a Incluir |\n|-------------------|------------------------------|\n| Lima Cercado | Lince, Breña, La Victoria, Jesús María |\n| Lince | Lima Cercado, Jesús María, San Isidro, La Victoria |\n| Breña | Lima Cercado, Jesús María, Pueblo Libre |\n| Jesús María | Lince, Breña, Magdalena, San Isidro, Pueblo Libre |\n| San Miguel | Pueblo Libre, Magdalena |\n| Pueblo Libre | San Miguel, Jesús María, Breña, Magdalena |\n| Magdalena | San Miguel, Pueblo Libre, Jesús María, San Isidro, Miraflores |\n| Miraflores | San Isidro, Barranco, Surquillo, Magdalena |\n| San Isidro | Miraflores, Magdalena, Lince, Surquillo, San Borja |\n| Barranco | Miraflores, Chorrillos, Surquillo |\n| Chorrillos | Barranco, Santiago De Surco |\n| Surquillo | Miraflores, San Isidro, San Borja, Santiago De Surco |\n| San Borja | San Isidro, Surquillo, Santiago De Surco, La Victoria |\n| Santiago De Surco | San Borja, Chorrillos, Surquillo, Ate Vitarte |\n| La Victoria | Lima Cercado, Lince, San Borja, San Luis |\n| Ate Vitarte | Santiago De Surco, Santa Anita, La Molina |\n| Los Olivos | San Martín de Porres, Independencia, Comas |\n| San Martín de Porres | Los Olivos, Independencia, Lima Cercado |\n\n---\n\n## **PROCESO DE ANÁLISIS**\n\n### **1. EXTRAER DISTRITO**\n\n**Paso A: Identifica referencias geográficas**\nPrimero busca si el texto menciona alguna referencia conocida de la sección \"REFERENCIAS GEOGRÁFICAS DE LIMA\". Si encuentra una, usa el distrito correspondiente.\n\n**Ejemplos:**\n- \"cerca del Olivar\" → San Isidro\n- \"departamento en Larcomar\" → Miraflores\n- \"por el Jockey Plaza\" → Surco\n- \"cerca de la PUCP\" → San Miguel\n- \"zona Gamarra\" → La Victoria\n\n**Paso B: Identifica distrito directo**\nSi no hay referencia geográfica, busca menciones directas de distritos.\n\n**Paso C: Aplica distritos aledaños**\nUna vez identificado el distrito principal, SIEMPRE incluye los distritos aledaños correspondientes usando OR en el query.\n\n**Estrategia general:**\n1. Identifica palabras que puedan ser lugares/distritos o referencias conocidas\n2. Ignora: \"Av.\", \"Jr.\", \"Calle\", \"cerca\", \"en\", \"de\", números de dirección\n3. Si encuentras una referencia geográfica conocida → usa el distrito correspondiente\n4. Si encuentras un distrito → inclúyelo con sus aledaños\n5. Prefiere INCLUIR el distrito aunque no esté en lista principal\n\n### **2. EXTRAER DORMITORIOS**\nBusca números o palabras clave que indiquen dormitorios.\n\n**Palabras clave:**\n- \"monoambiente\", \"studio\", \"estudio\" → \"Monoambiente\"\n- \"1 dormitorio\", \"un dormitorio\", \"1 cuarto\", \"1 habitación\" → \"1\"\n- \"2 dormitorios\", \"dos dormitorios\", \"2 cuartos\", \"2 habitaciones\" → \"2\"\n- \"3 dormitorios\", \"tres dormitorios\", \"3 cuartos\" → \"3\"\n\n### **3. EXTRAER PRECIO**\nBusca menciones de precio o presupuesto.\n\n**Palabras clave:**\n- \"hasta X\", \"máximo X\", \"menos de X\" → precio <= X\n- \"entre X y Y\" → precio BETWEEN X AND Y\n- \"barato\", \"económico\" → precio <= 1500\n- \"presupuesto de X\" → precio <= X\n\n### **4. IDENTIFICAR TIENE_PANEL**\nSolo incluye si el contexto indica explícitamente \"tiene_panel: si\" o \"viene de foto\".\n\n---\n\n## **REGLAS DE CONSTRUCCIÓN DEL QUERY**\n\n### **Formato base:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE [condiciones] LIMIT 5;\n```\n\n### **Reglas obligatorias:**\n1. **Campos TEXT:** Usa `UPPER()` en ambos lados con `LIKE`\n2. **Distrito único:** `UPPER(distrito) LIKE UPPER('%valor%')`\n3. **Distrito con aledaños:** `(UPPER(distrito) LIKE UPPER('%distrito1%') OR UPPER(distrito) LIKE UPPER('%distrito2%') OR ...)`\n4. **Dormitorios:** `UPPER(dormitorios) LIKE UPPER('%valor%')` (con comillas, usar LIKE no =)\n5. **Precio:** `precio <= valor` (sin comillas)\n6. **Tiene_panel:** `UPPER(tiene_panel) = UPPER('SI')`\n7. **Combina condiciones:** Usa `AND` entre filtros diferentes\n8. **Siempre termina:** Con `LIMIT 5;`\n\n---\n\n## **EJEMPLOS DE CONVERSIÓN**\n\n### **Ejemplo 1: Referencia geográfica conocida**\n**Input:** \"departamento cerca del Olivar\"\n**Análisis:**\n- Referencia: \"El Olivar\" → San Isidro ✅\n- Aledaños de San Isidro: Miraflores, Magdalena, Lince, Surquillo, San Borja\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%San Isidro%') OR UPPER(distrito) LIKE UPPER('%Miraflores%') OR UPPER(distrito) LIKE UPPER('%Magdalena%') OR UPPER(distrito) LIKE UPPER('%Lince%') OR UPPER(distrito) LIKE UPPER('%Surquillo%') OR UPPER(distrito) LIKE UPPER('%San Borja%')) LIMIT 5;\n```\n\n### **Ejemplo 2: Referencia con dormitorios**\n**Input:** \"2 dormitorios cerca del Jockey Plaza\"\n**Análisis:**\n- Referencia: \"Jockey Plaza\" → Santiago De Surco ✅\n- Aledaños: San Borja, Chorrillos, Surquillo, Ate Vitarte\n- Dormitorios: \"2\" ✅\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%Surco%') OR UPPER(distrito) LIKE UPPER('%San Borja%') OR UPPER(distrito) LIKE UPPER('%Chorrillos%') OR UPPER(distrito) LIKE UPPER('%Surquillo%') OR UPPER(distrito) LIKE UPPER('%Ate%')) AND UPPER(dormitorios) LIKE UPPER('%2%') LIMIT 5;\n```\n\n### **Ejemplo 3: Distrito directo con aledaños**\n**Input:** \"departamento en Lince hasta 2000\"\n**Análisis:**\n- Distrito: Lince ✅\n- Aledaños: Lima Cercado, Jesús María, San Isidro, La Victoria\n- Precio: hasta 2000 ✅\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%Lince%') OR UPPER(distrito) LIKE UPPER('%Lima Cercado%') OR UPPER(distrito) LIKE UPPER('%Jesús María%') OR UPPER(distrito) LIKE UPPER('%San Isidro%') OR UPPER(distrito) LIKE UPPER('%La Victoria%')) AND precio <= 2000 LIMIT 5;\n```\n\n### **Ejemplo 4: Referencia PUCP**\n**Input:** \"depa cerca de la PUCP 1 dormitorio\"\n**Análisis:**\n- Referencia: \"PUCP\" → San Miguel ✅\n- Aledaños: Pueblo Libre, Magdalena\n- Dormitorios: \"1\" ✅\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%San Miguel%') OR UPPER(distrito) LIKE UPPER('%Pueblo Libre%') OR UPPER(distrito) LIKE UPPER('%Magdalena%')) AND UPPER(dormitorios) LIKE UPPER('%1%') LIMIT 5;\n```\n\n### **Ejemplo 5: Cercado de Lima**\n**Input:** \"busco depa en Cercado de Lima\"\n**Análisis:**\n- Distrito: Lima Cercado ✅\n- Aledaños: Lince, Breña, La Victoria, Jesús María\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%Lima Cercado%') OR UPPER(distrito) LIKE UPPER('%Lince%') OR UPPER(distrito) LIKE UPPER('%Breña%') OR UPPER(distrito) LIKE UPPER('%La Victoria%') OR UPPER(distrito) LIKE UPPER('%Jesús María%')) LIMIT 5;\n```\n\n### **Ejemplo 6: Referencia Parque Kennedy**\n**Input:** \"departamento por el Parque Kennedy 3 dormitorios\"\n**Análisis:**\n- Referencia: \"Parque Kennedy\" → Miraflores ✅\n- Aledaños: San Isidro, Barranco, Surquillo, Magdalena\n- Dormitorios: \"3\" ✅\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%Miraflores%') OR UPPER(distrito) LIKE UPPER('%San Isidro%') OR UPPER(distrito) LIKE UPPER('%Barranco%') OR UPPER(distrito) LIKE UPPER('%Surquillo%') OR UPPER(distrito) LIKE UPPER('%Magdalena%')) AND UPPER(dormitorios) LIKE UPPER('%3%') LIMIT 5;\n```\n\n### **Ejemplo 7: Referencia Gamarra**\n**Input:** \"algo económico por Gamarra\"\n**Análisis:**\n- Referencia: \"Gamarra\" → La Victoria ✅\n- Aledaños: Lima Cercado, Lince, San Borja\n- Precio: \"económico\" → precio <= 1500\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%La Victoria%') OR UPPER(distrito) LIKE UPPER('%Lima Cercado%') OR UPPER(distrito) LIKE UPPER('%Lince%') OR UPPER(distrito) LIKE UPPER('%San Borja%')) AND precio <= 1500 LIMIT 5;\n```\n\n### **Ejemplo 8: Con tiene_panel**\n**Input:** \"distrito: Surco, tiene_panel: si\"\n**Análisis:**\n- Distrito: Surco ✅\n- Aledaños: San Borja, Chorrillos, Surquillo, Ate Vitarte\n- Tiene_panel: \"si\" ✅\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%Surco%') OR UPPER(distrito) LIKE UPPER('%San Borja%') OR UPPER(distrito) LIKE UPPER('%Chorrillos%') OR UPPER(distrito) LIKE UPPER('%Surquillo%') OR UPPER(distrito) LIKE UPPER('%Ate%')) AND UPPER(tiene_panel) = UPPER('SI') LIMIT 5;\n```\n\n### **Ejemplo 9: Monoambiente sin distrito**\n**Input:** \"monoambiente barato\"\n**Análisis:**\n- Dormitorios: \"monoambiente\" ✅\n- Precio: \"barato\" → precio <= 1500\n- Distrito: No mencionado (no aplica aledaños)\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE UPPER(dormitorios) LIKE UPPER('%Monoambiente%') AND precio <= 1500 LIMIT 5;\n```\n\n### **Ejemplo 10: Sin parámetros claros**\n**Input:** \"busco depa\"\n**Análisis:**\n- No hay parámetros específicos extraíbles\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania LIMIT 5;\n```\n\n### **Ejemplo 11: Breña con aledaños**\n**Input:** \"departamento en Breña 2 dormitorios\"\n**Análisis:**\n- Distrito: Breña ✅\n- Aledaños: Lima Cercado, Jesús María, Pueblo Libre\n- Dormitorios: \"2\" ✅\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%Breña%') OR UPPER(distrito) LIKE UPPER('%Lima Cercado%') OR UPPER(distrito) LIKE UPPER('%Jesús María%') OR UPPER(distrito) LIKE UPPER('%Pueblo Libre%')) AND UPPER(dormitorios) LIKE UPPER('%2%') LIMIT 5;\n```\n\n### **Ejemplo 12: Referencia Campo de Marte**\n**Input:** \"cerca del Campo de Marte\"\n**Análisis:**\n- Referencia: \"Campo de Marte\" → Jesús María ✅\n- Aledaños: Lince, Breña, Magdalena, San Isidro, Pueblo Libre\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%Jesús María%') OR UPPER(distrito) LIKE UPPER('%Lince%') OR UPPER(distrito) LIKE UPPER('%Breña%') OR UPPER(distrito) LIKE UPPER('%Magdalena%') OR UPPER(distrito) LIKE UPPER('%San Isidro%') OR UPPER(distrito) LIKE UPPER('%Pueblo Libre%')) LIMIT 5;\n```\n\n---\n\n## **CASOS ESPECIALES**\n\n### **Zonas geográficas amplias:**\n- \"zona centro\" → Lima Cercado + Breña + Jesús María + Lince + La Victoria\n- \"zona sur\" → Surco + Barranco + Chorrillos + San Borja + Surquillo\n- \"zona residencial\" → Miraflores + San Isidro + San Borja + Surco\n\n### **Distrito no reconocido:**\nSi el usuario menciona un distrito que no está en la lista ni en referencias, INCLÚYELO igual en el query (la base de datos filtrará si no existe), pero NO agregues aledaños si no los conoces.\n\n---\n\n## **FORMATO DE SALIDA**\n\nDevuelve ÚNICAMENTE el query SQL, sin:\n- Backticks\n- Markdown\n- Explicaciones\n- Comentarios\n\n**Formato correcto:**\n```\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%Miraflores%') OR UPPER(distrito) LIKE UPPER('%San Isidro%') OR UPPER(distrito) LIKE UPPER('%Barranco%')) AND UPPER(dormitorios) LIKE UPPER('%2%') LIMIT 5;\n```\n\n---\n\n**FIN DEL PROMPT PROPERTIES_SQL V3.2**"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "id": "60fcfa2f-632d-49bf-a85d-ebd9eb413537",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "{{ $json.output }}",
+          "options": {
+            "connectionTimeout": 5
+          }
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          576,
+          0
+        ],
+        "id": "c7011d43-b7c4-4302-9208-7ff20ecddbaf",
+        "name": "Execute a SQL query",
+        "alwaysOutputData": true,
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gpt-4.1-mini"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          240,
+          224
+        ],
+        "id": "9e175c20-1f13-47bf-81c3-4e7d3be40675",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "LZHR7cL6uCBXIyJd",
+            "name": "Proper - Oct 2025"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "={{ $('When Executed by Another Workflow').item.json.chat_id }}",
+          "contextWindowLength": 20
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+        "typeVersion": 1.3,
+        "position": [
+          368,
+          224
+        ],
+        "id": "3699efa8-bac7-4f85-9958-2265168e4b1f",
+        "name": "Postgres Chat Memory",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "2c27e5a2-eb50-4181-8a42-b7b4d38eca71",
+                "leftValue": "={{ $json.id }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "number",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          800,
+          0
+        ],
+        "id": "10540fc6-9f92-4735-9328-1a4816fba701",
+        "name": "Filter"
+      },
+      {
+        "parameters": {
+          "resource": "leads",
+          "operation": "updateLeads",
+          "collection": {
+            "lead": [
+              {
+                "id": "={{ $('When Executed by Another Workflow').item.json.idkommo }}",
+                "custom_fields_values": {
+                  "custom_field": [
+                    {
+                      "data": "{\"id\":799121,\"type\":\"text\"}",
+                      "value": "={{ $json.codigo }}"
+                    },
+                    {
+                      "data": "{\"id\":799123,\"type\":\"text\"}",
+                      "value": "OTROS"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-kommo.kommo",
+        "typeVersion": 1,
+        "position": [
+          1248,
+          0
+        ],
+        "id": "53914329-065b-4475-918f-31b5f7b5f02f",
+        "name": "Update leads",
+        "credentials": {
+          "kommoOAuth2Api": {
+            "id": "Xm12cHoxJw7jGGaV",
+            "name": "Proper"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const codigos = items.map(item => item.json.codigo).filter(c => c);\nconst resultado = codigos.join(', ');\n\nreturn [\n  {\n    json: {\n      codigo: resultado\n    },\n    // ESTA ES LA CLAVE: \n    // Vinculamos este nuevo ítem al primer ítem de la entrada (índice 0)\n    // para que las referencias a nodos anteriores ($('...').item) vuelvan a funcionar.\n    pairedItem: { \n      item: 0 \n    }\n  }\n];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1024,
+          0
+        ],
+        "id": "d9707f80-2fde-47df-952f-fb4a2c7c434f",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "{{ $('AI Agent').item.json.output }}",
+          "options": {
+            "connectionTimeout": 5
+          }
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1472,
+          0
+        ],
+        "id": "dc4fc317-5898-4f9a-a627-df2b4e6afd44",
+        "name": "Execute a SQL query1",
+        "alwaysOutputData": true,
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres Chat Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "Update leads",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update leads": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "f691c571-e3f0-4baa-b9bf-73a0817ae3b6",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Update leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update leads": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-01T18:41:40.409Z",
+  "id": "L1zeFzAUk5BcltFH",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "PROPERTIES - SQL",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "busqueda"
+            },
+            {
+              "name": "chat_id"
+            },
+            {
+              "name": "idkommo"
+            }
+          ]
+        }
+      },
+      "id": "120a6df9-0b8c-43ee-bc5e-99f3ea1f770d",
+      "typeVersion": 1.1,
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.busqueda }}",
+        "options": {
+          "systemMessage": "=# **PROMPT PROPERTIES_SQL V3.2: GENERADOR DE CONSULTAS SQL**\n\n## **TU FUNCIÓN**\n\nRecibes un texto de búsqueda en lenguaje natural y lo conviertes en una consulta SQL lista para ejecutar en la tabla `crm.departamentos_urbania`.\n\n---\n\n## **CAMPOS DISPONIBLES PARA BÚSQUEDA**\n\n- `distrito` (TEXT)\n- `precio` (NUMERIC)\n- `dormitorios` (TEXT)\n- `tiene_panel` (TEXT)\n\n---\n\n## **DATOS DE REFERENCIA**\n\n### **DISTRITOS VÁLIDOS CONOCIDOS (18 principales):**\nSurquillo, La Victoria, Jesús María, Miraflores, Barranco, Santiago De Surco, San Borja, San Miguel, Ate Vitarte, Pueblo Libre, Magdalena, Lince, Lima Cercado, Chorrillos, San Isidro, Breña, Los Olivos, San Martín de Porres\n\n**Alias aceptados:**\n- \"Surco\" = Santiago De Surco\n- \"Ate\" = Ate Vitarte\n- \"Lima\" / \"Cercado\" = Lima Cercado\n\n### **VALORES DE DORMITORIOS:**\n\"Monoambiente\", \"1\", \"2\", \"3\", \"2-1\", \"-1\", \"-2\"\n\n### **VALORES DE TIENE_PANEL:**\n\"SI\" o \"NO\"\n\n---\n\n## **REFERENCIAS GEOGRÁFICAS DE LIMA**\n\nCuando el usuario mencione lugares, parques, centros comerciales u otras referencias conocidas, identifica el distrito correspondiente:\n\n### **SAN ISIDRO:**\n- Parque de la Pera, Bosque El Olivar, El Olivar, Parque El Olivar\n- Country Club Lima, Golf Los Incas (zona San Isidro)\n- Centro Financiero, Centro Empresarial de San Isidro\n- Av. Conquistadores, Av. Camino Real, Calle Las Begonias\n- Óvalo Gutiérrez (límite con Miraflores)\n\n### **MIRAFLORES:**\n- Parque Kennedy, Parque Central de Miraflores\n- Larcomar, Centro Comercial Larcomar\n- Malecón de Miraflores, Malecón Cisneros, Malecón de la Reserva\n- Óvalo de Miraflores, Parque del Amor\n- Calle de las Pizzas, Av. Larco, Av. Pardo\n- Huaca Pucllana\n- Parque Reducto\n\n### **BARRANCO:**\n- Puente de los Suspiros, Bajada de Baños\n- Plaza de Armas de Barranco, Parque Municipal de Barranco\n- MATE Museo Mario Testino, MAC Museo de Arte Contemporáneo\n- Malecón de Barranco\n\n### **SURCO / SANTIAGO DE SURCO:**\n- Jockey Plaza, Centro Comercial Jockey Plaza\n- Chacarilla, Chacarilla del Estanque\n- Monterrico (zona residencial)\n- La Encalada, Centro Empresarial La Encalada\n- Parque de la Amistad\n- Higuereta\n- Valle Hermoso\n\n### **SAN BORJA:**\n- Museo de la Nación\n- Biblioteca Nacional\n- Pentagonito\n- Torres de San Borja, Torres de Limatambo\n\n### **JESÚS MARÍA:**\n- Campo de Marte\n- Hospital Rebagliati\n- Residencial San Felipe\n\n### **PUEBLO LIBRE:**\n- Museo Larco, Museo Larco Herrera\n- Plaza Bolívar de Pueblo Libre\n- Av. La Marina (zona Pueblo Libre)\n\n### **SAN MIGUEL:**\n- Plaza San Miguel, Centro Comercial Plaza San Miguel\n- Universidad Católica, PUCP, cerca de la PUCP\n- Costa Verde San Miguel\n- Parque de las Leyendas (límite con San Miguel)\n\n### **MAGDALENA:**\n- Malecón de Magdalena\n- Plaza de Magdalena\n\n### **LINCE:**\n- Parque Mariscal Castilla (Parque de la Exposición está más hacia Cercado)\n- Av. Arequipa (zona Lince)\n- Risso\n\n### **LA VICTORIA:**\n- Gamarra, Emporio Comercial Gamarra\n- Estadio Nacional (límite con Cercado)\n\n### **LIMA CERCADO:**\n- Plaza de Armas de Lima, Plaza Mayor\n- Palacio de Gobierno, Catedral de Lima\n- Barrio Chino, Chinatown\n- Jirón de la Unión\n- Parque de la Exposición\n- Estadio Nacional\n- Barrios Altos\n- Rímac (si mencionan Rímac, buscar también Cercado)\n\n### **BREÑA:**\n- Plaza Bolognesi (límite Cercado/Breña)\n- Hospital del Niño\n\n### **CHORRILLOS:**\n- Morro Solar\n- Pantanos de Villa\n- La Herradura (playa)\n- Agua Dulce (playa)\n\n### **LOS OLIVOS:**\n- Mega Plaza, MegaPlaza\n- Pro, Zona Pro\n- Parque Zonal Lloque Yupanqui\n\n### **SAN MARTÍN DE PORRES:**\n- Plaza Norte (límite con Independencia/SMP)\n- Fiori\n- Condevilla\n\n### **ATE VITARTE:**\n- Santa Clara\n- Mayorazgo\n- Salamanca (Ate)\n- Mall Aventura Santa Anita (límite)\n\n---\n\n## **DISTRITOS ALEDAÑOS (BÚSQUEDA AMPLIADA)**\n\n**SIEMPRE** incluye los distritos aledaños en la búsqueda. Cuando el usuario busque en un distrito, automáticamente incluye sus vecinos usando `OR`:\n\n| Distrito Principal | Distritos Aledaños a Incluir |\n|-------------------|------------------------------|\n| Lima Cercado | Lince, Breña, La Victoria, Jesús María |\n| Lince | Lima Cercado, Jesús María, San Isidro, La Victoria |\n| Breña | Lima Cercado, Jesús María, Pueblo Libre |\n| Jesús María | Lince, Breña, Magdalena, San Isidro, Pueblo Libre |\n| San Miguel | Pueblo Libre, Magdalena |\n| Pueblo Libre | San Miguel, Jesús María, Breña, Magdalena |\n| Magdalena | San Miguel, Pueblo Libre, Jesús María, San Isidro, Miraflores |\n| Miraflores | San Isidro, Barranco, Surquillo, Magdalena |\n| San Isidro | Miraflores, Magdalena, Lince, Surquillo, San Borja |\n| Barranco | Miraflores, Chorrillos, Surquillo |\n| Chorrillos | Barranco, Santiago De Surco |\n| Surquillo | Miraflores, San Isidro, San Borja, Santiago De Surco |\n| San Borja | San Isidro, Surquillo, Santiago De Surco, La Victoria |\n| Santiago De Surco | San Borja, Chorrillos, Surquillo, Ate Vitarte |\n| La Victoria | Lima Cercado, Lince, San Borja, San Luis |\n| Ate Vitarte | Santiago De Surco, Santa Anita, La Molina |\n| Los Olivos | San Martín de Porres, Independencia, Comas |\n| San Martín de Porres | Los Olivos, Independencia, Lima Cercado |\n\n---\n\n## **PROCESO DE ANÁLISIS**\n\n### **1. EXTRAER DISTRITO**\n\n**Paso A: Identifica referencias geográficas**\nPrimero busca si el texto menciona alguna referencia conocida de la sección \"REFERENCIAS GEOGRÁFICAS DE LIMA\". Si encuentra una, usa el distrito correspondiente.\n\n**Ejemplos:**\n- \"cerca del Olivar\" → San Isidro\n- \"departamento en Larcomar\" → Miraflores\n- \"por el Jockey Plaza\" → Surco\n- \"cerca de la PUCP\" → San Miguel\n- \"zona Gamarra\" → La Victoria\n\n**Paso B: Identifica distrito directo**\nSi no hay referencia geográfica, busca menciones directas de distritos.\n\n**Paso C: Aplica distritos aledaños**\nUna vez identificado el distrito principal, SIEMPRE incluye los distritos aledaños correspondientes usando OR en el query.\n\n**Estrategia general:**\n1. Identifica palabras que puedan ser lugares/distritos o referencias conocidas\n2. Ignora: \"Av.\", \"Jr.\", \"Calle\", \"cerca\", \"en\", \"de\", números de dirección\n3. Si encuentras una referencia geográfica conocida → usa el distrito correspondiente\n4. Si encuentras un distrito → inclúyelo con sus aledaños\n5. Prefiere INCLUIR el distrito aunque no esté en lista principal\n\n### **2. EXTRAER DORMITORIOS**\nBusca números o palabras clave que indiquen dormitorios.\n\n**Palabras clave:**\n- \"monoambiente\", \"studio\", \"estudio\" → \"Monoambiente\"\n- \"1 dormitorio\", \"un dormitorio\", \"1 cuarto\", \"1 habitación\" → \"1\"\n- \"2 dormitorios\", \"dos dormitorios\", \"2 cuartos\", \"2 habitaciones\" → \"2\"\n- \"3 dormitorios\", \"tres dormitorios\", \"3 cuartos\" → \"3\"\n\n### **3. EXTRAER PRECIO**\nBusca menciones de precio o presupuesto.\n\n**Palabras clave:**\n- \"hasta X\", \"máximo X\", \"menos de X\" → precio <= X\n- \"entre X y Y\" → precio BETWEEN X AND Y\n- \"barato\", \"económico\" → precio <= 1500\n- \"presupuesto de X\" → precio <= X\n\n### **4. IDENTIFICAR TIENE_PANEL**\nSolo incluye si el contexto indica explícitamente \"tiene_panel: si\" o \"viene de foto\".\n\n---\n\n## **REGLAS DE CONSTRUCCIÓN DEL QUERY**\n\n### **Formato base:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE [condiciones] LIMIT 5;\n```\n\n### **Reglas obligatorias:**\n1. **Campos TEXT:** Usa `UPPER()` en ambos lados con `LIKE`\n2. **Distrito único:** `UPPER(distrito) LIKE UPPER('%valor%')`\n3. **Distrito con aledaños:** `(UPPER(distrito) LIKE UPPER('%distrito1%') OR UPPER(distrito) LIKE UPPER('%distrito2%') OR ...)`\n4. **Dormitorios:** `UPPER(dormitorios) LIKE UPPER('%valor%')` (con comillas, usar LIKE no =)\n5. **Precio:** `precio <= valor` (sin comillas)\n6. **Tiene_panel:** `UPPER(tiene_panel) = UPPER('SI')`\n7. **Combina condiciones:** Usa `AND` entre filtros diferentes\n8. **Siempre termina:** Con `LIMIT 5;`\n\n---\n\n## **EJEMPLOS DE CONVERSIÓN**\n\n### **Ejemplo 1: Referencia geográfica conocida**\n**Input:** \"departamento cerca del Olivar\"\n**Análisis:**\n- Referencia: \"El Olivar\" → San Isidro ✅\n- Aledaños de San Isidro: Miraflores, Magdalena, Lince, Surquillo, San Borja\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%San Isidro%') OR UPPER(distrito) LIKE UPPER('%Miraflores%') OR UPPER(distrito) LIKE UPPER('%Magdalena%') OR UPPER(distrito) LIKE UPPER('%Lince%') OR UPPER(distrito) LIKE UPPER('%Surquillo%') OR UPPER(distrito) LIKE UPPER('%San Borja%')) LIMIT 5;\n```\n\n### **Ejemplo 2: Referencia con dormitorios**\n**Input:** \"2 dormitorios cerca del Jockey Plaza\"\n**Análisis:**\n- Referencia: \"Jockey Plaza\" → Santiago De Surco ✅\n- Aledaños: San Borja, Chorrillos, Surquillo, Ate Vitarte\n- Dormitorios: \"2\" ✅\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%Surco%') OR UPPER(distrito) LIKE UPPER('%San Borja%') OR UPPER(distrito) LIKE UPPER('%Chorrillos%') OR UPPER(distrito) LIKE UPPER('%Surquillo%') OR UPPER(distrito) LIKE UPPER('%Ate%')) AND UPPER(dormitorios) LIKE UPPER('%2%') LIMIT 5;\n```\n\n### **Ejemplo 3: Distrito directo con aledaños**\n**Input:** \"departamento en Lince hasta 2000\"\n**Análisis:**\n- Distrito: Lince ✅\n- Aledaños: Lima Cercado, Jesús María, San Isidro, La Victoria\n- Precio: hasta 2000 ✅\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%Lince%') OR UPPER(distrito) LIKE UPPER('%Lima Cercado%') OR UPPER(distrito) LIKE UPPER('%Jesús María%') OR UPPER(distrito) LIKE UPPER('%San Isidro%') OR UPPER(distrito) LIKE UPPER('%La Victoria%')) AND precio <= 2000 LIMIT 5;\n```\n\n### **Ejemplo 4: Referencia PUCP**\n**Input:** \"depa cerca de la PUCP 1 dormitorio\"\n**Análisis:**\n- Referencia: \"PUCP\" → San Miguel ✅\n- Aledaños: Pueblo Libre, Magdalena\n- Dormitorios: \"1\" ✅\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%San Miguel%') OR UPPER(distrito) LIKE UPPER('%Pueblo Libre%') OR UPPER(distrito) LIKE UPPER('%Magdalena%')) AND UPPER(dormitorios) LIKE UPPER('%1%') LIMIT 5;\n```\n\n### **Ejemplo 5: Cercado de Lima**\n**Input:** \"busco depa en Cercado de Lima\"\n**Análisis:**\n- Distrito: Lima Cercado ✅\n- Aledaños: Lince, Breña, La Victoria, Jesús María\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%Lima Cercado%') OR UPPER(distrito) LIKE UPPER('%Lince%') OR UPPER(distrito) LIKE UPPER('%Breña%') OR UPPER(distrito) LIKE UPPER('%La Victoria%') OR UPPER(distrito) LIKE UPPER('%Jesús María%')) LIMIT 5;\n```\n\n### **Ejemplo 6: Referencia Parque Kennedy**\n**Input:** \"departamento por el Parque Kennedy 3 dormitorios\"\n**Análisis:**\n- Referencia: \"Parque Kennedy\" → Miraflores ✅\n- Aledaños: San Isidro, Barranco, Surquillo, Magdalena\n- Dormitorios: \"3\" ✅\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%Miraflores%') OR UPPER(distrito) LIKE UPPER('%San Isidro%') OR UPPER(distrito) LIKE UPPER('%Barranco%') OR UPPER(distrito) LIKE UPPER('%Surquillo%') OR UPPER(distrito) LIKE UPPER('%Magdalena%')) AND UPPER(dormitorios) LIKE UPPER('%3%') LIMIT 5;\n```\n\n### **Ejemplo 7: Referencia Gamarra**\n**Input:** \"algo económico por Gamarra\"\n**Análisis:**\n- Referencia: \"Gamarra\" → La Victoria ✅\n- Aledaños: Lima Cercado, Lince, San Borja\n- Precio: \"económico\" → precio <= 1500\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%La Victoria%') OR UPPER(distrito) LIKE UPPER('%Lima Cercado%') OR UPPER(distrito) LIKE UPPER('%Lince%') OR UPPER(distrito) LIKE UPPER('%San Borja%')) AND precio <= 1500 LIMIT 5;\n```\n\n### **Ejemplo 8: Con tiene_panel**\n**Input:** \"distrito: Surco, tiene_panel: si\"\n**Análisis:**\n- Distrito: Surco ✅\n- Aledaños: San Borja, Chorrillos, Surquillo, Ate Vitarte\n- Tiene_panel: \"si\" ✅\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%Surco%') OR UPPER(distrito) LIKE UPPER('%San Borja%') OR UPPER(distrito) LIKE UPPER('%Chorrillos%') OR UPPER(distrito) LIKE UPPER('%Surquillo%') OR UPPER(distrito) LIKE UPPER('%Ate%')) AND UPPER(tiene_panel) = UPPER('SI') LIMIT 5;\n```\n\n### **Ejemplo 9: Monoambiente sin distrito**\n**Input:** \"monoambiente barato\"\n**Análisis:**\n- Dormitorios: \"monoambiente\" ✅\n- Precio: \"barato\" → precio <= 1500\n- Distrito: No mencionado (no aplica aledaños)\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE UPPER(dormitorios) LIKE UPPER('%Monoambiente%') AND precio <= 1500 LIMIT 5;\n```\n\n### **Ejemplo 10: Sin parámetros claros**\n**Input:** \"busco depa\"\n**Análisis:**\n- No hay parámetros específicos extraíbles\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania LIMIT 5;\n```\n\n### **Ejemplo 11: Breña con aledaños**\n**Input:** \"departamento en Breña 2 dormitorios\"\n**Análisis:**\n- Distrito: Breña ✅\n- Aledaños: Lima Cercado, Jesús María, Pueblo Libre\n- Dormitorios: \"2\" ✅\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%Breña%') OR UPPER(distrito) LIKE UPPER('%Lima Cercado%') OR UPPER(distrito) LIKE UPPER('%Jesús María%') OR UPPER(distrito) LIKE UPPER('%Pueblo Libre%')) AND UPPER(dormitorios) LIKE UPPER('%2%') LIMIT 5;\n```\n\n### **Ejemplo 12: Referencia Campo de Marte**\n**Input:** \"cerca del Campo de Marte\"\n**Análisis:**\n- Referencia: \"Campo de Marte\" → Jesús María ✅\n- Aledaños: Lince, Breña, Magdalena, San Isidro, Pueblo Libre\n\n**Output:**\n```sql\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%Jesús María%') OR UPPER(distrito) LIKE UPPER('%Lince%') OR UPPER(distrito) LIKE UPPER('%Breña%') OR UPPER(distrito) LIKE UPPER('%Magdalena%') OR UPPER(distrito) LIKE UPPER('%San Isidro%') OR UPPER(distrito) LIKE UPPER('%Pueblo Libre%')) LIMIT 5;\n```\n\n---\n\n## **CASOS ESPECIALES**\n\n### **Zonas geográficas amplias:**\n- \"zona centro\" → Lima Cercado + Breña + Jesús María + Lince + La Victoria\n- \"zona sur\" → Surco + Barranco + Chorrillos + San Borja + Surquillo\n- \"zona residencial\" → Miraflores + San Isidro + San Borja + Surco\n\n### **Distrito no reconocido:**\nSi el usuario menciona un distrito que no está en la lista ni en referencias, INCLÚYELO igual en el query (la base de datos filtrará si no existe), pero NO agregues aledaños si no los conoces.\n\n---\n\n## **FORMATO DE SALIDA**\n\nDevuelve ÚNICAMENTE el query SQL, sin:\n- Backticks\n- Markdown\n- Explicaciones\n- Comentarios\n\n**Formato correcto:**\n```\nSELECT * FROM crm.departamentos_urbania WHERE (UPPER(distrito) LIKE UPPER('%Miraflores%') OR UPPER(distrito) LIKE UPPER('%San Isidro%') OR UPPER(distrito) LIKE UPPER('%Barranco%')) AND UPPER(dormitorios) LIKE UPPER('%2%') LIMIT 5;\n```\n\n---\n\n**FIN DEL PROMPT PROPERTIES_SQL V3.2**"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "60fcfa2f-632d-49bf-a85d-ebd9eb413537",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "{{ $json.output }}",
+        "options": {
+          "connectionTimeout": 5
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        576,
+        0
+      ],
+      "id": "c7011d43-b7c4-4302-9208-7ff20ecddbaf",
+      "name": "Execute a SQL query",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        224
+      ],
+      "id": "9e175c20-1f13-47bf-81c3-4e7d3be40675",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "LZHR7cL6uCBXIyJd",
+          "name": "Proper - Oct 2025"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When Executed by Another Workflow').item.json.chat_id }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        368,
+        224
+      ],
+      "id": "3699efa8-bac7-4f85-9958-2265168e4b1f",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2c27e5a2-eb50-4181-8a42-b7b4d38eca71",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        800,
+        0
+      ],
+      "id": "10540fc6-9f92-4735-9328-1a4816fba701",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "resource": "leads",
+        "operation": "updateLeads",
+        "collection": {
+          "lead": [
+            {
+              "id": "={{ $('When Executed by Another Workflow').item.json.idkommo }}",
+              "custom_fields_values": {
+                "custom_field": [
+                  {
+                    "data": "{\"id\":799121,\"type\":\"text\"}",
+                    "value": "={{ $json.codigo }}"
+                  },
+                  {
+                    "data": "{\"id\":799123,\"type\":\"text\"}",
+                    "value": "OTROS"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-kommo.kommo",
+      "typeVersion": 1,
+      "position": [
+        1248,
+        0
+      ],
+      "id": "53914329-065b-4475-918f-31b5f7b5f02f",
+      "name": "Update leads",
+      "credentials": {
+        "kommoOAuth2Api": {
+          "id": "Xm12cHoxJw7jGGaV",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const codigos = items.map(item => item.json.codigo).filter(c => c);\nconst resultado = codigos.join(', ');\n\nreturn [\n  {\n    json: {\n      codigo: resultado\n    },\n    // ESTA ES LA CLAVE: \n    // Vinculamos este nuevo ítem al primer ítem de la entrada (índice 0)\n    // para que las referencias a nodos anteriores ($('...').item) vuelvan a funcionar.\n    pairedItem: { \n      item: 0 \n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1024,
+        0
+      ],
+      "id": "d9707f80-2fde-47df-952f-fb4a2c7c434f",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "{{ $('AI Agent').item.json.output }}",
+        "options": {
+          "connectionTimeout": 5
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1472,
+        0
+      ],
+      "id": "dc4fc317-5898-4f9a-a627-df2b4e6afd44",
+      "name": "Execute a SQL query1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "busqueda": "distrito='Pueblo Libre'",
+          "chat_id": "68ee538b-851c-4066-8bae-7ace705c35d1",
+          "idkommo": 22672262
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-08-01T18:41:40.409Z",
+      "createdAt": "2025-08-01T18:41:40.409Z",
+      "role": "workflow:owner",
+      "workflowId": "L1zeFzAUk5BcltFH",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-08-01T18:41:06.465Z",
+      "createdAt": "2025-08-01T18:41:06.465Z",
+      "id": "94z6tcDoVU8DriEW",
+      "name": "IA"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-12-22T11:41:35.844Z",
+  "versionId": "f691c571-e3f0-4baa-b9bf-73a0817ae3b6"
+}
