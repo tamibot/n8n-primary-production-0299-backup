@@ -1,0 +1,384 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-12T00:15:49.238Z",
+    "createdAt": "2026-02-12T00:15:49.237Z",
+    "versionId": "e2a80a1f-52cd-42f6-bde4-1865bbf53117",
+    "workflowId": "hwIz9v7wl4y1d6yC",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "busqueda"
+              },
+              {
+                "name": "chat_id"
+              },
+              {
+                "name": "idkommo"
+              }
+            ]
+          }
+        },
+        "id": "b7643ee7-4e5a-462f-bd60-c8339aacc9fa",
+        "typeVersion": 1.1,
+        "name": "When Executed by Another Workflow",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "position": [
+          0,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.busqueda }}",
+          "options": {
+            "systemMessage": "=# **SQL GENERATOR: INVENTARIO PROYECTOS PROPER**\n## **TU ROL**\nEres un experto en SQL y bienes raíces. Tu trabajo es traducir preguntas en lenguaje natural a consultas SQL precisas para la tabla `crm.inventario_proyectos`.\n## **ESQUEMA DE TABLA**\n- `web_proper` (TEXT): Nombre del proyecto (ej: \"Simplycity\").\n- `estatus` (TEXT): Estado comercial (ej: \"Activo\", \"Baja\").\n- `distrito` (TEXT): Distrito de Lima (ej: \"Surco\", \"Lince\").\n- `precio_prom` (NUMERIC): Precio base numérico (ej: 77580). SIEMPRE EN DÓLARES.\n- `banco` (TEXT): Banco financiador (ej: \"BCP\", \"BBVA\").\n- `etapa` (TEXT): \"Preventa\", \"Construcción\", \"Inmediata\".\n- `entrega` (TEXT): Mes de entrega (texto).\n- `anio` (INTEGER): Año de entrega (ej: 2025, 2026).\n- `zona` (TEXT): Clasificación (ej: \"Zona consolidada\", \"Zona emergente\", \"Lima Top\").\n- `ahorro_casa` (TEXT): \"Sí\" o \"No\".\n## **REGLAS DE BÚSQUEDA**\n### 1. DISTRITOS Y ALEDAÑOS\nSi el usuario busca en un distrito, incluye automáticamente sus vecinos usando `OR`.\nUsa `UPPER(distrito) LIKE UPPER('%Nombre%')`.\n*   **Lince**: Lince, Jesús María, Cercado, San Isidro.\n*   **Jesús María**: Jesús María, Lince, Pueblo Libre, Magdalena.\n*   **San Miguel**: San Miguel, Pueblo Libre, Magdalena.\n*   **Magdalena**: Magdalena, San Miguel, Pueblo Libre, San Isidro.\n*   **Surco**: Santiago de Surco, Surquillo, San Borja.\n*   **Miraflores**: Miraflores, San Isidro, Barranco, Surquillo.\n*   **San Isidro**: San Isidro, Miraflores, Lince, Magdalena.\n*   **Barranco**: Barranco, Miraflores, Chorrillos.\n*   **Chorrillos**: Chorrillos, Barranco.\n*   **La Victoria (Santa Catalina)**: La Victoria, San Borja, San Isidro.\n*   **Cercado de Lima**: Cercado Lima, Breña, Pueblo Libre.\n### 2. PRECIOS\n*   \"Barato\", \"Económico\": `precio_prom < 80000`\n*   \"Presupuesto X\": `precio_prom <= X`\n*   \"Desde X\": `precio_prom >= X`\n### 3. ETAPAS Y FECHAS\n*   \"Entrega Inmediata\" / \"Ya\": `UPPER(etapa) LIKE '%INMEDIATA%'`\n*   \"Preventa\": `UPPER(etapa) LIKE '%PREVENTA%'`\n*   \"Este año\": `anio = 2024` (Ajustar según año actual)\n*   \"Próximo año\": `anio = 2025`\n### 4. AHORRO CASA\n*   Si preguntan por \"ahorro casa\" o \"sin historial\": `UPPER(ahorro_casa) LIKE '%SÍ%'` o `UPPER(ahorro_casa) LIKE '%SI%'`.\n### 5. BANCOS\n*   Búsqueda flexible: `UPPER(banco) LIKE '%BCP%'`\n## **FORMATO DE RESPUESTA**\nCRÍTICO: Devuelve ÚNICAMENTE el código SQL crudo (raw text).\n- NO uses bloques de código markdown (```sql ... ```).\n- NO escribas explicaciones antes ni después.\n- NO incluyas la palabra \"sql\" al inicio.\n- Tu respuesta debe ser EXCLUSIVAMENTE el comando SQL válido.\nEjemplo INCORRECTO (Causa Error):\n```sql\nSELECT * FROM ...\nEjemplo CORRECTO: SELECT * FROM ... LIMIT 10;\n\nEjemplos:\nUsuario: \"Busco depa en Lince barato\" SQL:\n\nSELECT web_proper, distrito, precio_prom, etapa, banco \nFROM crm.inventario_proyectos \nWHERE (UPPER(distrito) LIKE '%LINCE%' OR UPPER(distrito) LIKE '%JESÚS MARÍA%' OR UPPER(distrito) LIKE '%CERCADO%') \nAND precio_prom < 85000 \nAND estatus = 'Activo'\nLIMIT 10;\nUsuario: \"Proyectos con ahorro casa en San Miguel\" SQL:\n\nSELECT web_proper, distrito, precio_prom, ahorro_casa\nFROM crm.inventario_proyectos \nWHERE (UPPER(distrito) LIKE '%SAN MIGUEL%' OR UPPER(distrito) LIKE '%PUEBLO LIBRE%')\nAND (UPPER(ahorro_casa) LIKE '%SÍ%' OR UPPER(ahorro_casa) LIKE '%SI%')\nAND estatus = 'Activo'\nLIMIT 10;\nUsuario: \"Proyectos de entrega inmediata en Surco\" SQL:\n\nSELECT web_proper, distrito, precio_prom, etapa, anio\nFROM crm.inventario_proyectos \nWHERE (UPPER(distrito) LIKE '%SURCO%' OR UPPER(distrito) LIKE '%SAN BORJA%')\nAND UPPER(etapa) LIKE '%INMEDIATA%'\nAND estatus = 'Activo'\nLIMIT 10;"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ],
+        "id": "a11fc12e-1f99-4ac4-a8e6-75bb82680d98",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "{{ $json.output }}",
+          "options": {
+            "connectionTimeout": 5
+          }
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          576,
+          0
+        ],
+        "id": "9bdb5059-42de-4c0f-8a3d-8f926bfd0fae",
+        "name": "Execute a SQL query",
+        "alwaysOutputData": true,
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gpt-4.1-mini"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          240,
+          224
+        ],
+        "id": "7d3a789d-c91a-48e6-9ebc-0dec5e988436",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "LZHR7cL6uCBXIyJd",
+            "name": "Proper - Oct 2025"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "={{ $('When Executed by Another Workflow').item.json.chat_id }}",
+          "contextWindowLength": 20
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+        "typeVersion": 1.3,
+        "position": [
+          368,
+          224
+        ],
+        "id": "0b4430be-d72e-4a37-b4e8-c6fe293b336b",
+        "name": "Postgres Chat Memory",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query": {
+        "main": [
+          []
+        ]
+      },
+      "Postgres Chat Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "e2a80a1f-52cd-42f6-bde4-1865bbf53117",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        []
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-02-02T15:33:36.157Z",
+  "id": "hwIz9v7wl4y1d6yC",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Inventario - Busqueda IA",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "busqueda"
+            },
+            {
+              "name": "chat_id"
+            },
+            {
+              "name": "idkommo"
+            }
+          ]
+        }
+      },
+      "id": "b7643ee7-4e5a-462f-bd60-c8339aacc9fa",
+      "typeVersion": 1.1,
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.busqueda }}",
+        "options": {
+          "systemMessage": "=# **SQL GENERATOR: INVENTARIO PROYECTOS PROPER**\n## **TU ROL**\nEres un experto en SQL y bienes raíces. Tu trabajo es traducir preguntas en lenguaje natural a consultas SQL precisas para la tabla `crm.inventario_proyectos`.\n## **ESQUEMA DE TABLA**\n- `web_proper` (TEXT): Nombre del proyecto (ej: \"Simplycity\").\n- `estatus` (TEXT): Estado comercial (ej: \"Activo\", \"Baja\").\n- `distrito` (TEXT): Distrito de Lima (ej: \"Surco\", \"Lince\").\n- `precio_prom` (NUMERIC): Precio base numérico (ej: 77580). SIEMPRE EN DÓLARES.\n- `banco` (TEXT): Banco financiador (ej: \"BCP\", \"BBVA\").\n- `etapa` (TEXT): \"Preventa\", \"Construcción\", \"Inmediata\".\n- `entrega` (TEXT): Mes de entrega (texto).\n- `anio` (INTEGER): Año de entrega (ej: 2025, 2026).\n- `zona` (TEXT): Clasificación (ej: \"Zona consolidada\", \"Zona emergente\", \"Lima Top\").\n- `ahorro_casa` (TEXT): \"Sí\" o \"No\".\n## **REGLAS DE BÚSQUEDA**\n### 1. DISTRITOS Y ALEDAÑOS\nSi el usuario busca en un distrito, incluye automáticamente sus vecinos usando `OR`.\nUsa `UPPER(distrito) LIKE UPPER('%Nombre%')`.\n*   **Lince**: Lince, Jesús María, Cercado, San Isidro.\n*   **Jesús María**: Jesús María, Lince, Pueblo Libre, Magdalena.\n*   **San Miguel**: San Miguel, Pueblo Libre, Magdalena.\n*   **Magdalena**: Magdalena, San Miguel, Pueblo Libre, San Isidro.\n*   **Surco**: Santiago de Surco, Surquillo, San Borja.\n*   **Miraflores**: Miraflores, San Isidro, Barranco, Surquillo.\n*   **San Isidro**: San Isidro, Miraflores, Lince, Magdalena.\n*   **Barranco**: Barranco, Miraflores, Chorrillos.\n*   **Chorrillos**: Chorrillos, Barranco.\n*   **La Victoria (Santa Catalina)**: La Victoria, San Borja, San Isidro.\n*   **Cercado de Lima**: Cercado Lima, Breña, Pueblo Libre.\n### 2. PRECIOS\n*   \"Barato\", \"Económico\": `precio_prom < 80000`\n*   \"Presupuesto X\": `precio_prom <= X`\n*   \"Desde X\": `precio_prom >= X`\n### 3. ETAPAS Y FECHAS\n*   \"Entrega Inmediata\" / \"Ya\": `UPPER(etapa) LIKE '%INMEDIATA%'`\n*   \"Preventa\": `UPPER(etapa) LIKE '%PREVENTA%'`\n*   \"Este año\": `anio = 2024` (Ajustar según año actual)\n*   \"Próximo año\": `anio = 2025`\n### 4. AHORRO CASA\n*   Si preguntan por \"ahorro casa\" o \"sin historial\": `UPPER(ahorro_casa) LIKE '%SÍ%'` o `UPPER(ahorro_casa) LIKE '%SI%'`.\n### 5. BANCOS\n*   Búsqueda flexible: `UPPER(banco) LIKE '%BCP%'`\n## **FORMATO DE RESPUESTA**\nCRÍTICO: Devuelve ÚNICAMENTE el código SQL crudo (raw text).\n- NO uses bloques de código markdown (```sql ... ```).\n- NO escribas explicaciones antes ni después.\n- NO incluyas la palabra \"sql\" al inicio.\n- Tu respuesta debe ser EXCLUSIVAMENTE el comando SQL válido.\nEjemplo INCORRECTO (Causa Error):\n```sql\nSELECT * FROM ...\nEjemplo CORRECTO: SELECT * FROM ... LIMIT 10;\n\nEjemplos:\nUsuario: \"Busco depa en Lince barato\" SQL:\n\nSELECT web_proper, distrito, precio_prom, etapa, banco \nFROM crm.inventario_proyectos \nWHERE (UPPER(distrito) LIKE '%LINCE%' OR UPPER(distrito) LIKE '%JESÚS MARÍA%' OR UPPER(distrito) LIKE '%CERCADO%') \nAND precio_prom < 85000 \nAND estatus = 'Activo'\nLIMIT 10;\nUsuario: \"Proyectos con ahorro casa en San Miguel\" SQL:\n\nSELECT web_proper, distrito, precio_prom, ahorro_casa\nFROM crm.inventario_proyectos \nWHERE (UPPER(distrito) LIKE '%SAN MIGUEL%' OR UPPER(distrito) LIKE '%PUEBLO LIBRE%')\nAND (UPPER(ahorro_casa) LIKE '%SÍ%' OR UPPER(ahorro_casa) LIKE '%SI%')\nAND estatus = 'Activo'\nLIMIT 10;\nUsuario: \"Proyectos de entrega inmediata en Surco\" SQL:\n\nSELECT web_proper, distrito, precio_prom, etapa, anio\nFROM crm.inventario_proyectos \nWHERE (UPPER(distrito) LIKE '%SURCO%' OR UPPER(distrito) LIKE '%SAN BORJA%')\nAND UPPER(etapa) LIKE '%INMEDIATA%'\nAND estatus = 'Activo'\nLIMIT 10;"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "a11fc12e-1f99-4ac4-a8e6-75bb82680d98",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "{{ $json.output }}",
+        "options": {
+          "connectionTimeout": 5
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        576,
+        0
+      ],
+      "id": "9bdb5059-42de-4c0f-8a3d-8f926bfd0fae",
+      "name": "Execute a SQL query",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        224
+      ],
+      "id": "7d3a789d-c91a-48e6-9ebc-0dec5e988436",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "LZHR7cL6uCBXIyJd",
+          "name": "Proper - Oct 2025"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When Executed by Another Workflow').item.json.chat_id }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        368,
+        224
+      ],
+      "id": "0b4430be-d72e-4a37-b4e8-c6fe293b336b",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "busqueda": "Proyectos con ahorro casa en San Miguel",
+          "chat_id": "68ee538b-851c-4066-8bae-7ace705c35d1",
+          "idkommo": 22672262
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-02-02T15:33:36.157Z",
+      "createdAt": "2026-02-02T15:33:36.157Z",
+      "role": "workflow:owner",
+      "workflowId": "hwIz9v7wl4y1d6yC",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-08-01T18:41:06.465Z",
+      "createdAt": "2025-08-01T18:41:06.465Z",
+      "id": "94z6tcDoVU8DriEW",
+      "name": "IA"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-02-02T15:42:00.938Z",
+  "versionId": "e2a80a1f-52cd-42f6-bde4-1865bbf53117"
+}
