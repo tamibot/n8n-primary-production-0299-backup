@@ -1,5 +1,482 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-12T00:15:49.238Z",
+    "createdAt": "2026-02-12T00:15:49.237Z",
+    "versionId": "82a74098-529e-475b-af47-71afa65066cf",
+    "workflowId": "ECmFkMX904F4cDML",
+    "nodes": [
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d2cfc52b-1e7b-4dde-9954-dae6cfff0ede",
+                "name": "text",
+                "value": "={{ $json.query?.mensaje || $json.body?.text || $json.text || JSON.stringify($json) }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          784,
+          208
+        ],
+        "id": "ceb2938a-3742-4aeb-b5cf-8a362f1d6d85",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "06bba813-25c8-4406-bbbd-c7debfbcf268",
+                "leftValue": "={{$json.body.sender}}",
+                "rightValue": "=usuarios.adondevivir.com",
+                "operator": {
+                  "type": "string",
+                  "operation": "contains"
+                }
+              },
+              {
+                "id": "251b8991-39f0-412a-9241-22c50f0b9038",
+                "leftValue": "={{ $json.body.sender }}",
+                "rightValue": "usuarios.urbania.pe",
+                "operator": {
+                  "type": "string",
+                  "operation": "contains"
+                }
+              }
+            ],
+            "combinator": "or"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          560,
+          208
+        ],
+        "id": "9c0271cc-6c85-427d-bf64-af828c546f8b",
+        "name": "Filter"
+      },
+      {
+        "parameters": {
+          "operation": "extractHtmlContent",
+          "dataPropertyName": "html",
+          "extractionValues": {
+            "values": [
+              {
+                "key": "descripcion",
+                "cssSelector": "meta[name=\"description\"]",
+                "returnValue": "attribute",
+                "attribute": "content"
+              },
+              {
+                "key": "precio",
+                "cssSelector": "meta[name='precioAlquiler']",
+                "returnValue": "attribute",
+                "attribute": "content"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.html",
+        "typeVersion": 1.2,
+        "position": [
+          1632,
+          -80
+        ],
+        "id": "71dcef57-2d1b-461b-aace-254ed3464a7f",
+        "name": "HTML"
+      },
+      {
+        "parameters": {
+          "jsCode": "const descripcion = $json[\"descripcion\"] || '';\nconst match = descripcion.match(/\\{\\[(.*?)\\]\\}/);\nconst codigo = match ? match[1] : null;\n\nreturn [{\n  codigo,\n  ...$json\n}];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1808,
+          -80
+        ],
+        "id": "8ca30014-7767-470c-aa79-9d5df12eacbc",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "correo-proper",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          352,
+          208
+        ],
+        "id": "48803a8d-8e93-4724-a09d-e38b58146ffa",
+        "name": "Correo",
+        "webhookId": "fc3d0ae9-0adb-4923-84f7-9fac900512da"
+      },
+      {
+        "parameters": {
+          "jsCode": "const text = $json[\"text\"];\n\n// 📞 Teléfono\nconst phoneMatch = text.match(/Tel[eé]fono:\\s*(\\d{6,})/);\nconst phone = phoneMatch ? phoneMatch[1] : null;\nconst nameMatch = text.match(/Nombre y apellido:\\s*(.+?)\\s*(?:DNI|Tel[eé]fono|Email|E-mail|Correo|$)/i);\nconst name = nameMatch ? nameMatch[1].trim() : null;\n\n// 📧 Email\nconst emailMatch = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}/);\nconst email = emailMatch ? emailMatch[0] : null;\nconst fechaUTC = new Date($('Correo').first().json.body.date);\n\n// Convertir a Lima (GMT-5)\nconst fechaLima = fechaUTC.toLocaleDateString('es-PE', {\n  timeZone: 'America/Lima'\n});\n\n// 🔗 URL del aviso justo después de \"Ver aviso\"\nconst urlMatch = text.match(/Ver aviso[\\s\\S]*?\\[(https?:\\/\\/[^\\]\\s]+)/);\nconst url = urlMatch ? urlMatch[1] : null;\n\n// 🔥 Output\nreturn [\n  {\n    json: {\n      name:name,\n      phone: phone.startsWith('+51') ? phone : `+51${phone}`,\n      email: email,\n      date:fechaLima,\n      url_aviso: url\n    }\n  }\n];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1008,
+          208
+        ],
+        "id": "6fb55fe5-7bb8-444b-abb2-e486f6d812ff",
+        "name": "Code1"
+      },
+      {
+        "parameters": {
+          "url": "={{ $json.url_aviso }}",
+          "options": {
+            "redirect": {
+              "redirect": {
+                "followRedirects": false
+              }
+            },
+            "response": {
+              "response": {
+                "fullResponse": true,
+                "neverError": true,
+                "responseFormat": "text"
+              }
+            }
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1232,
+          208
+        ],
+        "id": "4d156c6a-74dc-497b-8273-f34551da701e",
+        "name": "HTTP Request2",
+        "alwaysOutputData": false
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "value": "crm",
+            "mode": "list",
+            "cachedResultName": "crm"
+          },
+          "table": {
+            "__rl": true,
+            "value": "datos_urbania",
+            "mode": "list",
+            "cachedResultName": "datos_urbania"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "codigo": "={{ $json.codigo }}",
+              "telefono": "={{ $('Code1').item.json.phone }}",
+              "correo": "={{ $('Code1').item.json.email }}",
+              "fecha": "={{ $('Correo').item.json.body.date }}",
+              "link_urbania": "={{ $('HTTP Request2').item.json.headers.location }}",
+              "nombre_pre_inquilino": "={{ $('Code1').item.json.name }}",
+              "precio": "={{ $json.precio }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "codigo",
+                "displayName": "codigo",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "correo",
+                "displayName": "correo",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "fecha",
+                "displayName": "fecha",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "precio",
+                "displayName": "precio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "link_urbania",
+                "displayName": "link_urbania",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "nombre_pre_inquilino",
+                "displayName": "nombre_pre_inquilino",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2112,
+          208
+        ],
+        "id": "49354b46-865a-4698-99e8-a86e8d10d521",
+        "name": "Postgres",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "http://3.15.201.205:3000/scrape",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n\"url\":\"{{ $json.headers.location }}\"\n}",
+          "options": {
+            "timeout": 360000
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1440,
+          -64
+        ],
+        "id": "a92a6847-a35d-4bba-a366-fadb0c1dc167",
+        "name": "HTTP Request",
+        "retryOnFail": true
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT *\nFROM crm.departamentos_urbania\nWHERE\n  id_urbania = {{ $json.id_urbania }}\n  OR id_adondevivir = {{ $json.id_urbania }}\nLIMIT 1;",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1776,
+          208
+        ],
+        "id": "9d47371e-46fb-47e5-9b16-bf1553c57c53",
+        "name": "Postgres1",
+        "alwaysOutputData": true,
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "9cff59ab-24c0-49bd-b327-a84191dbe2d0",
+                "name": "id_urbania",
+                "value": "={{ $json.headers.location.match(/-(\\d{6,12})(?:\\.html)?\\?/)?.[1] }}",
+                "type": "number"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1456,
+          208
+        ],
+        "id": "bbe05740-2b4a-4207-aab0-6369dbbcf7aa",
+        "name": "Edit Fields1"
+      }
+    ],
+    "connections": {
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Code1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTML": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          []
+        ]
+      },
+      "Correo": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code1": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request2": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "HTML",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields1": {
+        "main": [
+          [
+            {
+              "node": "Postgres1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres1": {
+        "main": [
+          [
+            {
+              "node": "Postgres",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "82a74098-529e-475b-af47-71afa65066cf",
   "connections": {
     "Edit Fields": {
       "main": [
@@ -515,8 +992,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-06-23T19:40:06.275Z",
       "updatedAt": "2025-06-23T19:40:06.275Z",
+      "createdAt": "2025-06-23T19:40:06.275Z",
       "role": "workflow:owner",
       "workflowId": "ECmFkMX904F4cDML",
       "projectId": "tpSonpyzopDOYZNA"
