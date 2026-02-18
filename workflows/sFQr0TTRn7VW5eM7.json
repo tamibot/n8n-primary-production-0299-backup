@@ -1,0 +1,279 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-17T22:12:26.706Z",
+    "createdAt": "2026-02-17T22:12:21.604Z",
+    "versionId": "092f0e42-9dd9-4fb5-b54a-6557bc5a4355",
+    "workflowId": "sFQr0TTRn7VW5eM7",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "weeks",
+                "triggerAtDay": [
+                  1
+                ],
+                "triggerAtHour": 8
+              }
+            ]
+          }
+        },
+        "id": "24428830-a744-40e2-8941-b7d7306ae6e7",
+        "name": "Ejecutar Diario (8am)",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          1072,
+          -16
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "WITH\n-- Estado orden 12 (terminado)\nestado_orden_12 AS (\n    SELECT id\n    FROM pipeline_implementacion_estado\n    WHERE orden = 12 AND activo = true\n    LIMIT 1\n),\n-- Servicios maestros activos\nservicios_maestros AS (\n    SELECT id\n    FROM pipeline_servicios\n    WHERE activo = true\n),\n-- Inmuebles con recepción (por inmueble_id o por codigo_inmueble cuando inmueble_id es null)\ninmuebles_con_recepcion AS (\n    SELECT DISTINCT ri.inmueble_id\n    FROM recepcion_inmueble ri\n    WHERE ri.inmueble_id IS NOT NULL\n    UNION\n    SELECT i.id AS inmueble_id\n    FROM inmuebles i\n    INNER JOIN recepcion_inmueble ri\n        ON UPPER(TRIM(COALESCE(ri.codigo_inmueble, ''))) = UPPER(TRIM(COALESCE(i.codigo, '')))\n        AND ri.inmueble_id IS NULL\n        AND ri.codigo_inmueble IS NOT NULL\n        AND TRIM(ri.codigo_inmueble) != ''\n    WHERE i.codigo IS NOT NULL AND TRIM(i.codigo) != ''\n),\n-- Contrato firmado: contratos_administracion + solicitud_firma.firmada = true; fecha = COALESCE(fecha_firma, fecha_firmado)\ncontrato_firmado_map AS (\n    SELECT\n        ca.inmueble_id,\n        MAX(COALESCE(sf.fecha_firma::date, ca.fecha_firmado::date)) AS fecha_firmado\n    FROM contratos_administracion ca\n    INNER JOIN solicitud_firma sf ON ca.solicitud_firma_id = sf.id AND sf.firmada = true\n    WHERE ca.inmueble_id IS NOT NULL\n        AND (sf.fecha_firma IS NOT NULL OR ca.fecha_firmado IS NOT NULL)\n    GROUP BY ca.inmueble_id\n),\n-- Recepción realizada: min fecha_ingreso por inmueble_id (recepcion_inmueble)\nrecepcion_realizada_map AS (\n    SELECT\n        inmueble_id,\n        MIN(fecha_ingreso) AS fecha_ingreso\n    FROM recepcion_inmueble\n    WHERE inmueble_id IS NOT NULL\n        AND fecha_ingreso IS NOT NULL\n    GROUP BY inmueble_id\n),\n-- Recepción programada: min fecha entre recepcion_inmueble.fecha_ingreso y visitas.fecha_programada (con fallback por codigo)\nrecepcion_programada_map AS (\n    SELECT inmueble_id, MIN(fecha_valida) AS fecha_programada\n    FROM (\n        SELECT ri.inmueble_id, ri.fecha_ingreso::date AS fecha_valida\n        FROM recepcion_inmueble ri\n        WHERE ri.inmueble_id IS NOT NULL AND ri.fecha_ingreso IS NOT NULL\n        UNION ALL\n        SELECT COALESCE(v.inmueble_id, i.id) AS inmueble_id, v.fecha_programada::date AS fecha_valida\n        FROM visitas v\n        LEFT JOIN inmuebles i ON UPPER(TRIM(COALESCE(i.codigo, ''))) = UPPER(TRIM(COALESCE(v.codigo_inmueble, '')))\n            AND i.codigo IS NOT NULL AND TRIM(i.codigo) != ''\n        WHERE LOWER(TRIM(v.formulario)) = 'recepcion'\n            AND v.fecha_programada IS NOT NULL\n            AND (v.inmueble_id IS NOT NULL OR i.id IS NOT NULL)\n    ) fechas\n    GROUP BY inmueble_id\n),\n-- Fin implementación: max fecha_estado (orden 12) por pipeline_inmueble_etapa_id\nfin_implementacion_map AS (\n    SELECT\n        pci.pipeline_inmueble_etapa_id,\n        MAX(pci.fecha_estado) AS fecha_estado\n    FROM pipeline_configuracion_implementacion pci\n    INNER JOIN estado_orden_12 e12 ON pci.estado_id = e12.id\n    WHERE pci.fecha_estado IS NOT NULL\n    GROUP BY pci.pipeline_inmueble_etapa_id\n),\n-- Inmueble alquilado: max fecha_entrega por inmueble\ninmueble_alquilado_map AS (\n    SELECT\n        inmueble_id,\n        MAX(fecha_entrega) AS fecha_entrega\n    FROM entrega_inmueble\n    WHERE inmueble_id IS NOT NULL\n        AND fecha_entrega IS NOT NULL\n    GROUP BY inmueble_id\n),\n-- Max fecha_salida por inmueble (EntregaInmueble → SalidaInmueble) para corretaje_salida tiempo_corretaje_total\nmax_fecha_salida_map AS (\n    SELECT\n        ei.inmueble_id,\n        MAX(si.fecha_salida) AS max_fecha_salida\n    FROM entrega_inmueble ei\n    INNER JOIN salida_inmueble si ON si.entrega_id = ei.id\n    WHERE ei.inmueble_id IS NOT NULL\n        AND si.fecha_salida IS NOT NULL\n    GROUP BY ei.inmueble_id\n),\n-- Anuncios: urbania, adondevivir, fecha mínima publicación\nanuncios_data AS (\n    SELECT\n        pa.pipeline_inmueble_etapa_id,\n        MAX(CASE WHEN LOWER(pa.nombre) LIKE '%urbania%' THEN pa.link END) AS urbania,\n        MAX(CASE WHEN LOWER(pa.nombre) LIKE '%adondevivir%' OR LOWER(pa.nombre) LIKE '%adonde%' THEN pa.link END) AS adondevivir,\n        MIN(pa.fecha_publicacion) AS fecha_minima_publicacion\n    FROM pipeline_anuncio pa\n    GROUP BY pa.pipeline_inmueble_etapa_id\n),\n-- Implementaciones activas por pipeline_etapa\nimplementaciones_activas AS (\n    SELECT\n        piie.pipeline_inmueble_etapa_id,\n        COUNT(*) AS total_activas,\n        COUNT(CASE WHEN piie.estado_actual_id = (SELECT id FROM estado_orden_12) THEN 1 END) AS terminadas\n    FROM pipeline_implementacion_inmueble_etapa piie\n    WHERE piie.activo = true\n    GROUP BY piie.pipeline_inmueble_etapa_id\n),\n-- Servicios pagados\nservicios_pagados_data AS (\n    SELECT\n        pie.id AS pipeline_inmueble_etapa_id,\n        CASE\n            WHEN (SELECT COUNT(*) FROM servicios_maestros) = 0 THEN 'No Pagado'\n            WHEN (\n                SELECT COUNT(DISTINCT sm.id)\n                FROM servicios_maestros sm\n                LEFT JOIN pipeline_inmueble_servicios pis\n                    ON pis.pipeline_inmueble_etapa_id = pie.id\n                    AND pis.servicio_id = sm.id\n                WHERE LOWER(TRIM(COALESCE(pis.valor, ''))) IN ('pagado', 'no aplica')\n            ) = (SELECT COUNT(*) FROM servicios_maestros) THEN 'Pagado'\n            ELSE 'No Pagado'\n        END AS servicios_pagados\n    FROM pipeline_inmueble_etapa pie\n),\n-- Fecha ingreso según código de etapa (obtener_fecha_ingreso_etapa)\nfecha_ingreso_calc AS (\n    SELECT\n        pie.id AS pipeline_etapa_id,\n        pie.inmueble_id,\n        pie.etapa_id,\n        pe.codigo AS codigo_etapa,\n        CASE\n            WHEN pe.codigo = 'contrato_firmado' THEN (\n                SELECT MIN(COALESCE(sf.fecha_firma::date, ca.fecha_firmado::date))\n                FROM contratos_administracion ca\n                INNER JOIN solicitud_firma sf ON ca.solicitud_firma_id = sf.id AND sf.firmada = true\n                WHERE ca.inmueble_id = pie.inmueble_id\n                    AND (sf.fecha_firma IS NOT NULL OR ca.fecha_firmado IS NOT NULL)\n            )\n            WHEN pe.codigo = 'recepcion_programada' THEN (\n                SELECT rpm.fecha_programada\n                FROM recepcion_programada_map rpm\n                WHERE rpm.inmueble_id = pie.inmueble_id\n                LIMIT 1\n            )\n            WHEN pe.codigo IN ('corretaje_implementacion', 'corretaje_listo', 'corretaje_salida') THEN (\n                SELECT ri.fecha_ingreso\n                FROM recepcion_inmueble ri\n                WHERE ri.inmueble_id = pie.inmueble_id\n                    AND ri.fecha_ingreso IS NOT NULL\n                ORDER BY ri.fecha_ingreso ASC\n                LIMIT 1\n            )\n            WHEN pe.codigo = 'alquilado' THEN (\n                SELECT MIN(fecha_entrega)\n                FROM entrega_inmueble\n                WHERE inmueble_id = pie.inmueble_id\n                    AND fecha_entrega IS NOT NULL\n            )\n            ELSE NULL\n        END AS fecha_ingreso\n    FROM pipeline_inmueble_etapa pie\n    INNER JOIN pipeline_etapa pe ON pie.etapa_id = pe.id\n),\nFINAL AS (\nSELECT\n    COALESCE(i.codigo, '') AS codigo_inmueble,\n    pe.nombre AS estado,\n\tCASE WHEN pd.separacion = true THEN 'SI' else 'NO' END AS separacion,\n \tCASE WHEN pe.codigo = 'corretaje_salida' THEN mfs.max_fecha_salida ELSE fic.fecha_ingreso END AS inicio_corretaje,\n    CASE\n        WHEN pe.codigo = 'corretaje_salida' THEN\n            CASE\n                WHEN mfs.max_fecha_salida IS NOT NULL\n                    THEN CASE WHEN (CURRENT_DATE - mfs.max_fecha_salida)::integer = 0 THEN 0 ELSE (CURRENT_DATE - mfs.max_fecha_salida)::integer END\n                ELSE 0\n            END\n        WHEN fic.fecha_ingreso IS NOT NULL THEN\n            CASE\n                WHEN pd.separacion = true AND pd.fecha_separacion IS NOT NULL\n                    THEN CASE WHEN (pd.fecha_separacion - fic.fecha_ingreso)::integer = 0 THEN 0 ELSE (pd.fecha_separacion - fic.fecha_ingreso)::integer END\n                ELSE CASE WHEN (CURRENT_DATE - fic.fecha_ingreso)::integer = 0 THEN 0 ELSE (CURRENT_DATE - fic.fecha_ingreso)::integer END\n            END\n        ELSE 0\n    END AS tiempo_corretaje_total\nFROM pipeline_inmueble_etapa pie\nINNER JOIN inmuebles i ON pie.inmueble_id = i.id\nINNER JOIN pipeline_etapa pe ON pie.etapa_id = pe.id\nLEFT JOIN pipeline_detalle pd ON pie.id = pd.pipeline_inmueble_etapa_id\nLEFT JOIN fecha_ingreso_calc fic ON pie.id = fic.pipeline_etapa_id\nLEFT JOIN anuncios_data ad ON pie.id = ad.pipeline_inmueble_etapa_id\nLEFT JOIN implementaciones_activas ia ON pie.id = ia.pipeline_inmueble_etapa_id\nLEFT JOIN servicios_pagados_data spd ON pie.id = spd.pipeline_inmueble_etapa_id\nLEFT JOIN contrato_firmado_map cfm ON pie.inmueble_id = cfm.inmueble_id\nLEFT JOIN recepcion_programada_map rpm ON pie.inmueble_id = rpm.inmueble_id\nLEFT JOIN recepcion_realizada_map rrm ON pie.inmueble_id = rrm.inmueble_id\nLEFT JOIN fin_implementacion_map fim ON pie.id = fim.pipeline_inmueble_etapa_id\nLEFT JOIN inmueble_alquilado_map iam ON pie.inmueble_id = iam.inmueble_id\nLEFT JOIN max_fecha_salida_map mfs ON pie.inmueble_id = mfs.inmueble_id\nWHERE i.is_active = true\n  AND (i.codigo IS NULL OR (i.codigo NOT ILIKE '%PRUEBA%' AND i.codigo NOT ILIKE '%TEST%' AND i.codigo NOT ILIKE '%MODO%'))\n  AND pe.codigo IS DISTINCT FROM 'alquilado'\n  AND pe.codigo IS DISTINCT FROM 'contrato_firmado'\n  AND fic.fecha_ingreso IS NOT NULL\n  AND (\n    pe.codigo IS DISTINCT FROM 'recepcion_programada'\n    OR pie.inmueble_id IN (SELECT inmueble_id FROM inmuebles_con_recepcion)\n  )\nORDER BY tiempo_corretaje_total desc\n\t), \nINTERESADOS AS (\nSELECT\nCOD_PROPIEDAD_UNIFICADO CODIGO,\nCOUNT(DISTINCT TELEFONO) AS cant_leads\nFROM crm.bot_leads_david\nWHERE 1=1\nAND es_nuevo = 1\nAND fecha_dia::date >= CURRENT_DATE - 15\nGROUP BY 1\nORDER BY 1 DESC\n),\nVISITAS AS (\nSELECT\nCODIGO_INMUEBLE,\nCOUNT(DISTINCT CELULAR) AS cant_visitas_agendadas_15_DIAS,\nCOUNT(DISTINCT CASE WHEN estado NOT IN ('No realizado', 'Cliente no asistió') THEN CELULAR END) AS cant_visitas_realizadas_15_DIAS\nFROM rentas_crm.visitas\nWHERE formulario ILIKE '%Inquilino interesado%'\nAND FECHA_PROGRAMADA::DATE > CURRENT_DATE - 15\nGROUP BY 1\nORDER BY 1 DESC\n)\n\t\nSELECT A.*, \nCOALESCE(B.CANT_LEADS,0) CANT_LEADS_INTERESADOS_15_DIAS,\nCOALESCE(C.cant_visitas_agendadas_15_DIAS,0) cant_visitas_agendadas_15_DIAS,\nCOALESCE(C.cant_visitas_realizadas_15_DIAS,0) cant_visitas_realizadas_15_DIAS\nFROM FINAL A\nLEFT JOIN INTERESADOS B ON A.CODIGO_INMUEBLE=B.CODIGO\nLEFT JOIN VISITAS C ON A.CODIGO_INMUEBLE=C.CODIGO_INMUEBLE\nWHERE 1=1\nAND TIEMPO_CORRETAJE_TOTAL > 30\nORDER BY TIEMPO_CORRETAJE_TOTAL DESC",
+          "options": {}
+        },
+        "id": "0380ccb0-5e22-4c3f-9d18-2369ca4ca184",
+        "name": "Consultar Base de Datos",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.4,
+        "position": [
+          1296,
+          -16
+        ],
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const data = $input.all();\n\nif (data.length === 0) {\n  return [{json: {html_table: \"<p>No se encontraron inmuebles con más de 30 días en corretaje hoy.</p>\"}}];\n}\n\nlet html = '<h3 style=\"font-family: Arial, sans-serif; color: #333;\">Reporte de Inmuebles en Corretaje (> 30 días)</h3>';\nhtml += '<table style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 13px;\">';\n\nhtml += '<tr style=\"background-color: #003366; color: white; text-align: left;\">';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Inmueble</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Estado</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Separación</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Inicio Corretaje</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Días en Corretaje</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Leads Interesados (15d)</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Visitas Agend. (15d)</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Visitas Real. (15d)</th>';\nhtml += '</tr>';\n\nfor (const item of data) {\n    const row = item.json;\n\n    let fecha = '-';\n    if (row.inicio_corretaje) {\n      try {\n        fecha = new Date(row.inicio_corretaje).toISOString().split('T')[0];\n      } catch(e) {\n        fecha = row.inicio_corretaje;\n      }\n    }\n\n    const dias = row.tiempo_corretaje_total || 0;\n    let bgColor = '#fff4e5';\n    if (dias >= 90) bgColor = '#ffd6d6';\n    else if (dias >= 60) bgColor = '#ffe8cc';\n\n    html += '<tr>';\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; font-weight: bold;\">${row.codigo_inmueble || ''}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px;\">${row.estado || ''}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.separacion || ''}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px;\">${fecha}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center; background-color: ${bgColor}; font-weight: bold;\">${dias}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_leads_interesados_15_dias || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_visitas_agendadas_15_dias || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_visitas_realizadas_15_dias || 0}</td>`;\n    html += '</tr>';\n}\n\nhtml += '</table>';\nhtml += `<p style=\"font-family: Arial; font-size: 11px; color: #666;\">Reporte generado automáticamente el ${new Date().toLocaleString()}</p>`;\n\nreturn [{json: {html_table: html}}];"
+        },
+        "id": "30c50a22-06cf-44fa-b43d-0b5f110a758c",
+        "name": "Crear Tabla HTML",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1520,
+          -16
+        ]
+      },
+      {
+        "parameters": {
+          "sendTo": "valeria.vega@proper.com.pe, jorge.campos@cmcapital.in, giomar.lopez@proper.com.pe, diego.sanchez@proper.com.pe, soporte.corretaje@proper.com.pe, corretaje@proper.com.pe, corretaje2@proper.com.pe, corretaje3@proper.com.pe",
+          "subject": "Reporte: Inmuebles en Corretaje (>30 días)",
+          "message": "={{ $json.html_table }}",
+          "options": {}
+        },
+        "id": "c34f3a4d-e3f8-429e-bd7f-19d0b9003795",
+        "name": "Enviar Email",
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          1744,
+          -16
+        ],
+        "webhookId": "b7f03486-2f73-4129-987c-098ce4d9e8fe",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "SPurZ4Z9pGQy8MKJ",
+            "name": "Gmail account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Ejecutar Diario (8am)": {
+        "main": [
+          [
+            {
+              "node": "Consultar Base de Datos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Consultar Base de Datos": {
+        "main": [
+          [
+            {
+              "node": "Crear Tabla HTML",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Crear Tabla HTML": {
+        "main": [
+          [
+            {
+              "node": "Enviar Email",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Martin Velasco",
+    "name": "Version 092f0e42",
+    "description": "",
+    "autosaved": true
+  },
+  "activeVersionId": "092f0e42-9dd9-4fb5-b54a-6557bc5a4355",
+  "connections": {
+    "Ejecutar Diario (8am)": {
+      "main": [
+        [
+          {
+            "node": "Consultar Base de Datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar Base de Datos": {
+      "main": [
+        [
+          {
+            "node": "Crear Tabla HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear Tabla HTML": {
+      "main": [
+        [
+          {
+            "node": "Enviar Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-02-17T22:05:55.716Z",
+  "id": "sFQr0TTRn7VW5eM7",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "INMUEBLES EN CORRETAJE > 30 DÍAS VF2",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "24428830-a744-40e2-8941-b7d7306ae6e7",
+      "name": "Ejecutar Diario (8am)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        1072,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH\n-- Estado orden 12 (terminado)\nestado_orden_12 AS (\n    SELECT id\n    FROM pipeline_implementacion_estado\n    WHERE orden = 12 AND activo = true\n    LIMIT 1\n),\n-- Servicios maestros activos\nservicios_maestros AS (\n    SELECT id\n    FROM pipeline_servicios\n    WHERE activo = true\n),\n-- Inmuebles con recepción (por inmueble_id o por codigo_inmueble cuando inmueble_id es null)\ninmuebles_con_recepcion AS (\n    SELECT DISTINCT ri.inmueble_id\n    FROM recepcion_inmueble ri\n    WHERE ri.inmueble_id IS NOT NULL\n    UNION\n    SELECT i.id AS inmueble_id\n    FROM inmuebles i\n    INNER JOIN recepcion_inmueble ri\n        ON UPPER(TRIM(COALESCE(ri.codigo_inmueble, ''))) = UPPER(TRIM(COALESCE(i.codigo, '')))\n        AND ri.inmueble_id IS NULL\n        AND ri.codigo_inmueble IS NOT NULL\n        AND TRIM(ri.codigo_inmueble) != ''\n    WHERE i.codigo IS NOT NULL AND TRIM(i.codigo) != ''\n),\n-- Contrato firmado: contratos_administracion + solicitud_firma.firmada = true; fecha = COALESCE(fecha_firma, fecha_firmado)\ncontrato_firmado_map AS (\n    SELECT\n        ca.inmueble_id,\n        MAX(COALESCE(sf.fecha_firma::date, ca.fecha_firmado::date)) AS fecha_firmado\n    FROM contratos_administracion ca\n    INNER JOIN solicitud_firma sf ON ca.solicitud_firma_id = sf.id AND sf.firmada = true\n    WHERE ca.inmueble_id IS NOT NULL\n        AND (sf.fecha_firma IS NOT NULL OR ca.fecha_firmado IS NOT NULL)\n    GROUP BY ca.inmueble_id\n),\n-- Recepción realizada: min fecha_ingreso por inmueble_id (recepcion_inmueble)\nrecepcion_realizada_map AS (\n    SELECT\n        inmueble_id,\n        MIN(fecha_ingreso) AS fecha_ingreso\n    FROM recepcion_inmueble\n    WHERE inmueble_id IS NOT NULL\n        AND fecha_ingreso IS NOT NULL\n    GROUP BY inmueble_id\n),\n-- Recepción programada: min fecha entre recepcion_inmueble.fecha_ingreso y visitas.fecha_programada (con fallback por codigo)\nrecepcion_programada_map AS (\n    SELECT inmueble_id, MIN(fecha_valida) AS fecha_programada\n    FROM (\n        SELECT ri.inmueble_id, ri.fecha_ingreso::date AS fecha_valida\n        FROM recepcion_inmueble ri\n        WHERE ri.inmueble_id IS NOT NULL AND ri.fecha_ingreso IS NOT NULL\n        UNION ALL\n        SELECT COALESCE(v.inmueble_id, i.id) AS inmueble_id, v.fecha_programada::date AS fecha_valida\n        FROM visitas v\n        LEFT JOIN inmuebles i ON UPPER(TRIM(COALESCE(i.codigo, ''))) = UPPER(TRIM(COALESCE(v.codigo_inmueble, '')))\n            AND i.codigo IS NOT NULL AND TRIM(i.codigo) != ''\n        WHERE LOWER(TRIM(v.formulario)) = 'recepcion'\n            AND v.fecha_programada IS NOT NULL\n            AND (v.inmueble_id IS NOT NULL OR i.id IS NOT NULL)\n    ) fechas\n    GROUP BY inmueble_id\n),\n-- Fin implementación: max fecha_estado (orden 12) por pipeline_inmueble_etapa_id\nfin_implementacion_map AS (\n    SELECT\n        pci.pipeline_inmueble_etapa_id,\n        MAX(pci.fecha_estado) AS fecha_estado\n    FROM pipeline_configuracion_implementacion pci\n    INNER JOIN estado_orden_12 e12 ON pci.estado_id = e12.id\n    WHERE pci.fecha_estado IS NOT NULL\n    GROUP BY pci.pipeline_inmueble_etapa_id\n),\n-- Inmueble alquilado: max fecha_entrega por inmueble\ninmueble_alquilado_map AS (\n    SELECT\n        inmueble_id,\n        MAX(fecha_entrega) AS fecha_entrega\n    FROM entrega_inmueble\n    WHERE inmueble_id IS NOT NULL\n        AND fecha_entrega IS NOT NULL\n    GROUP BY inmueble_id\n),\n-- Max fecha_salida por inmueble (EntregaInmueble → SalidaInmueble) para corretaje_salida tiempo_corretaje_total\nmax_fecha_salida_map AS (\n    SELECT\n        ei.inmueble_id,\n        MAX(si.fecha_salida) AS max_fecha_salida\n    FROM entrega_inmueble ei\n    INNER JOIN salida_inmueble si ON si.entrega_id = ei.id\n    WHERE ei.inmueble_id IS NOT NULL\n        AND si.fecha_salida IS NOT NULL\n    GROUP BY ei.inmueble_id\n),\n-- Anuncios: urbania, adondevivir, fecha mínima publicación\nanuncios_data AS (\n    SELECT\n        pa.pipeline_inmueble_etapa_id,\n        MAX(CASE WHEN LOWER(pa.nombre) LIKE '%urbania%' THEN pa.link END) AS urbania,\n        MAX(CASE WHEN LOWER(pa.nombre) LIKE '%adondevivir%' OR LOWER(pa.nombre) LIKE '%adonde%' THEN pa.link END) AS adondevivir,\n        MIN(pa.fecha_publicacion) AS fecha_minima_publicacion\n    FROM pipeline_anuncio pa\n    GROUP BY pa.pipeline_inmueble_etapa_id\n),\n-- Implementaciones activas por pipeline_etapa\nimplementaciones_activas AS (\n    SELECT\n        piie.pipeline_inmueble_etapa_id,\n        COUNT(*) AS total_activas,\n        COUNT(CASE WHEN piie.estado_actual_id = (SELECT id FROM estado_orden_12) THEN 1 END) AS terminadas\n    FROM pipeline_implementacion_inmueble_etapa piie\n    WHERE piie.activo = true\n    GROUP BY piie.pipeline_inmueble_etapa_id\n),\n-- Servicios pagados\nservicios_pagados_data AS (\n    SELECT\n        pie.id AS pipeline_inmueble_etapa_id,\n        CASE\n            WHEN (SELECT COUNT(*) FROM servicios_maestros) = 0 THEN 'No Pagado'\n            WHEN (\n                SELECT COUNT(DISTINCT sm.id)\n                FROM servicios_maestros sm\n                LEFT JOIN pipeline_inmueble_servicios pis\n                    ON pis.pipeline_inmueble_etapa_id = pie.id\n                    AND pis.servicio_id = sm.id\n                WHERE LOWER(TRIM(COALESCE(pis.valor, ''))) IN ('pagado', 'no aplica')\n            ) = (SELECT COUNT(*) FROM servicios_maestros) THEN 'Pagado'\n            ELSE 'No Pagado'\n        END AS servicios_pagados\n    FROM pipeline_inmueble_etapa pie\n),\n-- Fecha ingreso según código de etapa (obtener_fecha_ingreso_etapa)\nfecha_ingreso_calc AS (\n    SELECT\n        pie.id AS pipeline_etapa_id,\n        pie.inmueble_id,\n        pie.etapa_id,\n        pe.codigo AS codigo_etapa,\n        CASE\n            WHEN pe.codigo = 'contrato_firmado' THEN (\n                SELECT MIN(COALESCE(sf.fecha_firma::date, ca.fecha_firmado::date))\n                FROM contratos_administracion ca\n                INNER JOIN solicitud_firma sf ON ca.solicitud_firma_id = sf.id AND sf.firmada = true\n                WHERE ca.inmueble_id = pie.inmueble_id\n                    AND (sf.fecha_firma IS NOT NULL OR ca.fecha_firmado IS NOT NULL)\n            )\n            WHEN pe.codigo = 'recepcion_programada' THEN (\n                SELECT rpm.fecha_programada\n                FROM recepcion_programada_map rpm\n                WHERE rpm.inmueble_id = pie.inmueble_id\n                LIMIT 1\n            )\n            WHEN pe.codigo IN ('corretaje_implementacion', 'corretaje_listo', 'corretaje_salida') THEN (\n                SELECT ri.fecha_ingreso\n                FROM recepcion_inmueble ri\n                WHERE ri.inmueble_id = pie.inmueble_id\n                    AND ri.fecha_ingreso IS NOT NULL\n                ORDER BY ri.fecha_ingreso ASC\n                LIMIT 1\n            )\n            WHEN pe.codigo = 'alquilado' THEN (\n                SELECT MIN(fecha_entrega)\n                FROM entrega_inmueble\n                WHERE inmueble_id = pie.inmueble_id\n                    AND fecha_entrega IS NOT NULL\n            )\n            ELSE NULL\n        END AS fecha_ingreso\n    FROM pipeline_inmueble_etapa pie\n    INNER JOIN pipeline_etapa pe ON pie.etapa_id = pe.id\n),\nFINAL AS (\nSELECT\n    COALESCE(i.codigo, '') AS codigo_inmueble,\n    pe.nombre AS estado,\n\tCASE WHEN pd.separacion = true THEN 'SI' else 'NO' END AS separacion,\n \tCASE WHEN pe.codigo = 'corretaje_salida' THEN mfs.max_fecha_salida ELSE fic.fecha_ingreso END AS inicio_corretaje,\n    CASE\n        WHEN pe.codigo = 'corretaje_salida' THEN\n            CASE\n                WHEN mfs.max_fecha_salida IS NOT NULL\n                    THEN CASE WHEN (CURRENT_DATE - mfs.max_fecha_salida)::integer = 0 THEN 0 ELSE (CURRENT_DATE - mfs.max_fecha_salida)::integer END\n                ELSE 0\n            END\n        WHEN fic.fecha_ingreso IS NOT NULL THEN\n            CASE\n                WHEN pd.separacion = true AND pd.fecha_separacion IS NOT NULL\n                    THEN CASE WHEN (pd.fecha_separacion - fic.fecha_ingreso)::integer = 0 THEN 0 ELSE (pd.fecha_separacion - fic.fecha_ingreso)::integer END\n                ELSE CASE WHEN (CURRENT_DATE - fic.fecha_ingreso)::integer = 0 THEN 0 ELSE (CURRENT_DATE - fic.fecha_ingreso)::integer END\n            END\n        ELSE 0\n    END AS tiempo_corretaje_total\nFROM pipeline_inmueble_etapa pie\nINNER JOIN inmuebles i ON pie.inmueble_id = i.id\nINNER JOIN pipeline_etapa pe ON pie.etapa_id = pe.id\nLEFT JOIN pipeline_detalle pd ON pie.id = pd.pipeline_inmueble_etapa_id\nLEFT JOIN fecha_ingreso_calc fic ON pie.id = fic.pipeline_etapa_id\nLEFT JOIN anuncios_data ad ON pie.id = ad.pipeline_inmueble_etapa_id\nLEFT JOIN implementaciones_activas ia ON pie.id = ia.pipeline_inmueble_etapa_id\nLEFT JOIN servicios_pagados_data spd ON pie.id = spd.pipeline_inmueble_etapa_id\nLEFT JOIN contrato_firmado_map cfm ON pie.inmueble_id = cfm.inmueble_id\nLEFT JOIN recepcion_programada_map rpm ON pie.inmueble_id = rpm.inmueble_id\nLEFT JOIN recepcion_realizada_map rrm ON pie.inmueble_id = rrm.inmueble_id\nLEFT JOIN fin_implementacion_map fim ON pie.id = fim.pipeline_inmueble_etapa_id\nLEFT JOIN inmueble_alquilado_map iam ON pie.inmueble_id = iam.inmueble_id\nLEFT JOIN max_fecha_salida_map mfs ON pie.inmueble_id = mfs.inmueble_id\nWHERE i.is_active = true\n  AND (i.codigo IS NULL OR (i.codigo NOT ILIKE '%PRUEBA%' AND i.codigo NOT ILIKE '%TEST%' AND i.codigo NOT ILIKE '%MODO%'))\n  AND pe.codigo IS DISTINCT FROM 'alquilado'\n  AND pe.codigo IS DISTINCT FROM 'contrato_firmado'\n  AND fic.fecha_ingreso IS NOT NULL\n  AND (\n    pe.codigo IS DISTINCT FROM 'recepcion_programada'\n    OR pie.inmueble_id IN (SELECT inmueble_id FROM inmuebles_con_recepcion)\n  )\nORDER BY tiempo_corretaje_total desc\n\t), \nINTERESADOS AS (\nSELECT\nCOD_PROPIEDAD_UNIFICADO CODIGO,\nCOUNT(DISTINCT TELEFONO) AS cant_leads\nFROM crm.bot_leads_david\nWHERE 1=1\nAND es_nuevo = 1\nAND fecha_dia::date >= CURRENT_DATE - 15\nGROUP BY 1\nORDER BY 1 DESC\n),\nVISITAS AS (\nSELECT\nCODIGO_INMUEBLE,\nCOUNT(DISTINCT CELULAR) AS cant_visitas_agendadas_15_DIAS,\nCOUNT(DISTINCT CASE WHEN estado NOT IN ('No realizado', 'Cliente no asistió') THEN CELULAR END) AS cant_visitas_realizadas_15_DIAS\nFROM rentas_crm.visitas\nWHERE formulario ILIKE '%Inquilino interesado%'\nAND FECHA_PROGRAMADA::DATE > CURRENT_DATE - 15\nGROUP BY 1\nORDER BY 1 DESC\n)\n\t\nSELECT A.*, \nCOALESCE(B.CANT_LEADS,0) CANT_LEADS_INTERESADOS_15_DIAS,\nCOALESCE(C.cant_visitas_agendadas_15_DIAS,0) cant_visitas_agendadas_15_DIAS,\nCOALESCE(C.cant_visitas_realizadas_15_DIAS,0) cant_visitas_realizadas_15_DIAS\nFROM FINAL A\nLEFT JOIN INTERESADOS B ON A.CODIGO_INMUEBLE=B.CODIGO\nLEFT JOIN VISITAS C ON A.CODIGO_INMUEBLE=C.CODIGO_INMUEBLE\nWHERE 1=1\nAND TIEMPO_CORRETAJE_TOTAL > 30\nORDER BY TIEMPO_CORRETAJE_TOTAL DESC",
+        "options": {}
+      },
+      "id": "0380ccb0-5e22-4c3f-9d18-2369ca4ca184",
+      "name": "Consultar Base de Datos",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        1296,
+        -16
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.all();\n\nif (data.length === 0) {\n  return [{json: {html_table: \"<p>No se encontraron inmuebles con más de 30 días en corretaje hoy.</p>\"}}];\n}\n\nlet html = '<h3 style=\"font-family: Arial, sans-serif; color: #333;\">Reporte de Inmuebles en Corretaje (> 30 días)</h3>';\nhtml += '<table style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 13px;\">';\n\nhtml += '<tr style=\"background-color: #003366; color: white; text-align: left;\">';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Inmueble</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Estado</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Separación</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Inicio Corretaje</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Días en Corretaje</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Leads Interesados (15d)</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Visitas Agend. (15d)</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Visitas Real. (15d)</th>';\nhtml += '</tr>';\n\nfor (const item of data) {\n    const row = item.json;\n\n    let fecha = '-';\n    if (row.inicio_corretaje) {\n      try {\n        fecha = new Date(row.inicio_corretaje).toISOString().split('T')[0];\n      } catch(e) {\n        fecha = row.inicio_corretaje;\n      }\n    }\n\n    const dias = row.tiempo_corretaje_total || 0;\n    let bgColor = '#fff4e5';\n    if (dias >= 90) bgColor = '#ffd6d6';\n    else if (dias >= 60) bgColor = '#ffe8cc';\n\n    html += '<tr>';\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; font-weight: bold;\">${row.codigo_inmueble || ''}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px;\">${row.estado || ''}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.separacion || ''}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px;\">${fecha}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center; background-color: ${bgColor}; font-weight: bold;\">${dias}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_leads_interesados_15_dias || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_visitas_agendadas_15_dias || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_visitas_realizadas_15_dias || 0}</td>`;\n    html += '</tr>';\n}\n\nhtml += '</table>';\nhtml += `<p style=\"font-family: Arial; font-size: 11px; color: #666;\">Reporte generado automáticamente el ${new Date().toLocaleString()}</p>`;\n\nreturn [{json: {html_table: html}}];"
+      },
+      "id": "30c50a22-06cf-44fa-b43d-0b5f110a758c",
+      "name": "Crear Tabla HTML",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "valeria.vega@proper.com.pe, jorge.campos@cmcapital.in, giomar.lopez@proper.com.pe, diego.sanchez@proper.com.pe, soporte.corretaje@proper.com.pe, corretaje@proper.com.pe, corretaje2@proper.com.pe, corretaje3@proper.com.pe",
+        "subject": "Reporte: Inmuebles en Corretaje (>30 días)",
+        "message": "={{ $json.html_table }}",
+        "options": {}
+      },
+      "id": "c34f3a4d-e3f8-429e-bd7f-19d0b9003795",
+      "name": "Enviar Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1744,
+        -16
+      ],
+      "webhookId": "b7f03486-2f73-4129-987c-098ce4d9e8fe",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "SPurZ4Z9pGQy8MKJ",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-02-17T22:05:55.716Z",
+      "createdAt": "2026-02-17T22:05:55.716Z",
+      "role": "workflow:owner",
+      "workflowId": "sFQr0TTRn7VW5eM7",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": {
+    "node:Ejecutar Diario (8am)": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-17T22:12:21.597Z",
+  "versionId": "092f0e42-9dd9-4fb5-b54a-6557bc5a4355"
+}
