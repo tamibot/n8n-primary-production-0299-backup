@@ -1,45 +1,622 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-02-24T15:48:11.648Z",
+    "createdAt": "2026-02-24T15:47:43.927Z",
+    "versionId": "0adf6a5b-28e6-4d32-875f-8c6d3ae21907",
+    "workflowId": "TnKCsS3eUfM6JlFL",
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          784,
+          576
+        ],
+        "id": "52515b84-3067-4ef9-a9a5-40640121fbc8",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "c5a366db-4407-41dc-9edb-6ff4e7cb0409",
+                "name": "codigo",
+                "value": "={{ $json.codigo_inmueble }}",
+                "type": "string"
+              },
+              {
+                "id": "49fb6d11-be98-4779-88fc-a4f09640fc12",
+                "name": "linkUrbania",
+                "value": "={{ $json.link_urbania }}",
+                "type": "string"
+              },
+              {
+                "id": "b84e1d89-de02-4512-8c44-9abdd1b9b011",
+                "name": "linkAdondevivir",
+                "value": "={{ $json.link_adondevivir }}",
+                "type": "string"
+              },
+              {
+                "id": "b7ff549b-0941-410e-ac67-bb1d189592d6",
+                "name": "descripcion",
+                "value": "={{ $json.descripcion_anuncio }}",
+                "type": "string"
+              },
+              {
+                "id": "0af9c324-8ea0-42cb-997b-9a6b8fb511ab",
+                "name": "id_urbania",
+                "value": "={{ $json[\"link_urbania\"] ? $json[\"link_urbania\"].trim().match(/(\\d{5,12})(?=(?:\\.html)?(?:$|\\?|#))/)?.[1] : '' }}",
+                "type": "number"
+              },
+              {
+                "id": "15ccdd67-e8c2-4f66-9bf0-68cb7d165c65",
+                "name": "id_adondevivir",
+                "value": "={{ $json[\"link_adondevivir\"] ? $json[\"link_adondevivir\"].trim().match(/(\\d{5,12})(?=(?:\\.html)?(?:$|\\?|#))/)?.[1] : '' }}",
+                "type": "number"
+              },
+              {
+                "id": "b00f9449-f3f3-482f-901b-95c366db9507",
+                "name": "Distrito",
+                "value": "={{ $json.distrito }}",
+                "type": "string"
+              },
+              {
+                "id": "a86738e3-092b-4e1f-9cca-e2bd27e66171",
+                "name": "Direccion",
+                "value": "={{ $json.direccion }}",
+                "type": "string"
+              },
+              {
+                "id": "60953a81-2f68-4e23-94fd-62f83bd34bbd",
+                "name": "Precio",
+                "value": "={{ $json.precio_alquiler }}",
+                "type": "string"
+              },
+              {
+                "id": "e43e2c5e-d5d4-4a8c-b84e-750b05006529",
+                "name": "mantenimiento",
+                "value": "={{ $json.precio_mantenimiento }}",
+                "type": "string"
+              },
+              {
+                "id": "8e13260a-7c49-455c-bdb7-5a098f02b744",
+                "name": "acepta_mascota",
+                "value": "={{ $json.mascotas }}",
+                "type": "string"
+              },
+              {
+                "id": "bf263a2f-2dcc-4e71-a203-176b7d2de12f",
+                "name": "tiene_panel",
+                "value": "={{ $json.panel }}",
+                "type": "string"
+              },
+              {
+                "id": "07774076-b9fb-479c-a3ec-57821b7cde5a",
+                "name": "pisos",
+                "value": "={{ $json.numero_piso }}",
+                "type": "string"
+              },
+              {
+                "id": "97e2eb29-d070-4dcc-98c3-13d903d8b3c7",
+                "name": "dormitorios",
+                "value": "={{ $json.nro_dormitorio }}",
+                "type": "string"
+              },
+              {
+                "id": "6df9fb4b-ff8c-4dd8-9426-c9333e388614",
+                "name": "separacion",
+                "value": "={{ $json.separacion }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1456,
+          480
+        ],
+        "id": "fa6fdb3b-013e-4f8f-ac46-0c4d0d58ca51",
+        "name": "Edit Fields1"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "7e33eae3-d24b-48ae-94ef-f1c918005512",
+                "leftValue": "={{ $json.linkUrbania }}",
+                "rightValue": "urbania",
+                "operator": {
+                  "type": "string",
+                  "operation": "contains"
+                }
+              },
+              {
+                "id": "3d808da4-8b98-49d7-a9da-50cdb7f00b60",
+                "leftValue": "={{ $json.linkAdondevivir }}",
+                "rightValue": "adondevivir",
+                "operator": {
+                  "type": "string",
+                  "operation": "contains"
+                }
+              }
+            ],
+            "combinator": "or"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          1680,
+          480
+        ],
+        "id": "afa0231f-dec6-4433-967a-fc465671cdd4",
+        "name": "Filter1"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "value": "crm",
+            "mode": "list",
+            "cachedResultName": "crm"
+          },
+          "table": {
+            "__rl": true,
+            "value": "departamentos_urbania",
+            "mode": "list",
+            "cachedResultName": "departamentos_urbania"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "codigo": "={{ $json.codigo }}",
+              "descripcion": "={{ $json.descripcion }}",
+              "link_urbania": "={{ $('Filter1').item.json.linkUrbania }}",
+              "link_adondevivir": "={{ $('Filter1').item.json.linkAdondevivir }}",
+              "id_urbania": "={{ $json.id_urbania }}",
+              "id_adondevivir": "={{ $json.id_adondevivir }}",
+              "precio": "={{ Number($json.Precio) }}",
+              "distrito": "={{ $json.Distrito }}",
+              "direccion": "={{ $json.Direccion }}",
+              "mantenimiento": "={{ $json.mantenimiento }}",
+              "dormitorios": "={{ $json.dormitorios }}",
+              "acepta_mascota": "={{ $json.acepta_mascota }}",
+              "tiene_panel": "={{ $json.tiene_panel }}",
+              "separacion": "={{ $json.separacion }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "codigo",
+                "displayName": "codigo",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "distrito",
+                "displayName": "distrito",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "direccion",
+                "displayName": "direccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "precio",
+                "displayName": "precio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "area",
+                "displayName": "area",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "baños",
+                "displayName": "baños",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "antiguedad",
+                "displayName": "antiguedad",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "descripcion",
+                "displayName": "descripcion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "caracteristicas_generales",
+                "displayName": "caracteristicas_generales",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "link_urbania",
+                "displayName": "link_urbania",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "link_adondevivir",
+                "displayName": "link_adondevivir",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "id_urbania",
+                "displayName": "id_urbania",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "id_adondevivir",
+                "displayName": "id_adondevivir",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "acepta_mascota",
+                "displayName": "acepta_mascota",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "tiene_panel",
+                "displayName": "tiene_panel",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "mantenimiento",
+                "displayName": "mantenimiento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "dormitorios",
+                "displayName": "dormitorios",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "separacion",
+                "displayName": "separacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {
+            "skipOnConflict": true,
+            "replaceEmptyStrings": true
+          }
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2128,
+          480
+        ],
+        "id": "99689c30-3e23-4a79-855a-7d738993b12f",
+        "name": "Postgres2",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "deleteTable",
+          "schema": {
+            "__rl": true,
+            "value": "crm",
+            "mode": "list",
+            "cachedResultName": "crm"
+          },
+          "table": {
+            "__rl": true,
+            "value": "departamentos_urbania",
+            "mode": "list",
+            "cachedResultName": "departamentos_urbania"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1008,
+          480
+        ],
+        "id": "3e55f6a4-5445-4efe-9f8e-312220303543",
+        "name": "Postgres",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "hours",
+                "hoursInterval": 2
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          784,
+          384
+        ],
+        "id": "586f1c9a-cf17-479f-a33f-02842bda88d5",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "59d1f105-e659-43ef-9637-148435288177",
+                "leftValue": "={{ Number($json.Precio) }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "number",
+                  "operation": "gte"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          1904,
+          480
+        ],
+        "id": "509fd399-f0ec-4074-8029-fcdc7889ecad",
+        "name": "Filter"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT * FROM rentas_crm.reporte_corretaje",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1232,
+          480
+        ],
+        "id": "3f67e040-f2fb-4ff2-8088-3a055181ce8f",
+        "name": "Execute a SQL query",
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "Postgres",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields1": {
+        "main": [
+          [
+            {
+              "node": "Filter1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter1": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres2": {
+        "main": [
+          []
+        ]
+      },
+      "Postgres": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Postgres",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          [
+            {
+              "node": "Postgres2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Martin Velasco",
+    "name": "Version 0adf6a5b",
+    "description": "",
+    "autosaved": true
+  },
+  "activeVersionId": "0adf6a5b-28e6-4d32-875f-8c6d3ae21907",
   "connections": {
     "When clicking ‘Execute workflow’": {
       "main": [
         [
           {
             "node": "Postgres",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Split In Batches": {
-      "main": [
-        [],
-        [
-          {
-            "node": "If",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Process Data": {
-      "main": [
-        [
-          {
-            "node": "Postgres2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Sheets1": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields1",
             "type": "main",
             "index": 0
           }
@@ -61,18 +638,7 @@
       "main": [
         [
           {
-            "node": "Split In Batches",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request1": {
-      "main": [
-        [
-          {
-            "node": "Process Data",
+            "node": "Filter",
             "type": "main",
             "index": 0
           }
@@ -81,20 +647,14 @@
     },
     "Postgres2": {
       "main": [
-        [
-          {
-            "node": "Split In Batches",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Postgres": {
       "main": [
         [
           {
-            "node": "Google Sheets1",
+            "node": "Execute a SQL query",
             "type": "main",
             "index": 0
           }
@@ -112,18 +672,22 @@
         ]
       ]
     },
-    "If": {
+    "Filter": {
       "main": [
         [
           {
-            "node": "HTTP Request1",
+            "node": "Postgres2",
             "type": "main",
             "index": 0
           }
-        ],
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
         [
           {
-            "node": "Postgres2",
+            "node": "Edit Fields1",
             "type": "main",
             "index": 0
           }
@@ -145,69 +709,10 @@
       "typeVersion": 1,
       "position": [
         784,
-        544
+        576
       ],
       "id": "52515b84-3067-4ef9-a9a5-40640121fbc8",
       "name": "When clicking ‘Execute workflow’"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 3,
-      "position": [
-        1888,
-        544
-      ],
-      "id": "e29d245c-f9fd-4e49-b2de-e33ddaeb6f48",
-      "name": "Split In Batches"
-    },
-    {
-      "parameters": {
-        "jsCode": "// --- Extracción de Datos de Urbania con Regex Específicos (Versión Completa) ---\n\n// 1. OBTENER DATOS INICIALES\nconst html = $json.body.html || '';\nconst codigo = $('Split In Batches').item.json.codigo || '';\nconst link = $('Split In Batches').item.json.link || ''; // Se incluye el link como solicitaste\n\n// 2. INICIALIZAR VARIABLES DE RESULTADO\nlet precio = null;\nlet direccion = null;\nlet distrito = null;\nlet dormitorios = null;\nlet banos = null;\nlet area = null;\nlet antiguedad = null;\nlet descripcion = 'Sin descripción disponible'; // Valor por defecto para la descripción\n\ntry {\n  // --- EXTRACCIÓN CON REGEX PARA CADA CAMPO ---\n\n  // PRECIO: Busca 'precioAlquiler': \"S/ 2,800\"\n  const matchPrecio = html.match(/'precioAlquiler':\\s*\"S\\/\\s*([\\d,]+)\"/);\n  if (matchPrecio && matchPrecio[1]) {\n    const precioStr = matchPrecio[1].replace(/,/g, '');\n    precio = parseInt(precioStr, 10);\n  }\n\n  // DIRECCIÓN: Busca \"streetAddress\": \"...\"\n  const matchDireccion = html.match(/\"streetAddress\"\\s*:\\s*\"([^\"]*)\"/);\n  if (matchDireccion && matchDireccion[1]) {\n    direccion = matchDireccion[1].trim();\n  }\n\n  // DISTRITO: Busca \"addressRegion\": \"...\"\n  const matchDistrito = html.match(/\"addressRegion\"\\s*:\\s*\"([^\"]*)\"/);\n  if (matchDistrito && matchDistrito[1]) {\n    distrito = matchDistrito[1].trim();\n  }\n\n  // DORMITORIOS: Busca \"numberOfBedrooms\": ...\n  const matchDormitorios = html.match(/\"numberOfBedrooms\"\\s*:\\s*(\\d+)/);\n  if (matchDormitorios && matchDormitorios[1]) {\n    dormitorios = parseInt(matchDormitorios[1], 10);\n  }\n\n  // BAÑOS: Busca \"numberOfBathroomsTotal\": ...\n  const matchBanos = html.match(/\"numberOfBathroomsTotal\"\\s*:\\s*(\\d+)/);\n  if (matchBanos && matchBanos[1]) {\n    banos = parseInt(matchBanos[1], 10);\n  }\n  \n  // ÁREA: Busca \"value\": ... en la sección floorSize\n  const matchArea = html.match(/\"floorSize\":\\s*\\{[\\s\\S]*?\"value\":\\s*(\\d+)/);\n  if (matchArea && matchArea[1]) {\n    area = parseInt(matchArea[1], 10);\n  }\n\n  // ANTIGÜEDAD: Busca \"label\":\"antigüedad\" y extrae su \"value\"\n  const matchAntiguedad = html.match(/\"label\":\"antigüedad\"[^}]*\"value\":\"([^\"]*)\"/);\n  if (matchAntiguedad && matchAntiguedad[1]) {\n    antiguedad = matchAntiguedad[1].includes('estrenar') ? 'A estrenar' : `${matchAntiguedad[1]} años`;\n  }\n  \n  // DESCRIPCIÓN: Se usa el regex que confirmaste que funciona.\n  const regexDesc = /'description':\\s*\"([^\"]*(?:\\\\.[^\"]*)*)\"/g;\n  const matchDesc = regexDesc.exec(html);\n  if (matchDesc && matchDesc[1]) {\n      // Limpiar el texto extraído para que sea legible\n      descripcion = matchDesc[1]\n          .replace(/\\\\\"/g, '\"')           // Corrige comillas escapadas\n          .replace(/<br\\s*\\/?>/gi, '\\n')  // Reemplaza <br> por saltos de línea\n          .trim();\n  }\n\n} catch (error) {\n  console.error(\"Ocurrió un error durante la extracción con regex:\", error);\n}\n\n// 3. DEVOLVER EL OBJETO FINAL CON TODOS LOS CAMPOS\nreturn [{\n  codigo: codigo,\n  link: link,\n  precio: precio,\n  direccion: direccion,\n  distrito: distrito,\n  dormitorios: dormitorios,\n  banos: banos,\n  area: area,\n  antiguedad: antiguedad,\n  descripcion: descripcion,\n  fecha_scraping: new Date().toISOString()\n}];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2528,
-        464
-      ],
-      "id": "05bc2ba1-31eb-4718-93cf-2679f1d89944",
-      "name": "Process Data"
-    },
-    {
-      "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1y6nygnKw613yMbja3gbRjn0x4Rc19bWy8xvMgJ-ZMC4",
-          "mode": "list",
-          "cachedResultName": "Gestión Comercial Proper Rentas",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1y6nygnKw613yMbja3gbRjn0x4Rc19bWy8xvMgJ-ZMC4/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": "gid=0",
-          "mode": "list",
-          "cachedResultName": "Base dptos",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1y6nygnKw613yMbja3gbRjn0x4Rc19bWy8xvMgJ-ZMC4/edit#gid=0"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.6,
-      "position": [
-        1232,
-        544
-      ],
-      "id": "3558e17c-1ccd-4cf0-95e7-7a4705aecae8",
-      "name": "Google Sheets1",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "WQy7dRpZDtSa20hj",
-          "name": "n8n - Agosto 25"
-        }
-      }
     },
     {
       "parameters": {
@@ -216,19 +721,91 @@
             {
               "id": "c5a366db-4407-41dc-9edb-6ff4e7cb0409",
               "name": "codigo",
-              "value": "={{ $json[\"Codigo\"] }}",
+              "value": "={{ $json.codigo_inmueble }}",
               "type": "string"
             },
             {
               "id": "49fb6d11-be98-4779-88fc-a4f09640fc12",
               "name": "linkUrbania",
-              "value": "={{ $json[\"Link Urbania\"] && $json[\"Link Urbania\"].trim() !== '' ? $json[\"Link Urbania\"] : 'sin link urbania' }}",
+              "value": "={{ $json.link_urbania }}",
               "type": "string"
             },
             {
               "id": "b84e1d89-de02-4512-8c44-9abdd1b9b011",
               "name": "linkAdondevivir",
-              "value": "={{ $json[\"Link Adondevivir\"] && $json[\"Link Adondevivir\"].trim() !== '' ? $json[\"Link Adondevivir\"] : 'sin link adondevivir' }}",
+              "value": "={{ $json.link_adondevivir }}",
+              "type": "string"
+            },
+            {
+              "id": "b7ff549b-0941-410e-ac67-bb1d189592d6",
+              "name": "descripcion",
+              "value": "={{ $json.descripcion_anuncio }}",
+              "type": "string"
+            },
+            {
+              "id": "0af9c324-8ea0-42cb-997b-9a6b8fb511ab",
+              "name": "id_urbania",
+              "value": "={{ $json[\"link_urbania\"] ? $json[\"link_urbania\"].trim().match(/(\\d{5,12})(?=(?:\\.html)?(?:$|\\?|#))/)?.[1] : '' }}",
+              "type": "number"
+            },
+            {
+              "id": "15ccdd67-e8c2-4f66-9bf0-68cb7d165c65",
+              "name": "id_adondevivir",
+              "value": "={{ $json[\"link_adondevivir\"] ? $json[\"link_adondevivir\"].trim().match(/(\\d{5,12})(?=(?:\\.html)?(?:$|\\?|#))/)?.[1] : '' }}",
+              "type": "number"
+            },
+            {
+              "id": "b00f9449-f3f3-482f-901b-95c366db9507",
+              "name": "Distrito",
+              "value": "={{ $json.distrito }}",
+              "type": "string"
+            },
+            {
+              "id": "a86738e3-092b-4e1f-9cca-e2bd27e66171",
+              "name": "Direccion",
+              "value": "={{ $json.direccion }}",
+              "type": "string"
+            },
+            {
+              "id": "60953a81-2f68-4e23-94fd-62f83bd34bbd",
+              "name": "Precio",
+              "value": "={{ $json.precio_alquiler }}",
+              "type": "string"
+            },
+            {
+              "id": "e43e2c5e-d5d4-4a8c-b84e-750b05006529",
+              "name": "mantenimiento",
+              "value": "={{ $json.precio_mantenimiento }}",
+              "type": "string"
+            },
+            {
+              "id": "8e13260a-7c49-455c-bdb7-5a098f02b744",
+              "name": "acepta_mascota",
+              "value": "={{ $json.mascotas }}",
+              "type": "string"
+            },
+            {
+              "id": "bf263a2f-2dcc-4e71-a203-176b7d2de12f",
+              "name": "tiene_panel",
+              "value": "={{ $json.panel }}",
+              "type": "string"
+            },
+            {
+              "id": "07774076-b9fb-479c-a3ec-57821b7cde5a",
+              "name": "pisos",
+              "value": "={{ $json.numero_piso }}",
+              "type": "string"
+            },
+            {
+              "id": "97e2eb29-d070-4dcc-98c3-13d903d8b3c7",
+              "name": "dormitorios",
+              "value": "={{ $json.nro_dormitorio }}",
+              "type": "string"
+            },
+            {
+              "id": "6df9fb4b-ff8c-4dd8-9426-c9333e388614",
+              "name": "separacion",
+              "value": "={{ $json.separacion }}",
               "type": "string"
             }
           ]
@@ -238,8 +815,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1440,
-        544
+        1456,
+        480
       ],
       "id": "fa6fdb3b-013e-4f8f-ac46-0c4d0d58ca51",
       "name": "Edit Fields1"
@@ -257,53 +834,34 @@
             {
               "id": "7e33eae3-d24b-48ae-94ef-f1c918005512",
               "leftValue": "={{ $json.linkUrbania }}",
-              "rightValue": "",
+              "rightValue": "urbania",
               "operator": {
                 "type": "string",
-                "operation": "notEmpty",
-                "singleValue": true
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "3d808da4-8b98-49d7-a9da-50cdb7f00b60",
+              "leftValue": "={{ $json.linkAdondevivir }}",
+              "rightValue": "adondevivir",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
               }
             }
           ],
-          "combinator": "and"
+          "combinator": "or"
         },
         "options": {}
       },
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        1664,
-        544
+        1680,
+        480
       ],
       "id": "afa0231f-dec6-4433-967a-fc465671cdd4",
       "name": "Filter1"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "http://3.138.116.123:3000/scrape",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"url\": \"{{ $json.linkUrbania }}\"\n}",
-        "options": {
-          "response": {
-            "response": {
-              "fullResponse": true
-            }
-          },
-          "timeout": 360000
-        }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        2336,
-        528
-      ],
-      "id": "87f25e8c-cb0d-47ca-855f-49e177b3ff6f",
-      "name": "HTTP Request1",
-      "retryOnFail": true,
-      "continueOnFail": true
     },
     {
       "parameters": {
@@ -323,17 +881,19 @@
           "mappingMode": "defineBelow",
           "value": {
             "codigo": "={{ $json.codigo }}",
-            "distrito": "={{ $json.distrito }}",
-            "direccion": "={{ $json.direccion }}",
-            "precio": "={{ $json.precio }}",
-            "area": "={{ $json.area }}",
-            "baños": "={{ $json.banos }}",
-            "dormitorios": "={{ $json.dormitorios }}",
-            "antiguedad": "={{ $json.antiguedad }}",
             "descripcion": "={{ $json.descripcion }}",
             "link_urbania": "={{ $('Filter1').item.json.linkUrbania }}",
-            "mantenimiento": 0,
-            "link_adondevivir": "={{ $('Filter1').item.json.linkAdondevivir }}"
+            "link_adondevivir": "={{ $('Filter1').item.json.linkAdondevivir }}",
+            "id_urbania": "={{ $json.id_urbania }}",
+            "id_adondevivir": "={{ $json.id_adondevivir }}",
+            "precio": "={{ Number($json.Precio) }}",
+            "distrito": "={{ $json.Distrito }}",
+            "direccion": "={{ $json.Direccion }}",
+            "mantenimiento": "={{ $json.mantenimiento }}",
+            "dormitorios": "={{ $json.dormitorios }}",
+            "acepta_mascota": "={{ $json.acepta_mascota }}",
+            "tiene_panel": "={{ $json.tiene_panel }}",
+            "separacion": "={{ $json.separacion }}"
           },
           "matchingColumns": [
             "id"
@@ -365,7 +925,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "direccion",
@@ -374,7 +935,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "precio",
@@ -383,16 +945,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "number",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "mantenimiento",
-              "displayName": "mantenimiento",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "area",
@@ -401,7 +955,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "number",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "baños",
@@ -410,16 +965,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "number",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "dormitorios",
-              "displayName": "dormitorios",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "antiguedad",
@@ -428,7 +975,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "descripcion",
@@ -446,7 +994,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "link_urbania",
@@ -466,18 +1015,91 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "id_urbania",
+              "displayName": "id_urbania",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "id_adondevivir",
+              "displayName": "id_adondevivir",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "acepta_mascota",
+              "displayName": "acepta_mascota",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tiene_panel",
+              "displayName": "tiene_panel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "mantenimiento",
+              "displayName": "mantenimiento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "dormitorios",
+              "displayName": "dormitorios",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "separacion",
+              "displayName": "separacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
           "convertFieldsToString": false
         },
-        "options": {}
+        "options": {
+          "skipOnConflict": true,
+          "replaceEmptyStrings": true
+        }
       },
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2752,
-        544
+        2128,
+        480
       ],
       "id": "99689c30-3e23-4a79-855a-7d738993b12f",
       "name": "Postgres2",
@@ -509,7 +1131,7 @@
       "typeVersion": 2.6,
       "position": [
         1008,
-        544
+        480
       ],
       "id": "3e55f6a4-5445-4efe-9f8e-312220303543",
       "name": "Postgres",
@@ -525,7 +1147,8 @@
         "rule": {
           "interval": [
             {
-              "triggerAtHour": 23
+              "field": "hours",
+              "hoursInterval": 2
             }
           ]
         }
@@ -534,7 +1157,7 @@
       "typeVersion": 1.2,
       "position": [
         784,
-        368
+        384
       ],
       "id": "586f1c9a-cf17-479f-a33f-02842bda88d5",
       "name": "Schedule Trigger"
@@ -545,32 +1168,54 @@
           "options": {
             "caseSensitive": true,
             "leftValue": "",
-            "typeValidation": "strict",
+            "typeValidation": "loose",
             "version": 2
           },
           "conditions": [
             {
-              "id": "80c73a46-6548-45ca-9d72-e28fcac549bf",
-              "leftValue": "={{ $json.linkUrbania }}",
-              "rightValue": "sin link urbania",
+              "id": "59d1f105-e659-43ef-9637-148435288177",
+              "leftValue": "={{ Number($json.Precio) }}",
+              "rightValue": 0,
               "operator": {
-                "type": "string",
-                "operation": "notEquals"
+                "type": "number",
+                "operation": "gte"
               }
             }
           ],
           "combinator": "and"
         },
+        "looseTypeValidation": true,
         "options": {}
       },
-      "type": "n8n-nodes-base.if",
+      "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        2096,
-        560
+        1904,
+        480
       ],
-      "id": "b2893eec-8260-45e7-a781-d5de912bae04",
-      "name": "If"
+      "id": "509fd399-f0ec-4074-8029-fcdc7889ecad",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM rentas_crm.reporte_corretaje",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1232,
+        480
+      ],
+      "id": "3f67e040-f2fb-4ff2-8088-3a055181ce8f",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -579,8 +1224,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-08-20T16:40:21.555Z",
       "updatedAt": "2025-08-20T16:40:21.555Z",
+      "createdAt": "2025-08-20T16:40:21.555Z",
       "role": "workflow:owner",
       "workflowId": "TnKCsS3eUfM6JlFL",
       "projectId": "tpSonpyzopDOYZNA"
@@ -588,11 +1233,13 @@
   ],
   "staticData": {
     "node:Schedule Trigger": {
-      "recurrenceRules": []
+      "recurrenceRules": [
+        22
+      ]
     }
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-02T13:50:53.475Z",
-  "versionId": "0b6acd0f-d55b-4ee1-8566-ae27420466c0"
+  "updatedAt": "2026-02-24T15:47:43.916Z",
+  "versionId": "0adf6a5b-28e6-4d32-875f-8c6d3ae21907"
 }
