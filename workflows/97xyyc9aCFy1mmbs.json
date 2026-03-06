@@ -8962,6 +8962,7 @@
           "__rl": true,
           "value": "cJUTPVdxTIIbq1h0",
           "mode": "list",
+          "cachedResultUrl": "/workflow/cJUTPVdxTIIbq1h0",
           "cachedResultName": "BUSQUEDA LINK URBANIA"
         },
         "workflowInputs": {
@@ -9015,6 +9016,7 @@
           "__rl": true,
           "value": "L1zeFzAUk5BcltFH",
           "mode": "list",
+          "cachedResultUrl": "/workflow/L1zeFzAUk5BcltFH",
           "cachedResultName": "PROPERTIES - SQL"
         },
         "workflowInputs": {
@@ -12623,6 +12625,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-02-26T14:13:54.913Z",
-  "versionId": "ebd41d34-be12-4cbe-bda0-f0d2bec3283c"
+  "updatedAt": "2026-03-05T18:30:07.662Z",
+  "versionId": "0122cc3d-0dc8-40e3-8ed6-6db8fecf8944"
 }
