@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-02-12T00:15:49.238Z",
-    "createdAt": "2026-02-12T00:15:49.237Z",
-    "versionId": "45d6beb5-fc95-463a-8fa6-fb54698b541e",
+    "updatedAt": "2026-03-05T17:01:10.546Z",
+    "createdAt": "2026-03-05T17:01:06.367Z",
+    "versionId": "644161b0-84d8-453d-8c33-ef7b189e7704",
     "workflowId": "VQwyT3QXjEcdKbFb",
     "nodes": [
       {
@@ -17,28 +17,28 @@
             ]
           }
         },
-        "id": "bf0f4663-1284-4c87-9f3e-3ea1826b4901",
+        "id": "224988ff-b86e-42a8-9728-e8920818ddd6",
         "name": "Ejecutar el 01 de cada mes",
         "type": "n8n-nodes-base.scheduleTrigger",
         "typeVersion": 1.1,
         "position": [
-          -192,
-          -208
+          608,
+          -240
         ]
       },
       {
         "parameters": {
           "operation": "executeQuery",
-          "query": "WITH parametros AS (\n    SELECT\n        MIN(mes) AS fecha_min,\n        MAX(mes) AS fecha_max\n    FROM (\n        SELECT date_trunc('month', fecha_dia)::date AS mes\n        FROM crm.bot_leads_david\n        WHERE cod_propiedad_unificado ILIKE '%MODO%'\n          AND es_nuevo = 1\n\n        UNION\n\n        SELECT date_trunc('month', fecha_programada)::date AS mes\n        FROM rentas_crm.visitas\n        WHERE formulario ILIKE '%Inquilino interesado%'\n          AND codigo_inmueble ILIKE '%MODO%'\n    ) t\n),\ncalendario AS (\n    SELECT generate_series(fecha_min, fecha_max, interval '1 month')::date AS mes\n    FROM parametros\n),\nleads AS (\n    SELECT\n        date_trunc('month', fecha_dia)::date AS mes,\n        COUNT(DISTINCT telefono) AS cant_leads\n    FROM crm.bot_leads_david\n    WHERE cod_propiedad_unificado ILIKE '%MODO%'\n      AND es_nuevo = 1\n    GROUP BY 1\n),\nvisitas AS (\n    SELECT\n        date_trunc('month', fecha_programada)::date AS mes,\n        COUNT(DISTINCT celular) AS cant_visitas_agendadas_real,\n        COUNT(\n            DISTINCT CASE\n                WHEN estado NOT IN ('No realizado', 'Cliente no asistió')\n                THEN celular\n            END\n        ) AS cant_visitas_realizadas\n    FROM rentas_crm.visitas\n    WHERE formulario ILIKE '%Inquilino interesado%'\n      AND codigo_inmueble ILIKE '%MODO%'\n    GROUP BY 1\n),\nnuevos_ingresos AS (\n    SELECT\n        DATE_TRUNC('MONTH', A.fecha_ingreso)::date AS mes,\n        COUNT(\n            DISTINCT CASE\n                WHEN E.id IS NOT NULL THEN E.codigo_pago\n                ELSE D.codigo\n            END\n        ) AS nuevos_ingresos\n    FROM rentas_crm.ingresos A\n    LEFT JOIN rentas_crm.concepto_ingreso B ON A.id = B.ingresos_id\n    LEFT JOIN rentas_crm.contratos C ON A.contrato_id = C.id\n    LEFT JOIN rentas_crm.inmuebles D ON C.inmueble_id = D.id\n    LEFT JOIN rentas_crm.habitaciones E ON E.id = C.habitacion_id\n    LEFT JOIN rentas_crm.inquilinos F ON A.inquilino_id = F.id\n    LEFT JOIN rentas_crm.entrega_inmueble H ON A.contrato_id = H.contrato_id\n    WHERE tipo = 'generado'\n      AND (\n            B.vouchers IS NOT NULL\n         OR B.observaciones IS NOT NULL\n         OR A.banco_transferencia IS NOT NULL\n         OR A.cuenta_transferencia IS NOT NULL\n      )\n      AND D.codigo ILIKE '%MOD%'\n    GROUP BY 1\n)\nSELECT\n    c.mes,\n    COALESCE(l.cant_leads, 0)                                AS cant_leads_real,\n    COALESCE(v.cant_visitas_agendadas_real, 0)               AS cant_visitas_agendadas_real,\n    COALESCE(v.cant_visitas_realizadas, 0)                   AS cant_visitas_realizadas,\n    COALESCE(i.nuevos_ingresos, 0)                            AS cant_nuevos_ingresos_real\nFROM calendario c\nLEFT JOIN leads l            ON c.mes = l.mes\nLEFT JOIN visitas v          ON c.mes = v.mes\nLEFT JOIN nuevos_ingresos i  ON c.mes = i.mes\nWHERE c.mes >= CURRENT_DATE - INTERVAL '180 day'\n  AND c.mes < CURRENT_DATE\nORDER BY c.mes DESC;",
+          "query": "WITH parametros AS (\n    SELECT\n        MIN(mes) AS fecha_min,\n        MAX(mes) AS fecha_max\n    FROM (\n        SELECT date_trunc('month', fecha_dia)::date AS mes\n        FROM crm.bot_leads_david\n        WHERE cod_propiedad_unificado ILIKE '%MODO%'\n          AND es_nuevo = 1\n        UNION\n        SELECT date_trunc('month', fecha_programada)::date AS mes\n        FROM rentas_crm.visitas\n        WHERE formulario ILIKE '%Inquilino interesado%'\n          AND codigo_inmueble ILIKE '%MODO%'\n    ) t\n),\ncalendario AS (\n    SELECT generate_series(fecha_min, fecha_max, interval '1 month')::date AS mes\n    FROM parametros\n),\nleads AS (\n    SELECT\n        date_trunc('month', fecha_dia)::date AS mes,\n        COUNT(DISTINCT telefono) AS cant_leads\n    FROM crm.bot_leads_david\n    WHERE cod_propiedad_unificado ILIKE '%MODO%'\n      AND es_nuevo = 1\n    GROUP BY 1\n),\nvisitas AS (\n    SELECT\n        date_trunc('month', fecha_programada)::date AS mes,\n        COUNT(DISTINCT celular) AS cant_visitas_agendadas_real,\n        COUNT(\n            DISTINCT CASE\n                WHEN estado NOT IN ('No realizado', 'Cliente no asistió')\n                THEN celular\n            END\n        ) AS cant_visitas_realizadas\n    FROM rentas_crm.visitas\n    WHERE formulario ILIKE '%Inquilino interesado%'\n      AND codigo_inmueble ILIKE '%MODO%'\n    GROUP BY 1\n),\nnuevos_ingresos_depa AS (\n    SELECT DATE_TRUNC('MONTH', A.fecha_ingreso)::date AS mes, \n\tCOUNT(DISTINCT CASE WHEN E.id IS NOT NULL THEN E.codigo_pago ELSE D.codigo END) AS nuevos_ingresos_depa\n    FROM rentas_crm.ingresos A\n    LEFT JOIN rentas_crm.concepto_ingreso B ON A.id = B.ingresos_id\n    LEFT JOIN rentas_crm.contratos C ON A.contrato_id = C.id\n    LEFT JOIN rentas_crm.inmuebles D ON C.inmueble_id = D.id\n    LEFT JOIN rentas_crm.habitaciones E ON E.id = C.habitacion_id\n    WHERE tipo = 'generado'\n    AND (B.VOUCHERS ILIKE '%https%'\n         OR B.observaciones IS NOT NULL\n         OR A.banco_transferencia IS NOT NULL\n         OR A.cuenta_transferencia IS NOT NULL)\n    AND D.codigo ILIKE '%MODO%'\n    GROUP BY 1\n\tORDER BY 1 DESC\n),\nnuevos_ingresos_cochera AS (\n    SELECT DATE_TRUNC('MONTH', A.fecha_ingreso)::date AS mes, \n\tCOUNT(DISTINCT CASE WHEN E.id IS NOT NULL THEN E.codigo_pago ELSE D.codigo END) AS nuevos_ingresos_cochera\n    FROM rentas_crm.ingresos A\n    LEFT JOIN rentas_crm.concepto_ingreso B ON A.id = B.ingresos_id\n    LEFT JOIN rentas_crm.contratos C ON A.contrato_id = C.id\n    LEFT JOIN rentas_crm.inmuebles D ON C.inmueble_id = D.id\n    LEFT JOIN rentas_crm.habitaciones E ON E.id = C.habitacion_id\n    WHERE tipo = 'generado'\n    AND (B.VOUCHERS ILIKE '%https%'\n         OR B.observaciones IS NOT NULL\n         OR A.banco_transferencia IS NOT NULL\n         OR A.cuenta_transferencia IS NOT NULL)\n    AND D.codigo ILIKE '%MODC%'\n    GROUP BY 1\n\tORDER BY 1 DESC\n)\nSELECT\n    c.mes,\n    COALESCE(l.cant_leads, 0)                                AS cant_leads_real,\n    COALESCE(v.cant_visitas_agendadas_real, 0)               AS cant_visitas_agendadas_real,\n    COALESCE(v.cant_visitas_realizadas, 0)                   AS cant_visitas_realizadas,\n    COALESCE(i.nuevos_ingresos_depa, 0)                      AS cant_nuevos_ingresos_depa_real,\n    COALESCE(h.nuevos_ingresos_cochera, 0)                   AS cant_nuevos_ingresos_cochera_real\nFROM calendario c\nLEFT JOIN leads l                  ON c.mes = l.mes\nLEFT JOIN visitas v                ON c.mes = v.mes\nLEFT JOIN nuevos_ingresos_depa i   ON c.mes = i.mes\nLEFT JOIN nuevos_ingresos_cochera h ON c.mes = h.mes\nWHERE c.mes >= CURRENT_DATE - INTERVAL '180 day'\n  AND c.mes < CURRENT_DATE\nORDER BY c.mes DESC;",
           "options": {}
         },
-        "id": "47380983-cfc5-49f2-a401-5e107b4e3c3b",
+        "id": "dfe65510-6aeb-437a-ad28-dc17176d4a1f",
         "name": "Consultar Base de Datos",
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.4,
         "position": [
-          48,
-          -208
+          848,
+          -240
         ],
         "credentials": {
           "postgres": {
@@ -49,31 +49,31 @@
       },
       {
         "parameters": {
-          "jsCode": "const data = $input.all();\n\nif (data.length === 0) {\n  return [{json: {html_table: \"<p>No se encontraron datos para el reporte MODO.</p>\"}}];\n}\n\nlet html = '<h3 style=\"font-family: Arial, sans-serif; color: #333;\">Reporte Mensual Consolidado: MODO</h3>';\nhtml += '<table style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 13px;\">';\n\n// Headers\nhtml += '<tr style=\"background-color: #003366; color: white; text-align: left;\">';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Mes</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Leads</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Visitas Agendadas</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Visitas Realizadas</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Nuevos Ingresos</th>';\nhtml += '</tr>';\n\n// Rows\nfor (const item of data) {\n    const row = item.json;\n    \n    let mesFormatted = '-';\n    if (row.mes) {\n        mesFormatted = row.mes.substring(0, 7); // Toma YYYY-MM\n    }\n\n    html += '<tr>';\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; font-weight: bold;\">${mesFormatted}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_leads_real || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_visitas_agendadas_real || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_visitas_realizadas || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center; background-color: #f0f9ff;\">${row.cant_nuevos_ingresos_real || 0}</td>`;\n    html += '</tr>';\n}\n\nhtml += '</table>';\nhtml += `<p style=\"font-family: Arial; font-size: 11px; color: #666;\">Este reporte incluye los últimos 180 días y se genera automáticamente el día 01 de cada mes.</p>`;\n\nreturn [{json: {html_table: html}}];"
+          "jsCode": "const data = $input.all();\n\nif (data.length === 0) {\n  return [{json: {html_table: \"<p>No se encontraron datos para el reporte MODO.</p>\"}}];\n}\n\nlet html = '<h3 style=\"font-family: Arial, sans-serif; color: #333;\">Reporte Mensual Consolidado: MODO</h3>';\nhtml += '<table style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 13px;\">';\n\n// Headers\nhtml += '<tr style=\"background-color: #003366; color: white; text-align: left;\">';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Mes</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Leads</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Visitas Agendadas</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Visitas Realizadas</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Nuevos Ingresos Depa</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Nuevos Ingresos Cochera</th>';\nhtml += '</tr>';\n\n// Rows\nfor (const item of data) {\n    const row = item.json;\n    \n    let mesFormatted = '-';\n    if (row.mes) {\n        mesFormatted = row.mes.substring(0, 7); // Toma YYYY-MM\n    }\n\n    html += '<tr>';\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; font-weight: bold;\">${mesFormatted}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_leads_real || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_visitas_agendadas_real || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_visitas_realizadas || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center; background-color: #f0f9ff;\">${row.cant_nuevos_ingresos_depa_real || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center; background-color: #f0f9ff;\">${row.cant_nuevos_ingresos_cochera_real || 0}</td>`;\n    html += '</tr>';\n}\n\nhtml += '</table>';\n\n// Leyenda\nhtml += '<br>';\nhtml += '<table style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 12px; background-color: #f9f9f9;\">';\nhtml += '<tr style=\"background-color: #e8e8e8;\"><th colspan=\"2\" style=\"border: 1px solid #ccc; padding: 8px; text-align: left; color: #333;\">Glosario de indicadores</th></tr>';\nhtml += '<tr><td style=\"border: 1px solid #ccc; padding: 7px 10px; font-weight: bold; white-space: nowrap;\">Leads</td><td style=\"border: 1px solid #ccc; padding: 7px 10px; color: #555;\">Cantidad de personas interesadas en alquilar (envían un mensaje al WhatsApp de corretaje)</td></tr>';\nhtml += '<tr><td style=\"border: 1px solid #ccc; padding: 7px 10px; font-weight: bold; white-space: nowrap;\">Visitas agendadas</td><td style=\"border: 1px solid #ccc; padding: 7px 10px; color: #555;\">Cantidad de personas que agendan una visita</td></tr>';\nhtml += '<tr><td style=\"border: 1px solid #ccc; padding: 7px 10px; font-weight: bold; white-space: nowrap;\">Visitas realizadas</td><td style=\"border: 1px solid #ccc; padding: 7px 10px; color: #555;\">Cantidad de personas que realizan una visita</td></tr>';\nhtml += '<tr><td style=\"border: 1px solid #ccc; padding: 7px 10px; font-weight: bold; white-space: nowrap;\">Nuevos ingresos depa</td><td style=\"border: 1px solid #ccc; padding: 7px 10px; color: #555;\">Cantidad de inmuebles registrados en el formulario de Nuevos Inquilinos del Intranet Rentas</td></tr>';\nhtml += '<tr><td style=\"border: 1px solid #ccc; padding: 7px 10px; font-weight: bold; white-space: nowrap;\">Nuevos ingresos cochera</td><td style=\"border: 1px solid #ccc; padding: 7px 10px; color: #555;\">Cantidad de cocheras registradas en el formulario de Nuevos Inquilinos del Intranet Rentas</td></tr>';\nhtml += '</table>';\n\nhtml += `<p style=\"font-family: Arial; font-size: 11px; color: #666;\">Este reporte incluye los últimos 180 días y se genera automáticamente el día 01 de cada mes.</p>`;\n\nreturn [{json: {html_table: html}}];"
         },
-        "id": "0bfdd911-d53a-4c35-a47d-9fc204a4e5d3",
+        "id": "2f37ed6f-bef3-4568-b535-f18599f77210",
         "name": "Crear Tabla HTML",
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          288,
-          -208
+          1088,
+          -240
         ]
       },
       {
         "parameters": {
-          "sendTo": "valeria.vega@proper.com.pe, jorge.campos@cmcapital.in, giomar.lopez@proper.com.pe, gabriela.vargas@proper.com.pe, soporte@proper.com.pe",
+          "sendTo": "valeria.vega@proper.com.pe,\njorge.campos@cmcapital.in,\ngiomar.lopez@proper.com.pe,\ngabriela.vargas@proper.com.pe,\nsoporte@proper.com.pe",
           "subject": "Reporte Mensual MODO",
           "message": "={{ $json.html_table }}",
           "options": {}
         },
-        "id": "0dfd3003-815b-41fc-a1c9-b99d8e8258ee",
+        "id": "90311493-55b2-4bf0-a242-56a47d10539c",
         "name": "Enviar Email",
         "type": "n8n-nodes-base.gmail",
         "typeVersion": 2.1,
         "position": [
-          512,
-          -208
+          1312,
+          -240
         ],
         "webhookId": "17846470-435e-4d9c-a64e-4b3f34631a4a",
         "credentials": {
@@ -119,12 +119,12 @@
         ]
       }
     },
-    "authors": "system migration",
-    "name": null,
-    "description": null,
-    "autosaved": false
+    "authors": "Martin Velasco",
+    "name": "Version 644161b0",
+    "description": "",
+    "autosaved": true
   },
-  "activeVersionId": "45d6beb5-fc95-463a-8fa6-fb54698b541e",
+  "activeVersionId": "644161b0-84d8-453d-8c33-ef7b189e7704",
   "connections": {
     "Ejecutar el 01 de cada mes": {
       "main": [
@@ -177,28 +177,28 @@
           ]
         }
       },
-      "id": "bf0f4663-1284-4c87-9f3e-3ea1826b4901",
+      "id": "224988ff-b86e-42a8-9728-e8920818ddd6",
       "name": "Ejecutar el 01 de cada mes",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.1,
       "position": [
-        -192,
-        -208
+        608,
+        -240
       ]
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "WITH parametros AS (\n    SELECT\n        MIN(mes) AS fecha_min,\n        MAX(mes) AS fecha_max\n    FROM (\n        SELECT date_trunc('month', fecha_dia)::date AS mes\n        FROM crm.bot_leads_david\n        WHERE cod_propiedad_unificado ILIKE '%MODO%'\n          AND es_nuevo = 1\n\n        UNION\n\n        SELECT date_trunc('month', fecha_programada)::date AS mes\n        FROM rentas_crm.visitas\n        WHERE formulario ILIKE '%Inquilino interesado%'\n          AND codigo_inmueble ILIKE '%MODO%'\n    ) t\n),\ncalendario AS (\n    SELECT generate_series(fecha_min, fecha_max, interval '1 month')::date AS mes\n    FROM parametros\n),\nleads AS (\n    SELECT\n        date_trunc('month', fecha_dia)::date AS mes,\n        COUNT(DISTINCT telefono) AS cant_leads\n    FROM crm.bot_leads_david\n    WHERE cod_propiedad_unificado ILIKE '%MODO%'\n      AND es_nuevo = 1\n    GROUP BY 1\n),\nvisitas AS (\n    SELECT\n        date_trunc('month', fecha_programada)::date AS mes,\n        COUNT(DISTINCT celular) AS cant_visitas_agendadas_real,\n        COUNT(\n            DISTINCT CASE\n                WHEN estado NOT IN ('No realizado', 'Cliente no asistió')\n                THEN celular\n            END\n        ) AS cant_visitas_realizadas\n    FROM rentas_crm.visitas\n    WHERE formulario ILIKE '%Inquilino interesado%'\n      AND codigo_inmueble ILIKE '%MODO%'\n    GROUP BY 1\n),\nnuevos_ingresos AS (\n    SELECT\n        DATE_TRUNC('MONTH', A.fecha_ingreso)::date AS mes,\n        COUNT(\n            DISTINCT CASE\n                WHEN E.id IS NOT NULL THEN E.codigo_pago\n                ELSE D.codigo\n            END\n        ) AS nuevos_ingresos\n    FROM rentas_crm.ingresos A\n    LEFT JOIN rentas_crm.concepto_ingreso B ON A.id = B.ingresos_id\n    LEFT JOIN rentas_crm.contratos C ON A.contrato_id = C.id\n    LEFT JOIN rentas_crm.inmuebles D ON C.inmueble_id = D.id\n    LEFT JOIN rentas_crm.habitaciones E ON E.id = C.habitacion_id\n    LEFT JOIN rentas_crm.inquilinos F ON A.inquilino_id = F.id\n    LEFT JOIN rentas_crm.entrega_inmueble H ON A.contrato_id = H.contrato_id\n    WHERE tipo = 'generado'\n      AND (\n            B.vouchers IS NOT NULL\n         OR B.observaciones IS NOT NULL\n         OR A.banco_transferencia IS NOT NULL\n         OR A.cuenta_transferencia IS NOT NULL\n      )\n      AND D.codigo ILIKE '%MOD%'\n    GROUP BY 1\n)\nSELECT\n    c.mes,\n    COALESCE(l.cant_leads, 0)                                AS cant_leads_real,\n    COALESCE(v.cant_visitas_agendadas_real, 0)               AS cant_visitas_agendadas_real,\n    COALESCE(v.cant_visitas_realizadas, 0)                   AS cant_visitas_realizadas,\n    COALESCE(i.nuevos_ingresos, 0)                            AS cant_nuevos_ingresos_real\nFROM calendario c\nLEFT JOIN leads l            ON c.mes = l.mes\nLEFT JOIN visitas v          ON c.mes = v.mes\nLEFT JOIN nuevos_ingresos i  ON c.mes = i.mes\nWHERE c.mes >= CURRENT_DATE - INTERVAL '180 day'\n  AND c.mes < CURRENT_DATE\nORDER BY c.mes DESC;",
+        "query": "WITH parametros AS (\n    SELECT\n        MIN(mes) AS fecha_min,\n        MAX(mes) AS fecha_max\n    FROM (\n        SELECT date_trunc('month', fecha_dia)::date AS mes\n        FROM crm.bot_leads_david\n        WHERE cod_propiedad_unificado ILIKE '%MODO%'\n          AND es_nuevo = 1\n        UNION\n        SELECT date_trunc('month', fecha_programada)::date AS mes\n        FROM rentas_crm.visitas\n        WHERE formulario ILIKE '%Inquilino interesado%'\n          AND codigo_inmueble ILIKE '%MODO%'\n    ) t\n),\ncalendario AS (\n    SELECT generate_series(fecha_min, fecha_max, interval '1 month')::date AS mes\n    FROM parametros\n),\nleads AS (\n    SELECT\n        date_trunc('month', fecha_dia)::date AS mes,\n        COUNT(DISTINCT telefono) AS cant_leads\n    FROM crm.bot_leads_david\n    WHERE cod_propiedad_unificado ILIKE '%MODO%'\n      AND es_nuevo = 1\n    GROUP BY 1\n),\nvisitas AS (\n    SELECT\n        date_trunc('month', fecha_programada)::date AS mes,\n        COUNT(DISTINCT celular) AS cant_visitas_agendadas_real,\n        COUNT(\n            DISTINCT CASE\n                WHEN estado NOT IN ('No realizado', 'Cliente no asistió')\n                THEN celular\n            END\n        ) AS cant_visitas_realizadas\n    FROM rentas_crm.visitas\n    WHERE formulario ILIKE '%Inquilino interesado%'\n      AND codigo_inmueble ILIKE '%MODO%'\n    GROUP BY 1\n),\nnuevos_ingresos_depa AS (\n    SELECT DATE_TRUNC('MONTH', A.fecha_ingreso)::date AS mes, \n\tCOUNT(DISTINCT CASE WHEN E.id IS NOT NULL THEN E.codigo_pago ELSE D.codigo END) AS nuevos_ingresos_depa\n    FROM rentas_crm.ingresos A\n    LEFT JOIN rentas_crm.concepto_ingreso B ON A.id = B.ingresos_id\n    LEFT JOIN rentas_crm.contratos C ON A.contrato_id = C.id\n    LEFT JOIN rentas_crm.inmuebles D ON C.inmueble_id = D.id\n    LEFT JOIN rentas_crm.habitaciones E ON E.id = C.habitacion_id\n    WHERE tipo = 'generado'\n    AND (B.VOUCHERS ILIKE '%https%'\n         OR B.observaciones IS NOT NULL\n         OR A.banco_transferencia IS NOT NULL\n         OR A.cuenta_transferencia IS NOT NULL)\n    AND D.codigo ILIKE '%MODO%'\n    GROUP BY 1\n\tORDER BY 1 DESC\n),\nnuevos_ingresos_cochera AS (\n    SELECT DATE_TRUNC('MONTH', A.fecha_ingreso)::date AS mes, \n\tCOUNT(DISTINCT CASE WHEN E.id IS NOT NULL THEN E.codigo_pago ELSE D.codigo END) AS nuevos_ingresos_cochera\n    FROM rentas_crm.ingresos A\n    LEFT JOIN rentas_crm.concepto_ingreso B ON A.id = B.ingresos_id\n    LEFT JOIN rentas_crm.contratos C ON A.contrato_id = C.id\n    LEFT JOIN rentas_crm.inmuebles D ON C.inmueble_id = D.id\n    LEFT JOIN rentas_crm.habitaciones E ON E.id = C.habitacion_id\n    WHERE tipo = 'generado'\n    AND (B.VOUCHERS ILIKE '%https%'\n         OR B.observaciones IS NOT NULL\n         OR A.banco_transferencia IS NOT NULL\n         OR A.cuenta_transferencia IS NOT NULL)\n    AND D.codigo ILIKE '%MODC%'\n    GROUP BY 1\n\tORDER BY 1 DESC\n)\nSELECT\n    c.mes,\n    COALESCE(l.cant_leads, 0)                                AS cant_leads_real,\n    COALESCE(v.cant_visitas_agendadas_real, 0)               AS cant_visitas_agendadas_real,\n    COALESCE(v.cant_visitas_realizadas, 0)                   AS cant_visitas_realizadas,\n    COALESCE(i.nuevos_ingresos_depa, 0)                      AS cant_nuevos_ingresos_depa_real,\n    COALESCE(h.nuevos_ingresos_cochera, 0)                   AS cant_nuevos_ingresos_cochera_real\nFROM calendario c\nLEFT JOIN leads l                  ON c.mes = l.mes\nLEFT JOIN visitas v                ON c.mes = v.mes\nLEFT JOIN nuevos_ingresos_depa i   ON c.mes = i.mes\nLEFT JOIN nuevos_ingresos_cochera h ON c.mes = h.mes\nWHERE c.mes >= CURRENT_DATE - INTERVAL '180 day'\n  AND c.mes < CURRENT_DATE\nORDER BY c.mes DESC;",
         "options": {}
       },
-      "id": "47380983-cfc5-49f2-a401-5e107b4e3c3b",
+      "id": "dfe65510-6aeb-437a-ad28-dc17176d4a1f",
       "name": "Consultar Base de Datos",
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.4,
       "position": [
-        48,
-        -208
+        848,
+        -240
       ],
       "credentials": {
         "postgres": {
@@ -209,31 +209,31 @@
     },
     {
       "parameters": {
-        "jsCode": "const data = $input.all();\n\nif (data.length === 0) {\n  return [{json: {html_table: \"<p>No se encontraron datos para el reporte MODO.</p>\"}}];\n}\n\nlet html = '<h3 style=\"font-family: Arial, sans-serif; color: #333;\">Reporte Mensual Consolidado: MODO</h3>';\nhtml += '<table style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 13px;\">';\n\n// Headers\nhtml += '<tr style=\"background-color: #003366; color: white; text-align: left;\">';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Mes</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Leads</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Visitas Agendadas</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Visitas Realizadas</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Nuevos Ingresos</th>';\nhtml += '</tr>';\n\n// Rows\nfor (const item of data) {\n    const row = item.json;\n    \n    let mesFormatted = '-';\n    if (row.mes) {\n        mesFormatted = row.mes.substring(0, 7); // Toma YYYY-MM\n    }\n\n    html += '<tr>';\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; font-weight: bold;\">${mesFormatted}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_leads_real || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_visitas_agendadas_real || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_visitas_realizadas || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center; background-color: #f0f9ff;\">${row.cant_nuevos_ingresos_real || 0}</td>`;\n    html += '</tr>';\n}\n\nhtml += '</table>';\nhtml += `<p style=\"font-family: Arial; font-size: 11px; color: #666;\">Este reporte incluye los últimos 180 días y se genera automáticamente el día 01 de cada mes.</p>`;\n\nreturn [{json: {html_table: html}}];"
+        "jsCode": "const data = $input.all();\n\nif (data.length === 0) {\n  return [{json: {html_table: \"<p>No se encontraron datos para el reporte MODO.</p>\"}}];\n}\n\nlet html = '<h3 style=\"font-family: Arial, sans-serif; color: #333;\">Reporte Mensual Consolidado: MODO</h3>';\nhtml += '<table style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 13px;\">';\n\n// Headers\nhtml += '<tr style=\"background-color: #003366; color: white; text-align: left;\">';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Mes</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Leads</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Visitas Agendadas</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Visitas Realizadas</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Nuevos Ingresos Depa</th>';\nhtml += '<th style=\"border: 1px solid #ddd; padding: 10px;\">Nuevos Ingresos Cochera</th>';\nhtml += '</tr>';\n\n// Rows\nfor (const item of data) {\n    const row = item.json;\n    \n    let mesFormatted = '-';\n    if (row.mes) {\n        mesFormatted = row.mes.substring(0, 7); // Toma YYYY-MM\n    }\n\n    html += '<tr>';\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; font-weight: bold;\">${mesFormatted}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_leads_real || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_visitas_agendadas_real || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center;\">${row.cant_visitas_realizadas || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center; background-color: #f0f9ff;\">${row.cant_nuevos_ingresos_depa_real || 0}</td>`;\n    html += `<td style=\"border: 1px solid #ddd; padding: 8px; text-align: center; background-color: #f0f9ff;\">${row.cant_nuevos_ingresos_cochera_real || 0}</td>`;\n    html += '</tr>';\n}\n\nhtml += '</table>';\n\n// Leyenda\nhtml += '<br>';\nhtml += '<table style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 12px; background-color: #f9f9f9;\">';\nhtml += '<tr style=\"background-color: #e8e8e8;\"><th colspan=\"2\" style=\"border: 1px solid #ccc; padding: 8px; text-align: left; color: #333;\">Glosario de indicadores</th></tr>';\nhtml += '<tr><td style=\"border: 1px solid #ccc; padding: 7px 10px; font-weight: bold; white-space: nowrap;\">Leads</td><td style=\"border: 1px solid #ccc; padding: 7px 10px; color: #555;\">Cantidad de personas interesadas en alquilar (envían un mensaje al WhatsApp de corretaje)</td></tr>';\nhtml += '<tr><td style=\"border: 1px solid #ccc; padding: 7px 10px; font-weight: bold; white-space: nowrap;\">Visitas agendadas</td><td style=\"border: 1px solid #ccc; padding: 7px 10px; color: #555;\">Cantidad de personas que agendan una visita</td></tr>';\nhtml += '<tr><td style=\"border: 1px solid #ccc; padding: 7px 10px; font-weight: bold; white-space: nowrap;\">Visitas realizadas</td><td style=\"border: 1px solid #ccc; padding: 7px 10px; color: #555;\">Cantidad de personas que realizan una visita</td></tr>';\nhtml += '<tr><td style=\"border: 1px solid #ccc; padding: 7px 10px; font-weight: bold; white-space: nowrap;\">Nuevos ingresos depa</td><td style=\"border: 1px solid #ccc; padding: 7px 10px; color: #555;\">Cantidad de inmuebles registrados en el formulario de Nuevos Inquilinos del Intranet Rentas</td></tr>';\nhtml += '<tr><td style=\"border: 1px solid #ccc; padding: 7px 10px; font-weight: bold; white-space: nowrap;\">Nuevos ingresos cochera</td><td style=\"border: 1px solid #ccc; padding: 7px 10px; color: #555;\">Cantidad de cocheras registradas en el formulario de Nuevos Inquilinos del Intranet Rentas</td></tr>';\nhtml += '</table>';\n\nhtml += `<p style=\"font-family: Arial; font-size: 11px; color: #666;\">Este reporte incluye los últimos 180 días y se genera automáticamente el día 01 de cada mes.</p>`;\n\nreturn [{json: {html_table: html}}];"
       },
-      "id": "0bfdd911-d53a-4c35-a47d-9fc204a4e5d3",
+      "id": "2f37ed6f-bef3-4568-b535-f18599f77210",
       "name": "Crear Tabla HTML",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        288,
-        -208
+        1088,
+        -240
       ]
     },
     {
       "parameters": {
-        "sendTo": "valeria.vega@proper.com.pe, jorge.campos@cmcapital.in, giomar.lopez@proper.com.pe, gabriela.vargas@proper.com.pe, soporte@proper.com.pe",
+        "sendTo": "valeria.vega@proper.com.pe,\njorge.campos@cmcapital.in,\ngiomar.lopez@proper.com.pe,\ngabriela.vargas@proper.com.pe,\nsoporte@proper.com.pe",
         "subject": "Reporte Mensual MODO",
         "message": "={{ $json.html_table }}",
         "options": {}
       },
-      "id": "0dfd3003-815b-41fc-a1c9-b99d8e8258ee",
+      "id": "90311493-55b2-4bf0-a242-56a47d10539c",
       "name": "Enviar Email",
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        512,
-        -208
+        1312,
+        -240
       ],
       "webhookId": "17846470-435e-4d9c-a64e-4b3f34631a4a",
       "credentials": {
@@ -264,6 +264,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-12-23T18:34:34.162Z",
-  "versionId": "45d6beb5-fc95-463a-8fa6-fb54698b541e"
+  "updatedAt": "2026-03-05T17:01:06.361Z",
+  "versionId": "644161b0-84d8-453d-8c33-ef7b189e7704"
 }
