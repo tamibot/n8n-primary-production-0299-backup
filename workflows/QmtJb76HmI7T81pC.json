@@ -496,7 +496,7 @@
     },
     {
       "parameters": {
-        "sendTo": "valeria.vega@proper.com.pe,\ngiomar.lopez@proper.com.pe,\nalquileres@proper.com.pe,\nedificio.modo@proper.com.pe,\nadministracion.modo@proper.com.pe,\nsoporte.corretaje@proper.com.pe,\njorge.campos@cmcapital.in,\ndiego.sanchez@proper.com.pe",
+        "sendTo": "valeria.vega@proper.com.pe",
         "subject": "Reporte semanal de rentas",
         "message": "={{ $json.html }}",
         "options": {}
@@ -538,6 +538,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-03-05T15:52:52.423Z",
-  "versionId": "c5537687-03cf-4b15-b0d7-ebc373849046"
+  "updatedAt": "2026-03-10T19:14:53.546Z",
+  "versionId": "4a3885c7-1a86-403f-a703-c548098cb610"
 }
