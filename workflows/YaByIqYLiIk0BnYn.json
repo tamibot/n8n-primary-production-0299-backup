@@ -1,0 +1,1229 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-03-20T16:49:01.973Z",
+    "createdAt": "2026-03-20T16:49:01.973Z",
+    "versionId": "f2a5f3e2-51db-4437-8a83-fe23fbcb830c",
+    "workflowId": "YaByIqYLiIk0BnYn",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "conversation_id"
+              },
+              {
+                "name": "acount_link"
+              },
+              {
+                "name": "talk_id"
+              },
+              {
+                "name": "contact_id"
+              },
+              {
+                "name": "account_id"
+              },
+              {
+                "name": "entity_id"
+              },
+              {
+                "name": "entity_type"
+              },
+              {
+                "name": "author_id"
+              },
+              {
+                "name": "nombre"
+              },
+              {
+                "name": "correo"
+              },
+              {
+                "name": "telefono"
+              },
+              {
+                "name": "nombre_empresa"
+              },
+              {
+                "name": "servicio"
+              },
+              {
+                "name": "solicitud"
+              }
+            ]
+          }
+        },
+        "id": "166f5d69-863c-4aae-bd85-1fdf9078636c",
+        "typeVersion": 1.1,
+        "name": "When Executed by Another Workflow",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "position": [
+          -640,
+          208
+        ]
+      },
+      {
+        "parameters": {
+          "url": "={{ $json.fileUrl }}",
+          "options": {
+            "response": {
+              "response": {
+                "responseFormat": "file"
+              }
+            }
+          }
+        },
+        "id": "9b423ca5-4042-40b9-aa79-e247e43ce715",
+        "name": "📥 Obtener Archivo",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          32,
+          208
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://drive-{{ $json.driveLetter }}.kommo.com/v1.0/sessions",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "oAuth2Api",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"file_name\": \"{{ $json.fileName }}\",\n  \"file_size\": {{ $json.fileSize }}\n}",
+          "options": {}
+        },
+        "id": "76fbbadf-e7d1-45ce-8729-5912a7374606",
+        "name": "🔑 Crear Sesión de Carga",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          480,
+          272
+        ],
+        "credentials": {
+          "oAuth2Api": {
+            "id": "CUkAxEZkWpxNLUY2",
+            "name": "Proper"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const item = items[0];\nconst config = item.json;\nconst binaryInfo = item.binary.data;\n\nconst fileBuffer = await this.helpers.getBinaryDataBuffer(0, 'data');\nconst fileSize = fileBuffer.length;\n\n// Detectar MIME type según la extensión\nconst extension = config.fileName.split('.').pop().toLowerCase();\nconst mimeTypes = {\n  'png': 'image/png',\n  'jpg': 'image/jpeg',\n  'jpeg': 'image/jpeg',\n  'gif': 'image/gif',\n  'webp': 'image/webp',\n  'mp4': 'video/mp4',\n  'avi': 'video/x-msvideo',\n  'mov': 'video/quicktime',\n  'mp3': 'audio/mpeg',\n  'wav': 'audio/wav',\n  'ogg': 'audio/ogg',\n  'm4a': 'audio/mp4',\n  'pdf': 'application/pdf',\n  'doc': 'application/msword',\n  'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',\n  'xls': 'application/vnd.ms-excel',\n  'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'\n};\n\nconst mimeType = mimeTypes[extension] || binaryInfo.mimeType || 'application/octet-stream';\n\nconsole.log(`📁 Archivo: ${config.fileName}`);\nconsole.log(`📊 Tamaño: ${fileSize} bytes`);\nconsole.log(`📋 MIME: ${mimeType}`);\nconsole.log(`🎯 Tipo: ${config.fileType}`);\n\nreturn [{\n  json: {\n    ...config,\n    fileSize: fileSize,\n    fileBuffer: fileBuffer.toString('base64'),\n    mimeType: mimeType\n  }\n}];"
+        },
+        "id": "9d864e7e-c54d-4109-829c-b3aff1349436",
+        "name": "📊 Preparar Archivo",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          256,
+          208
+        ]
+      },
+      {
+        "parameters": {
+          "content": "1. Definir letra del drive (https://developers.kommo.com/reference/account-parameters)\n2. Cambiar el URL del archivo"
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          864,
+          -16
+        ],
+        "typeVersion": 1,
+        "id": "c58c69e4-683e-4799-90bc-7c459a25c2b1",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "content": "3. Cambiar el OAuth2 API"
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1536,
+          448
+        ],
+        "typeVersion": 1,
+        "id": "b3a10d8b-6f6b-4d8c-b95e-d687fb421f6f",
+        "name": "Sticky Note1"
+      },
+      {
+        "parameters": {},
+        "id": "6cbac62e-0509-47e3-ac68-d4d789f48a82",
+        "name": "➡️ Continuar1",
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          2496,
+          304
+        ]
+      },
+      {
+        "parameters": {
+          "mode": "combine",
+          "combineBy": "combineByPosition",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          704,
+          208
+        ],
+        "id": "3970249a-055d-496e-aa2f-2dd7728b8135",
+        "name": "Merge2"
+      },
+      {
+        "parameters": {
+          "jsCode": "const sessionData = items[0].json;\nconst fileBuffer = Buffer.from(sessionData.fileBuffer, 'base64');\nconst maxPartSize = sessionData.max_part_size || 524288;\nconst totalSize = fileBuffer.length;\nconst numParts = Math.ceil(totalSize / maxPartSize);\n\nconsole.log(`Archivo dividido en ${numParts} partes.`);\n\nconst parts = [];\nfor (let i = 0; i < numParts; i++) {\n  const start = i * maxPartSize;\n  const end = Math.min(start + maxPartSize, totalSize);\n  const partBuffer = fileBuffer.slice(start, end);\n  \n  // Convertimos el trozo a un objeto binario de n8n\n  const binaryData = await this.helpers.prepareBinaryData(partBuffer, `part_${i + 1}.bin`);\n\n  parts.push({\n    json: {\n      partNumber: i + 1,\n      totalParts: numParts,\n      partSize: partBuffer.length,\n      isLastPart: (i === numParts - 1),\n      sessionId: sessionData.session_id,\n      uploadUrl: i === 0 ? sessionData.upload_url : null,\n      fileName: sessionData.fileName,\n      fileSize: sessionData.fileSize,\n      driveLetter: sessionData.driveLetter\n    },\n    // Adjuntamos los datos binarios directamente\n    binary: {\n      data: binaryData\n    }\n  });\n}\n\nreturn parts;"
+        },
+        "id": "0a2d82d5-9560-4d83-bfb0-8cf503feeaff",
+        "name": "✂️ Dividir Archivo en Partes1",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          928,
+          208
+        ]
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "a9c7ad4c-c936-441e-aae2-d895c25202c1",
+        "name": "🔄 Procesar Parte por Parte1",
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          1152,
+          208
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const currentPart = items[0].json;\n\nif (currentPart.partNumber > 1) {\n  // Forma moderna de leer datos globales\n  currentPart.uploadUrl = $getWorkflowStaticData('global').nextUrl;\n  console.log(`Parte ${currentPart.partNumber}/${currentPart.totalParts}: Usando URL de continuación`);\n}\n\nif (!currentPart.uploadUrl) {\n  throw new Error(`No se encontró URL de carga para la parte ${currentPart.partNumber}`);\n}\n\nreturn items; // Pasamos el item completo (json y binary)"
+        },
+        "id": "adf2a9b1-e9a0-4e66-8473-c2e980185c00",
+        "name": "🔗 Preparar URL de Carga1",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1376,
+          128
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "={{ $json.uploadUrl }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/octet-stream"
+              },
+              {
+                "name": "Content-Length",
+                "value": "={{ $json.partSize }}"
+              }
+            ]
+          },
+          "sendBody": true,
+          "contentType": "binaryData",
+          "inputDataFieldName": "data",
+          "options": {}
+        },
+        "id": "1672646d-b895-4f2f-b739-dc9336b7c78e",
+        "name": "⬆️ Subir Parte1",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          1600,
+          208
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const item = items[0].json;\n\nif (item.next_url) {\n  // Forma moderna de guardar datos globales\n  $getWorkflowStaticData('global').nextUrl = item.next_url;\n  console.log(`Parte ${item.partNumber}/${item.totalParts} subida`);\n}\n\nif (item.isLastPart) {\n  item.message = '✅ Archivo cargado exitosamente';\n  console.log(`\\n✅ CARGA COMPLETA: ${item.name || item.sanitized_name}`);\n  \n  // Forma moderna de limpiar datos globales\n  delete $getWorkflowStaticData('global').nextUrl;\n}\n\nreturn [{ json: item }];"
+        },
+        "id": "948a20b0-465d-4685-aa87-8f85c72b367e",
+        "name": "📝 Procesar Respuesta1",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2048,
+          128
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 1
+            },
+            "conditions": [
+              {
+                "id": "055c9f00-b525-44e8-9d82-1b746ed1b8c7",
+                "leftValue": "={{ $json.isLastPart }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "f699364c-b953-42b8-9772-019efd42a5ef",
+        "name": "❓ ¿Es la última parte?1",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          2272,
+          128
+        ]
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "63692b90-d59f-4fd0-870a-252e162a8eee",
+        "name": "✅ Carga Completa1",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.2,
+        "position": [
+          2496,
+          80
+        ]
+      },
+      {
+        "parameters": {
+          "mode": "combine",
+          "combineBy": "combineByPosition",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          1824,
+          128
+        ],
+        "id": "76aea75f-e81b-4aca-b026-cc41c1e5a021",
+        "name": "Merge3"
+      },
+      {
+        "parameters": {
+          "fields": {
+            "values": [
+              {
+                "name": "fileUrl",
+                "stringValue": "={{ $json.body?.fileUrl || $json.query?.fileUrl || $json.fileUrl }}"
+              },
+              {
+                "name": "fileName",
+                "stringValue": "={{ $json.body?.fileName || $json.query?.fileName || $json.fileName || \"archivo\" }}"
+              },
+              {
+                "name": "driveLetter",
+                "stringValue": "g"
+              },
+              {
+                "name": "fileType",
+                "stringValue": "={{ $json.body?.fileType || $json.query?.fileType || $json.fileType || \"image\" }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "6d1b0382-b706-4f98-be9e-a23aacf16b27",
+        "name": "CONFIGURACIÓN",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.2,
+        "position": [
+          -192,
+          208
+        ],
+        "notesInFlow": false
+      },
+      {
+        "parameters": {
+          "jsCode": "return [{\n  json: {\n    fileUrl: \"https://files.catbox.moe/b3wfbq.jpg\",\n    fileName: \"foto-test-proper.jpg\",\n    fileType: \"image\",\n    driveLetter: \"g\"\n  }\n}];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -416,
+          208
+        ],
+        "id": "26cf4614-418d-42ab-9d7b-6f8d5d1ffe74",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -608,
+          416
+        ],
+        "id": "d397c103-b053-4593-94cd-fe4c2b1b50ce",
+        "name": "When clicking ‘Execute workflow’"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "📥 Obtener Archivo": {
+        "main": [
+          [
+            {
+              "node": "📊 Preparar Archivo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "🔑 Crear Sesión de Carga": {
+        "main": [
+          [
+            {
+              "node": "Merge2",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "📊 Preparar Archivo": {
+        "main": [
+          [
+            {
+              "node": "🔑 Crear Sesión de Carga",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Merge2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "➡️ Continuar1": {
+        "main": [
+          [
+            {
+              "node": "🔄 Procesar Parte por Parte1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge2": {
+        "main": [
+          [
+            {
+              "node": "✂️ Dividir Archivo en Partes1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "✂️ Dividir Archivo en Partes1": {
+        "main": [
+          [
+            {
+              "node": "🔄 Procesar Parte por Parte1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "🔄 Procesar Parte por Parte1": {
+        "main": [
+          [],
+          [
+            {
+              "node": "🔗 Preparar URL de Carga1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "🔗 Preparar URL de Carga1": {
+        "main": [
+          [
+            {
+              "node": "⬆️ Subir Parte1",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Merge3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "⬆️ Subir Parte1": {
+        "main": [
+          [
+            {
+              "node": "Merge3",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "📝 Procesar Respuesta1": {
+        "main": [
+          [
+            {
+              "node": "❓ ¿Es la última parte?1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "❓ ¿Es la última parte?1": {
+        "main": [
+          [
+            {
+              "node": "✅ Carga Completa1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "➡️ Continuar1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "✅ Carga Completa1": {
+        "main": [
+          []
+        ]
+      },
+      "Merge3": {
+        "main": [
+          [
+            {
+              "node": "📝 Procesar Respuesta1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CONFIGURACIÓN": {
+        "main": [
+          [
+            {
+              "node": "📥 Obtener Archivo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "CONFIGURACIÓN",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "CONFIGURACIÓN",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Martin Velasco",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "f2a5f3e2-51db-4437-8a83-fe23fbcb830c",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📥 Obtener Archivo": {
+      "main": [
+        [
+          {
+            "node": "📊 Preparar Archivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔑 Crear Sesión de Carga": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "📊 Preparar Archivo": {
+      "main": [
+        [
+          {
+            "node": "🔑 Crear Sesión de Carga",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "➡️ Continuar1": {
+      "main": [
+        [
+          {
+            "node": "🔄 Procesar Parte por Parte1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "✂️ Dividir Archivo en Partes1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "✂️ Dividir Archivo en Partes1": {
+      "main": [
+        [
+          {
+            "node": "🔄 Procesar Parte por Parte1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔄 Procesar Parte por Parte1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "🔗 Preparar URL de Carga1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🔗 Preparar URL de Carga1": {
+      "main": [
+        [
+          {
+            "node": "⬆️ Subir Parte1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⬆️ Subir Parte1": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "📝 Procesar Respuesta1": {
+      "main": [
+        [
+          {
+            "node": "❓ ¿Es la última parte?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "❓ ¿Es la última parte?1": {
+      "main": [
+        [
+          {
+            "node": "✅ Carga Completa1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "➡️ Continuar1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "✅ Carga Completa1": {
+      "main": [
+        []
+      ]
+    },
+    "Merge3": {
+      "main": [
+        [
+          {
+            "node": "📝 Procesar Respuesta1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CONFIGURACIÓN": {
+      "main": [
+        [
+          {
+            "node": "📥 Obtener Archivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "CONFIGURACIÓN",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "CONFIGURACIÓN",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-20T16:34:55.679Z",
+  "id": "YaByIqYLiIk0BnYn",
+  "isArchived": false,
+  "meta": null,
+  "name": "Subir multimedia Kommo - Proper",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "conversation_id"
+            },
+            {
+              "name": "acount_link"
+            },
+            {
+              "name": "talk_id"
+            },
+            {
+              "name": "contact_id"
+            },
+            {
+              "name": "account_id"
+            },
+            {
+              "name": "entity_id"
+            },
+            {
+              "name": "entity_type"
+            },
+            {
+              "name": "author_id"
+            },
+            {
+              "name": "nombre"
+            },
+            {
+              "name": "correo"
+            },
+            {
+              "name": "telefono"
+            },
+            {
+              "name": "nombre_empresa"
+            },
+            {
+              "name": "servicio"
+            },
+            {
+              "name": "solicitud"
+            }
+          ]
+        }
+      },
+      "id": "166f5d69-863c-4aae-bd85-1fdf9078636c",
+      "typeVersion": 1.1,
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -640,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.fileUrl }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "9b423ca5-4042-40b9-aa79-e247e43ce715",
+      "name": "📥 Obtener Archivo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        32,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://drive-{{ $json.driveLetter }}.kommo.com/v1.0/sessions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"file_name\": \"{{ $json.fileName }}\",\n  \"file_size\": {{ $json.fileSize }}\n}",
+        "options": {}
+      },
+      "id": "76fbbadf-e7d1-45ce-8729-5912a7374606",
+      "name": "🔑 Crear Sesión de Carga",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        480,
+        272
+      ],
+      "credentials": {
+        "oAuth2Api": {
+          "id": "CUkAxEZkWpxNLUY2",
+          "name": "Proper"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = items[0];\nconst config = item.json;\nconst binaryInfo = item.binary.data;\n\nconst fileBuffer = await this.helpers.getBinaryDataBuffer(0, 'data');\nconst fileSize = fileBuffer.length;\n\n// Detectar MIME type según la extensión\nconst extension = config.fileName.split('.').pop().toLowerCase();\nconst mimeTypes = {\n  'png': 'image/png',\n  'jpg': 'image/jpeg',\n  'jpeg': 'image/jpeg',\n  'gif': 'image/gif',\n  'webp': 'image/webp',\n  'mp4': 'video/mp4',\n  'avi': 'video/x-msvideo',\n  'mov': 'video/quicktime',\n  'mp3': 'audio/mpeg',\n  'wav': 'audio/wav',\n  'ogg': 'audio/ogg',\n  'm4a': 'audio/mp4',\n  'pdf': 'application/pdf',\n  'doc': 'application/msword',\n  'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',\n  'xls': 'application/vnd.ms-excel',\n  'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'\n};\n\nconst mimeType = mimeTypes[extension] || binaryInfo.mimeType || 'application/octet-stream';\n\nconsole.log(`📁 Archivo: ${config.fileName}`);\nconsole.log(`📊 Tamaño: ${fileSize} bytes`);\nconsole.log(`📋 MIME: ${mimeType}`);\nconsole.log(`🎯 Tipo: ${config.fileType}`);\n\nreturn [{\n  json: {\n    ...config,\n    fileSize: fileSize,\n    fileBuffer: fileBuffer.toString('base64'),\n    mimeType: mimeType\n  }\n}];"
+      },
+      "id": "9d864e7e-c54d-4109-829c-b3aff1349436",
+      "name": "📊 Preparar Archivo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        256,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "content": "1. Definir letra del drive (https://developers.kommo.com/reference/account-parameters)\n2. Cambiar el URL del archivo"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        864,
+        -16
+      ],
+      "typeVersion": 1,
+      "id": "c58c69e4-683e-4799-90bc-7c459a25c2b1",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "3. Cambiar el OAuth2 API"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1536,
+        448
+      ],
+      "typeVersion": 1,
+      "id": "b3a10d8b-6f6b-4d8c-b95e-d687fb421f6f",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {},
+      "id": "6cbac62e-0509-47e3-ac68-d4d789f48a82",
+      "name": "➡️ Continuar1",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2496,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        704,
+        208
+      ],
+      "id": "3970249a-055d-496e-aa2f-2dd7728b8135",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const sessionData = items[0].json;\nconst fileBuffer = Buffer.from(sessionData.fileBuffer, 'base64');\nconst maxPartSize = sessionData.max_part_size || 524288;\nconst totalSize = fileBuffer.length;\nconst numParts = Math.ceil(totalSize / maxPartSize);\n\nconsole.log(`Archivo dividido en ${numParts} partes.`);\n\nconst parts = [];\nfor (let i = 0; i < numParts; i++) {\n  const start = i * maxPartSize;\n  const end = Math.min(start + maxPartSize, totalSize);\n  const partBuffer = fileBuffer.slice(start, end);\n  \n  // Convertimos el trozo a un objeto binario de n8n\n  const binaryData = await this.helpers.prepareBinaryData(partBuffer, `part_${i + 1}.bin`);\n\n  parts.push({\n    json: {\n      partNumber: i + 1,\n      totalParts: numParts,\n      partSize: partBuffer.length,\n      isLastPart: (i === numParts - 1),\n      sessionId: sessionData.session_id,\n      uploadUrl: i === 0 ? sessionData.upload_url : null,\n      fileName: sessionData.fileName,\n      fileSize: sessionData.fileSize,\n      driveLetter: sessionData.driveLetter\n    },\n    // Adjuntamos los datos binarios directamente\n    binary: {\n      data: binaryData\n    }\n  });\n}\n\nreturn parts;"
+      },
+      "id": "0a2d82d5-9560-4d83-bfb0-8cf503feeaff",
+      "name": "✂️ Dividir Archivo en Partes1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        928,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "a9c7ad4c-c936-441e-aae2-d895c25202c1",
+      "name": "🔄 Procesar Parte por Parte1",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1152,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const currentPart = items[0].json;\n\nif (currentPart.partNumber > 1) {\n  // Forma moderna de leer datos globales\n  currentPart.uploadUrl = $getWorkflowStaticData('global').nextUrl;\n  console.log(`Parte ${currentPart.partNumber}/${currentPart.totalParts}: Usando URL de continuación`);\n}\n\nif (!currentPart.uploadUrl) {\n  throw new Error(`No se encontró URL de carga para la parte ${currentPart.partNumber}`);\n}\n\nreturn items; // Pasamos el item completo (json y binary)"
+      },
+      "id": "adf2a9b1-e9a0-4e66-8473-c2e980185c00",
+      "name": "🔗 Preparar URL de Carga1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1376,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.uploadUrl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/octet-stream"
+            },
+            {
+              "name": "Content-Length",
+              "value": "={{ $json.partSize }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "id": "1672646d-b895-4f2f-b739-dc9336b7c78e",
+      "name": "⬆️ Subir Parte1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1600,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = items[0].json;\n\nif (item.next_url) {\n  // Forma moderna de guardar datos globales\n  $getWorkflowStaticData('global').nextUrl = item.next_url;\n  console.log(`Parte ${item.partNumber}/${item.totalParts} subida`);\n}\n\nif (item.isLastPart) {\n  item.message = '✅ Archivo cargado exitosamente';\n  console.log(`\\n✅ CARGA COMPLETA: ${item.name || item.sanitized_name}`);\n  \n  // Forma moderna de limpiar datos globales\n  delete $getWorkflowStaticData('global').nextUrl;\n}\n\nreturn [{ json: item }];"
+      },
+      "id": "948a20b0-465d-4685-aa87-8f85c72b367e",
+      "name": "📝 Procesar Respuesta1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2048,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "055c9f00-b525-44e8-9d82-1b746ed1b8c7",
+              "leftValue": "={{ $json.isLastPart }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f699364c-b953-42b8-9772-019efd42a5ef",
+      "name": "❓ ¿Es la última parte?1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        2272,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "63692b90-d59f-4fd0-870a-252e162a8eee",
+      "name": "✅ Carga Completa1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        2496,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1824,
+        128
+      ],
+      "id": "76aea75f-e81b-4aca-b026-cc41c1e5a021",
+      "name": "Merge3"
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "fileUrl",
+              "stringValue": "={{ $json.body?.fileUrl || $json.query?.fileUrl || $json.fileUrl }}"
+            },
+            {
+              "name": "fileName",
+              "stringValue": "={{ $json.body?.fileName || $json.query?.fileName || $json.fileName || \"archivo\" }}"
+            },
+            {
+              "name": "driveLetter",
+              "stringValue": "g"
+            },
+            {
+              "name": "fileType",
+              "stringValue": "={{ $json.body?.fileType || $json.query?.fileType || $json.fileType || \"image\" }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6d1b0382-b706-4f98-be9e-a23aacf16b27",
+      "name": "CONFIGURACIÓN",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        -192,
+        208
+      ],
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  json: {\n    fileUrl: \"https://files.catbox.moe/b3wfbq.jpg\",\n    fileName: \"foto-test-proper.jpg\",\n    fileType: \"image\",\n    driveLetter: \"g\"\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -416,
+        208
+      ],
+      "id": "26cf4614-418d-42ab-9d7b-6f8d5d1ffe74",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        416
+      ],
+      "id": "d397c103-b053-4593-94cd-fe4c2b1b50ce",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "conversation_id": "c7a7b6fe-b433-4a74-a541-6125e94be4a1",
+          "acount_link": "https://creatorslatam.amocrm.com",
+          "talk_id": "12323",
+          "contact_id": "24999693",
+          "account_id": "31569075",
+          "entity_id": "22154389",
+          "entity_type": "2",
+          "author_id": "f92fe9a6-bfe9-4f1c-b754-bf61e32d10d4",
+          "nombre": "Martín Velasco",
+          "correo": "mvelascoo@tamibot.com",
+          "telefono": "+51995547575",
+          "nombre_empresa": "Tami Bot",
+          "servicio": "Asesoría personalizada de 1 hora",
+          "solicitud": "Revisar y optimizar flujo n8n con Kommo y consulta sobre paquetes o descuentos"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-20T16:34:55.679Z",
+      "createdAt": "2026-03-20T16:34:55.679Z",
+      "role": "workflow:owner",
+      "workflowId": "YaByIqYLiIk0BnYn",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-20T16:49:01.964Z",
+  "versionId": "f2a5f3e2-51db-4437-8a83-fe23fbcb830c"
+}
