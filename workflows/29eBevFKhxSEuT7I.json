@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-03-07T14:54:07.574Z",
-    "createdAt": "2026-03-07T14:54:03.778Z",
-    "versionId": "cdbba915-7b16-46ac-a437-bee2e6413b65",
+    "updatedAt": "2026-03-20T11:00:15.299Z",
+    "createdAt": "2026-03-20T11:00:10.202Z",
+    "versionId": "096eb92b-9ea3-43f9-9795-b8c01011310a",
     "workflowId": "29eBevFKhxSEuT7I",
     "nodes": [
       {
@@ -108,7 +108,7 @@
       {
         "parameters": {
           "operation": "executeQuery",
-          "query": "WITH parametros AS (\nSELECT\nMIN(dia) AS fecha_min,\nMAX(dia) AS fecha_max\nFROM (\nSELECT fecha_dia::date AS dia\nFROM crm.bot_leads_david\nWHERE cod_propiedad_unificado NOT ILIKE '%MODO%'\nAND es_nuevo = 1\n\nUNION\n\nSELECT fecha_programada::date AS dia\nFROM rentas_crm.visitas\nWHERE 1=1\n  AND formulario ILIKE '%Inquilino interesado%'\n  AND codigo_inmueble NOT ILIKE '%TEST%'\n  AND codigo_inmueble NOT ILIKE '%PRUEBA%'\n  AND codigo_inmueble NOT ILIKE '%MODO%'\n) t\n),\ncalendario AS (\nSELECT generate_series(fecha_min, fecha_max, interval '1 day')::date AS dia\nFROM parametros\n),\nleads AS (\nSELECT\nfecha_dia::date AS dia,\nCOUNT(DISTINCT TELEFONO) AS cant_leads,\nCOUNT(DISTINCT CASE WHEN dio_horario = 1 THEN TELEFONO END) AS cant_leads_dieron_horario,\nROUND(COUNT(DISTINCT CASE WHEN dio_horario = 1 THEN TELEFONO END)::numeric / NULLIF(COUNT(DISTINCT TELEFONO), 0),2) AS porc_dio_horario\nFROM crm.bot_leads_david\nWHERE 1=1\nAND cod_propiedad_unificado NOT ILIKE '%MODO%'\nAND es_nuevo = 1\nGROUP BY 1\nORDER BY 1 DESC\n),\nvisitas AS (\nSELECT\nfecha_programada::date AS dia,\nCOUNT(DISTINCT CELULAR) AS cant_visitas_agendadas_real,\nCOUNT(DISTINCT CASE\nWHEN estado NOT IN ('No realizado', 'Cliente no asistió')\nTHEN CELULAR\nEND) AS cant_visitas_realizadas\nFROM rentas_crm.visitas\nWHERE 1=1\nAND formulario ILIKE '%Inquilino interesado%'\nAND codigo_inmueble NOT ILIKE '%TEST%'\nAND codigo_inmueble NOT ILIKE '%PRUEBA%'\nAND codigo_inmueble NOT ILIKE '%MODO%'\nGROUP BY 1\nORDER BY 1 DESC\n),\nleads_visitas AS (\nSELECT\na.fecha_dia::date AS dia,\nCOUNT(DISTINCT a.TELEFONO) AS cant_leads,\nCOUNT(DISTINCT CASE\nWHEN b.CELULAR IS NOT NULL THEN a.TELEFONO\nEND) AS cant_leads_agendaron_visitas\nFROM crm.bot_leads_david a\nLEFT JOIN rentas_crm.visitas b\nON RIGHT(regexp_replace(a.telefono, '\\D', '', 'g'), 9)\n= RIGHT(regexp_replace(b.celular, '\\D', '', 'g'), 9)\nWHERE 1=1\nAND a.es_nuevo = 1\nAND a.cod_propiedad_unificado NOT ILIKE '%TEST%'\nAND a.cod_propiedad_unificado NOT ILIKE '%PRUEBA%'\nAND a.cod_propiedad_unificado NOT ILIKE '%MODO%'\nAND b.formulario ILIKE '%Inquilino interesado%'\nAND b.codigo_inmueble NOT ILIKE '%TEST%'\nAND b.codigo_inmueble NOT ILIKE '%PRUEBA%'\nAND b.codigo_inmueble NOT ILIKE '%MODO%'\nGROUP BY 1\nORDER BY 1 DESC\n)\nSELECT\nc.dia,\nCOALESCE(l.cant_leads, 0)                                           AS cant_leads_real,\n25                                                                  AS cant_leads_target,\nCOALESCE(l.cant_leads, 0) - 25                                      AS diff_cant_leads_target,\nCOALESCE(l.cant_leads_dieron_horario, 0)                            AS cant_leads_dieron_horario,\nCOALESCE(l.porc_dio_horario,0)                                      AS porc_leads_dio_horario,\nCOALESCE(m.cant_leads_agendaron_visitas, 0)                         AS cant_leads_con_visita_agendada,\n10                                                                  AS cant_leads_con_visita_agendada_target,\nCOALESCE(m.cant_leads_agendaron_visitas, 0) - 10                    AS diff_leads_con_visita_agendada_target,\nCOALESCE(\nROUND(\nCOALESCE(m.cant_leads_agendaron_visitas, 0)::numeric\n/ NULLIF(COALESCE(l.cant_leads_dieron_horario, 0), 0),\n2\n),\n0\n) AS conv_leads_que_diero_horario_con_visitas_agendadas,\nCOALESCE(v.cant_visitas_realizadas, 0)                              AS cant_visitas_realizadas,\n7                                                                   AS cant_visitas_realizadas_target,\nCOALESCE(v.cant_visitas_realizadas, 0) - 7                          AS diff_cant_visitas_realizadas_target,\nCOALESCE(\nROUND(\nCOALESCE(v.cant_visitas_realizadas, 0)::numeric\n/ NULLIF(COALESCE(l.cant_leads, 0), 0),\n2\n),\n0\n) AS conv_visitas_realizadas\nFROM calendario c\nLEFT JOIN leads l ON c.dia = l.dia\nLEFT JOIN visitas v ON c.dia = v.dia\nLEFT JOIN leads_visitas m ON c.dia = m.dia\nWHERE 1=1\nAND c.dia = CURRENT_DATE - 1\n-- AND c.dia >= CURRENT_DATE - 7 AND c.dia < CURRENT_DATE\nORDER BY c.dia DESC;\n",
+          "query": "WITH parametros AS (\nSELECT\nMIN(dia) AS fecha_min,\nMAX(dia) AS fecha_max\nFROM (\nSELECT fecha_dia::date AS dia\nFROM crm.bot_leads_david\nWHERE cod_propiedad_unificado NOT ILIKE '%MODO%'\nAND es_nuevo = 1\n\nUNION\n\nSELECT fecha_programada::date AS dia\nFROM rentas_crm.visitas\nWHERE 1=1\n  AND formulario ILIKE '%Inquilino interesado%'\n  AND codigo_inmueble NOT ILIKE '%TEST%'\n  AND codigo_inmueble NOT ILIKE '%PRUEBA%'\n  AND codigo_inmueble NOT ILIKE '%MODO%'\n) t\n),\ncalendario AS (\nSELECT generate_series(fecha_min, fecha_max, interval '1 day')::date AS dia\nFROM parametros\n),\nleads AS (\nSELECT\nDATE_TRUNC('DAY', FECHA_CREACION - INTERVAL '5 hours')::DATE AS dia,\nCOUNT(DISTINCT TELEFONO) AS cant_leads,\nCOUNT(DISTINCT CASE WHEN dio_horario = 1 THEN TELEFONO END) AS cant_leads_dieron_horario,\nROUND(COUNT(DISTINCT CASE WHEN dio_horario = 1 THEN TELEFONO END)::numeric / NULLIF(COUNT(DISTINCT TELEFONO), 0),2) AS porc_dio_horario\nFROM crm.bot_leads_david\nWHERE 1=1\nAND cod_propiedad_unificado NOT ILIKE '%MODO%'\nAND es_nuevo = 1\nGROUP BY 1\nORDER BY 1 DESC\n),\nvisitas AS (\nSELECT\nfecha_programada::date AS dia,\nCOUNT(DISTINCT CELULAR) AS cant_visitas_agendadas_real,\nCOUNT(DISTINCT CASE\nWHEN estado NOT IN ('No realizado', 'Cliente no asistió')\nTHEN CELULAR\nEND) AS cant_visitas_realizadas\nFROM rentas_crm.visitas\nWHERE 1=1\nAND formulario ILIKE '%Inquilino interesado%'\nAND codigo_inmueble NOT ILIKE '%TEST%'\nAND codigo_inmueble NOT ILIKE '%PRUEBA%'\nAND codigo_inmueble NOT ILIKE '%MODO%'\nGROUP BY 1\nORDER BY 1 DESC\n),\nleads_visitas AS (\nSELECT\nDATE_TRUNC('DAY', FECHA_CREACION - INTERVAL '5 hours')::DATE AS dia,\nCOUNT(DISTINCT a.TELEFONO) AS cant_leads,\nCOUNT(DISTINCT CASE\nWHEN b.CELULAR IS NOT NULL THEN a.TELEFONO\nEND) AS cant_leads_agendaron_visitas\nFROM crm.bot_leads_david a\nLEFT JOIN rentas_crm.visitas b\nON RIGHT(regexp_replace(a.telefono, '\\D', '', 'g'), 9)\n= RIGHT(regexp_replace(b.celular, '\\D', '', 'g'), 9)\nWHERE 1=1\nAND a.es_nuevo = 1\nAND a.cod_propiedad_unificado NOT ILIKE '%TEST%'\nAND a.cod_propiedad_unificado NOT ILIKE '%PRUEBA%'\nAND a.cod_propiedad_unificado NOT ILIKE '%MODO%'\nAND b.formulario ILIKE '%Inquilino interesado%'\nAND b.codigo_inmueble NOT ILIKE '%TEST%'\nAND b.codigo_inmueble NOT ILIKE '%PRUEBA%'\nAND b.codigo_inmueble NOT ILIKE '%MODO%'\nGROUP BY 1\nORDER BY 1 DESC\n)\nSELECT\nc.dia,\nCOALESCE(l.cant_leads, 0)                                           AS cant_leads_real,\n25                                                                  AS cant_leads_target,\nCOALESCE(l.cant_leads, 0) - 25                                      AS diff_cant_leads_target,\nCOALESCE(l.cant_leads_dieron_horario, 0)                            AS cant_leads_dieron_horario,\nCOALESCE(l.porc_dio_horario,0)                                      AS porc_leads_dio_horario,\nCOALESCE(m.cant_leads_agendaron_visitas, 0)                         AS cant_leads_con_visita_agendada,\n10                                                                  AS cant_leads_con_visita_agendada_target,\nCOALESCE(m.cant_leads_agendaron_visitas, 0) - 10                    AS diff_leads_con_visita_agendada_target,\nCOALESCE(\nROUND(\nCOALESCE(m.cant_leads_agendaron_visitas, 0)::numeric\n/ NULLIF(COALESCE(l.cant_leads_dieron_horario, 0), 0),\n2\n),\n0\n) AS conv_leads_que_diero_horario_con_visitas_agendadas,\nCOALESCE(v.cant_visitas_realizadas, 0)                              AS cant_visitas_realizadas,\n7                                                                   AS cant_visitas_realizadas_target,\nCOALESCE(v.cant_visitas_realizadas, 0) - 7                          AS diff_cant_visitas_realizadas_target,\nCOALESCE(\nROUND(\nCOALESCE(v.cant_visitas_realizadas, 0)::numeric\n/ NULLIF(COALESCE(l.cant_leads, 0), 0),\n2\n),\n0\n) AS conv_visitas_realizadas\nFROM calendario c\nLEFT JOIN leads l ON c.dia = l.dia\nLEFT JOIN visitas v ON c.dia = v.dia\nLEFT JOIN leads_visitas m ON c.dia = m.dia\nWHERE 1=1\nAND c.dia = CURRENT_DATE - 1\n-- AND c.dia >= CURRENT_DATE - 7 AND c.dia < CURRENT_DATE\nORDER BY c.dia DESC;\n",
           "additionalFields": {}
         },
         "id": "aad6d3d4-cbd6-4a58-b48b-a05f1e4163ca",
@@ -116,7 +116,7 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 1,
         "position": [
-          2176,
+          2448,
           -16
         ],
         "alwaysOutputData": true,
@@ -138,7 +138,7 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 1,
         "position": [
-          2368,
+          2864,
           -16
         ],
         "alwaysOutputData": true,
@@ -160,7 +160,7 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 1,
         "position": [
-          2576,
+          3296,
           -16
         ],
         "alwaysOutputData": true,
@@ -182,7 +182,7 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 1,
         "position": [
-          2768,
+          3520,
           -16
         ],
         "alwaysOutputData": true,
@@ -204,7 +204,7 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 1,
         "position": [
-          2960,
+          3712,
           -16
         ],
         "alwaysOutputData": true,
@@ -226,7 +226,7 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 1,
         "position": [
-          3168,
+          3920,
           -16
         ],
         "alwaysOutputData": true,
@@ -246,7 +246,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 1,
         "position": [
-          3392,
+          4144,
           -16
         ]
       },
@@ -262,7 +262,7 @@
         "type": "n8n-nodes-base.gmail",
         "typeVersion": 2.1,
         "position": [
-          3600,
+          4352,
           -16
         ],
         "webhookId": "784cf540-74c5-451b-a11a-f6a3c708fce8",
@@ -325,7 +325,7 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 1,
         "position": [
-          2064,
+          2224,
           -16
         ],
         "alwaysOutputData": true,
@@ -347,7 +347,7 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 1,
         "position": [
-          2272,
+          2656,
           -16
         ],
         "alwaysOutputData": true,
@@ -369,7 +369,7 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 1,
         "position": [
-          2464,
+          3088,
           -16
         ],
         "alwaysOutputData": true,
@@ -571,11 +571,11 @@
       }
     },
     "authors": "Martin Velasco",
-    "name": "Version cdbba915",
+    "name": "Version 096eb92b",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "cdbba915-7b16-46ac-a437-bee2e6413b65",
+  "activeVersionId": "096eb92b-9ea3-43f9-9795-b8c01011310a",
   "connections": {
     "Al hacer clic en Ejecutar": {
       "main": [
@@ -873,7 +873,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "WITH parametros AS (\nSELECT\nMIN(dia) AS fecha_min,\nMAX(dia) AS fecha_max\nFROM (\nSELECT fecha_dia::date AS dia\nFROM crm.bot_leads_david\nWHERE cod_propiedad_unificado NOT ILIKE '%MODO%'\nAND es_nuevo = 1\n\nUNION\n\nSELECT fecha_programada::date AS dia\nFROM rentas_crm.visitas\nWHERE 1=1\n  AND formulario ILIKE '%Inquilino interesado%'\n  AND codigo_inmueble NOT ILIKE '%TEST%'\n  AND codigo_inmueble NOT ILIKE '%PRUEBA%'\n  AND codigo_inmueble NOT ILIKE '%MODO%'\n) t\n),\ncalendario AS (\nSELECT generate_series(fecha_min, fecha_max, interval '1 day')::date AS dia\nFROM parametros\n),\nleads AS (\nSELECT\nfecha_dia::date AS dia,\nCOUNT(DISTINCT TELEFONO) AS cant_leads,\nCOUNT(DISTINCT CASE WHEN dio_horario = 1 THEN TELEFONO END) AS cant_leads_dieron_horario,\nROUND(COUNT(DISTINCT CASE WHEN dio_horario = 1 THEN TELEFONO END)::numeric / NULLIF(COUNT(DISTINCT TELEFONO), 0),2) AS porc_dio_horario\nFROM crm.bot_leads_david\nWHERE 1=1\nAND cod_propiedad_unificado NOT ILIKE '%MODO%'\nAND es_nuevo = 1\nGROUP BY 1\nORDER BY 1 DESC\n),\nvisitas AS (\nSELECT\nfecha_programada::date AS dia,\nCOUNT(DISTINCT CELULAR) AS cant_visitas_agendadas_real,\nCOUNT(DISTINCT CASE\nWHEN estado NOT IN ('No realizado', 'Cliente no asistió')\nTHEN CELULAR\nEND) AS cant_visitas_realizadas\nFROM rentas_crm.visitas\nWHERE 1=1\nAND formulario ILIKE '%Inquilino interesado%'\nAND codigo_inmueble NOT ILIKE '%TEST%'\nAND codigo_inmueble NOT ILIKE '%PRUEBA%'\nAND codigo_inmueble NOT ILIKE '%MODO%'\nGROUP BY 1\nORDER BY 1 DESC\n),\nleads_visitas AS (\nSELECT\na.fecha_dia::date AS dia,\nCOUNT(DISTINCT a.TELEFONO) AS cant_leads,\nCOUNT(DISTINCT CASE\nWHEN b.CELULAR IS NOT NULL THEN a.TELEFONO\nEND) AS cant_leads_agendaron_visitas\nFROM crm.bot_leads_david a\nLEFT JOIN rentas_crm.visitas b\nON RIGHT(regexp_replace(a.telefono, '\\D', '', 'g'), 9)\n= RIGHT(regexp_replace(b.celular, '\\D', '', 'g'), 9)\nWHERE 1=1\nAND a.es_nuevo = 1\nAND a.cod_propiedad_unificado NOT ILIKE '%TEST%'\nAND a.cod_propiedad_unificado NOT ILIKE '%PRUEBA%'\nAND a.cod_propiedad_unificado NOT ILIKE '%MODO%'\nAND b.formulario ILIKE '%Inquilino interesado%'\nAND b.codigo_inmueble NOT ILIKE '%TEST%'\nAND b.codigo_inmueble NOT ILIKE '%PRUEBA%'\nAND b.codigo_inmueble NOT ILIKE '%MODO%'\nGROUP BY 1\nORDER BY 1 DESC\n)\nSELECT\nc.dia,\nCOALESCE(l.cant_leads, 0)                                           AS cant_leads_real,\n25                                                                  AS cant_leads_target,\nCOALESCE(l.cant_leads, 0) - 25                                      AS diff_cant_leads_target,\nCOALESCE(l.cant_leads_dieron_horario, 0)                            AS cant_leads_dieron_horario,\nCOALESCE(l.porc_dio_horario,0)                                      AS porc_leads_dio_horario,\nCOALESCE(m.cant_leads_agendaron_visitas, 0)                         AS cant_leads_con_visita_agendada,\n10                                                                  AS cant_leads_con_visita_agendada_target,\nCOALESCE(m.cant_leads_agendaron_visitas, 0) - 10                    AS diff_leads_con_visita_agendada_target,\nCOALESCE(\nROUND(\nCOALESCE(m.cant_leads_agendaron_visitas, 0)::numeric\n/ NULLIF(COALESCE(l.cant_leads_dieron_horario, 0), 0),\n2\n),\n0\n) AS conv_leads_que_diero_horario_con_visitas_agendadas,\nCOALESCE(v.cant_visitas_realizadas, 0)                              AS cant_visitas_realizadas,\n7                                                                   AS cant_visitas_realizadas_target,\nCOALESCE(v.cant_visitas_realizadas, 0) - 7                          AS diff_cant_visitas_realizadas_target,\nCOALESCE(\nROUND(\nCOALESCE(v.cant_visitas_realizadas, 0)::numeric\n/ NULLIF(COALESCE(l.cant_leads, 0), 0),\n2\n),\n0\n) AS conv_visitas_realizadas\nFROM calendario c\nLEFT JOIN leads l ON c.dia = l.dia\nLEFT JOIN visitas v ON c.dia = v.dia\nLEFT JOIN leads_visitas m ON c.dia = m.dia\nWHERE 1=1\nAND c.dia = CURRENT_DATE - 1\n-- AND c.dia >= CURRENT_DATE - 7 AND c.dia < CURRENT_DATE\nORDER BY c.dia DESC;\n",
+        "query": "WITH parametros AS (\nSELECT\nMIN(dia) AS fecha_min,\nMAX(dia) AS fecha_max\nFROM (\nSELECT fecha_dia::date AS dia\nFROM crm.bot_leads_david\nWHERE cod_propiedad_unificado NOT ILIKE '%MODO%'\nAND es_nuevo = 1\n\nUNION\n\nSELECT fecha_programada::date AS dia\nFROM rentas_crm.visitas\nWHERE 1=1\n  AND formulario ILIKE '%Inquilino interesado%'\n  AND codigo_inmueble NOT ILIKE '%TEST%'\n  AND codigo_inmueble NOT ILIKE '%PRUEBA%'\n  AND codigo_inmueble NOT ILIKE '%MODO%'\n) t\n),\ncalendario AS (\nSELECT generate_series(fecha_min, fecha_max, interval '1 day')::date AS dia\nFROM parametros\n),\nleads AS (\nSELECT\nDATE_TRUNC('DAY', FECHA_CREACION - INTERVAL '5 hours')::DATE AS dia,\nCOUNT(DISTINCT TELEFONO) AS cant_leads,\nCOUNT(DISTINCT CASE WHEN dio_horario = 1 THEN TELEFONO END) AS cant_leads_dieron_horario,\nROUND(COUNT(DISTINCT CASE WHEN dio_horario = 1 THEN TELEFONO END)::numeric / NULLIF(COUNT(DISTINCT TELEFONO), 0),2) AS porc_dio_horario\nFROM crm.bot_leads_david\nWHERE 1=1\nAND cod_propiedad_unificado NOT ILIKE '%MODO%'\nAND es_nuevo = 1\nGROUP BY 1\nORDER BY 1 DESC\n),\nvisitas AS (\nSELECT\nfecha_programada::date AS dia,\nCOUNT(DISTINCT CELULAR) AS cant_visitas_agendadas_real,\nCOUNT(DISTINCT CASE\nWHEN estado NOT IN ('No realizado', 'Cliente no asistió')\nTHEN CELULAR\nEND) AS cant_visitas_realizadas\nFROM rentas_crm.visitas\nWHERE 1=1\nAND formulario ILIKE '%Inquilino interesado%'\nAND codigo_inmueble NOT ILIKE '%TEST%'\nAND codigo_inmueble NOT ILIKE '%PRUEBA%'\nAND codigo_inmueble NOT ILIKE '%MODO%'\nGROUP BY 1\nORDER BY 1 DESC\n),\nleads_visitas AS (\nSELECT\nDATE_TRUNC('DAY', FECHA_CREACION - INTERVAL '5 hours')::DATE AS dia,\nCOUNT(DISTINCT a.TELEFONO) AS cant_leads,\nCOUNT(DISTINCT CASE\nWHEN b.CELULAR IS NOT NULL THEN a.TELEFONO\nEND) AS cant_leads_agendaron_visitas\nFROM crm.bot_leads_david a\nLEFT JOIN rentas_crm.visitas b\nON RIGHT(regexp_replace(a.telefono, '\\D', '', 'g'), 9)\n= RIGHT(regexp_replace(b.celular, '\\D', '', 'g'), 9)\nWHERE 1=1\nAND a.es_nuevo = 1\nAND a.cod_propiedad_unificado NOT ILIKE '%TEST%'\nAND a.cod_propiedad_unificado NOT ILIKE '%PRUEBA%'\nAND a.cod_propiedad_unificado NOT ILIKE '%MODO%'\nAND b.formulario ILIKE '%Inquilino interesado%'\nAND b.codigo_inmueble NOT ILIKE '%TEST%'\nAND b.codigo_inmueble NOT ILIKE '%PRUEBA%'\nAND b.codigo_inmueble NOT ILIKE '%MODO%'\nGROUP BY 1\nORDER BY 1 DESC\n)\nSELECT\nc.dia,\nCOALESCE(l.cant_leads, 0)                                           AS cant_leads_real,\n25                                                                  AS cant_leads_target,\nCOALESCE(l.cant_leads, 0) - 25                                      AS diff_cant_leads_target,\nCOALESCE(l.cant_leads_dieron_horario, 0)                            AS cant_leads_dieron_horario,\nCOALESCE(l.porc_dio_horario,0)                                      AS porc_leads_dio_horario,\nCOALESCE(m.cant_leads_agendaron_visitas, 0)                         AS cant_leads_con_visita_agendada,\n10                                                                  AS cant_leads_con_visita_agendada_target,\nCOALESCE(m.cant_leads_agendaron_visitas, 0) - 10                    AS diff_leads_con_visita_agendada_target,\nCOALESCE(\nROUND(\nCOALESCE(m.cant_leads_agendaron_visitas, 0)::numeric\n/ NULLIF(COALESCE(l.cant_leads_dieron_horario, 0), 0),\n2\n),\n0\n) AS conv_leads_que_diero_horario_con_visitas_agendadas,\nCOALESCE(v.cant_visitas_realizadas, 0)                              AS cant_visitas_realizadas,\n7                                                                   AS cant_visitas_realizadas_target,\nCOALESCE(v.cant_visitas_realizadas, 0) - 7                          AS diff_cant_visitas_realizadas_target,\nCOALESCE(\nROUND(\nCOALESCE(v.cant_visitas_realizadas, 0)::numeric\n/ NULLIF(COALESCE(l.cant_leads, 0), 0),\n2\n),\n0\n) AS conv_visitas_realizadas\nFROM calendario c\nLEFT JOIN leads l ON c.dia = l.dia\nLEFT JOIN visitas v ON c.dia = v.dia\nLEFT JOIN leads_visitas m ON c.dia = m.dia\nWHERE 1=1\nAND c.dia = CURRENT_DATE - 1\n-- AND c.dia >= CURRENT_DATE - 7 AND c.dia < CURRENT_DATE\nORDER BY c.dia DESC;\n",
         "additionalFields": {}
       },
       "id": "aad6d3d4-cbd6-4a58-b48b-a05f1e4163ca",
@@ -1168,6 +1168,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-03-16T22:05:14.001Z",
-  "versionId": "88b62931-b5d0-4f82-925a-22eaaa3786d3"
+  "updatedAt": "2026-03-20T11:00:10.197Z",
+  "versionId": "096eb92b-9ea3-43f9-9795-b8c01011310a"
 }
