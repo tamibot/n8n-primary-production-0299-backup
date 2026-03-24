@@ -1,0 +1,77 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-03-23T21:46:53.523Z",
+    "createdAt": "2026-03-23T21:46:50.952Z",
+    "versionId": "0a8901b8-b6d4-4e36-8382-5793aac47bb2",
+    "workflowId": "lzacfe2320NZ4ABs",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "form-landing-proper",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "bca59b9c-10fe-4b57-b0df-c4ab70cf26ac",
+        "name": "Webhook",
+        "webhookId": "472f8ec3-145e-462b-bf06-5db304775db6"
+      }
+    ],
+    "connections": {},
+    "authors": "Martin Velasco",
+    "name": "Version 0a8901b8",
+    "description": "",
+    "autosaved": true
+  },
+  "activeVersionId": "0a8901b8-b6d4-4e36-8382-5793aac47bb2",
+  "connections": {},
+  "createdAt": "2026-03-23T21:46:36.760Z",
+  "id": "lzacfe2320NZ4ABs",
+  "isArchived": false,
+  "meta": null,
+  "name": "form-landing-proper",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "form-landing-proper",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "bca59b9c-10fe-4b57-b0df-c4ab70cf26ac",
+      "name": "Webhook",
+      "webhookId": "472f8ec3-145e-462b-bf06-5db304775db6"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-23T21:46:36.760Z",
+      "createdAt": "2026-03-23T21:46:36.760Z",
+      "role": "workflow:owner",
+      "workflowId": "lzacfe2320NZ4ABs",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-03-23T21:46:50.944Z",
+  "versionId": "0a8901b8-b6d4-4e36-8382-5793aac47bb2"
+}
