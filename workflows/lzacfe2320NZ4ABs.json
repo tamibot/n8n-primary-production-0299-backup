@@ -54,7 +54,61 @@
       "webhookId": "472f8ec3-145e-462b-bf06-5db304775db6"
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "primary-production-0299.up.railway.app",
+            "user-agent": "Mozilla/5.0 (Linux; Android 13; CMA-LX3 Build/HONORCMA-L13CQ; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/146.0.7680.157 Mobile Safari/537.36 Instagram 422.0.0.44.64 Android (33/13; 272dpi; 720x1600; HONOR; CMA-LX3; HNCMA-Q; qcom; es_PE; 916493726; IABMV/1)",
+            "content-length": "710",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "es-PE,es;q=0.9,en-US;q=0.8,en;q=0.7",
+            "content-type": "application/json",
+            "origin": "https://landing-meta.proper.com.pe",
+            "priority": "u=1, i",
+            "referer": "https://landing-meta.proper.com.pe/",
+            "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Android WebView\";v=\"146\"",
+            "sec-ch-ua-mobile": "?1",
+            "sec-ch-ua-platform": "\"Android\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "132.184.160.169",
+            "x-forwarded-host": "primary-production-0299.up.railway.app",
+            "x-forwarded-proto": "https",
+            "x-railway-edge": "railway/us-east4-eqdc4a",
+            "x-railway-request-id": "MRYTw-cCRPKhGYNwg4a9AQ",
+            "x-real-ip": "132.184.160.169",
+            "x-request-start": "1774444413279",
+            "x-requested-with": "com.instagram.android"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "nombre": "Carlos Alberto Cáceres Delgado",
+            "correo": "carlitros0674@gmail.com",
+            "telefono": "959391120",
+            "ingreso": "S/3,000 - S/5,000",
+            "inicial": "S/15,000 - S/25,000",
+            "utm_source": "ig",
+            "utm_medium": "paid",
+            "utm_campaign": "120242149933950351",
+            "utm_content": "120242149933940351",
+            "utm_term": "120242149933960351",
+            "landing_url": "https://landing-meta.proper.com.pe/?utm_medium=paid&utm_source=ig&utm_id=120242149933950351&utm_content=120242149933940351&utm_term=120242149933960351&utm_campaign=120242149933950351&fbclid=PAZXh0bgNhZW0BMABhZGlkAasvml84PR9zcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAac8cSh0sQBFxbaiC9vsoI0W9G7CBzQaueqRAjiGk0iYkoBHuIOwgnOxdfvFcw_aem_yGAxijVhMrDZWLCg130MbA",
+            "timestamp": "2026-03-25T13:13:33.691Z"
+          },
+          "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/form-landing-proper",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
@@ -72,6 +126,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-03-23T21:46:50.944Z",
+  "updatedAt": "2026-03-25T13:28:44.356Z",
   "versionId": "0a8901b8-b6d4-4e36-8382-5793aac47bb2"
 }
