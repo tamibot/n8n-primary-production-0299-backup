@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-03-23T21:46:53.523Z",
-    "createdAt": "2026-03-23T21:46:50.952Z",
-    "versionId": "0a8901b8-b6d4-4e36-8382-5793aac47bb2",
+    "updatedAt": "2026-03-26T18:04:54.750Z",
+    "createdAt": "2026-03-26T18:03:48.252Z",
+    "versionId": "748689be-5009-4202-a443-042ee24ddcfd",
     "workflowId": "lzacfe2320NZ4ABs",
     "nodes": [
       {
@@ -12,30 +12,149 @@
           "path": "form-landing-proper",
           "options": {}
         },
+        "id": "d1502876-d765-4fcf-9c87-ba3a9088924e",
+        "name": "Webhook Landing",
         "type": "n8n-nodes-base.webhook",
-        "typeVersion": 2.1,
+        "typeVersion": 2,
         "position": [
-          0,
-          0
+          -688,
+          432
         ],
-        "id": "bca59b9c-10fe-4b57-b0df-c4ab70cf26ac",
-        "name": "Webhook",
-        "webhookId": "472f8ec3-145e-462b-bf06-5db304775db6"
+        "webhookId": "form-landing-proper"
+      },
+      {
+        "parameters": {
+          "jsCode": "const input = $('Webhook Landing').first().json.body;\n\n// ===== MAPEO INGRESO → ID BITRIX =====\nconst mapaIngresos = {\n  'Menos de S/3,000': 2379,\n  'Entre S/3,000 y S/4,000': 2381,\n  'Entre S/4,000 y S/6,000': 2383,\n  'Entre S/6,000 y S/9,000': 2385,\n  'Entre S/9,000 y S/12,000': 2387,\n  'Entre S/12,000 y S/15,000': 2389,\n  'Entre S/15,000 y S/20,000': 3479,\n  'Más de S/20,000': 3481,\n  'S/3,000 - S/5,000': 2383,\n  'S/5,000 - S/8,000': 2385,\n  'S/8,000 - S/12,000': 2387,\n  'S/12,000 - S/20,000': 3479\n};\n\n// ===== MAPEO INICIAL → ID BITRIX =====\nconst mapaInicial = {\n  'Menos de S/25,000': 2391,\n  'Entre S/25,000 y S/35,000': 2393,\n  'Entre S/35,000 y S/50,000': 2395,\n  'Entre S/50,000 y S/70,000': 2399,\n  'Entre S/70,000 y S/100,000': 2401,\n  'Más de S/100,000': 2397,\n  'Menos de S/15,000': 2391,\n  'S/15,000 - S/25,000': 2391,\n  'S/25,000 - S/50,000': 2395,\n  'S/50,000 - S/100,000': 2399\n};\n\nconst ingreso_raw = input.ingreso || '';\nconst inicial_raw = input.inicial || '';\nconst ingresos_id = mapaIngresos[ingreso_raw] || 2379;\nconst inicial_id = mapaInicial[inicial_raw] || 2391;\n\n// ===== APROBADO / NO APROBADO =====\nconst esNoAprobado = ingreso_raw === 'Menos de S/3,000';\nconst stage_id = esNoAprobado ? 'C5:UC_GFZ3OE' : 'C5:UC_SBLKBK';\n\n// ===== FORMATEAR TELEFONO =====\nlet tel = (input.telefono || '').toString().replace(/[^0-9]/g, '');\nif (tel.length === 9) tel = '51' + tel;\nelse if (tel.startsWith('51') && tel.length === 11) { /* ya tiene 51 */ }\nelse if (tel.length > 11) tel = '51' + tel.slice(-9);\nconst telefono = '+' + tel;\n\n// ===== SEPARAR NOMBRE =====\nconst nombreCompleto = (input.nombre || '').trim();\nconst partes = nombreCompleto.split(' ');\nconst nombre = partes[0] || '';\nconst apellido = partes.slice(1).join(' ') || '';\n\nreturn {\n  json: {\n    nombre_completo: nombreCompleto,\n    nombre,\n    apellido,\n    correo: input.correo || '',\n    telefono,\n    ingresos_id,\n    inicial_id,\n    stage_id,\n    es_aprobado: !esNoAprobado,\n    utm_source: input.utm_source || 'landing-meta',\n    utm_medium: input.utm_medium || '',\n    utm_campaign: input.utm_campaign || '',\n    utm_content: input.utm_content || '',\n    utm_term: input.utm_term || '',\n    landing_url: input.landing_url || ''\n  }\n};"
+        },
+        "id": "25335f66-0cd6-47a7-b032-0463098e9697",
+        "name": "Mapear Datos",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -368,
+          432
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://proper.bitrix24.com/rest/8203/3s2f229t8qnjg1ig/crm.contact.add.json",
+          "sendBody": true,
+          "contentType": "raw",
+          "rawContentType": "application/json",
+          "body": "={{ JSON.stringify({ fields: { NAME: $json.nombre, LAST_NAME: $json.apellido, PHONE: [{ VALUE: $json.telefono, VALUE_TYPE: 'MOBILE' }], EMAIL: [{ VALUE: $json.correo, VALUE_TYPE: 'WORK' }], SOURCE_ID: 'UC_XBCL96', UTM_SOURCE: $json.utm_source, UTM_MEDIUM: $json.utm_medium, UTM_CAMPAIGN: $json.utm_campaign } }) }}",
+          "options": {}
+        },
+        "id": "5b189584-7147-491b-b458-b5906ef6bfb9",
+        "name": "Crear Contacto",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -48,
+          432
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://proper.bitrix24.com/rest/8203/3s2f229t8qnjg1ig/crm.deal.add.json",
+          "sendBody": true,
+          "contentType": "raw",
+          "rawContentType": "application/json",
+          "body": "={{ JSON.stringify({ fields: { TITLE: 'Landing Meta - ' + $('Mapear Datos').first().json.nombre_completo, CONTACT_ID: $json.result, CATEGORY_ID: 5, STAGE_ID: $('Mapear Datos').first().json.stage_id, SOURCE_ID: 'UC_XBCL96', UF_CRM_1690486180: $('Mapear Datos').first().json.ingresos_id, UF_CRM_1690486307: $('Mapear Datos').first().json.inicial_id, UTM_SOURCE: $('Mapear Datos').first().json.utm_source, UTM_MEDIUM: $('Mapear Datos').first().json.utm_medium, UTM_CAMPAIGN: $('Mapear Datos').first().json.utm_campaign, UTM_CONTENT: $('Mapear Datos').first().json.utm_content, UTM_TERM: $('Mapear Datos').first().json.utm_term } }) }}",
+          "options": {}
+        },
+        "id": "76cb3d0f-af42-4dc2-bc1f-99f13b6cf471",
+        "name": "Crear Deal",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          272,
+          432
+        ]
       }
     ],
-    "connections": {},
+    "connections": {
+      "Webhook Landing": {
+        "main": [
+          [
+            {
+              "node": "Mapear Datos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mapear Datos": {
+        "main": [
+          [
+            {
+              "node": "Crear Contacto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Crear Contacto": {
+        "main": [
+          [
+            {
+              "node": "Crear Deal",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
     "authors": "Martin Velasco",
-    "name": "Version 0a8901b8",
+    "name": "Version 748689be",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "0a8901b8-b6d4-4e36-8382-5793aac47bb2",
-  "connections": {},
+  "activeVersionId": "748689be-5009-4202-a443-042ee24ddcfd",
+  "connections": {
+    "Webhook Landing": {
+      "main": [
+        [
+          {
+            "node": "Mapear Datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mapear Datos": {
+      "main": [
+        [
+          {
+            "node": "Crear Contacto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear Contacto": {
+      "main": [
+        [
+          {
+            "node": "Crear Deal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
   "createdAt": "2026-03-23T21:46:36.760Z",
   "id": "lzacfe2320NZ4ABs",
   "isArchived": false,
   "meta": null,
-  "name": "form-landing-proper",
+  "name": "Landing Proper → Bitrix (Simple)",
   "nodes": [
     {
       "parameters": {
@@ -43,28 +162,80 @@
         "path": "form-landing-proper",
         "options": {}
       },
+      "id": "d1502876-d765-4fcf-9c87-ba3a9088924e",
+      "name": "Webhook Landing",
       "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2.1,
+      "typeVersion": 2,
       "position": [
-        0,
-        0
+        -688,
+        432
       ],
-      "id": "bca59b9c-10fe-4b57-b0df-c4ab70cf26ac",
-      "name": "Webhook",
-      "webhookId": "472f8ec3-145e-462b-bf06-5db304775db6"
+      "webhookId": "form-landing-proper"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $('Webhook Landing').first().json.body;\n\n// ===== MAPEO INGRESO → ID BITRIX =====\nconst mapaIngresos = {\n  'Menos de S/3,000': 2379,\n  'Entre S/3,000 y S/4,000': 2381,\n  'Entre S/4,000 y S/6,000': 2383,\n  'Entre S/6,000 y S/9,000': 2385,\n  'Entre S/9,000 y S/12,000': 2387,\n  'Entre S/12,000 y S/15,000': 2389,\n  'Entre S/15,000 y S/20,000': 3479,\n  'Más de S/20,000': 3481,\n  'S/3,000 - S/5,000': 2383,\n  'S/5,000 - S/8,000': 2385,\n  'S/8,000 - S/12,000': 2387,\n  'S/12,000 - S/20,000': 3479\n};\n\n// ===== MAPEO INICIAL → ID BITRIX =====\nconst mapaInicial = {\n  'Menos de S/25,000': 2391,\n  'Entre S/25,000 y S/35,000': 2393,\n  'Entre S/35,000 y S/50,000': 2395,\n  'Entre S/50,000 y S/70,000': 2399,\n  'Entre S/70,000 y S/100,000': 2401,\n  'Más de S/100,000': 2397,\n  'Menos de S/15,000': 2391,\n  'S/15,000 - S/25,000': 2391,\n  'S/25,000 - S/50,000': 2395,\n  'S/50,000 - S/100,000': 2399\n};\n\nconst ingreso_raw = input.ingreso || '';\nconst inicial_raw = input.inicial || '';\nconst ingresos_id = mapaIngresos[ingreso_raw] || 2379;\nconst inicial_id = mapaInicial[inicial_raw] || 2391;\n\n// ===== APROBADO / NO APROBADO =====\nconst esNoAprobado = ingreso_raw === 'Menos de S/3,000';\nconst stage_id = esNoAprobado ? 'C5:UC_GFZ3OE' : 'C5:UC_SBLKBK';\n\n// ===== FORMATEAR TELEFONO =====\nlet tel = (input.telefono || '').toString().replace(/[^0-9]/g, '');\nif (tel.length === 9) tel = '51' + tel;\nelse if (tel.startsWith('51') && tel.length === 11) { /* ya tiene 51 */ }\nelse if (tel.length > 11) tel = '51' + tel.slice(-9);\nconst telefono = '+' + tel;\n\n// ===== SEPARAR NOMBRE =====\nconst nombreCompleto = (input.nombre || '').trim();\nconst partes = nombreCompleto.split(' ');\nconst nombre = partes[0] || '';\nconst apellido = partes.slice(1).join(' ') || '';\n\nreturn {\n  json: {\n    nombre_completo: nombreCompleto,\n    nombre,\n    apellido,\n    correo: input.correo || '',\n    telefono,\n    ingresos_id,\n    inicial_id,\n    stage_id,\n    es_aprobado: !esNoAprobado,\n    utm_source: input.utm_source || 'landing-meta',\n    utm_medium: input.utm_medium || '',\n    utm_campaign: input.utm_campaign || '',\n    utm_content: input.utm_content || '',\n    utm_term: input.utm_term || '',\n    landing_url: input.landing_url || ''\n  }\n};"
+      },
+      "id": "25335f66-0cd6-47a7-b032-0463098e9697",
+      "name": "Mapear Datos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -368,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://proper.bitrix24.com/rest/8203/3s2f229t8qnjg1ig/crm.contact.add.json",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ fields: { NAME: $json.nombre, LAST_NAME: $json.apellido, PHONE: [{ VALUE: $json.telefono, VALUE_TYPE: 'MOBILE' }], EMAIL: [{ VALUE: $json.correo, VALUE_TYPE: 'WORK' }], SOURCE_ID: 'UC_XBCL96', UTM_SOURCE: $json.utm_source, UTM_MEDIUM: $json.utm_medium, UTM_CAMPAIGN: $json.utm_campaign } }) }}",
+        "options": {}
+      },
+      "id": "5b189584-7147-491b-b458-b5906ef6bfb9",
+      "name": "Crear Contacto",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -48,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://proper.bitrix24.com/rest/8203/3s2f229t8qnjg1ig/crm.deal.add.json",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ fields: { TITLE: 'Landing Meta - ' + $('Mapear Datos').first().json.nombre_completo, CONTACT_ID: $json.result, CATEGORY_ID: 5, STAGE_ID: $('Mapear Datos').first().json.stage_id, SOURCE_ID: 'UC_XBCL96', UF_CRM_1690486180: $('Mapear Datos').first().json.ingresos_id, UF_CRM_1690486307: $('Mapear Datos').first().json.inicial_id, UTM_SOURCE: $('Mapear Datos').first().json.utm_source, UTM_MEDIUM: $('Mapear Datos').first().json.utm_medium, UTM_CAMPAIGN: $('Mapear Datos').first().json.utm_campaign, UTM_CONTENT: $('Mapear Datos').first().json.utm_content, UTM_TERM: $('Mapear Datos').first().json.utm_term } }) }}",
+        "options": {}
+      },
+      "id": "76cb3d0f-af42-4dc2-bc1f-99f13b6cf471",
+      "name": "Crear Deal",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        272,
+        432
+      ]
     }
   ],
   "pinData": {
-    "Webhook": [
+    "Webhook Landing": [
       {
         "json": {
           "headers": {
             "host": "primary-production-0299.up.railway.app",
-            "user-agent": "Mozilla/5.0 (Linux; Android 13; CMA-LX3 Build/HONORCMA-L13CQ; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/146.0.7680.157 Mobile Safari/537.36 Instagram 422.0.0.44.64 Android (33/13; 272dpi; 720x1600; HONOR; CMA-LX3; HNCMA-Q; qcom; es_PE; 916493726; IABMV/1)",
-            "content-length": "710",
+            "user-agent": "Mozilla/5.0 (Linux; Android 13; M2101K6G Build/TKQ1.221013.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/146.0.7680.119 Mobile Safari/537.36",
+            "content-length": "718",
             "accept": "*/*",
             "accept-encoding": "gzip, deflate, br, zstd",
-            "accept-language": "es-PE,es;q=0.9,en-US;q=0.8,en;q=0.7",
+            "accept-language": "es-US,es;q=0.9,en-US;q=0.8,en;q=0.7",
+            "cdn-loop": "Fastly;wasm=\"3_vW3k3EMk73M4EH03Ogogq6E8wz-UUlMe1I0vcFD6Zi4ockE9urf0WvN5Zf7eUSj9COs60Jkh8HEd3ii65MkJqC0pISoNLjm_kscAA\"",
             "content-type": "application/json",
             "origin": "https://landing-meta.proper.com.pe",
             "priority": "u=1, i",
@@ -75,36 +246,33 @@
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "cross-site",
-            "x-forwarded-for": "132.184.160.169",
+            "x-forwarded-for": "157.52.73.43",
             "x-forwarded-host": "primary-production-0299.up.railway.app",
             "x-forwarded-proto": "https",
-            "x-railway-edge": "railway/us-east4-eqdc4a",
-            "x-railway-request-id": "MRYTw-cCRPKhGYNwg4a9AQ",
-            "x-real-ip": "132.184.160.169",
-            "x-request-start": "1774444413279",
-            "x-requested-with": "com.instagram.android"
+            "x-railway-edge": "railway/us-west2",
+            "x-railway-request-id": "HGM4Dem-RiCIJ3PunpoFkQ",
+            "x-real-ip": "157.52.73.43",
+            "x-request-start": "1774501584345",
+            "x-requested-with": "com.facebook.katana"
           },
           "params": {},
           "query": {},
           "body": {
-            "nombre": "Carlos Alberto Cáceres Delgado",
-            "correo": "carlitros0674@gmail.com",
-            "telefono": "959391120",
+            "nombre": "Karina Casas",
+            "correo": "karinadelcarmencasascanizalez@gmail.com",
+            "telefono": "+51904194174",
             "ingreso": "S/3,000 - S/5,000",
-            "inicial": "S/15,000 - S/25,000",
-            "utm_source": "ig",
+            "inicial": "Menos de S/15,000",
+            "utm_source": "an",
             "utm_medium": "paid",
             "utm_campaign": "120242149933950351",
             "utm_content": "120242149933940351",
             "utm_term": "120242149933960351",
-            "landing_url": "https://landing-meta.proper.com.pe/?utm_medium=paid&utm_source=ig&utm_id=120242149933950351&utm_content=120242149933940351&utm_term=120242149933960351&utm_campaign=120242149933950351&fbclid=PAZXh0bgNhZW0BMABhZGlkAasvml84PR9zcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAac8cSh0sQBFxbaiC9vsoI0W9G7CBzQaueqRAjiGk0iYkoBHuIOwgnOxdfvFcw_aem_yGAxijVhMrDZWLCg130MbA",
-            "timestamp": "2026-03-25T13:13:33.691Z"
+            "landing_url": "https://landing-meta.proper.com.pe/?utm_medium=paid&utm_source=an&utm_id=120242149933950351&utm_content=120242149933940351&utm_term=120242149933960351&utm_campaign=120242149933950351&fbclid=IwY2xjawQxndFleHRuA2FlbQEwAGFkaWQBqy-aXzg9H3NydGMGYXBwX2lkDzI0NTc5MDgxODk1NTg2OAABHmDZDlTEvS5gptxDGJrr7uPJnMoUftf6eoovAaJ-3KfVwLjEjBc6tzb3Td1N_aem_kcoyCIJPpZGBWLALgD27dw",
+            "timestamp": "2026-03-26T05:06:23.324Z"
           },
           "webhookUrl": "https://primary-production-0299.up.railway.app/webhook/form-landing-proper",
           "executionMode": "production"
-        },
-        "pairedItem": {
-          "item": 0
         }
       }
     ]
@@ -126,6 +294,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-03-25T13:28:44.356Z",
-  "versionId": "0a8901b8-b6d4-4e36-8382-5793aac47bb2"
+  "updatedAt": "2026-03-26T18:42:54.540Z",
+  "versionId": "748689be-5009-4202-a443-042ee24ddcfd"
 }
