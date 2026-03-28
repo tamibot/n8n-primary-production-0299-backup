@@ -1,0 +1,1053 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-03-27T07:00:00.421Z",
+    "createdAt": "2026-03-27T06:57:53.530Z",
+    "versionId": "e3141466-6198-44fc-b048-4812586383d7",
+    "workflowId": "envj9zdIZ4JxCWt5",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 8 * * *"
+              }
+            ]
+          }
+        },
+        "id": "6d8afa04-6fb1-4c5b-84e1-95c93b9c0364",
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          1328,
+          272
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const yesterday = new Date();\nyesterday.setDate(yesterday.getDate() - 1);\nconst dateStr = yesterday.toISOString().split('T')[0];\nreturn [{ json: { date: dateStr } }];"
+        },
+        "id": "3ee9bb12-ca3c-4c1a-9d59-b3a845594282",
+        "name": "Date Setup",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1536,
+          272
+        ]
+      },
+      {
+        "parameters": {
+          "url": "=https://graph.facebook.com/v19.0/act_424971935894203/insights?fields=spend,impressions,reach,clicks,cpc,ctr,actions&time_range={\"since\":\"{{ $json.date }}\",\"until\":\"{{ $json.date }}\"}&access_token=EAAUIfiX7u4ABRIsPiOZBB0tCZAvaWRgorHl6I69meS45FPr1gpPuKoZCqGhW3uFigv5724N4r3JNctOKpidEu2hQNdRA9zfbSqFxoIRzunchmxexBqvoZAdt5KIRHPWWjVbplIvDFU7ZBPHKALrZBxGzTd3OpZB8RHqWEBMUSKnuJjE2gC0oNLVcshEpsX5iQZDZD",
+          "options": {}
+        },
+        "id": "a0cd02df-bafe-4d47-9d64-ba69761c8f4e",
+        "name": "Meta API",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1728,
+          272
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://analyticsdata.googleapis.com/v1beta/properties/529721442:runReport",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "googleAnalyticsOAuth2",
+          "sendBody": true,
+          "contentType": "raw",
+          "rawContentType": "application/json",
+          "body": "={\"dateRanges\":[{\"startDate\":\"{{ $('Date Setup').item.json.date }}\",\"endDate\":\"{{ $('Date Setup').item.json.date }}\"}],\"metrics\":[{\"name\":\"sessions\"},{\"name\":\"bounceRate\"},{\"name\":\"eventCount\"}],\"dimensions\":[{\"name\":\"eventName\"}]}",
+          "options": {}
+        },
+        "id": "b679df5d-c0f6-475c-99cf-22e9fcb88401",
+        "name": "GA4 API",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1936,
+          272
+        ],
+        "credentials": {
+          "googleAnalyticsOAuth2": {
+            "id": "OvUuNCI6SUjsGQlQ",
+            "name": "Google Analytics account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://proper.bitrix24.com/rest/8203/3s2f229t8qnjg1ig/crm.deal.list.json",
+          "sendBody": true,
+          "contentType": "raw",
+          "rawContentType": "application/json",
+          "body": "={\"filter\":{\">DATE_CREATE\":\"{{ $('Date Setup').item.json.date }}T00:00:00\",\"<DATE_CREATE\":\"{{ $('Date Setup').item.json.date }}T23:59:59\",\"CATEGORY_ID\":5,\"SOURCE_ID\":\"UC_XBCL96\"},\"select\":[\"ID\",\"TITLE\",\"STAGE_ID\",\"CONTACT_ID\",\"UF_CRM_1690486180\",\"UF_CRM_1690486307\",\"UTM_SOURCE\",\"UTM_CAMPAIGN\",\"DATE_CREATE\"]}",
+          "options": {}
+        },
+        "id": "206a5351-4cd8-4bf4-a662-059e586f7a8f",
+        "name": "Bitrix API",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2128,
+          272
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const date = $('Date Setup').first().json.date;\n\nconst metaData = $('Meta API').first().json.data || [];\nconst meta = metaData.length > 0 ? metaData[0] : {};\nconst spend = parseFloat(meta.spend || 0);\nconst impressions = parseInt(meta.impressions || 0);\nconst reach = parseInt(meta.reach || 0);\nconst clicks = parseInt(meta.clicks || 0);\nconst cpc = parseFloat(meta.cpc || 0);\nconst ctr = parseFloat(meta.ctr || 0);\n\nconst ga4Response = $('GA4 API').first().json;\nconst rows = ga4Response.rows || [];\nlet sesiones = 0, cta_clicks = 0, modal_opens = 0, form_submits = 0;\nlet bounceRate = 0;\nrows.forEach(row => {\n  const eventName = row.dimensionValues[0].value;\n  const eventCount = parseInt(row.metricValues[2].value || 0);\n  const sessions = parseInt(row.metricValues[0].value || 0);\n  const br = parseFloat(row.metricValues[1].value || 0);\n  if (eventName === 'session_start') { sesiones = sessions; bounceRate = br; }\n  if (eventName === 'cta_click') cta_clicks = eventCount;\n  if (eventName === 'form_modal_open') modal_opens = eventCount;\n  if (eventName === 'form_submit') form_submits = eventCount;\n});\n\nconst bitrix = $('Bitrix API').first().json.result || [];\nconst leads = bitrix.length;\nlet aprobados = 0, no_aprobados = 0;\nbitrix.forEach(deal => {\n  if (deal.STAGE_ID === 'C5:UC_SBLKBK') aprobados++;\n  else if (deal.STAGE_ID === 'C5:UC_GFZ3OE') no_aprobados++;\n});\n\nconst cpl = leads > 0 ? Math.round((spend / leads) * 100) / 100 : 0;\nconst cpl_aprobado = aprobados > 0 ? Math.round((spend / aprobados) * 100) / 100 : 0;\nconst tasa_conversion = sesiones > 0 ? Math.round((leads / sesiones) * 10000) / 100 : 0;\nconst tasa_modal_lead = modal_opens > 0 ? Math.round((form_submits / modal_opens) * 10000) / 100 : 0;\nconst tasa_cta_modal = cta_clicks > 0 ? Math.round((modal_opens / cta_clicks) * 10000) / 100 : 0;\n\nreturn [{ json: {\n  fecha: date, spend, impressions, reach, clicks,\n  ctr: Math.round(ctr * 1000) / 1000,\n  cpc: Math.round(cpc * 100) / 100,\n  sesiones, cta_clicks, modal_opens, form_submits,\n  leads, aprobados, no_aprobados, cpl, cpl_aprobado,\n  bounce_rate: Math.round(bounceRate * 1000) / 1000,\n  dispositivo_top: 'mobile',\n  tasa_conversion_landing: tasa_conversion,\n  tasa_modal_lead, tasa_cta_modal\n}}];"
+        },
+        "id": "70b11e58-e6e9-4478-8a65-6b84c5d2d3f2",
+        "name": "Consolidate Data",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2336,
+          272
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "=INSERT INTO daily_metrics (fecha, spend, impressions, reach, clicks, ctr, cpc, sesiones, cta_clicks, modal_opens, form_submits, leads, aprobados, no_aprobados, cpl, cpl_aprobado, bounce_rate, dispositivo_top, tasa_conversion_landing, tasa_modal_lead, tasa_cta_modal) VALUES ('{{ $json.fecha }}', {{ $json.spend }}, {{ $json.impressions }}, {{ $json.reach }}, {{ $json.clicks }}, {{ $json.ctr }}, {{ $json.cpc }}, {{ $json.sesiones }}, {{ $json.cta_clicks }}, {{ $json.modal_opens }}, {{ $json.form_submits }}, {{ $json.leads }}, {{ $json.aprobados }}, {{ $json.no_aprobados }}, {{ $json.cpl }}, {{ $json.cpl_aprobado }}, {{ $json.bounce_rate }}, '{{ $json.dispositivo_top }}', {{ $json.tasa_conversion_landing }}, {{ $json.tasa_modal_lead }}, {{ $json.tasa_cta_modal }}) ON CONFLICT (fecha) DO UPDATE SET spend=EXCLUDED.spend, impressions=EXCLUDED.impressions, reach=EXCLUDED.reach, clicks=EXCLUDED.clicks, ctr=EXCLUDED.ctr, cpc=EXCLUDED.cpc, sesiones=EXCLUDED.sesiones, cta_clicks=EXCLUDED.cta_clicks, modal_opens=EXCLUDED.modal_opens, form_submits=EXCLUDED.form_submits, leads=EXCLUDED.leads, aprobados=EXCLUDED.aprobados, no_aprobados=EXCLUDED.no_aprobados, cpl=EXCLUDED.cpl, cpl_aprobado=EXCLUDED.cpl_aprobado, bounce_rate=EXCLUDED.bounce_rate, dispositivo_top=EXCLUDED.dispositivo_top, tasa_conversion_landing=EXCLUDED.tasa_conversion_landing, tasa_modal_lead=EXCLUDED.tasa_modal_lead, tasa_cta_modal=EXCLUDED.tasa_cta_modal;",
+          "options": {}
+        },
+        "id": "673c99b2-3cb9-4aae-b40d-361aa740c27c",
+        "name": "Insert PostgreSQL",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.5,
+        "position": [
+          2544,
+          112
+        ],
+        "credentials": {
+          "postgres": {
+            "id": "fuKiWlAN9ojbRM9W",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "appendOrUpdate",
+          "documentId": {
+            "__rl": true,
+            "value": "1ncwRgXDq8tgongQseDy5jg9naPM61Scj_4ZdfI_cHd8",
+            "mode": "list",
+            "cachedResultName": "Landing Meta Proper - 2",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ncwRgXDq8tgongQseDy5jg9naPM61Scj_4ZdfI_cHd8/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Hoja 1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ncwRgXDq8tgongQseDy5jg9naPM61Scj_4ZdfI_cHd8/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": {},
+            "matchingColumns": [
+              "fecha"
+            ],
+            "schema": [
+              {
+                "id": "fecha",
+                "displayName": "fecha",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "spend",
+                "displayName": "spend",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "impressions",
+                "displayName": "impressions",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "reach",
+                "displayName": "reach",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "clicks",
+                "displayName": "clicks",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ctr",
+                "displayName": "ctr",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "cpc",
+                "displayName": "cpc",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "sesiones",
+                "displayName": "sesiones",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "cta_clicks",
+                "displayName": "cta_clicks",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "modal_opens",
+                "displayName": "modal_opens",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "form_submits",
+                "displayName": "form_submits",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "leads",
+                "displayName": "leads",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "aprobados",
+                "displayName": "aprobados",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "no_aprobados",
+                "displayName": "no_aprobados",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "cpl",
+                "displayName": "cpl",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "cpl_aprobado",
+                "displayName": "cpl_aprobado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "bounce_rate",
+                "displayName": "bounce_rate",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "dispositivo_top",
+                "displayName": "dispositivo_top",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "tasa_conversion_landing",
+                "displayName": "tasa_conversion_landing",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "tasa_modal_lead",
+                "displayName": "tasa_modal_lead",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "tasa_cta_modal",
+                "displayName": "tasa_cta_modal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "6dc77bad-5de7-410a-a757-31d537326c03",
+        "name": "Append Google Sheets",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.5,
+        "position": [
+          2544,
+          272
+        ],
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "WQy7dRpZDtSa20hj",
+            "name": "n8n - Agosto 25"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const d = $('Consolidate Data').first().json;\nconst fecha = d.fecha;\n\nconst statusColor = d.leads > 0 ? '#27ae60' : '#e74c3c';\nconst statusText = d.leads > 0 ? 'LEADS GENERADOS' : 'SIN LEADS';\n\nconst html = `\n<div style=\"font-family:'Segoe UI',Arial,sans-serif;max-width:640px;margin:0 auto;background:#f8f9fa;padding:20px;\">\n  <div style=\"background:#1a237e;color:#fff;padding:24px 32px;border-radius:12px 12px 0 0;text-align:center;\">\n    <h1 style=\"margin:0;font-size:22px;font-weight:700;\">Reporte Diario - Landing Proper</h1>\n    <p style=\"margin:8px 0 0;opacity:.8;font-size:14px;\">${fecha}</p>\n  </div>\n  \n  <div style=\"background:#fff;padding:24px 32px;border:1px solid #e0e0e0;\">\n    <div style=\"text-align:center;margin-bottom:20px;\">\n      <span style=\"background:${statusColor};color:#fff;padding:6px 18px;border-radius:20px;font-size:13px;font-weight:600;\">${statusText}</span>\n    </div>\n\n    <h3 style=\"color:#1a237e;border-bottom:2px solid #1a237e;padding-bottom:8px;margin-top:0;\">Meta Ads</h3>\n    <table style=\"width:100%;border-collapse:collapse;margin-bottom:20px;\">\n      <tr style=\"background:#f5f5f5;\"><td style=\"padding:10px 12px;font-weight:600;\">Inversion</td><td style=\"padding:10px 12px;text-align:right;font-size:18px;font-weight:700;color:#e65100;\">S/${d.spend.toFixed(2)}</td></tr>\n      <tr><td style=\"padding:10px 12px;\">Impresiones</td><td style=\"padding:10px 12px;text-align:right;font-weight:600;\">${d.impressions.toLocaleString()}</td></tr>\n      <tr style=\"background:#f5f5f5;\"><td style=\"padding:10px 12px;\">Alcance</td><td style=\"padding:10px 12px;text-align:right;font-weight:600;\">${d.reach.toLocaleString()}</td></tr>\n      <tr><td style=\"padding:10px 12px;\">Clicks</td><td style=\"padding:10px 12px;text-align:right;font-weight:600;\">${d.clicks.toLocaleString()}</td></tr>\n      <tr style=\"background:#f5f5f5;\"><td style=\"padding:10px 12px;\">CTR</td><td style=\"padding:10px 12px;text-align:right;font-weight:600;\">${d.ctr}%</td></tr>\n      <tr><td style=\"padding:10px 12px;\">CPC</td><td style=\"padding:10px 12px;text-align:right;font-weight:600;\">S/${d.cpc.toFixed(2)}</td></tr>\n    </table>\n\n    <h3 style=\"color:#1a237e;border-bottom:2px solid #1a237e;padding-bottom:8px;\">Landing Page (GA4)</h3>\n    <table style=\"width:100%;border-collapse:collapse;margin-bottom:20px;\">\n      <tr style=\"background:#f5f5f5;\"><td style=\"padding:10px 12px;\">Sesiones</td><td style=\"padding:10px 12px;text-align:right;font-weight:600;\">${d.sesiones}</td></tr>\n      <tr><td style=\"padding:10px 12px;\">Clicks en CTA</td><td style=\"padding:10px 12px;text-align:right;font-weight:600;\">${d.cta_clicks}</td></tr>\n      <tr style=\"background:#f5f5f5;\"><td style=\"padding:10px 12px;\">Aperturas de Modal</td><td style=\"padding:10px 12px;text-align:right;font-weight:600;\">${d.modal_opens}</td></tr>\n      <tr><td style=\"padding:10px 12px;\">Formularios Enviados</td><td style=\"padding:10px 12px;text-align:right;font-weight:600;\">${d.form_submits}</td></tr>\n      <tr style=\"background:#f5f5f5;\"><td style=\"padding:10px 12px;\">Bounce Rate</td><td style=\"padding:10px 12px;text-align:right;font-weight:600;\">${d.bounce_rate}%</td></tr>\n    </table>\n\n    <h3 style=\"color:#1a237e;border-bottom:2px solid #1a237e;padding-bottom:8px;\">Leads (Bitrix)</h3>\n    <table style=\"width:100%;border-collapse:collapse;margin-bottom:20px;\">\n      <tr style=\"background:#e8f5e9;\"><td style=\"padding:12px;font-weight:700;font-size:16px;\">Total Leads</td><td style=\"padding:12px;text-align:right;font-size:22px;font-weight:800;color:#1a237e;\">${d.leads}</td></tr>\n      <tr><td style=\"padding:10px 12px;\">Aprobados</td><td style=\"padding:10px 12px;text-align:right;font-weight:600;color:#27ae60;\">${d.aprobados}</td></tr>\n      <tr style=\"background:#f5f5f5;\"><td style=\"padding:10px 12px;\">No Aprobados</td><td style=\"padding:10px 12px;text-align:right;font-weight:600;color:#e74c3c;\">${d.no_aprobados}</td></tr>\n    </table>\n\n    <h3 style=\"color:#1a237e;border-bottom:2px solid #1a237e;padding-bottom:8px;\">KPIs</h3>\n    <table style=\"width:100%;border-collapse:collapse;margin-bottom:20px;\">\n      <tr style=\"background:#fff3e0;\"><td style=\"padding:12px;font-weight:700;\">Costo por Lead (CPL)</td><td style=\"padding:12px;text-align:right;font-size:20px;font-weight:800;color:#e65100;\">S/${d.cpl.toFixed(2)}</td></tr>\n      <tr style=\"background:#fce4ec;\"><td style=\"padding:12px;font-weight:700;\">CPL Aprobado</td><td style=\"padding:12px;text-align:right;font-size:20px;font-weight:800;color:#c62828;\">S/${d.cpl_aprobado.toFixed(2)}</td></tr>\n      <tr><td style=\"padding:10px 12px;\">Tasa Conversion Landing</td><td style=\"padding:10px 12px;text-align:right;font-weight:600;\">${d.tasa_conversion_landing}%</td></tr>\n      <tr style=\"background:#f5f5f5;\"><td style=\"padding:10px 12px;\">Tasa Modal → Lead</td><td style=\"padding:10px 12px;text-align:right;font-weight:600;\">${d.tasa_modal_lead}%</td></tr>\n      <tr><td style=\"padding:10px 12px;\">Tasa CTA → Modal</td><td style=\"padding:10px 12px;text-align:right;font-weight:600;\">${d.tasa_cta_modal}%</td></tr>\n    </table>\n  </div>\n  \n  <div style=\"background:#eceff1;padding:16px 32px;border-radius:0 0 12px 12px;text-align:center;border:1px solid #e0e0e0;border-top:none;\">\n    <p style=\"margin:0;color:#78909c;font-size:12px;\">Reporte generado automaticamente | Landing Meta Proper</p>\n    <p style=\"margin:4px 0 0;color:#78909c;font-size:11px;\">landing-meta.proper.com.pe</p>\n  </div>\n</div>`;\n\nreturn [{ json: { ...d, emailHtml: html } }];"
+        },
+        "id": "6126747a-dee5-42c1-af46-49191d343adf",
+        "name": "Build Email HTML",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2544,
+          432
+        ]
+      },
+      {
+        "parameters": {
+          "sendTo": "mvelascoo@tamibot.com",
+          "subject": "=Reporte Diario Proper Landing - {{ $json.fecha }} | {{ $json.leads }} leads | S/{{ $json.spend.toFixed(2) }} invertido",
+          "message": "={{ $json.emailHtml }}",
+          "options": {
+            "appendAttribution": false
+          }
+        },
+        "id": "3c5efcbd-437d-454e-8644-9a39b9dd2bb0",
+        "name": "Send Email Report",
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.2,
+        "position": [
+          2752,
+          432
+        ],
+        "webhookId": "9a05df3e-da3f-481b-94f2-9a5ed9b129b9",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "SPurZ4Z9pGQy8MKJ",
+            "name": "Gmail account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Date Setup",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Date Setup": {
+        "main": [
+          [
+            {
+              "node": "Meta API",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Meta API": {
+        "main": [
+          [
+            {
+              "node": "GA4 API",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GA4 API": {
+        "main": [
+          [
+            {
+              "node": "Bitrix API",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Bitrix API": {
+        "main": [
+          [
+            {
+              "node": "Consolidate Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Consolidate Data": {
+        "main": [
+          [
+            {
+              "node": "Insert PostgreSQL",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Append Google Sheets",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Build Email HTML",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build Email HTML": {
+        "main": [
+          [
+            {
+              "node": "Send Email Report",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Martin Velasco",
+    "name": "Version e3141466",
+    "description": "",
+    "autosaved": true
+  },
+  "activeVersionId": "e3141466-6198-44fc-b048-4812586383d7",
+  "connections": {
+    "Build Email HTML": {
+      "main": [
+        [
+          {
+            "node": "Send Email Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consolidate Data": {
+      "main": [
+        [
+          {
+            "node": "Build Email HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Append Google Sheets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Insert PostgreSQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Accumulated Totals": {
+      "main": [
+        [
+          {
+            "node": "Consolidate Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bitrix API": {
+      "main": [
+        [
+          {
+            "node": "Get Accumulated Totals",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GA4 API": {
+      "main": [
+        [
+          {
+            "node": "Bitrix API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Meta API": {
+      "main": [
+        [
+          {
+            "node": "GA4 API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date Setup": {
+      "main": [
+        [
+          {
+            "node": "Meta API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Date Setup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-27T00:14:39.271Z",
+  "id": "envj9zdIZ4JxCWt5",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Daily Proper Landing Report",
+  "nodes": [
+    {
+      "parameters": {
+        "sendTo": "mvelascoo@tamibot.com",
+        "subject": "=Proper Landing {{ $json.fecha }} | {{ $json.leads }} leads | {{ $json.spend > 0 ? 'S/' + $json.spend.toFixed(2) : 'S/0' }}",
+        "message": "={{ $json.emailHtml }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "bacf6628-4435-40e9-8d6d-42effdb920ec",
+      "name": "Send Email Report",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2944,
+        736
+      ],
+      "webhookId": "ddcf6848-8b04-4e87-a20a-9a8218052806",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "SPurZ4Z9pGQy8MKJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const d = $('Consolidate Data').first().json;\nconst f = d.fecha;\nconst n = (v) => typeof v === 'number' ? v.toLocaleString('es-PE') : '0';\nconst m = (v) => 'S/' + (typeof v === 'number' ? v.toFixed(2) : '0.00');\nconst p = (v) => (typeof v === 'number' ? v : 0) + '%';\n\n// Tasas del embudo\nconst tasa_click_ad = d.impressions > 0 ? ((d.clicks / d.impressions) * 100).toFixed(2) : '0';\nconst tasa_landing = d.clicks > 0 ? ((d.sesiones / d.clicks) * 100).toFixed(1) : '0';\nconst tasa_cta = d.sesiones > 0 ? ((d.cta_clicks / d.sesiones) * 100).toFixed(1) : '0';\nconst tasa_modal = d.cta_clicks > 0 ? ((d.modal_opens / d.cta_clicks) * 100).toFixed(1) : '0';\nconst tasa_form = d.modal_opens > 0 ? ((d.form_submits / d.modal_opens) * 100).toFixed(1) : '0';\nconst tasa_total = d.sesiones > 0 ? ((d.leads / d.sesiones) * 100).toFixed(2) : '0';\n\nconst c = '#1a237e';\nconst row = (label, value, rate, bg) => `<tr style=\"background:${bg || '#fff'};\"><td style=\"padding:8px 12px;border-bottom:1px solid #e0e0e0;\">${label}</td><td style=\"padding:8px 12px;border-bottom:1px solid #e0e0e0;text-align:right;font-weight:700;\">${value}</td><td style=\"padding:8px 12px;border-bottom:1px solid #e0e0e0;text-align:right;color:#666;\">${rate}</td></tr>`;\n\nconst html = `<div style=\"font-family:Arial,sans-serif;max-width:540px;margin:0 auto;\">\n<div style=\"background:${c};color:#fff;padding:16px 20px;border-radius:8px 8px 0 0;\">\n  <h2 style=\"margin:0;font-size:17px;\">Reporte Diario - Landing Proper</h2>\n  <p style=\"margin:4px 0 0;opacity:.7;font-size:12px;\">${f}</p>\n</div>\n<div style=\"background:#fff;padding:0;border:1px solid #ddd;\">\n\n<table style=\"width:100%;border-collapse:collapse;\">\n<tr style=\"background:${c};color:#fff;\"><td style=\"padding:8px 12px;font-weight:700;font-size:12px;\">EMBUDO DE CONVERSION</td><td style=\"padding:8px 12px;text-align:right;font-size:12px;font-weight:700;\">Cantidad</td><td style=\"padding:8px 12px;text-align:right;font-size:12px;font-weight:700;\">Tasa</td></tr>\n${row('1. Impresiones del anuncio', n(d.impressions), '-', '#f5f5f5')}\n${row('2. Clicks en anuncio', n(d.clicks), tasa_click_ad + '% CTR')}\n${row('3. Sesiones en landing', n(d.sesiones), tasa_landing + '% llegan', '#f5f5f5')}\n${row('4. Clicks en CTA', n(d.cta_clicks), tasa_cta + '% interactuan')}\n${row('5. Abren formulario', n(d.modal_opens), tasa_modal + '% abren modal', '#f5f5f5')}\n${row('6. Envian formulario', n(d.form_submits), tasa_form + '% completan')}\n<tr style=\"background:#e8f5e9;\"><td style=\"padding:10px 12px;font-weight:800;font-size:14px;border-bottom:2px solid #1b5e20;\">7. LEADS EN CRM</td><td style=\"padding:10px 12px;text-align:right;font-weight:800;font-size:20px;color:${c};border-bottom:2px solid #1b5e20;\">${d.leads}</td><td style=\"padding:10px 12px;text-align:right;font-weight:700;color:#1b5e20;border-bottom:2px solid #1b5e20;\">${tasa_total}% total</td></tr>\n</table>\n\n<table style=\"width:100%;border-collapse:collapse;\">\n<tr style=\"background:#e65100;color:#fff;\"><td colspan=\"4\" style=\"padding:8px 12px;font-weight:700;font-size:12px;\">COSTOS E INVERSION DEL DIA</td></tr>\n<tr>\n  <td style=\"padding:10px;text-align:center;border-right:1px solid #eee;width:25%;\"><div style=\"font-size:11px;color:#666;\">Invertido</div><div style=\"font-size:18px;font-weight:800;color:#e65100;\">${m(d.spend)}</div></td>\n  <td style=\"padding:10px;text-align:center;border-right:1px solid #eee;width:25%;\"><div style=\"font-size:11px;color:#666;\">CPL</div><div style=\"font-size:18px;font-weight:800;color:${c};\">${m(d.cpl)}</div></td>\n  <td style=\"padding:10px;text-align:center;border-right:1px solid #eee;width:25%;\"><div style=\"font-size:11px;color:#666;\">CPL Aprob.</div><div style=\"font-size:18px;font-weight:800;color:#c62828;\">${m(d.cpl_aprobado)}</div></td>\n  <td style=\"padding:10px;text-align:center;width:25%;\"><div style=\"font-size:11px;color:#666;\">CPC</div><div style=\"font-size:18px;font-weight:800;\">${m(d.cpc)}</div></td>\n</tr>\n<tr style=\"background:#f5f5f5;\">\n  <td colspan=\"2\" style=\"padding:8px 12px;text-align:center;\"><span style=\"color:#27ae60;font-weight:700;font-size:14px;\">${d.aprobados} aprobados</span></td>\n  <td colspan=\"2\" style=\"padding:8px 12px;text-align:center;\"><span style=\"color:#e74c3c;font-weight:700;font-size:14px;\">${d.no_aprobados} no aprobados</span></td>\n</tr>\n</table>\n\n<table style=\"width:100%;border-collapse:collapse;\">\n<tr style=\"background:#37474f;color:#fff;\"><td colspan=\"4\" style=\"padding:8px 12px;font-weight:700;font-size:12px;\">ACUMULADO (${d.acc_dias} dias)</td></tr>\n<tr>\n  <td style=\"padding:8px;text-align:center;border-right:1px solid #eee;width:25%;\"><div style=\"font-size:10px;color:#666;\">Total invertido</div><div style=\"font-weight:700;color:#e65100;\">${m(d.acc_spend)}</div></td>\n  <td style=\"padding:8px;text-align:center;border-right:1px solid #eee;width:25%;\"><div style=\"font-size:10px;color:#666;\">Total leads</div><div style=\"font-weight:700;color:${c};\">${n(d.acc_leads)}</div></td>\n  <td style=\"padding:8px;text-align:center;border-right:1px solid #eee;width:25%;\"><div style=\"font-size:10px;color:#666;\">CPL prom.</div><div style=\"font-weight:700;\">${m(d.acc_cpl)}</div></td>\n  <td style=\"padding:8px;text-align:center;width:25%;\"><div style=\"font-size:10px;color:#666;\">Sesiones</div><div style=\"font-weight:700;\">${n(d.acc_sesiones)}</div></td>\n</tr>\n</table>\n\n</div>\n<div style=\"background:#eceff1;padding:8px 20px;border-radius:0 0 8px 8px;text-align:center;border:1px solid #ddd;border-top:none;\">\n  <p style=\"margin:0;color:#90a4ae;font-size:10px;\">landing-meta.proper.com.pe | Reporte automatico</p>\n</div>\n</div>`;\n\nreturn [{ json: { ...d, emailHtml: html } }];\n"
+      },
+      "id": "b196a734-1cf8-488f-befd-c6314f344344",
+      "name": "Build Email HTML",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2736,
+        736
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1ncwRgXDq8tgongQseDy5jg9naPM61Scj_4ZdfI_cHd8",
+          "mode": "list",
+          "cachedResultName": "Landing Meta Proper - 2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ncwRgXDq8tgongQseDy5jg9naPM61Scj_4ZdfI_cHd8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ncwRgXDq8tgongQseDy5jg9naPM61Scj_4ZdfI_cHd8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "fecha"
+          ],
+          "schema": [
+            {
+              "id": "fecha",
+              "displayName": "fecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "spend",
+              "displayName": "spend",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "impressions",
+              "displayName": "impressions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reach",
+              "displayName": "reach",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "clicks",
+              "displayName": "clicks",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ctr",
+              "displayName": "ctr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cpc",
+              "displayName": "cpc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sesiones",
+              "displayName": "sesiones",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cta_clicks",
+              "displayName": "cta_clicks",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "modal_opens",
+              "displayName": "modal_opens",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "form_submits",
+              "displayName": "form_submits",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "leads",
+              "displayName": "leads",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "aprobados",
+              "displayName": "aprobados",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "no_aprobados",
+              "displayName": "no_aprobados",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cpl",
+              "displayName": "cpl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cpl_aprobado",
+              "displayName": "cpl_aprobado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "bounce_rate",
+              "displayName": "bounce_rate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "dispositivo_top",
+              "displayName": "dispositivo_top",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tasa_conversion_landing",
+              "displayName": "tasa_conversion_landing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tasa_modal_lead",
+              "displayName": "tasa_modal_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "tasa_cta_modal",
+              "displayName": "tasa_cta_modal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "901dc249-a462-4281-94b4-670609e1ddaf",
+      "name": "Append Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2736,
+        576
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "WQy7dRpZDtSa20hj",
+          "name": "n8n - Agosto 25"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=INSERT INTO daily_metrics (fecha, spend, impressions, reach, clicks, ctr, cpc, sesiones, cta_clicks, modal_opens, form_submits, leads, aprobados, no_aprobados, cpl, cpl_aprobado, bounce_rate, dispositivo_top, tasa_conversion_landing, tasa_modal_lead, tasa_cta_modal) VALUES ('{{ $json.fecha }}', {{ $json.spend }}, {{ $json.impressions }}, {{ $json.reach }}, {{ $json.clicks }}, {{ $json.ctr }}, {{ $json.cpc }}, {{ $json.sesiones }}, {{ $json.cta_clicks }}, {{ $json.modal_opens }}, {{ $json.form_submits }}, {{ $json.leads }}, {{ $json.aprobados }}, {{ $json.no_aprobados }}, {{ $json.cpl }}, {{ $json.cpl_aprobado }}, {{ $json.bounce_rate }}, '{{ $json.dispositivo_top }}', {{ $json.tasa_conversion_landing }}, {{ $json.tasa_modal_lead }}, {{ $json.tasa_cta_modal }}) ON CONFLICT (fecha) DO UPDATE SET spend=EXCLUDED.spend, impressions=EXCLUDED.impressions, reach=EXCLUDED.reach, clicks=EXCLUDED.clicks, ctr=EXCLUDED.ctr, cpc=EXCLUDED.cpc, sesiones=EXCLUDED.sesiones, cta_clicks=EXCLUDED.cta_clicks, modal_opens=EXCLUDED.modal_opens, form_submits=EXCLUDED.form_submits, leads=EXCLUDED.leads, aprobados=EXCLUDED.aprobados, no_aprobados=EXCLUDED.no_aprobados, cpl=EXCLUDED.cpl, cpl_aprobado=EXCLUDED.cpl_aprobado, bounce_rate=EXCLUDED.bounce_rate, dispositivo_top=EXCLUDED.dispositivo_top, tasa_conversion_landing=EXCLUDED.tasa_conversion_landing, tasa_modal_lead=EXCLUDED.tasa_modal_lead, tasa_cta_modal=EXCLUDED.tasa_cta_modal;",
+        "options": {}
+      },
+      "id": "ef3f38c0-dde3-4544-8e4e-30524235c62b",
+      "name": "Insert PostgreSQL",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2736,
+        416
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const date = $('Date Setup').first().json.date;\n\n// ===== META ADS (solo campana landing) =====\nconst metaData = $('Meta API').first().json.data || [];\nconst meta = metaData.length > 0 ? metaData[0] : {};\nconst spend = parseFloat(meta.spend || 0);\nconst impressions = parseInt(meta.impressions || 0);\nconst reach = parseInt(meta.reach || 0);\nconst clicks = parseInt(meta.clicks || 0);\nconst cpc = parseFloat(meta.cpc || 0);\nconst ctr = parseFloat(meta.ctr || 0);\n\n// ===== GA4 =====\nconst ga4Response = $('GA4 API').first().json;\nconst rows = ga4Response.rows || [];\nlet sesiones = 0, cta_clicks = 0, modal_opens = 0, form_submits = 0, bounceRate = 0;\nrows.forEach(row => {\n  const ev = row.dimensionValues[0].value;\n  const cnt = parseInt(row.metricValues[2].value || 0);\n  const sess = parseInt(row.metricValues[0].value || 0);\n  const br = parseFloat(row.metricValues[1].value || 0);\n  if (ev === 'session_start') { sesiones = sess; bounceRate = br; }\n  if (ev === 'cta_click') cta_clicks = cnt;\n  if (ev === 'form_modal_open') modal_opens = cnt;\n  if (ev === 'form_submit') form_submits = cnt;\n});\n\n// ===== BITRIX =====\nconst bitrix = $('Bitrix API').first().json.result || [];\nconst leads = bitrix.length;\nlet aprobados = 0, no_aprobados = 0;\nbitrix.forEach(d => {\n  if (d.STAGE_ID === 'C5:UC_SBLKBK') aprobados++;\n  else if (d.STAGE_ID === 'C5:UC_GFZ3OE') no_aprobados++;\n});\n\n// ===== ACUMULADO =====\nconst acc = $('Get Accumulated Totals').first().json;\nconst acc_spend = parseFloat(acc.total_spend || 0) + spend;\nconst acc_leads = parseInt(acc.total_leads || 0) + leads;\nconst acc_aprobados = parseInt(acc.total_aprobados || 0) + aprobados;\nconst acc_clicks = parseInt(acc.total_clicks || 0) + clicks;\nconst acc_sesiones = parseInt(acc.total_sesiones || 0) + sesiones;\nconst acc_dias = parseInt(acc.dias_activos || 0) + 1;\n\n// ===== KPIs =====\nconst cpl = leads > 0 ? Math.round((spend / leads) * 100) / 100 : 0;\nconst cpl_aprobado = aprobados > 0 ? Math.round((spend / aprobados) * 100) / 100 : 0;\nconst tasa_conv = sesiones > 0 ? Math.round((leads / sesiones) * 10000) / 100 : 0;\nconst tasa_ml = modal_opens > 0 ? Math.round((form_submits / modal_opens) * 10000) / 100 : 0;\nconst tasa_cm = cta_clicks > 0 ? Math.round((modal_opens / cta_clicks) * 10000) / 100 : 0;\nconst acc_cpl = acc_leads > 0 ? Math.round((acc_spend / acc_leads) * 100) / 100 : 0;\nconst acc_cpl_aprob = acc_aprobados > 0 ? Math.round((acc_spend / acc_aprobados) * 100) / 100 : 0;\n\nreturn [{ json: {\n  fecha: date, spend, impressions, reach, clicks,\n  ctr: Math.round(ctr * 1000) / 1000,\n  cpc: Math.round(cpc * 100) / 100,\n  sesiones, cta_clicks, modal_opens, form_submits,\n  leads, aprobados, no_aprobados, cpl, cpl_aprobado,\n  bounce_rate: Math.round(bounceRate * 1000) / 1000,\n  dispositivo_top: 'mobile',\n  tasa_conversion_landing: tasa_conv, tasa_modal_lead: tasa_ml, tasa_cta_modal: tasa_cm,\n  acc_spend, acc_leads, acc_aprobados, acc_clicks, acc_sesiones, acc_dias, acc_cpl, acc_cpl_aprob\n}}];"
+      },
+      "id": "961cd3ff-9948-4c17-b58d-219b5a7cacc8",
+      "name": "Consolidate Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2528,
+        576
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT COALESCE(SUM(spend),0) as total_spend, COALESCE(SUM(impressions),0) as total_impressions, COALESCE(SUM(reach),0) as total_reach, COALESCE(SUM(clicks),0) as total_clicks, COALESCE(SUM(leads),0) as total_leads, COALESCE(SUM(aprobados),0) as total_aprobados, COALESCE(SUM(no_aprobados),0) as total_no_aprobados, COALESCE(SUM(sesiones),0) as total_sesiones, COALESCE(SUM(form_submits),0) as total_form_submits, COUNT(*) as dias_activos FROM daily_metrics;",
+        "options": {}
+      },
+      "id": "fdcb13d1-b48c-4170-bf21-ae40aedf3c74",
+      "name": "Get Accumulated Totals",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2320,
+        416
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "fuKiWlAN9ojbRM9W",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://proper.bitrix24.com/rest/8203/3s2f229t8qnjg1ig/crm.deal.list.json",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\"filter\":{\">DATE_CREATE\":\"{{ $('Date Setup').item.json.date }}T00:00:00\",\"<DATE_CREATE\":\"{{ $('Date Setup').item.json.date }}T23:59:59\",\"CATEGORY_ID\":5,\"SOURCE_ID\":\"UC_XBCL96\"},\"select\":[\"ID\",\"TITLE\",\"STAGE_ID\",\"CONTACT_ID\",\"UF_CRM_1690486180\",\"UF_CRM_1690486307\",\"UTM_SOURCE\",\"UTM_CAMPAIGN\",\"DATE_CREATE\"]}",
+        "options": {}
+      },
+      "id": "a238b2c1-881d-4129-b574-d6d41ebad336",
+      "name": "Bitrix API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2128,
+        576
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://analyticsdata.googleapis.com/v1beta/properties/529721442:runReport",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleAnalyticsOAuth2",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\"dateRanges\":[{\"startDate\":\"{{ $('Date Setup').item.json.date }}\",\"endDate\":\"{{ $('Date Setup').item.json.date }}\"}],\"metrics\":[{\"name\":\"sessions\"},{\"name\":\"bounceRate\"},{\"name\":\"eventCount\"}],\"dimensions\":[{\"name\":\"eventName\"}]}",
+        "options": {}
+      },
+      "id": "0bce1a5c-c5e3-4a6f-975f-a5e78f4e4979",
+      "name": "GA4 API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1936,
+        576
+      ],
+      "credentials": {
+        "googleAnalyticsOAuth2": {
+          "id": "OvUuNCI6SUjsGQlQ",
+          "name": "Google Analytics account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v19.0/120242149933950351/insights?fields=spend,impressions,reach,clicks,cpc,ctr&time_range={\"since\":\"{{ $json.date }}\",\"until\":\"{{ $json.date }}\"}&access_token=EAAUIfiX7u4ABRIsPiOZBB0tCZAvaWRgorHl6I69meS45FPr1gpPuKoZCqGhW3uFigv5724N4r3JNctOKpidEu2hQNdRA9zfbSqFxoIRzunchmxexBqvoZAdt5KIRHPWWjVbplIvDFU7ZBPHKALrZBxGzTd3OpZB8RHqWEBMUSKnuJjE2gC0oNLVcshEpsX5iQZDZD",
+        "options": {}
+      },
+      "id": "5d3f8c66-2cc5-49d1-aa56-2dc66b03c275",
+      "name": "Meta API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1728,
+        576
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const yesterday = new Date();\nyesterday.setDate(yesterday.getDate() - 1);\nconst dateStr = yesterday.toISOString().split('T')[0];\nreturn [{ json: { date: dateStr } }];"
+      },
+      "id": "8ad4eac8-418e-4689-abdd-8376126aac7f",
+      "name": "Date Setup",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1536,
+        576
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      },
+      "id": "6fff0b41-ac6f-4d7a-9516-8d1baf660ad5",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        1328,
+        576
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-27T00:14:39.271Z",
+      "createdAt": "2026-03-27T00:14:39.271Z",
+      "role": "workflow:owner",
+      "workflowId": "envj9zdIZ4JxCWt5",
+      "projectId": "tpSonpyzopDOYZNA"
+    }
+  ],
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-03-27T14:45:29.770Z",
+  "versionId": "0a391985-6c15-459d-8eb4-cd5fd19c27df"
+}
